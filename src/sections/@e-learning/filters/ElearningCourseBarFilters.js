@@ -89,7 +89,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 2, color: 'text.secondary', display: 'block' }}>
-          Ratings
+          Avaliações
         </Typography>
         <ElearningCourseRatingFilter
           filterRating={filters.filterRating}
@@ -99,7 +99,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Duration
+          Frequência
         </Typography>
         <ElearningCourseDurationFilter
           filterDuration={filters.filterDuration}
@@ -109,7 +109,17 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Category
+          Duração
+        </Typography>
+        <ElearningCourseDurationFilter
+          filterDuration={filters.filterDuration}
+          onChangeDuration={handleChangeDuration}
+        />
+      </section>
+
+      <section>
+        <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
+          Categoria
         </Typography>
         <ElearningCourseCategoriesFilter
           filterCategories={filters.filterCategories}
@@ -119,7 +129,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Level
+          Experiência
         </Typography>
         <ElearningCourseLevelFilter
           filterLevel={filters.filterLevel}
@@ -129,7 +139,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Fee
+          Valor
         </Typography>
 
         <ElearningCourseFeeFilter filterFee={filters.filterFee} onChangeFee={handleChangeFee} />
@@ -137,7 +147,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Language
+          Lingua
         </Typography>
         <ElearningCourseLanguageFilter
           filterLanguage={filters.filterLanguage}

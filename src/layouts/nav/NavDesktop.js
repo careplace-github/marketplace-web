@@ -26,7 +26,7 @@ const RootLinkStyle = styled(Link, {
       width: 6,
       height: 6,
       bottom: 0,
-      left: -14,
+      left: 30,
       content: '""',
       display: 'block',
       margin: 'auto 0',
@@ -75,7 +75,7 @@ export default function NavDesktop({ isScrolling, isTransparent, navConfig }) {
       direction="row"
       spacing={6}
       sx={{
-        ml: 6,
+        ml: 20,
         color: 'text.secondary',
         ...(isTransparent && {
           color: 'inherit',

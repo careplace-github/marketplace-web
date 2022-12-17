@@ -112,14 +112,15 @@ export default function TeamMarketingLangding({ members }) {
           <Grid item xs={12} md={4}>
             <Stack sx={{ textAlign: { xs: 'center', md: 'unset' } }}>
               <Typography variant="overline" sx={{ color: 'grey.600' }}>
-                Team
+                Nossos parceiros
               </Typography>
               <Typography variant="h2" sx={{ mt: 2, mb: 3, color: 'primary.main' }}>
-                Meet Our Team
+                Profissionais
               </Typography>
               <Typography sx={{ color: 'common.white' }}>
-                Since wire-frame renderings are relatively simple and fast to calculate, they are
-                often used in cases
+                Agregamos as melhores empresas de apoio ao domicílio num único local para que 
+                possa escolher a melhor pessoa para trabalhar consigo. Conheça os profissionais que
+                trabalham connosco.
               </Typography>
             </Stack>
           </Grid>

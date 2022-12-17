@@ -21,15 +21,14 @@ ElearningCourseDetails.propTypes = {
 
 export default function ElearningCourseDetails({ course }) {
   const { lessons, skills, learnList } = course;
-
+//  <ElearningCourseDetailsLessons lessons={lessons} />
   return (
     <Stack spacing={5}>
-      <ElearningCourseDetailsLessons lessons={lessons} />
-
+     
       {/* --  Learn -- */}
       <section>
         <Typography variant="h4" sx={{ mb: 3 }}>
-          What You Will Learn
+          Serviços Praticados Pelo Cuidador
         </Typography>
 
         <Stack spacing={1}>
@@ -61,7 +60,7 @@ export default function ElearningCourseDetails({ course }) {
       {/* -- Skills -- */}
       <section>
         <Typography variant="h4" sx={{ mb: 3 }}>
-          Skills You Will Gain
+          Aptidões
         </Typography>
         <Stack direction="row" flexWrap="wrap">
           {skills?.map((skill) => (
@@ -73,7 +72,7 @@ export default function ElearningCourseDetails({ course }) {
       {/* -- Overview -- */}
       <section>
         <Typography variant="h4" sx={{ mb: 2 }}>
-          Overview
+          Conheça o Cuidador
         </Typography>
         <Typography>
           Consentaneum aeternitate dignitati commoventur primisque cupit mea officia peccata parens

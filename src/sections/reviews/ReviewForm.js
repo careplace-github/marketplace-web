@@ -66,10 +66,10 @@ export default function ReviewElearningForm({ onClose }) {
         <Stack spacing={2.5}>
           <div>
             <Typography variant="h3" paragraph>
-              Review
+              Partilhe a sua experiência
             </Typography>
             <Typography variant="subtitle2" gutterBottom>
-              Your rating about this tour:
+              Avalie este cuidador:
             </Typography>
             <Controller
               name="rating"
@@ -92,7 +92,7 @@ export default function ReviewElearningForm({ onClose }) {
                 multiline
                 fullWidth
                 rows={3}
-                label="Review *"
+                label="Comentário *"
                 error={Boolean(error)}
                 helperText={error?.message}
               />
@@ -105,7 +105,7 @@ export default function ReviewElearningForm({ onClose }) {
               <TextField
                 {...field}
                 fullWidth
-                label="Name *"
+                label="Qual o seu nome? *"
                 error={Boolean(error)}
                 helperText={error?.message}
               />
@@ -118,7 +118,7 @@ export default function ReviewElearningForm({ onClose }) {
               <TextField
                 {...field}
                 fullWidth
-                label="Email address *"
+                label="Qual o seu Email? *"
                 error={Boolean(error)}
                 helperText={error?.message}
               />
@@ -132,10 +132,10 @@ export default function ReviewElearningForm({ onClose }) {
             sx={{ width: 1 }}
           >
             <Button variant="outlined" onClick={onClose} color="inherit">
-              Cancel
+              Cancelar
             </Button>
             <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
-              Post Review
+              Submeter Avaliação
             </LoadingButton>
           </Stack>
         </Stack>

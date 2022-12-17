@@ -37,6 +37,8 @@ import {
   ElearningCourseTeachersInfo,
 } from '../../../src/sections/@e-learning';
 
+// next
+import dynamic from 'next/dynamic';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -45,7 +47,7 @@ const RootStyle = styled('div')(({ theme }) => ({
     paddingTop: HEADER_DESKTOP_HEIGHT,
   },
 }));
-
+  const ContactMap = dynamic(() => import('../../../src/components/map/ContactMap'));
 // ----------------------------------------------------------------------
 
 export default function ElearningCoursePage() {
@@ -83,6 +85,15 @@ export default function ElearningCoursePage() {
     return <LoadingScreen />;
   }
 
+  const  locationMap= [
+    {
+      address: 'Portugal',
+      phoneNumber: '1234567',
+      email: 'email',
+      latlng: [33, 65],
+    },
+  ];
+
   return (
     <Page title={`${course.slug} - E-Learning`}>
       <RootStyle>
@@ -105,26 +116,21 @@ export default function ElearningCoursePage() {
               <ElearningCourseDetails course={course} />
               <Stack spacing={2} direction="row" sx={{ mt: 5 }}>
                 <Typography variant="subtitle2" sx={{ mt: 0.5 }}>
-                  Share:
+                  Partilhar:
                 </Typography>
                 <SocialsButton initialColor simple={false} links={course.shareLinks} />
               </Stack>
-
-              <Divider sx={{ my: 5 }} />
-              <ElearningCourseTeachersInfo teachers={course.teachers} />
             </Grid>
 
             <Grid item xs={12} md={5} lg={4}>
               <Stack spacing={5}>
                 {isDesktop && <ElearningCourseInfo course={course} />}
-                <Advertisement01
-                  advertisement={{
-                    title: 'Advertisement',
-                    description: 'Duis leo. Donec orci lectus, aliquam ut, faucibus non',
-                    imageUrl: _mock.image.course(7),
-                    path: '#',
-                  }}
-                />
+                <section>
+                  <Typography variant="h4" sx={{ mb: 3 }}>
+                    Localização
+                  </Typography>
+                  <ContactMap offices={locationMap} sx={{ borderRadius: 2 }} />
+                </section>
               </Stack>
             </Grid>
           </Grid>
@@ -138,7 +144,7 @@ export default function ElearningCoursePage() {
 
         <Container
           sx={{
-            pt: { md: 15 },
+            pt: { md: 10 },
           }}
         >
           <Grid item xs={12} md={7} lg={8}>
@@ -164,9 +170,7 @@ export default function ElearningCoursePage() {
             </Grid>
           </Grid>
         </Container>
-
         <ElearningCourseSimilar courses={courses.slice(-3)} />
-        <NewsletterElearning />
       </RootStyle>
     </Page>
   );
@@ -177,3 +181,20 @@ export default function ElearningCoursePage() {
 ElearningCoursePage.getLayout = function getLayout(page) {
   return <Layout>{page}</Layout>;
 };
+
+
+/*
+ <Divider sx={{ my: 5 }} />
+              <ElearningCourseTeachersInfo teachers={course.teachers} />
+
+        <NewsletterElearning />
+        <Advertisement01
+    advertisement={{
+      title: 'Advertisement',
+      description: 'Duis leo. Donec orci lectus, aliquam ut, faucibus non',
+      imageUrl: _mock.image.course(7),
+      path: '#',
+    }}
+  />
+
+*/

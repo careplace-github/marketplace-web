@@ -45,7 +45,7 @@ export default function ElearningCoursesPage() {
   }
 
   return (
-    <Page title="Courses - Elearning">
+    <Page title="Cuidadores">
       <RootStyle>
         <Container>
           <Stack
@@ -57,8 +57,7 @@ export default function ElearningCoursesPage() {
               mb: { md: 8 },
             }}
           >
-            <Typography variant="h2">Courses</Typography>
-
+            <Typography variant="h2">Cuidadores</Typography>
             <Button
               color="inherit"
               variant="contained"
@@ -68,13 +67,12 @@ export default function ElearningCoursesPage() {
                 display: { md: 'none' },
               }}
             >
-              Filters
+              Filtros
             </Button>
           </Stack>
 
           <Stack direction={{ xs: 'column', md: 'row' }}>
             <ElearningCourseBarFilters mobileOpen={mobileOpen} onMobileClose={handleMobileClose} />
-
             <Box
               sx={{
                 flexGrow: 1,

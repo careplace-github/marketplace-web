@@ -23,7 +23,7 @@ export default function RatingLabel({ reviews, ratings, ...other }) {
 
       {reviews && (
         <Link variant="body2" sx={{ color: 'text.secondary' }}>
-          ({fShortenNumber(reviews)} reviews)
+          ({fShortenNumber(reviews)} avaliações)
         </Link>
       )}
     </Stack>

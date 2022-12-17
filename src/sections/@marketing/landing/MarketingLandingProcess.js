@@ -13,19 +13,19 @@ const COLORS = ['primary', 'secondary', 'warning', 'success'];
 
 const SERVICES = [
   {
-    name: 'Planning',
+    name: 'Selecione um Serviço',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/ic_sketch_design.svg',
   },
   {
-    name: 'Research',
+    name: 'Selecione um Cuidador',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/ic_search.svg',
   },
   {
-    name: 'Optimizing',
+    name: 'Agende uma Visita',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/ic_optimization.svg',
   },
   {
-    name: 'Results',
+    name: 'Formalize o Contrato',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/ic_analysis.svg',
   },
 ];
@@ -33,7 +33,7 @@ const SERVICES = [
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(8, 0),
   [theme.breakpoints.up('md')]: {
-    paddingBottom: theme.spacing(5),
+    paddingBottom: theme.spacing(15),
   },
 }));
 
@@ -45,22 +45,22 @@ export default function MarketingLandingProcess() {
       <Container>
         <Stack
           sx={{
-            maxWidth: 480,
+            maxWidth: 580,
             mb: { xs: 8, md: 5 },
             mx: { xs: 'auto', md: 'unset' },
             textAlign: { xs: 'center', md: 'unset' },
           }}
         >
           <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-            Work Flow
+            Processo
           </Typography>
 
           <Typography variant="h2" sx={{ mt: 2, mb: 3 }}>
-            Working Process
+            Como Funcionamos
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Nunc nonummy metus. Donec elit libero, sodales nec, volutpat a, suscipit non, turpis.
+            Conheça o nosso procedimento e veja por si mesmo o quão fácil é encontrar alguém de confiança.
           </Typography>
         </Stack>
 

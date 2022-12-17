@@ -65,13 +65,21 @@ export default function ElearningCourseHero({ course }) {
     teachers = [],
   } = course;
 
+  /*
+  {teachers?.length > 0 && (
+                      <Link underline="always" color="text.secondary" variant="body2">
+                        + {teachers?.length} teachers
+                      </Link>
+                    )}
+  */
+
   return (
     <RootStyle>
       <Container>
         <Breadcrumbs
           links={[
             { name: 'Home', href: '/' },
-            { name: 'Courses', href: Routes.eLearning.courses },
+            { name: 'Cuidadores', href: Routes.eLearning.courses },
             { name: course.slug || '' },
           ]}
           sx={{ mb: 8 }}
@@ -92,7 +100,7 @@ export default function ElearningCourseHero({ course }) {
               <Stack spacing={2} alignItems="flex-start">
                 {bestSeller && (
                   <Label color="warning" variant="filled" sx={{ textTransform: 'uppercase' }}>
-                    Best Seller
+                    Muito Requisitado
                   </Label>
                 )}
                 <Typography variant="h3" component="h1">
@@ -114,7 +122,7 @@ export default function ElearningCourseHero({ course }) {
                 <Stack direction="row" sx={{ typography: 'subtitle2' }}>
                   {fShortenNumber(students)} {''}
                   <Box component="span" typography="body2" sx={{ ml: 0.5 }}>
-                    students
+                    Cuidados
                   </Box>
                 </Stack>
               </Stack>
@@ -126,14 +134,10 @@ export default function ElearningCourseHero({ course }) {
                     <Typography variant="body2" sx={{ ml: 1, mr: 0.5 }}>
                       {teachers[0]?.name}
                     </Typography>
-                    {teachers?.length > 0 && (
-                      <Link underline="always" color="text.secondary" variant="body2">
-                        + {teachers?.length} teachers
-                      </Link>
-                    )}
                   </>
                 }
               />
+              
 
               <Divider sx={{ borderStyle: 'dashed' }} />
 
@@ -147,11 +151,11 @@ export default function ElearningCourseHero({ course }) {
                 >
                   <TextIconLabel
                     icon={<Iconify icon={timeIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
-                    value={`${totalHours} hours`}
+                    value={`${totalHours} horas`}
                   />
                   <TextIconLabel
                     icon={<Iconify icon={documentIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
-                    value={`${lessons?.length} Lessons`}
+                    value={`${lessons?.length} Serviços`}
                   />
                   <TextIconLabel icon={getLevelIcon(level)} value={level} />
                 </Stack>
@@ -174,7 +178,7 @@ export default function ElearningCourseHero({ course }) {
                   />
                   <TextIconLabel
                     icon={<Iconify icon={helpIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
-                    value={`${quizzes} Quizzes`}
+                    value={`${quizzes} Acompanhamentos`}
                   />
                 </Stack>
               </Stack>
