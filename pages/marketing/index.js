@@ -18,11 +18,11 @@ import { OurClientsMarketingLanding } from '../../src/sections/our-clients';
 import {
   MarketingFaqs,
   MarketingFreeSEO,
-  MarketingLandingHero,
+  LandingPage1stSection,
   MarketingLandingAbout,
   MarketingLandingProcess,
   MarketingLandingServices,
-  MarketingLandingCaseStudies,
+//  MarketingLandingCaseStudies,
 } from '../../src/sections/@marketing';
 
 // ----------------------------------------------------------------------
@@ -34,35 +34,38 @@ MarketingLandingPage.propTypes = {
 
 export default function MarketingLandingPage({ posts, caseStudies }) {
   return (
-    <Page title="Landing - Marketing">
-      <MarketingLandingHero />
+    <Page title="Landing Page">
+      <LandingPage1stSection />
 
-      <OurClientsMarketingLanding brands={_brands} />
-
-      <MarketingLandingAbout />
+      <TestimonialsMarketing testimonials={_testimonials} /> 
 
       <MarketingLandingServices />
 
-      <MarketingLandingProcess />
-
-      <MarketingLandingCaseStudies caseStudies={caseStudies.slice(-6)} />
+      <MarketingLandingAbout />  
 
       <TeamMarketingLangding members={_members} />
 
-      <PricingMarketing plans={_pricingMarketing} />
+      <MarketingLandingProcess />
 
       <MarketingFaqs />
 
-      <TestimonialsMarketing testimonials={_testimonials} />
-
-      <BlogMarketingLatestPosts posts={posts.slice(0, 4)} />
-
-      <MarketingFreeSEO />
-
-      <NewsletterMarketing />
     </Page>
   );
 }
+/*
+ <MarketingLandingCaseStudies caseStudies={caseStudies.slice(-6)} />
+ 
+ <OurClientsMarketingLanding brands={_brands} />
+
+ <BlogMarketingLatestPosts posts={posts.slice(0, 4)} />
+
+ <MarketingFreeSEO />
+
+ <NewsletterMarketing />
+
+<PricingMarketing plans={_pricingMarketing} />
+
+*/
 
 // ----------------------------------------------------------------------
 

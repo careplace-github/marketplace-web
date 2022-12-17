@@ -55,9 +55,9 @@ export default function TestimonialsMarketing({ testimonials }) {
       <Container sx={{ position: 'relative' }}>
         <Stack spacing={2} sx={{ textAlign: 'center', mb: { xs: 8, md: 10 } }}>
           <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-            Testimonials
+            Testemunhos
           </Typography>
-          <Typography variant="h2">Who Love Our Work</Typography>
+          <Typography variant="h2">Quem Adora o Nosso Trabalho</Typography>
         </Stack>
 
         <CarouselArrows onNext={handleNext} onPrevious={handlePrevious}>

@@ -32,9 +32,14 @@ export default function ReviewElearningToolbar({ sort, onChangeSort }) {
   return (
     <Stack spacing={5} alignItems="center" direction="row" sx={{ mb: 5 }}>
       <Typography variant="h4" sx={{ width: 1 }}>
-        Reviews
+        Avaliações
       </Typography>
 
+    </Stack>
+  );
+}
+/*
+Filtrar reviews
       <Stack direction="row" spacing={2} alignItems="center" flexShrink={0}>
         <FormControl
           variant="filled"
@@ -52,6 +57,6 @@ export default function ReviewElearningToolbar({ sort, onChangeSort }) {
           </Select>
         </FormControl>
       </Stack>
-    </Stack>
-  );
-}
+
+
+*/

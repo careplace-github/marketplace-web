@@ -39,7 +39,7 @@ export default function ElearningCourseSimilar({ courses }) {
           justifyContent={{ xs: 'center', md: 'space-between' }}
           sx={{ mb: { xs: 8, md: 6 } }}
         >
-          <Typography variant="h3">Similar Courses</Typography>
+          <Typography variant="h3">Cuidadores semelhantes</Typography>
 
           <NextLink href={Routes.eLearning.courses} passHref>
             <Button
@@ -48,7 +48,7 @@ export default function ElearningCourseSimilar({ courses }) {
                 display: { xs: 'none', md: 'inline-flex' },
               }}
             >
-              View All
+              Ver Todos
             </Button>
           </NextLink>
         </Stack>

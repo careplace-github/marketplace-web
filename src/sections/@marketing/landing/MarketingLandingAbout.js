@@ -13,27 +13,30 @@ import { Iconify, Image } from '../../../components';
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(8, 0),
   [theme.breakpoints.up('md')]: {
-    paddingBottom: 0,
+    paddingBottom: theme.spacing(15),
     paddingTop: theme.spacing(10),
   },
 }));
 
 // ----------------------------------------------------------------------
 
-export default function MarketingLandingAbout() {
-  return (
-    <RootStyle>
-      <Container>
-        <Image
-          alt="langding about"
-          src="https://zone-assets-api.vercel.app/assets/images/marketing/marketing_langding_about.jpg"
-          ratio="16/9"
+/*
+<Image
+          alt="We want to help"
+          src="https://clinicapardelhas.com/wp-content/uploads/2017/02/amedical-slider-slide-1-e1488327854861.jpg"
+          ratio="21/9"
           sx={{
             borderRadius: 1.5,
             mb: { xs: 5, md: 10 },
           }}
         />
+*/
 
+export default function MarketingLandingAbout() {
+  return (
+    <RootStyle>
+      <Container>
+        
         <Grid
           container
           rowSpacing={{ xs: 5, md: 0 }}
@@ -42,11 +45,11 @@ export default function MarketingLandingAbout() {
         >
           <Grid item xs={12} md={5} sx={{ textAlign: { xs: 'center', md: 'right' } }}>
             <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-              About Us
+              Sobre nós
             </Typography>
 
             <Typography variant="h2" sx={{ mt: 2, mb: 3 }}>
-              Who We Are
+              Quem Somos
             </Typography>
 
             <Typography sx={{ color: 'text.secondary' }}>
@@ -56,27 +59,28 @@ export default function MarketingLandingAbout() {
               fames ac turpis egestas.
             </Typography>
 
-            <Button size="large" endIcon={<Iconify icon={directionStraightRight} />} sx={{ mt: 5 }}>
-              Lean more
+            <Button size="large" href='/marketing/about-us' endIcon={<Iconify icon={directionStraightRight} />} sx={{ mt: 5 }}>
+              Saber mais
             </Button>
           </Grid>
 
           <Grid item xs={12} md={6}>
             <Stack spacing={5}>
               <LineItem
-                total="150"
-                label="projects"
-                text="Praesent turpis. Praesent blandit laoreet nibh. Nunc nonummy metus."
+                total="15"
+                label="empresas"
+                text="Agregamos as melhores empresas de apoio ao domicílo nacionais para lhe facilitar a pesquisa."
               />
               <LineItem
-                total={fShortenNumber(32000)}
-                label="Happy clients"
-                text="Praesent turpis. Praesent blandit laoreet nibh. Nunc nonummy metus."
+                // total={fShortenNumber(32000)}
+                total="120"
+                label="Clientes Satisfeitos"
+                text="Os resultados falam por si e os nossos clientes não nos deixam mentir."
               />
               <LineItem
-                total="20"
-                label="years of experience"
-                text="Praesent turpis. Praesent blandit laoreet nibh. Nunc nonummy metus."
+                total="10"
+                label="Anos de Experiência"
+                text="A nossa equipa tem a experiência necessária para o ajudar a encontrar a pessoa certa."
               />
             </Stack>
           </Grid>

@@ -9,7 +9,7 @@ import { Iconify, Image } from '../../../components';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
-  padding: theme.spacing(15, 0),
+  padding: theme.spacing(10, 0),
   [theme.breakpoints.up('md')]: {
     height: '100vh',
     display: 'flex',
@@ -19,22 +19,22 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function MarketingLandingHero() {
+export default function LandingPage1stSection() {
   return (
     <RootStyle>
       <Container>
         <Grid container columnSpacing={10} justifyContent="space-between" alignItems="center">
           <Grid item xs={12} md={6} lg={5} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
-            <Stack spacing={5}>
+            <Stack spacing={3}>
               <Typography variant="overline" sx={{ color: 'primary.main' }}>
-                Digital Marketing
+                Bem-vindo à
               </Typography>
 
-              <Typography variant="h1">Boosts Your Website Traffic</Typography>
+              <Typography variant="h1">Careplace</Typography>
 
               <Typography sx={{ color: 'text.secondary' }}>
-                Etiam sollicitudin, ipsum eu pulvinar rutrum, tellus ipsum laoreet sapien, quis
-                venenatis ante odio sit amet eros.
+                Porque encontrar alguém de confiança para tratar dos seus familiares não é tarefa, 
+                queremos ajudá-lo a encontrar <b>um serviço de apoio ao domicílo à sua medida</b>.
               </Typography>
 
               <Stack
@@ -43,7 +43,7 @@ export default function MarketingLandingHero() {
                 spacing={3}
               >
                 <Button variant="contained" size="large">
-                  Try For Free
+                  Experimente já
                 </Button>
 
                 <Button
@@ -73,7 +73,7 @@ export default function MarketingLandingHero() {
                     '&:hover': { bgcolor: 'transparent' },
                   }}
                 >
-                  See Our Work
+                  Veja como funciona
                 </Button>
               </Stack>
             </Stack>
@@ -89,8 +89,8 @@ export default function MarketingLandingHero() {
             }}
           >
             <Image
-              alt="marketing-market"
-              src="https://zone-assets-api.vercel.app/assets/illustrations/illustration_marketing_market.svg"
+              alt="cuidamos de si"
+              src="https://inovacaosocial.portugal2020.pt/wp-content/uploads/2019/03/Cuidadores-1080x730.jpg"
             />
           </Grid>
         </Grid>

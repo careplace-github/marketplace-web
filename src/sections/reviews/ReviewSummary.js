@@ -79,7 +79,7 @@ export default function ReviewSummary({ reviews, ratings, filter, onOpenForm, on
             startIcon={<Iconify icon={editIcon} sx={{ width: 24, height: 24 }} />}
             onClick={onOpenForm}
           >
-            Write a Review
+            Avaliar Cuidador
           </Button>
         </Stack>
       </Paper>

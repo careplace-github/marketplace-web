@@ -47,7 +47,7 @@ export default function ElearningCourseInfo({ course }) {
         </Stack>
 
         <Stack spacing={2}>
-          <Typography>This course includes:</Typography>
+          <Typography>Este serviço incluí:</Typography>
           <TextIconLabel
             icon={<Iconify icon={documentIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
             value={
@@ -55,7 +55,7 @@ export default function ElearningCourseInfo({ course }) {
                 <Box component="strong" sx={{ mr: 0.5 }}>
                   {lessons?.length}
                 </Box>
-                Lessons
+                Visitas
               </>
             }
           />
@@ -74,6 +74,16 @@ export default function ElearningCourseInfo({ course }) {
             icon={<Iconify icon={dataAccessor} sx={{ width: 20, height: 20, mr: 1 }} />}
             value="Full lifetime access"
           />
+        </Stack>
+        <Button variant="contained" size="large" href=''>
+          Agendar Visita
+        </Button>
+      </Stack>
+    </Card>
+  );
+}
+
+/**
           <TextIconLabel
             icon={<Iconify icon={devicesIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
             value="Access on desktops, tablets, mobile "
@@ -82,12 +92,4 @@ export default function ElearningCourseInfo({ course }) {
             icon={<Iconify icon={certificateIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
             value="Certificate of completion"
           />
-        </Stack>
-
-        <Button variant="contained" size="large">
-          Enrol Now
-        </Button>
-      </Stack>
-    </Card>
-  );
-}
+ */

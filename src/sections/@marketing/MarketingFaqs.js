@@ -45,7 +45,7 @@ export default function MarketingFaqs() {
               <Typography variant="overline" color="text.disabled">
                 FAQS
               </Typography>
-              <Typography variant="h2">Frequently Asked Questions</Typography>
+              <Typography variant="h2">Perguntas Frequentes</Typography>
             </Stack>
 
             {_faqs.map((faq) => (
