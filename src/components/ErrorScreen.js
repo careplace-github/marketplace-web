@@ -57,7 +57,7 @@ export default function ErrorScreen({ title, description, ...other }) {
           startIcon={<Iconify icon={rotate360} sx={{ width: 20, height: 20 }} />}
           onClick={handleReload}
         >
-          Reload
+          Recarregar
         </Button>
       </Stack>
     </RootStyle>

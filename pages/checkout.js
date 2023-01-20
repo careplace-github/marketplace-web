@@ -7,6 +7,7 @@ import Layout from '../src/layouts';
 import { Page } from '../src/components';
 // sections
 import { CheckoutSummary, CheckoutMethods, CheckoutBillingAddress } from '../src/sections/checkout';
+import CheckoutWidget from './CheckoutWidget';
 
 // ----------------------------------------------------------------------
 
@@ -28,35 +29,24 @@ export default function CheckoutPage() {
         <Typography align="center" sx={{ color: 'text.secondary', mb: 5 }}>
           Professional plan is right for you.
         </Typography>
-
-        <Card
+        <CheckoutWidget />        
+      </Container>
+    </RootStyle>
+  );
+}
+/*
+<Card
           sx={{
             boxShadow: (theme) => ({
               xs: 0,
               md: theme.customShadows.z16,
             }),
           }}
-        >
-          <Box
-            sx={{
-              display: 'grid',
-              gap: 4,
-              gridTemplateColumns: {
-                xs: 'repeat(1, 1fr)',
-                md: 'repeat(3, 1fr)',
-              },
-            }}
-          >
-            <CheckoutBillingAddress />
+        > </Card>
+<CheckoutBillingAddress />
             <CheckoutMethods />
             <CheckoutSummary />
-          </Box>
-        </Card>
-      </Container>
-    </RootStyle>
-  );
-}
-
+*/
 // ----------------------------------------------------------------------
 
 CheckoutPage.getLayout = function getLayout(page) {
