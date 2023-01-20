@@ -72,7 +72,12 @@ export default function Settings() {
 
   return (
     <>
-      <ToggleButtonSetting
+     
+    </>
+  );
+}
+/*
+ <ToggleButtonSetting
         notDefault={notDefault}
         isOpen={toggleOpen}
         onToggle={() => setToggleOpen()}
@@ -118,6 +123,4 @@ export default function Settings() {
           </>
         )}
       </AnimatePresence>
-    </>
-  );
-}
+*/

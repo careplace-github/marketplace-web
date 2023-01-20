@@ -56,6 +56,7 @@ const Routes = {
   pricing01: '/pricing-01',
   pricing02: '/pricing-02',
   checkout: '/checkout',
+  appointment:'/appointment',
   support: '/support',
   page404: '/404',
   page500: '/500',
