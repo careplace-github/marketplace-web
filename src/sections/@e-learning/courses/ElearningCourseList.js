@@ -25,7 +25,7 @@ export default function ElearningCourseList({ courses, loading }) {
       </Stack>
 
       <Pagination
-        count={10}
+        count={3}
         color="primary"
         size="large"
         sx={{

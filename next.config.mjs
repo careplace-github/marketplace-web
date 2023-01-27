@@ -9,6 +9,11 @@ const nextConfig = {
         destination: '/home',
         permanent: true,
       },
+      {
+        source: '/marketing',
+        destination: '/home',
+        permanent: true,
+      },
     ];
   },
   trailingSlash: true,

@@ -58,24 +58,29 @@ export default function Header({ transparent }) {
           <Box sx={{ flexGrow: 1 }} />
 
           <Stack spacing={2} direction="row" alignItems="center">
+             {/**
             <Searchbar
               sx={{
                 ...(isScrolling && { color: 'text.primary' }),
               }}
             />
-
-            <LanguagePopover
+           
+             <LanguagePopover
               sx={{
                 ...(isScrolling && { color: 'text.primary' }),
               }}
             />
 
-            <Divider orientation="vertical" sx={{ height: 24 }} />
+             <Divider orientation="vertical" sx={{ height: 24 }} />
+             */}
+
+           
 
             {isDesktop && (
               <Stack direction="row" spacing={1}>
-                <NextLink href={Routes.registerIllustration} prefetch={false} passHref>
-                  <Button
+                { 
+                 <NextLink href={'localhost:3031'} prefetch={false} passHref>
+                   <Button
                     color="inherit"
                     variant="outlined"
                     sx={{
@@ -85,12 +90,13 @@ export default function Header({ transparent }) {
                       ...(isScrolling && isLight && { color: 'text.primary' }),
                     }}
                   >
-                    Junte-se a nós
+                    Sou uma empresa
                   </Button>
                 </NextLink>
+                 }
 
-                <Button variant="contained" href={Routes.buyNow} target="_blank" rel="noopener">
-                  Login
+                <Button variant="contained" href={'localhost:3031'} target="_blank" rel="noopener">
+                  A minha conta
                 </Button>
               </Stack>
             )}

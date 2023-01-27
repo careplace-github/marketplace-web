@@ -5,7 +5,7 @@ import Select from '@mui/material/Select';
 
 // ----------------------------------------------------------------------
 
-const DURATIONS = ['0 - 1 Hour', '1 - 3 Hours', '3 - 6 Hours', '6 - 18 Hours', '18+ Hours'];
+const DURATIONS = ['0 - 1 Hora', '1 - 3 Horas', '3 - 6 Horas', '6 - 18 Horas', '18+ Horas'];
 
 const inputStyle = {
   '& .MuiFilledInput-input': { py: 2 },
@@ -27,7 +27,7 @@ const MenuProps = {
 
 const placeholder = (
   <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-    All Duration
+    Ver todas
   </Typography>
 );
 

@@ -9,13 +9,9 @@ import { Divider, Stack, Card, Typography, Box, Link, Avatar } from '@mui/materi
 import Routes from '../../../routes';
 // utils
 import { getLevelIcon } from '../../../utils/getIcon';
-import { fCurrency, fShortenNumber } from '../../../utils/formatNumber';
 // components
 import {
-  Image,
-  Label,
   Iconify,
-  RatingLabel,
   TextMaxLine,
   TextIconLabel,
 } from '../../../components';
@@ -47,15 +43,8 @@ export default function ElearningCourseItem({ course, vertical }) {
     id,
     slug,
     level,
-    price,
-    ratings,
-    reviews,
     teachers,
-    students,
-    coverImg,
     category,
-    priceSale,
-    bestSeller,
     totalHours,
     description,
   } = course;
@@ -73,7 +62,8 @@ export default function ElearningCourseItem({ course, vertical }) {
         }),
       }}
     >
-      <Box sx={{ flexShrink: { sm: 0 } }}>
+      {/**
+       <Box sx={{ flexShrink: { sm: 0 } }}>
         <Image
           alt={slug}
           src={coverImg}
@@ -87,8 +77,9 @@ export default function ElearningCourseItem({ course, vertical }) {
           }}
         />
       </Box>
+       */}
 
-      {bestSeller && (
+      {/*bestSeller && (
         <Label
           color="warning"
           variant="filled"
@@ -96,7 +87,7 @@ export default function ElearningCourseItem({ course, vertical }) {
         >
           Best Seller
         </Label>
-      )}
+      )*/}
 
       <Stack spacing={3} sx={{ p: 3 }}>
         <Stack
@@ -109,7 +100,7 @@ export default function ElearningCourseItem({ course, vertical }) {
             <Typography variant="overline" sx={{ color: 'primary.main' }}>
               {category}
             </Typography>
-            <Typography variant="h4">
+            {/* <Typography variant="h4">
               {priceSale > 0 && (
                 <Box
                   component="span"
@@ -119,7 +110,7 @@ export default function ElearningCourseItem({ course, vertical }) {
                 </Box>
               )}{' '}
               {fCurrency(price)}
-            </Typography>
+            </Typography> */}
           </Stack>
 
           <Stack spacing={1}>
@@ -148,7 +139,7 @@ export default function ElearningCourseItem({ course, vertical }) {
           </Stack>
         </Stack>
 
-        <Stack
+        {/* <Stack
           spacing={1.5}
           direction="row"
           alignItems="center"
@@ -162,8 +153,14 @@ export default function ElearningCourseItem({ course, vertical }) {
               students
             </Box>
           </Stack>
-        </Stack>
-
+        </Stack> */}
+      <Stack
+          spacing={1.5}
+          direction="row"
+          alignItems="center"
+          flexWrap="wrap"
+          divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
+        >
         <TextIconLabel
           icon={<Avatar src={teachers[0]?.picture} />}
           value={
@@ -171,25 +168,14 @@ export default function ElearningCourseItem({ course, vertical }) {
               <Typography variant="body2" sx={{ ml: 1, mr: 0.5 }}>
                 {teachers[0]?.name}
               </Typography>
-              {teachers?.length > 0 && (
+              {/*teachers?.length > 0 && (
                 <Link underline="always" color="text.secondary" variant="body2">
                   + {teachers?.length} teachers
                 </Link>
-              )}
+              )*/}
             </>
           }
-        />
-
-        <Divider
-          sx={{
-            borderStyle: 'dashed',
-            display: { sm: 'none' },
-            ...(vertical && {
-              display: 'block',
-            }),
-          }}
-        />
-
+        />      
         <Stack
           direction="row"
           flexWrap="wrap"
@@ -201,6 +187,7 @@ export default function ElearningCourseItem({ course, vertical }) {
             value={`${totalHours} hours`}
           />
           <TextIconLabel icon={getLevelIcon(level)} value={level} />
+        </Stack>
         </Stack>
       </Stack>
     </Card>

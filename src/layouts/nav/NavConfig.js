@@ -98,10 +98,10 @@ export const PageLinks = [
 export const navConfig = [
   { title: 'Home', path: Routes.marketing },
   { title: 'Cuidadores', path: Routes.eLearning.courses },
- {
+ /*{
     title: 'Pages',
     path: Routes.pages,
     children: [PageLinks[0], PageLinks[4], PageLinks[1], PageLinks[3], PageLinks[2], PageLinks[5]],
   },
-  { title: 'Documentation', path: Routes.docs },
+  { title: 'Documentation', path: Routes.docs },*/
 ];

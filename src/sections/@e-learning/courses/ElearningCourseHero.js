@@ -1,22 +1,22 @@
 import PropTypes from 'prop-types';
 // icons
-import timeIcon from '@iconify/icons-carbon/time';
 import documentIcon from '@iconify/icons-carbon/document';
 import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-network';
-import helpIcon from '@iconify/icons-carbon/help';
+
+
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Stack, Divider, Container, Grid, Box, Avatar, Link } from '@mui/material';
+import { Typography, Stack, Divider, Container, Grid, Chip, Avatar, TextField, Card, Autocomplete, Select, Button } from '@mui/material';
 // routes
 import Routes from '../../../routes';
 // utils
-import { fShortenNumber } from '../../../utils/formatNumber';
+
 import { getLevelIcon } from '../../../utils/getIcon';
-// _data
-import _mock from '../../../../_data/mock';
+
 // components
-import { PlayerWithImage } from '../../../components/player';
-import { Label, Breadcrumbs, RatingLabel, TextIconLabel, Iconify } from '../../../components';
+import {  Breadcrumbs,  TextIconLabel, Iconify } from '../../../components';
+import { MobileDateTimePicker, TimePicker } from '@mui/x-date-pickers';
+import React, { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -30,6 +30,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 ElearningCourseHero.propTypes = {
   course: PropTypes.shape({
+    learnList: PropTypes.array,
     bestSeller: PropTypes.bool,
     category: PropTypes.string,
     coverImg: PropTypes.string,
@@ -51,11 +52,10 @@ export default function ElearningCourseHero({ course }) {
   const {
     slug,
     level,
-    ratings,
+    learnList,
     quizzes,
     lessons,
     category,
-    coverImg,
     languages,
     bestSeller,
     totalHours,
@@ -72,6 +72,19 @@ export default function ElearningCourseHero({ course }) {
                       </Link>
                     )}
   */
+  const WEEK_DAYS = [
+    'Segunda-feira',
+    'Terça-feira',
+    'Quarta-feira',
+    'Quinta-feira',
+    'Sexta-feira',
+    'Sábado',
+    "Domingo",
+  ];
+  const recorrencia = [
+    {classify:['Sem Recorrência', 'Semanal', 'Quinzenal']}
+  ]
+  const [selectedWeekDays, setSelectedWeekDays] = useState([]);
 
   return (
     <RootStyle>
@@ -79,9 +92,10 @@ export default function ElearningCourseHero({ course }) {
         <Breadcrumbs
           links={[
             { name: 'Home', href: '/' },
-            { name: 'Cuidadores', href: Routes.eLearning.courses },
+            { name: 'Empresas SAD', href: Routes.eLearning.courses },
             { name: course.slug || '' },
           ]}
+          
           sx={{ mb: 8 }}
         />
 
@@ -92,17 +106,88 @@ export default function ElearningCourseHero({ course }) {
           direction="row-reverse"
         >
           <Grid item xs={12} md={5}>
-            <PlayerWithImage imgPath={coverImg} videoPath={_mock.video} ratio="3/4" />
-          </Grid>
+          <Stack spacing={3}>
+            <Card sx={{ p: 3 }}> 
+            
+              <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
+                    Recorrência
+              </Typography>
+              <Stack spacing={3} mt={2}>
+              <MobileDateTimePicker
+                      //{}
+                      
+                      //onChange={(newValue) => field.onChange(newValue)}
+                      label="Início Pretendido"
+                      inputFormat="dd/MM/yyyy"
+                      renderInput={(params) => <TextField {...params} fullWidth />}
+                    />
+                <Select name="category" label="Recorrência">
+                  {recorrencia.map((category) => (
+                    <optgroup key={category.group} label={category.group}>
+                    {category.classify.map((classify) => (
+                      <option key={classify} value={classify}>
+                        {classify}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </Select>
+              <Autocomplete
+                name="week_days"
+                multiple
+                freeSolo
+                onChange={(event, newValue) => {
+                 // setValue('week_days', newValue);
+                  setSelectedWeekDays(newValue);
+                }}
+                options={WEEK_DAYS.map((option) => option)}
+                renderTags={(value, getTagProps) =>
+                  value.map((option, index) => (
+                    <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
+                  ))
+                }
+                renderInput={(params) => <TextField label="Dias do Serviço" {...params} />}
+              />
+           <Grid container direction="row" gap={1}>
+            {selectedWeekDays.map((day, index) => (
+              <React.Fragment key={day}>
+                <Typography variant="subtitle3" sx={{ color: 'text.primary' }}>
+                {`${day}`}
+              </Typography>
+                <Grid container item xs={12} direction="row" spacing={2}>
+                <Grid item xs={6}>
+                    <TimePicker
+                        //{...field}
+                        //onChange={(newValue) => field.onChange(newValue)}
+                        label={`Hora de início`}
+                        inputFormat="hh:mm"
+                        renderInput={(params) => <TextField {...params} fullWidth />}
+                      />
+                </Grid>
+                <Grid item xs={6}>
+                <TimePicker
+                       // {...field}
+                        //onChange={(newValue) => field.onChange(newValue)}
+                        label={`Hora de fim`}
+                        inputFormat="hh:mm"
+                        renderInput={(params) => <TextField {...params} fullWidth />}
+                      />
+                </Grid>
+                </Grid>
+                {(index + 1) % 2 === 0 ? <Grid item xs={12}/> : null}
+              </React.Fragment>
+            ))}
+            <Button>Submeter Pedido</Button>
+          </Grid> 
+              </Stack>
+              
+            </Card>
+          </Stack>
+        </Grid>
 
           <Grid item xs={12} md={7}>
             <Stack spacing={3}>
               <Stack spacing={2} alignItems="flex-start">
-                {bestSeller && (
-                  <Label color="warning" variant="filled" sx={{ textTransform: 'uppercase' }}>
-                    Muito Requisitado
-                  </Label>
-                )}
                 <Typography variant="h3" component="h1">
                   {slug}
                 </Typography>
@@ -110,21 +195,6 @@ export default function ElearningCourseHero({ course }) {
                   {category}
                 </Typography>
                 <Typography sx={{ color: 'text.secondary' }}>{description}</Typography>
-              </Stack>
-
-              <Stack
-                spacing={1.5}
-                direction="row"
-                alignItems="center"
-                divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
-              >
-                <RatingLabel ratings={ratings} reviews={reviews} />
-                <Stack direction="row" sx={{ typography: 'subtitle2' }}>
-                  {fShortenNumber(students)} {''}
-                  <Box component="span" typography="body2" sx={{ ml: 0.5 }}>
-                    Cuidados
-                  </Box>
-                </Stack>
               </Stack>
 
               <TextIconLabel
@@ -150,23 +220,10 @@ export default function ElearningCourseHero({ course }) {
                   }}
                 >
                   <TextIconLabel
-                    icon={<Iconify icon={timeIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
-                    value={`${totalHours} horas`}
-                  />
-                  <TextIconLabel
                     icon={<Iconify icon={documentIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
                     value={`${lessons?.length} Serviços`}
                   />
                   <TextIconLabel icon={getLevelIcon(level)} value={level} />
-                </Stack>
-
-                <Stack
-                  direction="row"
-                  flexWrap="wrap"
-                  sx={{
-                    '& > *': { my: 0.5, mr: 3 },
-                  }}
-                >
                   <TextIconLabel
                     icon={
                       <Iconify
@@ -175,10 +232,6 @@ export default function ElearningCourseHero({ course }) {
                       />
                     }
                     value={typeof languages === 'string' ? languages : languages?.join(', ')}
-                  />
-                  <TextIconLabel
-                    icon={<Iconify icon={helpIcon} sx={{ width: 20, height: 20, mr: 1 }} />}
-                    value={`${quizzes} Acompanhamentos`}
                   />
                 </Stack>
               </Stack>

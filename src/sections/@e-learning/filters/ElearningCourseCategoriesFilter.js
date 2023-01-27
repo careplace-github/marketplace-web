@@ -40,10 +40,10 @@ export default function ElearningCourseCategoriesFilter({ filterCategories, onCh
           <TextField
             {...params}
             variant="filled"
-            placeholder="All Categories"
+            placeholder="Qualquer"
             InputProps={{
               ...params.InputProps,
-              autoComplete: 'search',
+              autoComplete: 'pesquisar',
             }}
           />
         )}

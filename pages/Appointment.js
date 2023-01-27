@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import { Grid, TextField, FormControl, Card, Stack, Typography, Autocomplete, Chip, Select, Button, Box, Container } from '@mui/material';
-import { Controller, FormProvider } from 'react-hook-form';
+import { Grid, TextField, Card, Stack, Typography, Autocomplete, Chip, Select, Container } from '@mui/material';
+import {  FormProvider } from 'react-hook-form';
 import { MobileDateTimePicker, TimePicker } from '@mui/lab';
-import { Iconify } from '../src/components';
 
 // @mui
-import { styled } from '@mui/material/styles';
 import Layout from '../src/layouts';
 // components
 import { Page } from '../src/components';
@@ -53,11 +51,6 @@ const GENDER_OPTION = [
     "Domingo",
   ];
  
-const RootStyle = styled(Page)(({ theme }) => ({
-  minHeight: '100%',
-  paddingTop: theme.spacing(15),
-  paddingBottom: theme.spacing(10),
-}));
 
 // ----------------------------------------------------------------------
 

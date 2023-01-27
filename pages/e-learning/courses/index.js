@@ -45,7 +45,7 @@ export default function ElearningCoursesPage() {
   }
 
   return (
-    <Page title="Cuidadores">
+    <Page title="Serviços de Apoio ao Domicílio">
       <RootStyle>
         <Container>
           <Stack
@@ -57,7 +57,7 @@ export default function ElearningCoursesPage() {
               mb: { md: 8 },
             }}
           >
-            <Typography variant="h2">Cuidadores</Typography>
+            <Typography variant="h2">Empresas de Apoio ao Domicílio</Typography>
             <Button
               color="inherit"
               variant="contained"
@@ -67,7 +67,7 @@ export default function ElearningCoursesPage() {
                 display: { md: 'none' },
               }}
             >
-              Filtros
+              Filtrar
             </Button>
           </Stack>
 
@@ -84,7 +84,6 @@ export default function ElearningCoursesPage() {
             </Box>
           </Stack>
         </Container>
-        <NewsletterElearning />
       </RootStyle>
     </Page>
   );

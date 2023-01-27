@@ -100,13 +100,13 @@ export default function NavMobile({ navConfig, sx }) {
           <Stack spacing={2} sx={{ p: 2.5, pb: 5 }}>
             <NextLink href={Routes.loginIllustration} passHref>
               <Button fullWidth variant="outlined" color="inherit">
-                Junte-se a nós
+                Sou uma Empresa
               </Button>
             </NextLink>
 
             <NextLink href={Routes.registerIllustration} passHref>
               <Button fullWidth variant="contained" color="inherit">
-                Login
+                A minha conta
               </Button>
             </NextLink>
           </Stack>
