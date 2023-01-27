@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Card, Stack, Typography, Autocomplete, Chip, Select, Container } from '@mui/material';
+import { Grid, TextField, Card, Stack, Typography, Autocomplete, Chip, Select, Container, Button } from '@mui/material';
 import {  FormProvider } from 'react-hook-form';
 import { MobileDateTimePicker, TimePicker } from '@mui/lab';
 
@@ -7,6 +7,7 @@ import { MobileDateTimePicker, TimePicker } from '@mui/lab';
 import Layout from '../src/layouts';
 // components
 import { Page } from '../src/components';
+import Footer from '../src/layouts/footer/Footer';
 
 
 // ----------------------------------------------------------------------
@@ -57,16 +58,12 @@ const GENDER_OPTION = [
 export default function AppointmentPage() {
   return (
     <Page title="Novo Pedido">
-      <Container>
-        <Typography variant="h3" align="center" paragraph>
-          {`Marcação`}
-        </Typography>
-        <Typography align="center" sx={{ color: 'text.secondary', mb: 5 }}>
-          Defina a sua marcação
-        </Typography>
+      <Container style={{marginTop:'5%', marginBottom:'30px'}}>
         <MyPage />        
       </Container>
+      <Footer />
     </Page>
+    
   );
 }
 /*
@@ -97,7 +94,7 @@ function MyPage (){
     const [selectedWeekDays, setSelectedWeekDays] = useState([]);
     return(
       <>
-      <h1>Novo Pedido</h1>
+      <Typography variant='h3' style={{paddingBottom:'10px'}} > Novo Pedido </Typography>
       <FormProvider spacing={3}>
         <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
@@ -109,13 +106,13 @@ function MyPage (){
                 
                 <Grid container direction="row" gap={1}>
                     <Grid item xs={8}>
-                        <TextField name="name" label="Nome" /> 
+                        <TextField name="name" label="Nome" variant='outlined'/> 
                     </Grid>
                     <Grid item xs>
-                        <TextField name="phoneNumber" label="Contacto"  />
+                        <TextField name="phoneNumber" label="Contacto" variant='outlined' />
                     </Grid>
                 </Grid>
-                <TextField name="address" label="Morada" />
+                <TextField name="address" label="Morada" variant='outlined' />
                 <Stack spacing={3}>
                 <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
                   Serviço
@@ -128,7 +125,7 @@ function MyPage (){
                   options={TAGS_OPTION.map((option) => option)}
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
-                      <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
+                      <Chip {...getTagProps({ index })} key={option} size="small" label={option}  />
                     ))
                   }
                   renderInput={(params) => <TextField label="Serviços Pretendidos" {...params} />}
@@ -139,17 +136,18 @@ function MyPage (){
                   multiline
                   minRows={5}
                   maxRows={10}
+                  variant='outlined'
                 />
                 <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
                   Informações do Familiar
                 </Typography>
-                <TextField name="familyMember" label="Nome" />
+                <TextField name="familyMember" label="Nome" variant='outlined'/>
                 <Grid container direction="row" gap={1}>
-                    <Grid item xs={8}>
-                        <TextField name="parentesco" label="Grau de Parentesco"  /> 
+                    <Grid item >
+                        <TextField name="parentesco" label="Grau de Parentesco" variant='outlined' /> 
                     </Grid>
-                    <Grid item xs>
-                        <TextField name="contactoFamiliar" label="Contacto"  />
+                    <Grid item >
+                        <TextField name="contactoFamiliar" label="Contacto" variant='outlined' />
                     </Grid>
                 </Grid>
               </Stack>
@@ -170,7 +168,7 @@ function MyPage (){
                       //onChange={(newValue) => field.onChange(newValue)}
                       label="Início Pretendido"
                       inputFormat="dd/MM/yyyy"
-                      renderInput={(params) => <TextField {...params} fullWidth />}
+                      renderInput={(params) => <TextField {...params} fullWidth variant='outlined'/>}
                     />
                 <Select name="category" label="Recorrência">
                   {recorrencia.map((category) => (
@@ -230,7 +228,7 @@ function MyPage (){
             ))}
           </Grid> 
               </Stack>
-              
+              <Button href='/checkout'>Checkout</Button>
             </Card>
           </Stack>
         </Grid>

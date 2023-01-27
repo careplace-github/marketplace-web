@@ -21,25 +21,25 @@ const SERVICES = [
     name: 'Higiene Pessoal',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/service/ic_service_seo.svg',
     text: 'Nunc nonummy metus. Donec elit libero',
-    path: Routes.marketing.services,
+    path: Routes.eLearning.courses,
   },
   {
     name: 'Limpezas',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/service/ic_service_mail.svg',
     text: 'Nunc nonummy metus. Donec elit libero',
-    path: Routes.marketing.services,
+    path: Routes.eLearning.courses,
   },
   {
     name: 'Acompanhamento 24H',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/service/ic_service_analysis.svg',
     text: 'Nunc nonummy metus. Donec elit libero',
-    path: Routes.marketing.services,
+    path: Routes.eLearning.courses,
   },
   {
     name: 'Refeições',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/service/ic_service_bullhorn.svg',
     text: 'Nunc nonummy metus. Donec elit libero',
-    path: Routes.marketing.services,
+    path: Routes.eLearning.courses,
   },
 ];
 

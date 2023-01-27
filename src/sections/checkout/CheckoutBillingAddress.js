@@ -23,10 +23,10 @@ export default function CheckoutBillingAddress() {
       </Typography>
 
       <Stack spacing={2.5}>
-        <TextField fullWidth label="Person name" />
-        <TextField fullWidth label="Phone number" />
-        <TextField fullWidth label="Email" />
-        <TextField fullWidth label="Address" />
+        <TextField fullWidth label="Nome" variant='outlined' />
+        <TextField fullWidth label="NIF" variant='outlined'/>
+        <TextField fullWidth label="Morada" variant='outlined'/>
+        <TextField fullWidth label="Email" variant='outlined'/>
       
       </Stack>
     </RootStyle>

@@ -24,10 +24,10 @@ export default function CheckoutPage() {
     <RootStyle title="Checkout">
       <Container>
         <Typography variant="h3" align="center" paragraph>
-          {`Let's Finish Powering You Up!`}
+          {`Estamos quase a terminar!`}
         </Typography>
         <Typography align="center" sx={{ color: 'text.secondary', mb: 5 }}>
-          Professional plan is right for you.
+          Preencha os dados de faturação e valide o seu pedido
         </Typography>
         
         <Grid container spacing={2} >

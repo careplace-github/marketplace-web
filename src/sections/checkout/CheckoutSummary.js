@@ -40,16 +40,16 @@ export default function CheckoutSummary() {
         </Stack>
 
         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
-          <Typography variant="h4">$</Typography>
+          <Typography variant="h4">€</Typography>
           <Typography variant="h3">9.99</Typography>
-          <Typography variant="subtitle2">/mo</Typography>
+          <Typography variant="subtitle2">/mês</Typography>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
           <Typography variant="h6">Total</Typography>
-          <Typography variant="h6">$9.99*</Typography>
+          <Typography variant="h6">€9.99*</Typography>
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed', mb: 1 }} />
@@ -67,18 +67,17 @@ export default function CheckoutSummary() {
         * Acresce taxas em vigor
       </Typography>
 
-      <LoadingButton fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }}>
+      <LoadingButton fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }} href="/home">
        Finalizar
       </LoadingButton>
 
       <Stack alignItems="center" spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <Iconify icon={securityIcon} sx={{ width: 24, height: 24, color: 'primary.main' }} />
-          <Typography variant="subtitle2">Secure credit card payment</Typography>
+          <Typography variant="subtitle2">Cartão de Crédito Seguro</Typography>
         </Stack>
         <Typography variant="caption" sx={{ color: 'text.secondary', textAlign: 'center' }}>
-          This is a secure 128-bit SSL encrypted payment
-        </Typography>
+          Pagamento seguro com encriptação de 128-bit SSL</Typography>
       </Stack>
     </RootStyle>
   );

@@ -131,7 +131,7 @@ export default function CheckoutMethods() {
 
                 {isSelected && hasChildren && (
                   <>
-                    <TextField select fullWidth label="Card" SelectProps={{ native: true }}>
+                    <TextField select fullWidth label="Cartão" SelectProps={{ native: true }}>
                       {CARD_OPTIONS.map((option) => (
                         <option key={option.value} value={option.value}>
                           {option.label}
@@ -143,14 +143,14 @@ export default function CheckoutMethods() {
                       <Divider sx={{ my: 3, width: 1, borderStyle: 'dashed' }} />
 
                       {show ? (
-                        <Typography variant="h6">Add New Card</Typography>
+                        <Typography variant="h6">Novo Cartão</Typography>
                       ) : (
                         <Button
                           startIcon={<Iconify icon={addIcon} sx={{ width: 20, height: 20 }} />}
                           onClick={handleCollapseIn}
                           sx={{ mb: 3 }}
                         >
-                          Add New Card
+                          Adicionar Novo Cartão
                         </Button>
                       )}
                     </Stack>

@@ -6,7 +6,7 @@ import contentDeliveryNetwork from '@iconify/icons-carbon/content-delivery-netwo
 
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, Stack, Divider, Container, Grid, Chip, Avatar, TextField, Card, Autocomplete, Select, Button } from '@mui/material';
+import { Typography, Stack, Divider, Container, Grid, Chip, Avatar, TextField, Card, Autocomplete, Select, Button, Dialog, DialogActions, makeStyles } from '@mui/material';
 // routes
 import Routes from '../../../routes';
 // utils
@@ -17,6 +17,7 @@ import { getLevelIcon } from '../../../utils/getIcon';
 import {  Breadcrumbs,  TextIconLabel, Iconify } from '../../../components';
 import { MobileDateTimePicker, TimePicker } from '@mui/x-date-pickers';
 import React, { useState } from 'react';
+import Link from '../../../theme/overrides/Link';
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +48,8 @@ ElearningCourseHero.propTypes = {
     totalHours: PropTypes.number,
   }),
 };
+
+
 
 export default function ElearningCourseHero({ course }) {
   const {
@@ -85,6 +88,7 @@ export default function ElearningCourseHero({ course }) {
     {classify:['Sem Recorrência', 'Semanal', 'Quinzenal']}
   ]
   const [selectedWeekDays, setSelectedWeekDays] = useState([]);
+  const [open, setOpen] = useState(false);
 
   return (
     <RootStyle>
@@ -177,8 +181,9 @@ export default function ElearningCourseHero({ course }) {
                 {(index + 1) % 2 === 0 ? <Grid item xs={12}/> : null}
               </React.Fragment>
             ))}
-            <Button>Submeter Pedido</Button>
           </Grid> 
+          <Link to="/appointment"><Button href="/appointment">Fazer Pedido</Button></Link>
+             
               </Stack>
               
             </Card>
