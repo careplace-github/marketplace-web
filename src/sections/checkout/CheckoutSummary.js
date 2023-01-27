@@ -13,7 +13,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     height: '100%',
     padding: theme.spacing(5, 4),
-    borderLeft: `dashed 1px ${theme.palette.divider}`,
+  //  borderLeft: `dashed 1px ${theme.palette.divider}`,
   },
 }));
 
@@ -23,24 +23,20 @@ export default function CheckoutSummary() {
   return (
     <RootStyle>
       <Typography variant="h5" sx={{ mb: 5 }}>
-        Summary
+        Compra
       </Typography>
 
       <Stack spacing={2.5}>
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Subscription
+            Serviço XPTO
           </Typography>
-          <Label color="error" variant="filled">
-            PREMIUM
-          </Label>
         </Stack>
 
         <Stack direction="row" justifyContent="space-between">
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Billed Monthly
+            Texto bonito e exemplificativo de qual o alcance que isto pode ter.
           </Typography>
-          <Switch color="success" defaultChecked />
         </Stack>
 
         <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={1}>
@@ -52,7 +48,7 @@ export default function CheckoutSummary() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="h6">Total Billed</Typography>
+          <Typography variant="h6">Total</Typography>
           <Typography variant="h6">$9.99*</Typography>
         </Stack>
 
@@ -68,11 +64,11 @@ export default function CheckoutSummary() {
           color: 'text.secondary',
         }}
       >
-        * Plus applicable taxes
+        * Acresce taxas em vigor
       </Typography>
 
       <LoadingButton fullWidth size="large" variant="contained" sx={{ mt: 5, mb: 3 }}>
-        Upgrade My Plan
+       Finalizar
       </LoadingButton>
 
       <Stack alignItems="center" spacing={1}>

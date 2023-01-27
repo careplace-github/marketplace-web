@@ -3,7 +3,7 @@
 const Routes = {
   // Marketing
   marketing: {
-    landing: '/marketing',
+    landing: '/home',
     services: '/marketing/services',
     caseStudies: '/marketing/case-studies',
     caseStudy: (slug) => `/marketing/case-studies/${slug}`,
@@ -60,6 +60,7 @@ const Routes = {
   support: '/support',
   page404: '/404',
   page500: '/500',
+  profile: '/user-profile',
   // Others
   pages: '/pages',
   componentsUI: '/components-ui',

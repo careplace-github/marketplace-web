@@ -1,6 +1,16 @@
 // ----------------------------------------------------------------------
 
+
 const nextConfig = {
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/home',
+        permanent: true,
+      },
+    ];
+  },
   trailingSlash: true,
   env: {
     DEV_API: 'http://localhost:7777',
@@ -11,5 +21,6 @@ const nextConfig = {
     domains: ['flagcdn.com'],
   },
 };
+
 
 export default nextConfig;

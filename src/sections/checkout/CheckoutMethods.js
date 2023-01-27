@@ -89,11 +89,17 @@ export default function CheckoutMethods() {
     }
     setMethod(event.target.value);
   };
+  const RootStyle = styled('div')(({ theme }) => ({
+    [theme.breakpoints.up('md')]: {
+      paddingTop: theme.spacing(5),
+      paddingLeft: theme.spacing(4),
+    },
+  }));
 
   return (
     <RootStyle>
       <Typography variant="h5" sx={{ mb: 5 }}>
-        Payment Method
+        Métodos de Pagamento
       </Typography>
 
       <RadioGroup value={method} onChange={handleChangeMethod}>

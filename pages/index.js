@@ -22,7 +22,7 @@ import {
 
 export default function HomePage() {
   return (
-    <Page title="The starting point for your next project">
+    <Page title="Landing Page">
       <HomeHero />
 
       <HomeNewStart />

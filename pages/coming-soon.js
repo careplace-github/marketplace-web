@@ -7,6 +7,7 @@ import Layout from '../src/layouts';
 import useCountdown from '../src/hooks/useCountdown';
 // components
 import { Page, Image, SocialsButton } from '../src/components';
+import { Router } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -36,17 +37,17 @@ const SeparatorStyle = styled(Typography)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function ComingSoonPage() {
-  const countdown = useCountdown(new Date('07/07/2022 21:30'));
+  const countdown = useCountdown(new Date('02/01/2023 12:30'));
 
   return (
     <Page title="Coming Soon">
       <RootStyle>
-        <Stack alignItems="center" sx={{ maxWidth: 480 }}>
+        <Stack alignItems="center" sx={{ maxWidth: 280 }}>
           <Typography variant="h3" paragraph>
-            Coming Soon!
+            Estamos a chegar!
           </Typography>
           <Typography sx={{ color: 'text.secondary' }}>
-            We are currently working hard on this page!
+            Prometemos ser breves!
           </Typography>
 
           <Image
@@ -67,11 +68,11 @@ export default function ComingSoonPage() {
 
           <FilledInput
             fullWidth
-            placeholder="Enter your email"
+            placeholder="Email"
             endAdornment={
               <InputAdornment position="end">
                 <Button variant="contained" size="large">
-                  Notify
+                  Notificar
                 </Button>
               </InputAdornment>
             }
