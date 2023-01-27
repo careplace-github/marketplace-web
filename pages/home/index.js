@@ -34,7 +34,7 @@ MarketingLandingPage.propTypes = {
 
 export default function MarketingLandingPage({ posts, caseStudies }) {
   return (
-    <Page title="Landing Page">
+    <Page title="Welcome">
       <LandingPage1stSection />
 
       <TestimonialsMarketing testimonials={_testimonials} /> 

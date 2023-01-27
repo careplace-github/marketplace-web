@@ -12,15 +12,16 @@ import { IconButtonAnimate } from '../components/animate';
 
 const LANGS = [
   {
+    label: 'Portugal',
+    value: 'pt',
+    icon: 'https://zone-assets-api.vercel.app/assets/icons/flags/ic_flag_de.svg',
+  },
+  {
     label: 'English',
     value: 'en',
     icon: 'https://zone-assets-api.vercel.app/assets/icons/flags/ic_flag_en.svg',
   },
-  {
-    label: 'German',
-    value: 'de',
-    icon: 'https://zone-assets-api.vercel.app/assets/icons/flags/ic_flag_de.svg',
-  },
+  
   {
     label: 'French',
     value: 'fr',

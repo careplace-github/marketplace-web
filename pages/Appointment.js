@@ -52,16 +52,6 @@ const GENDER_OPTION = [
     'Sábado',
     "Domingo",
   ];
-
-   const methods = ''
-  const {
-    reset,
-    watch,
-    setValue,
-    getValues,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
  
 const RootStyle = styled(Page)(({ theme }) => ({
   minHeight: '100%',
@@ -73,7 +63,7 @@ const RootStyle = styled(Page)(({ theme }) => ({
 
 export default function AppointmentPage() {
   return (
-    <RootStyle title="Appointment">
+    <Page title="Novo Pedido">
       <Container>
         <Typography variant="h3" align="center" paragraph>
           {`Marcação`}
@@ -83,7 +73,7 @@ export default function AppointmentPage() {
         </Typography>
         <MyPage />        
       </Container>
-    </RootStyle>
+    </Page>
   );
 }
 /*
@@ -113,199 +103,148 @@ AppointmentPage.getLayout = function getLayout(page) {
 function MyPage (){
     const [selectedWeekDays, setSelectedWeekDays] = useState([]);
     return(
-    <FormProvider methods={''} onSubmit={/*handleSubmit(onSubmit)*/ ''}>
-    <Grid container spacing={3}>
-      <Grid item xs={12} md={8}>
-        <Card sx={{ p: 3 }}>
-        <Stack spacing={3}>
+      <>
+      <h1>Novo Pedido</h1>
+      <FormProvider spacing={3}>
+        <Grid container spacing={3}>
+        <Grid item xs={12} md={8}>
+          <Card sx={{ p: 3 }}>
+          <Stack spacing={3}>
+                <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                  Cliente
+                </Typography>
+                
+                <Grid container direction="row" gap={1}>
+                    <Grid item xs={8}>
+                        <TextField name="name" label="Nome" /> 
+                    </Grid>
+                    <Grid item xs>
+                        <TextField name="phoneNumber" label="Contacto"  />
+                    </Grid>
+                </Grid>
+                <TextField name="address" label="Morada" />
+                <Stack spacing={3}>
+                <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                  Serviço
+                </Typography>
+                <Autocomplete
+                  name="tags"
+                  multiple
+                  freeSolo
+                 // onChange={(event, newValue) => setValue('tags', newValue)}
+                  options={TAGS_OPTION.map((option) => option)}
+                  renderTags={(value, getTagProps) =>
+                    value.map((option, index) => (
+                      <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
+                    ))
+                  }
+                  renderInput={(params) => <TextField label="Serviços Pretendidos" {...params} />}
+                />
+                <TextField
+                  id="info-medicas"
+                  label="Infromações Médicas"
+                  multiline
+                  minRows={5}
+                  maxRows={10}
+                />
+                <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                  Informações do Familiar
+                </Typography>
+                <TextField name="familyMember" label="Nome" />
+                <Grid container direction="row" gap={1}>
+                    <Grid item xs={8}>
+                        <TextField name="parentesco" label="Grau de Parentesco"  /> 
+                    </Grid>
+                    <Grid item xs>
+                        <TextField name="contactoFamiliar" label="Contacto"  />
+                    </Grid>
+                </Grid>
+              </Stack>
+            </Stack>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={4}>
+          <Stack spacing={3}>
+            <Card sx={{ p: 3 }}> 
+            
               <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                Cliente
+                    Recorrência
               </Typography>
-              
-              <Grid container direction="row" gap={1}>
-                  <Grid item xs={8}>
-                      <TextField name="name" label="Nome" isdisable={true}/> 
-                  </Grid>
-                  <Grid item xs>
-                      <TextField name="phoneNumber" label="Contacto" isdisable={true} />
-                  </Grid>
-              </Grid>
-              <TextField name="address" label="Morada" isdisable={true} />
-              <Stack spacing={3}>
-              <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                Serviço
-              </Typography>
+              <Stack spacing={3} mt={2}>
+              <MobileDateTimePicker
+                      //{}
+                      
+                      //onChange={(newValue) => field.onChange(newValue)}
+                      label="Início Pretendido"
+                      inputFormat="dd/MM/yyyy"
+                      renderInput={(params) => <TextField {...params} fullWidth />}
+                    />
+                <Select name="category" label="Recorrência">
+                  {recorrencia.map((category) => (
+                    <optgroup key={category.group} label={category.group}>
+                    {category.classify.map((classify) => (
+                      <option key={classify} value={classify}>
+                        {classify}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </Select>
               <Autocomplete
-                name="tags"
+                name="week_days"
                 multiple
                 freeSolo
-                onChange={(event, newValue) => setValue('tags', newValue)}
-                options={TAGS_OPTION.map((option) => option)}
+                onChange={(event, newValue) => {
+                 // setValue('week_days', newValue);
+                  setSelectedWeekDays(newValue);
+                }}
+                options={WEEK_DAYS.map((option) => option)}
                 renderTags={(value, getTagProps) =>
                   value.map((option, index) => (
                     <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
                   ))
                 }
-                renderInput={(params) => <TextField label="Serviços Pretendidos" {...params} disabled={true}/>}
+                renderInput={(params) => <TextField label="Dias do Serviço" {...params} />}
               />
-              <TextField
-                id="info-medicas"
-                label="Infromações Médicas"
-                multiline
-                disabled={true}
-                minRows={5}
-                maxRows={10}
-              />
-              <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                Informações do Familiar
+           <Grid container direction="row" gap={1}>
+            {selectedWeekDays.map((day, index) => (
+              <React.Fragment key={day}>
+                <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
+                {`${day}`}
               </Typography>
-              <TextField name="familyMember" label="Nome" isdisable={true}/>
-              <Grid container direction="row" gap={1}>
-                  <Grid item xs={8}>
-                      <TextField name="parentesco" label="Grau de Parentesco" isdisable={true} /> 
-                  </Grid>
-                  <Grid item xs>
-                      <TextField name="contactoFamiliar" label="Contacto" isdisable={true} />
-                  </Grid>
-              </Grid>
-              
-              
-            </Stack>
-            </Stack>
-        </Card>
-      </Grid>
-      <Grid item xs={12} md={4}>
-        <Stack spacing={3}>
-          <Card sx={{ p: 3 }}> 
-          
-            <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                  Recorrência
-            </Typography>
-            
-            <Stack spacing={3} mt={2}>
-              <Controller
-                name="start"
-                //control={control}
-                render={({ field }) => (
-                  <MobileDateTimePicker
-                    {...field}
-                    disabled
-                    onChange={(newValue) => field.onChange(newValue)}
-                    label="Início Pretendido"
-                    inputFormat="dd/MM/yyyy"
-                    renderInput={(params) => <TextField {...params} fullWidth />}
-                  />
-                )}
-              />
-              <Select name="category" label="Recorrência" disabled>
-                {recorrencia.map((category) => (
-                  <optgroup key={category.group} label={category.group}>
-                  {category.classify.map((classify) => (
-                    <option key={classify} value={classify}>
-                      {classify}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </Select>
-            <Autocomplete
-              name="week_days"
-              multiple
-              freeSolo
-              onChange={(event, newValue) => {
-                setValue('week_days', newValue);
-                setSelectedWeekDays(newValue);
-              }}
-              options={WEEK_DAYS.map((option) => option)}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
-                ))
-              }
-              renderInput={(params) => <TextField label="Dias do Serviço" {...params} />}
-            />
-         <Grid container direction="row" gap={1}>
-          {selectedWeekDays.map((day, index) => (
-            <React.Fragment key={day}>
-              <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-              {`${day}`}
-            </Typography>
-              <Grid container item xs={12} direction="row" spacing={2}>
-              <Grid item xs={6}>
-                <Controller
-                  name={`start`}
-                  render={({ field }) => (
+                <Grid container item xs={12} direction="row" spacing={2}>
+                <Grid item xs={6}>
                     <TimePicker
-                      {...field}
-                      onChange={(newValue) => field.onChange(newValue)}
-                      label={`Hora de início`}
-                      inputFormat="hh:mm"
-                      renderInput={(params) => <TextField {...params} fullWidth />}
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <Controller
-                  name={`end`}
-                  render={({ field }) => (
-                    <TimePicker
-                      {...field}
-                      onChange={(newValue) => field.onChange(newValue)}
-                      label={`Hora de fim`}
-                      inputFormat="hh:mm"
-                      renderInput={(params) => <TextField {...params} fullWidth />}
-                    />
-                  )}
-                />
-              </Grid>
-              </Grid>
-              {(index + 1) % 2 === 0 ? <Grid item xs={12}/> : null}
-            </React.Fragment>
-          ))}
+                        //{...field}
+                        //onChange={(newValue) => field.onChange(newValue)}
+                        label={`Hora de início`}
+                        inputFormat="hh:mm"
+                        renderInput={(params) => <TextField {...params} fullWidth />}
+                      />
+                </Grid>
+                <Grid item xs={6}>
+                <TimePicker
+                       // {...field}
+                        //onChange={(newValue) => field.onChange(newValue)}
+                        label={`Hora de fim`}
+                        inputFormat="hh:mm"
+                        renderInput={(params) => <TextField {...params} fullWidth />}
+                      />
+                </Grid>
+                </Grid>
+                {(index + 1) % 2 === 0 ? <Grid item xs={12}/> : null}
+              </React.Fragment>
+            ))}
+          </Grid> 
+              </Stack>
+              
+            </Card>
+          </Stack>
         </Grid>
-
-
-
-            <Typography variant="subtitle2" sx={{ color: 'text.secondary' }}>
-                Próximas Ações
-              </Typography>
-
-            <Select name="category" label="Colaborador">
-              {CATEGORY_OPTION.map((category) => (
-                <optgroup key={category.group} label={category.group}>
-                  {category.classify.map((classify) => (
-                    <option key={classify} value={classify}>
-                      {classify}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </Select>
-              
-                <Stack direction="row" justifyContent="space-between" alignItems="stretch">
-                <Button variant="contained" startIcon={<Iconify icon="charm:square-cross" />} 
-                        href="/dashboard/booking" color="error" > 
-                  <Box pr={2} pl={2}>
-                  Recusar
-                  </Box>             
-                </Button>
-                <Button variant="contained" startIcon={<Iconify icon="material-symbols:check-box-outline" />} 
-                        href="/dashboard/booking" color="success" > 
-                  <Box pr={2} pl={2}>
-                  Aceitar
-                  </Box> 
-                </Button>
-               
-                </Stack>
-      
-            </Stack>
-          </Card>
-        </Stack>
       </Grid>
-    </Grid>
-  </FormProvider>
-  ) }
+      </FormProvider>
+      </>
+    ) }
 /*
 
 <Grid item xs={12} md={8}>
@@ -343,7 +282,7 @@ function MyPage (){
   <Stack spacing={3}>
               <Card sx={{ p: 3 }}>
                 <Stack spacing={3} mb={2}>
-                  <RHFTextField
+                  <TextField
                     name="priceSale"
                     label="Orçamento"
                     placeholder="0.00"
@@ -373,7 +312,7 @@ function MyPage (){
 
 
 
-<RHFTextField
+<TextField
                 name="price"
                 label="Regular Price"
                 placeholder="0.00"

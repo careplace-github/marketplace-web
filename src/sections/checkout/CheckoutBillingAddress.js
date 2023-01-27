@@ -1,6 +1,7 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Typography, TextField, Stack } from '@mui/material';
+import { Typography, TextField, Stack, Divider, Card } from '@mui/material';
+
 
 // ----------------------------------------------------------------------
 
@@ -16,14 +17,17 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function CheckoutBillingAddress() {
   return (
     <RootStyle>
+      
+      <Typography variant="h5" sx={{ mb: 5 }}>
+        Dados de Faturação
+      </Typography>
+
       <Stack spacing={2.5}>
-        <Typography variant="h5" sx={{ mb: 2.5 }}>
-          Billing Address
-        </Typography>
         <TextField fullWidth label="Person name" />
         <TextField fullWidth label="Phone number" />
         <TextField fullWidth label="Email" />
         <TextField fullWidth label="Address" />
+      
       </Stack>
     </RootStyle>
   );

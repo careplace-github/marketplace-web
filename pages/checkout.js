@@ -1,13 +1,13 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Card, Container, Typography, Box } from '@mui/material';
+import { Card, Container, Typography, Box, Grid } from '@mui/material';
 // layouts
 import Layout from '../src/layouts';
 // components
 import { Page } from '../src/components';
 // sections
 import { CheckoutSummary, CheckoutMethods, CheckoutBillingAddress } from '../src/sections/checkout';
-import CheckoutWidget from './CheckoutWidget';
+import CheckoutWidget from './checkout-2/CheckoutWidget';
 
 // ----------------------------------------------------------------------
 
@@ -29,23 +29,26 @@ export default function CheckoutPage() {
         <Typography align="center" sx={{ color: 'text.secondary', mb: 5 }}>
           Professional plan is right for you.
         </Typography>
-        <CheckoutWidget />        
+        
+        <Grid container spacing={2} >
+          <Grid item xs={8} >   
+            <CheckoutBillingAddress />
+            <CheckoutMethods />
+          </Grid>
+          <Grid item xs={4} >
+            <CheckoutSummary />
+           </Grid>
+         </Grid>
+        
+       
+        
       </Container>
     </RootStyle>
   );
 }
 /*
-<Card
-          sx={{
-            boxShadow: (theme) => ({
-              xs: 0,
-              md: theme.customShadows.z16,
-            }),
-          }}
-        > </Card>
-<CheckoutBillingAddress />
-            <CheckoutMethods />
-            <CheckoutSummary />
+<CheckoutWidget />    
+
 */
 // ----------------------------------------------------------------------
 
