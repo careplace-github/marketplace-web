@@ -15,12 +15,12 @@ CheckoutNewCardForm.propTypes = {
 export default function CheckoutNewCardForm({ onCancel }) {
   return (
     <Stack spacing={2} sx={{ py: 3 }}>
-      <TextField fullWidth size="small" label="Name on card" />
+      <TextField fullWidth size="small" label="Nome no cartão" />
 
-      <TextField fullWidth size="small" label="Card number" />
+      <TextField fullWidth size="small" label="Número do Cartão" />
 
       <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
-        <TextField size="small" label="MM/YY" />
+        <TextField size="small" label="mm/aa" />
         <TextField
           size="small"
           label="CVV"
@@ -28,7 +28,7 @@ export default function CheckoutNewCardForm({ onCancel }) {
             endAdornment: (
               <InputAdornment position="end">
                 <Tooltip
-                  title="Three-digit number on the back of your VISA card"
+                  title="Insira os 3 últimos digitos do seu cartão aqui"
                   placement="top"
                   arrow
                 >

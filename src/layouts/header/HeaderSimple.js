@@ -53,7 +53,7 @@ export default function HeaderSimple({ transparent }) {
                   ...(isScrolling && { color: 'text.primary' }),
                 }}
               >
-                _____
+                Precisa de Ajuda?
               </Link>
             </NextLink>
           </Stack>
