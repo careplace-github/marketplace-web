@@ -40,7 +40,6 @@ export default function ElearningCourseRatingFilter({ filterRating, onChangeRati
                     }),
                   }}
                 />{' '}
-                & Up
               </Stack>
             }
             sx={{

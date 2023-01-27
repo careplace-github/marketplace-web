@@ -5,7 +5,7 @@ import Select from '@mui/material/Select';
 
 // ----------------------------------------------------------------------
 
-const LEVELS = ['Beginner', 'Intermediate', 'Expert'];
+const LEVELS = ['1 - 2 Anos', '2 - 5 Anos', '+5 Anos'];
 
 const inputStyle = {
   '& .MuiFilledInput-input': { py: 2 },
@@ -23,7 +23,7 @@ const MenuProps = {
 
 const placeholder = (
   <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-    All levels
+    Qualquer
   </Typography>
 );
 

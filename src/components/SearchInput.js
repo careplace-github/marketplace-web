@@ -20,7 +20,7 @@ export default function SearchInput({ sx, ...other }) {
           <Iconify icon={searchIcon} sx={{ width: 24, height: 24, color: 'text.disabled' }} />
         </InputAdornment>
       }
-      placeholder="Search..."
+      placeholder="Pesquisar"
       sx={{
         '& .MuiFilledInput-input': { py: '18px' },
         ...sx,

@@ -86,14 +86,13 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
   const renderFilters = (
     <Stack spacing={2.5}>
       <SearchInput />
-
       <section>
-        <Typography variant="overline" sx={{ mb: 2, color: 'text.secondary', display: 'block' }}>
-          Avaliações
+        <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
+          Duração
         </Typography>
-        <ElearningCourseRatingFilter
-          filterRating={filters.filterRating}
-          onChangeRating={handleChangeRating}
+        <ElearningCourseDurationFilter
+          filterDuration={filters.filterDuration}
+          onChangeDuration={handleChangeDuration}
         />
       </section>
 
@@ -109,17 +108,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
 
       <section>
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Duração
-        </Typography>
-        <ElearningCourseDurationFilter
-          filterDuration={filters.filterDuration}
-          onChangeDuration={handleChangeDuration}
-        />
-      </section>
-
-      <section>
-        <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Categoria
+          Serviços
         </Typography>
         <ElearningCourseCategoriesFilter
           filterCategories={filters.filterCategories}
@@ -134,24 +123,6 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
         <ElearningCourseLevelFilter
           filterLevel={filters.filterLevel}
           onChangeLevel={handleChangeLevel}
-        />
-      </section>
-
-      <section>
-        <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Valor
-        </Typography>
-
-        <ElearningCourseFeeFilter filterFee={filters.filterFee} onChangeFee={handleChangeFee} />
-      </section>
-
-      <section>
-        <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
-          Lingua
-        </Typography>
-        <ElearningCourseLanguageFilter
-          filterLanguage={filters.filterLanguage}
-          onChangeLanguage={handleChangeLanguage}
         />
       </section>
     </Stack>

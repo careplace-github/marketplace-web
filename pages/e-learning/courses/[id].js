@@ -95,7 +95,7 @@ export default function ElearningCoursePage() {
   ];
 
   return (
-    <Page title={`${course.slug} - E-Learning`}>
+    <Page title={`${course.slug}`}>
       <RootStyle>
         <ElearningCourseHero course={course} />
 
@@ -114,17 +114,11 @@ export default function ElearningCoursePage() {
 
             <Grid item xs={12} md={7} lg={8}>
               <ElearningCourseDetails course={course} />
-              <Stack spacing={2} direction="row" sx={{ mt: 5 }}>
-                <Typography variant="subtitle2" sx={{ mt: 0.5 }}>
-                  Partilhar:
-                </Typography>
-                <SocialsButton initialColor simple={false} links={course.shareLinks} />
-              </Stack>
             </Grid>
 
             <Grid item xs={12} md={5} lg={4}>
               <Stack spacing={5}>
-                {isDesktop && <ElearningCourseInfo course={course} />}
+                {/*{isDesktop && <ElearningCourseInfo course={course} />}*/}
                 <section>
                   <Typography variant="h4" sx={{ mb: 3 }}>
                     Localização
@@ -132,11 +126,37 @@ export default function ElearningCoursePage() {
                   <ContactMap offices={locationMap} sx={{ borderRadius: 2 }} />
                 </section>
               </Stack>
-            </Grid>
+            </Grid> 
           </Grid>
         </Container>
+      </RootStyle>
+    </Page>
+  );
+}
 
-        <Divider
+// ----------------------------------------------------------------------
+
+ElearningCoursePage.getLayout = function getLayout(page) {
+  return <Layout>{page}</Layout>;
+};
+
+
+/*
+ <Divider sx={{ my: 5 }} />
+              <ElearningCourseTeachersInfo teachers={course.teachers} />
+
+        <NewsletterElearning />
+        <Advertisement01
+    advertisement={{
+      title: 'Advertisement',
+      description: 'Duis leo. Donec orci lectus, aliquam ut, faucibus non',
+      imageUrl: _mock.image.course(7),
+      path: '#',
+    }}
+  />
+
+
+  <Divider
           sx={{
             display: { xs: 'none', md: 'block' },
           }}
@@ -171,30 +191,5 @@ export default function ElearningCoursePage() {
           </Grid>
         </Container>
         <ElearningCourseSimilar courses={courses.slice(-3)} />
-      </RootStyle>
-    </Page>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-ElearningCoursePage.getLayout = function getLayout(page) {
-  return <Layout>{page}</Layout>;
-};
-
-
-/*
- <Divider sx={{ my: 5 }} />
-              <ElearningCourseTeachersInfo teachers={course.teachers} />
-
-        <NewsletterElearning />
-        <Advertisement01
-    advertisement={{
-      title: 'Advertisement',
-      description: 'Duis leo. Donec orci lectus, aliquam ut, faucibus non',
-      imageUrl: _mock.image.course(7),
-      path: '#',
-    }}
-  />
 
 */

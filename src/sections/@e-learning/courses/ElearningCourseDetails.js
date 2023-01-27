@@ -5,7 +5,7 @@ import checkmarkIcon from '@iconify/icons-carbon/checkmark';
 import { alpha } from '@mui/material/styles';
 import { Stack, Typography, Chip, Box } from '@mui/material';
 // components
-import { Iconify } from '../../../components';
+import { ContactMap, Iconify } from '../../../components';
 //
 import ElearningCourseDetailsLessons from './ElearningCourseDetailsLessons';
 
@@ -22,13 +22,14 @@ ElearningCourseDetails.propTypes = {
 export default function ElearningCourseDetails({ course }) {
   const { lessons, skills, learnList } = course;
 //  <ElearningCourseDetailsLessons lessons={lessons} />
+
   return (
     <Stack spacing={5}>
-     
+      
       {/* --  Learn -- */}
       <section>
         <Typography variant="h4" sx={{ mb: 3 }}>
-          Serviços Praticados Pelo Cuidador
+          Serviços Praticados Pela Empresa
         </Typography>
 
         <Stack spacing={1}>
@@ -57,7 +58,7 @@ export default function ElearningCourseDetails({ course }) {
         </Stack>
       </section>
 
-      {/* -- Skills -- */}
+      {/* -- Skills -- 
       <section>
         <Typography variant="h4" sx={{ mb: 3 }}>
           Aptidões
@@ -67,19 +68,19 @@ export default function ElearningCourseDetails({ course }) {
             <Chip key={skill} label={skill} sx={{ m: 0.5 }} onClick={() => {}} />
           ))}
         </Stack>
-      </section>
+      </section>*/}
 
-      {/* -- Overview -- */}
+      {/* -- Overview -- 
       <section>
         <Typography variant="h4" sx={{ mb: 2 }}>
-          Conheça o Cuidador
+          Conheça a Empresa
         </Typography>
         <Typography>
           Consentaneum aeternitate dignitati commoventur primisque cupit mea officia peccata parens
           egone dolorem minuis. Secundae neglegi sextilius conantur commodaita siti philosophi ioca
           tenere lorem apparet assentior pudoris sint leves neglegebat unde reliquisti simile.{' '}
         </Typography>
-      </section>
+      </section>*/}
     </Stack>
   );
 }
