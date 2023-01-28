@@ -165,93 +165,55 @@ export default function UserProfilePage() {
   return (
     <Page title="UserProfilePage">
       <RootStyle>
-        <Stack alignItems="center" sx={{ maxWidth: 480 }}>
+
         <FormProvider //</Stack>methods={} onSubmit={handleSubmit(onSubmit)}>
         >
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={4}>
-          <Card sx={{ pt: 10, pb: 5, px: 3 }}>
-            {/*isEdit*/}
-
-            <Box sx={{ mb: 5 }}>
-              <Avatar
-                name="profilePicture"
-                maxSize={3145728}
-               // onDrop={/*handleDrop*/}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 2,
-                      mx: 'auto',
-                      display: 'block',
-                      textAlign: 'center',
-                      color: 'text.secondary',
-                    }}
-                  >
-                    Permitido *.jpeg, *.jpg, *.png, *.gif
-                    <br /> tamanho máximo de ____
-                  </Typography>
-                }
-              />
-            </Box>
-          </Card>
-        </Grid>
-
-        <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: 'repeat(1, 1fr)',
-                sm: 'repeat(2, 1fr)',
-              }}
-            >
-              <TextField name="name" label="Nome" />
-              <Select name="gender" label="Género" placeholder="Gender">
-                <option value="" />
-                {/*gendersList.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))*/}
-              </Select>
-
-              <TextField name="email" label="Email" />
-
-              <TextField name="phoneNumber" label="Telefone" />
-
-              <TextField name="address" label="Morada" />
-              <TextField name="postalCode" label="Código Postal" />
-
-              <TextField name="city" label="Cidade" />
-
-              <Autocomplete
-                name="tags"
-                multiple
-                freeSolo
-                //onChange={(event, newValue) => setValue('tags', newValue)}
-                //options={TAGS_OPTION.map((option) => option)}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip {...getTagProps({ index })} key={option} size="small" label={option} />
-                  ))
-                }
-                renderInput={(params) => <TextField label="Serviços" {...params} />}
-              />
-            </Box>
-
-            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
-            <Button variant="contained" color="primary">Guardar</Button>
-
-            </Stack>
-          </Card>
-        </Grid>
-      </Grid>
+          
+          <Grid container spacing={2} columnSpacing={2} >
+          <Grid item xs={6} md={6} lg={6} >
+            <TextField
+              fullWidth
+              label="Nome"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={6} md={6} lg={6}>
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={6} md={6} lg={5}>
+            <TextField
+              fullWidth
+              label="Morada"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={3} md={6} lg={3}>
+            <TextField
+              fullWidth
+              label="Código Postal"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={3} md={6} lg={3}>
+            <TextField
+              fullWidth
+              label="Localidade"
+              variant="outlined"
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button variant="contained" color="primary">
+              Guardar
+            </Button>
+          </Grid>
+        </Grid> 
+    
     </FormProvider>
-        </Stack>
+   
       </RootStyle>
     </Page>
   );
@@ -261,8 +223,33 @@ export default function UserProfilePage() {
 
 UserProfilePage.getLayout = function getLayout(page) {
   return (
-    <Layout simpleHeader disabledFooter>
+    <Layout disabledFooter>
       {page}
     </Layout>
   );
 };
+/**
+ * 
+<Grid container  > 
+              <TextField name="name" label="Nome" variant='outlined'fullWidth='true'/>
+
+              <TextField name="email" label="Email" variant='outlined' fullWidth='true'/>
+
+              <TextField name="phoneNumber" label="Telefone" variant='outlined' fullWidth='true'/>
+              <Grid container spacing={3} > 
+                <Grid item sx="6px" >
+                  <TextField name="address" label="Morada" variant='outlined' fullWidth='true'/>
+
+                  <TextField name="postalCode" label="Código Postal" variant='outlined' fullWidth='true'/>
+
+                  <TextField name="city" label="Cidade" variant='outlined' fullWidth='true'/>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Stack alignItems="flex-end" sx={{ mt: 3 }}>
+            <Button variant="contained" color="primary">Guardar</Button>
+            </Stack> 
+
+
+ */
