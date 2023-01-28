@@ -182,7 +182,7 @@ export default function ElearningCourseHero({ course }) {
               </React.Fragment>
             ))}
           </Grid> 
-          <Link to="/appointment"><Button href="/appointment">Fazer Pedido</Button></Link>
+          <Button href="/appointment">Fazer Pedido</Button>
              
               </Stack>
               

@@ -106,10 +106,10 @@ function MyPage (){
                 
                 <Grid container direction="row" gap={1}>
                     <Grid item xs={8}>
-                        <TextField name="name" label="Nome" variant='outlined'/> 
+                        <TextField name="name" label="Nome" variant='outlined' fullWidth='true'/> 
                     </Grid>
-                    <Grid item xs>
-                        <TextField name="phoneNumber" label="Contacto" variant='outlined' />
+                    <Grid item xs={3.5}>
+                        <TextField name="phoneNumber" label="Contacto" variant='outlined' fullWidth='true' />
                     </Grid>
                 </Grid>
                 <TextField name="address" label="Morada" variant='outlined' />
@@ -132,7 +132,7 @@ function MyPage (){
                 />
                 <TextField
                   id="info-medicas"
-                  label="Infromações Médicas"
+                  label="Infromações Médicas a Considerar"
                   multiline
                   minRows={5}
                   maxRows={10}
@@ -143,11 +143,11 @@ function MyPage (){
                 </Typography>
                 <TextField name="familyMember" label="Nome" variant='outlined'/>
                 <Grid container direction="row" gap={1}>
-                    <Grid item >
-                        <TextField name="parentesco" label="Grau de Parentesco" variant='outlined' /> 
+                    <Grid item xs={8}>
+                        <TextField name="parentesco" label="Grau de Parentesco" variant='outlined' fullWidth='true'/> 
                     </Grid>
-                    <Grid item >
-                        <TextField name="contactoFamiliar" label="Contacto" variant='outlined' />
+                    <Grid item xs={3.5} >
+                        <TextField name="contactoFamiliar" label="Contacto" variant='outlined' fullWidth='true'/>
                     </Grid>
                 </Grid>
               </Stack>
