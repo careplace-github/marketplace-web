@@ -98,13 +98,13 @@ export default function NavMobile({ navConfig, sx }) {
           </List>
 
           <Stack spacing={2} sx={{ p: 2.5, pb: 5 }}>
-            <NextLink href={Routes.loginIllustration} passHref>
+            <NextLink href="https://crm.careplace.pt" passHref>
               <Button fullWidth variant="outlined" color="inherit">
                 Sou uma Empresa
               </Button>
             </NextLink>
 
-            <NextLink href={Routes.registerIllustration} passHref>
+            <NextLink href={Routes.loginIllustration} passHref>
               <Button fullWidth variant="contained" color="inherit">
                 A minha conta
               </Button>

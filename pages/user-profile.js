@@ -2,7 +2,7 @@
 import NextLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Button, Typography, Stack, TextField, Autocomplete, Select, Box, Card, Grid, Avatar, Chip } from '@mui/material';
+import { Button, Typography, Stack, TextField, Autocomplete, Select, Box, Card, Grid, Avatar, Chip, Container, Divider } from '@mui/material';
 // layouts
 import Layout from '../src/layouts';
 // components
@@ -165,10 +165,11 @@ export default function UserProfilePage() {
   return (
     <Page title="UserProfilePage">
       <RootStyle>
-
+      <Container>
         <FormProvider //</Stack>methods={} onSubmit={handleSubmit(onSubmit)}>
         >
-          
+          <Card sx={{ padding:'30px' }} alignItems="flex-start">
+          <Typography variant='h3' style={{marginBottom: '25px'}}> Perfil </Typography>
           <Grid container spacing={2} columnSpacing={2} >
           <Grid item xs={6} md={6} lg={6} >
             <TextField
@@ -184,7 +185,7 @@ export default function UserProfilePage() {
               variant="outlined"
             />
           </Grid>
-          <Grid item xs={6} md={6} lg={5}>
+          <Grid item xs={6} md={6} lg={6}>
             <TextField
               fullWidth
               label="Morada"
@@ -205,15 +206,27 @@ export default function UserProfilePage() {
               variant="outlined"
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6} lg={12}>
+            <Typography variant='h5'> Informação Adicional </Typography>
+          </Grid>
+          <Grid item xs={12} md={6} lg={12}>
+            <TextField
+              fullWidth
+              label=""
+              variant="outlined"
+              multiline
+              maxRows={10}
+            />
+          </Grid>
+          <Grid item xs={12} alignItems="flex-start">
             <Button variant="contained" color="primary">
               Guardar
             </Button>
           </Grid>
         </Grid> 
-    
+        </Card>
     </FormProvider>
-   
+   </Container>
       </RootStyle>
     </Page>
   );
