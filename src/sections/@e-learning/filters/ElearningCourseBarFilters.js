@@ -12,6 +12,7 @@ import ElearningCourseRatingFilter from './ElearningCourseRatingFilter';
 import ElearningCourseLanguageFilter from './ElearningCourseLanguageFilter';
 import ElearningCourseDurationFilter from './ElearningCourseDurationFilter';
 import ElearningCourseCategoriesFilter from './ElearningCourseCategoriesFilter';
+import ElearningCourseFrequencyFilter from './ElearningCourseFrequencyFilter';
 
 // ----------------------------------------------------------------------
 
@@ -100,7 +101,7 @@ export default function ElearningCourseBarFilters({ mobileOpen, onMobileClose })
         <Typography variant="overline" sx={{ mb: 1.5, color: 'text.secondary', display: 'block' }}>
           Frequência
         </Typography>
-        <ElearningCourseDurationFilter
+        <ElearningCourseFrequencyFilter
           filterDuration={filters.filterDuration}
           onChangeDuration={handleChangeDuration}
         />

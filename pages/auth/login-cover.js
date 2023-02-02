@@ -49,10 +49,10 @@ export default function LoginCoverPage() {
               Login
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              Don’t have an account?
+              Não tem uma conta?
               <NextLink href={Routes.registerCover} passHref>
                 <Link variant="subtitle2" color="primary">
-                  {''} Get started
+                  {''} Registar
                 </Link>
               </NextLink>
             </Typography>
@@ -62,14 +62,14 @@ export default function LoginCoverPage() {
 
           <Divider sx={{ py: 3 }}>
             <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-              OR
+              OU
             </Typography>
           </Divider>
 
           <LoginForm />
         </ContentStyle>
 
-        <AuthCarousel title="Hi, Welcome Back" />
+        <AuthCarousel title="Olá, Bem vindo de volta!" />
       </RootStyle>
     </Page>
   );

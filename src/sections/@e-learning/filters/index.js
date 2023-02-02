@@ -5,4 +5,5 @@ export { default as ElearningCourseLevelFilter } from './ElearningCourseLevelFil
 export { default as ElearningCourseRatingFilter } from './ElearningCourseRatingFilter';
 export { default as ElearningCourseLanguageFilter } from './ElearningCourseLanguageFilter';
 export { default as ElearningCourseDurationFilter } from './ElearningCourseDurationFilter';
+export { default as ElearningCourseFrequencyFilter } from './ElearningCourseFrequencyFilter';
 export { default as ElearningCourseCategoriesFilter } from './ElearningCourseCategoriesFilter';

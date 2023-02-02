@@ -31,7 +31,7 @@ export default function RegisterIllustrationPage() {
             <Grid item xs={12} md={7} sx={{ display: { xs: 'none', md: 'block' } }}>
               <Image
                 alt="register"
-                src="https://zone-assets-api.vercel.app/assets/illustrations/illustration_login.svg"
+                src="https://img.freepik.com/free-vector/two-factor-authentication-concept-illustration_114360-5488.jpg?w=996&t=st=1675298674~exp=1675299274~hmac=728c33fd1a327d729815850f697ed35a95e9c5d27240bba4b3cb04b8f66d2ea8"
               />
             </Grid>
 
@@ -47,10 +47,10 @@ export default function RegisterIllustrationPage() {
               >
                 <div>
                   <Typography variant="h3" paragraph>
-                    Get Started
+                    Vamos começar
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Already have an account?
+                    Já está registado?
                     <NextLink href={Routes.loginIllustration} passHref>
                       <Link variant="subtitle2" color="primary">
                         {''} Login
@@ -60,14 +60,6 @@ export default function RegisterIllustrationPage() {
                 </div>
 
                 <RegisterForm />
-
-                <Divider sx={{ '& .MuiDivider-wrapper': { flexShrink: 0 } }}>
-                  <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                    or continue with
-                  </Typography>
-                </Divider>
-
-                <AuthWithSocial />
               </Stack>
             </Grid>
           </Grid>
@@ -76,6 +68,16 @@ export default function RegisterIllustrationPage() {
     </Page>
   );
 }
+
+/*
+<Divider sx={{ '& .MuiDivider-wrapper': { flexShrink: 0 } }}>
+                  <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+                    or continue with
+                  </Typography>
+                </Divider>
+
+                <AuthWithSocial />
+*/
 
 // ----------------------------------------------------------------------
 

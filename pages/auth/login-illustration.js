@@ -28,14 +28,14 @@ export default function LoginIllustrationPage() {
       <RootStyle>
         <Container>
           <Grid container spacing={5} justifyContent="space-between">
-            <Grid item xs={12} md={7} sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
               <Image
                 alt="login"
-                src="https://zone-assets-api.vercel.app/assets/illustrations/illustration_login.svg"
+                src="https://img.freepik.com/free-vector/two-factor-authentication-concept-illustration_114360-5488.jpg?w=996&t=st=1675298674~exp=1675299274~hmac=728c33fd1a327d729815850f697ed35a95e9c5d27240bba4b3cb04b8f66d2ea8"
               />
             </Grid>
 
-            <Grid item xs={12} md={5} lg={4}>
+            <Grid item xs={12} md={6} lg={4}>
               <Stack
                 spacing={4}
                 sx={{
@@ -50,24 +50,15 @@ export default function LoginIllustrationPage() {
                     Login
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    Don’t have an account?
+                    Não tem conta?
                     <NextLink href={Routes.registerIllustration} passHref>
                       <Link variant="subtitle2" color="primary">
-                        {''} Get started
+                        {''} Aderir
                       </Link>
                     </NextLink>
                   </Typography>
                 </div>
-
                 <LoginForm />
-
-                <Divider sx={{ '& .MuiDivider-wrapper': { flexShrink: 0 } }}>
-                  <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                    or continue with
-                  </Typography>
-                </Divider>
-
-                <AuthWithSocial />
               </Stack>
             </Grid>
           </Grid>
@@ -76,7 +67,15 @@ export default function LoginIllustrationPage() {
     </Page>
   );
 }
+/*
+<Divider sx={{ '& .MuiDivider-wrapper': { flexShrink: 0 } }}>
+                  <Typography variant="body2" sx={{ color: 'text.disabled' }}>
+                    or continue with
+                  </Typography>
+                </Divider>
 
+                <AuthWithSocial />
+*/
 // ----------------------------------------------------------------------
 
 LoginIllustrationPage.getLayout = function getLayout(page) {
