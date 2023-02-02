@@ -92,7 +92,7 @@ export default function CheckoutMethods() {
   const RootStyle = styled('div')(({ theme }) => ({
     [theme.breakpoints.up('md')]: {
       paddingTop: theme.spacing(5),
-      paddingLeft: theme.spacing(4),
+    //  paddingLeft: theme.spacing(4),
     },
   }));
 

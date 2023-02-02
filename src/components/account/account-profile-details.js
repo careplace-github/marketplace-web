@@ -164,7 +164,6 @@ export const AccountProfileDetails = (props) => {
             </Grid>
           </Grid>
         </CardContent>
-        <Divider />
         <Box
           sx={{
             display: 'flex',
@@ -176,7 +175,7 @@ export const AccountProfileDetails = (props) => {
             color="primary"
             variant="contained"
           >
-            Save details
+            Guardar
           </Button>
         </Box>
       </Card>
