@@ -106,6 +106,11 @@ export default function NavMobile({ navConfig, sx }) {
 
             <NextLink href={Routes.loginIllustration} passHref>
               <Button fullWidth variant="contained" color="inherit">
+                Entrar
+              </Button>
+            </NextLink>
+            <NextLink href="/account" passHref>
+              <Button fullWidth variant="contained" color="inherit">
                 A minha conta
               </Button>
             </NextLink>

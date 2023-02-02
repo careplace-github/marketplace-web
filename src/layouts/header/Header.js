@@ -6,15 +6,11 @@ import { useTheme } from '@mui/material/styles';
 import { Box, Stack, Button, AppBar, Divider, Container, Link } from '@mui/material';
 // hooks
 import { useOffSetTop, useResponsive } from '../../hooks';
-// routes
-import Routes from '../../routes';
 // config
 import { HEADER_DESKTOP_HEIGHT } from '../../config';
 // components
 import { Logo, Label } from '../../components';
-//
-import Searchbar from '../Searchbar';
-import LanguagePopover from '../LanguagePopover';
+
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import { ToolbarStyle, ToolbarShadowStyle } from './HeaderToolbarStyle';
 
@@ -28,6 +24,7 @@ export default function Header({ transparent }) {
   const theme = useTheme();
 
   const isDesktop = useResponsive('up', 'md');
+  const hasAuth = false
 
   const isLight = theme.palette.mode === 'light';
 
@@ -76,7 +73,7 @@ export default function Header({ transparent }) {
 
            
 
-            {isDesktop && (
+            {isDesktop && !hasAuth && (
               <Stack direction="row" spacing={1}>
                 { 
                  <NextLink href={'localhost:3031'} prefetch={false} passHref>
@@ -96,11 +93,22 @@ export default function Header({ transparent }) {
                  }
 
                 <Button variant="contained" href={'localhost:3031'} target="_blank" rel="noopener">
+                  Entrar
+                </Button>
+              </Stack>
+            )}
+          </Stack>
+          <Stack spacing={2} direction="row" alignItems="center">
+            {isDesktop && hasAuth && (
+              <Stack direction="row" spacing={1}>
+                <Button variant="contained" href={'localhost:3031'} target="_blank" rel="noopener">
                   A minha conta
                 </Button>
               </Stack>
             )}
           </Stack>
+
+          
 
           {!isDesktop && (
             <NavMobile
