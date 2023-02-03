@@ -1,8 +1,6 @@
 // scroll bar
 import 'simplebar/src/simplebar.css';
 
-// lightbox
-import 'react-image-lightbox/style.css';
 
 // slick-carousel
 import 'slick-carousel/slick/slick.css';
@@ -34,6 +32,8 @@ import ProgressBar from '../src/components/ProgressBar';
 import ThemeColorPresets from '../src/components/ThemeColorPresets';
 import MotionLazyContainer from '../src/components/animate/MotionLazyContainer';
 
+import { AuthProvider } from '../src/auth/JwtContext';
+
 // ----------------------------------------------------------------------
 
 MyApp.propTypes = {
@@ -54,21 +54,23 @@ export default function MyApp(props) {
         <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <SettingsProvider>
-          <ThemeProvider>
-            <ThemeColorPresets>
-              <MotionLazyContainer>
-                <RtlLayout>
-                  <Settings />
-                  <ProgressBar />
-                  {getLayout(<Component {...pageProps} />)}
-                </RtlLayout>
-              </MotionLazyContainer>
-            </ThemeColorPresets>
-          </ThemeProvider>
-        </SettingsProvider>
-      </LocalizationProvider>
+      <AuthProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <SettingsProvider>
+            <ThemeProvider>
+              <ThemeColorPresets>
+                <MotionLazyContainer>
+                  <RtlLayout>
+                    <Settings />
+                    <ProgressBar />
+                    {getLayout(<Component {...pageProps} />)}
+                  </RtlLayout>
+                </MotionLazyContainer>
+              </ThemeColorPresets>
+            </ThemeProvider>
+          </SettingsProvider>
+        </LocalizationProvider>
+      </AuthProvider>
     </>
   );
 }

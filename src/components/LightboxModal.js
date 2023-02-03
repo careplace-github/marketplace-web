@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+/*import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import Lightbox from 'react-image-lightbox';
 // @mui
@@ -148,4 +148,4 @@ export default function LightboxModal({ images, photoIndex, setPhotoIndex, isOpe
       )}
     </>
   );
-}
+}*/

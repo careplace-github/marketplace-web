@@ -47,8 +47,8 @@ const Routes = {
   // Common
   loginCover: '/auth/login-cover',
   registerCover: '/auth/register-cover',
-  loginIllustration: '/auth/login-illustration',
-  registerIllustration: '/auth/register-illustration',
+  loginIllustration: '/auth/login',
+  registerIllustration: '/auth/register',
   resetPassword: '/auth/reset-password',
   verifyCode: '/auth/verify-code',
   maintenance: '/maintenance',
