@@ -11,6 +11,8 @@ import { Typography, Stack, Link, TextField, IconButton, InputAdornment } from '
 // components
 import { Iconify } from '../../components';
 import { useAuthContext } from '../../auth/useAuthContext';
+import Router from 'next/router';
+
 
 // ----------------------------------------------------------------------
 
@@ -61,9 +63,14 @@ export default function RegisterForm() {
       if (register) {
         await register(data.email, data.password, data.firstName, data.lastName);
       }
-      await new Promise((resolve) => setTimeout(resolve, 500));
-    alert(JSON.stringify(data, null, 2));
-    reset();
+     // await new Promise((resolve) => setTimeout(resolve, 500));
+    
+     Router.push({ pathname: '/home' });
+
+    alert(JSON.stringify(data, null, 2  ));
+
+    
+    
 
     } catch (error) {
       console.error(error);
@@ -176,17 +183,17 @@ export default function RegisterForm() {
           variant="contained"
           loading={isSubmitting}
         >
-          Register
+          Registar
         </LoadingButton>
 
         <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-          I agree to
+          Concordo com os
           <Link color="text.primary" href="#">
-            {''} Terms of Service {''}
+            {''} Termos e Condições {''}
           </Link>
-          and
+          e a
           <Link color="text.primary" href="#">
-            {''} Privacy Policy.
+            {''} Política de privacidade
           </Link>
         </Typography>
       </Stack>
