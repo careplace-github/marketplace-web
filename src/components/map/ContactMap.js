@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import GoogleMapReact from 'google-map-react';
 // @mui
 import { Box } from '@mui/material';
 // config
@@ -36,7 +35,10 @@ export default function ContactMap({ offices, sx, ...other }) {
 
   return (
     <Box sx={{ height: 480, overflow: 'hidden', ...sx }} {...other}>
-      <GoogleMapReact
+      <h1>isto devia ser um mapa</h1>
+    {/*
+    
+    <GoogleMapReact
         bootstrapURLKeys={{ key: GOOGLE_API }}
         center={centerMap}
         zoom={2}
@@ -63,6 +65,7 @@ export default function ContactMap({ offices, sx, ...other }) {
           />
         )}
       </GoogleMapReact>
+      */}
     </Box>
   );
 }

@@ -76,7 +76,7 @@ export default function Header({ transparent }) {
             {isDesktop && !hasAuth && (
               <Stack direction="row" spacing={1}>
                 { 
-                 <NextLink href={'localhost:3031'} prefetch={false} passHref>
+                 <NextLink href={'/auth/register/'} prefetch={false} passHref>
                    <Button
                     color="inherit"
                     variant="outlined"
@@ -87,12 +87,12 @@ export default function Header({ transparent }) {
                       ...(isScrolling && isLight && { color: 'text.primary' }),
                     }}
                   >
-                    Sou uma empresa
+                    Registar
                   </Button>
                 </NextLink>
                  }
 
-                <Button variant="contained" href={'localhost:3031'} target="_blank" rel="noopener">
+                <Button variant="contained" href={'/auth/login/'} target="_blank" rel="noopener">
                   Entrar
                 </Button>
               </Stack>

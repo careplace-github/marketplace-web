@@ -24,7 +24,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 export default function LoginIllustrationPage() {
   return (
-    <Page title="Login Illustration">
+    <Page title="Login">
       <RootStyle>
         <Container>
           <Grid container spacing={5} justifyContent="space-between">

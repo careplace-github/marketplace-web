@@ -22,7 +22,7 @@ export const COMPONENTS_DIRECTORY = '_data/components';
 // ----------------------------------------------------------------------
 // Also change in next.config.mjs
 
-export const defaultLocale = 'en';
+export const defaultLocale = 'pt';
 
 // SETTINGS
 // ----------------------------------------------------------------------

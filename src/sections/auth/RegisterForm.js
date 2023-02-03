@@ -10,29 +10,34 @@ import { LoadingButton } from '@mui/lab';
 import { Typography, Stack, Link, TextField, IconButton, InputAdornment } from '@mui/material';
 // components
 import { Iconify } from '../../components';
+import { useAuthContext } from '../../auth/useAuthContext';
 
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
   fullName: Yup.string()
-    .required('Full name is required')
-    .min(6, 'Mininum 6 characters')
-    .max(15, 'Maximum 15 characters'),
-  email: Yup.string().required('Email is required').email('That is not an email'),
+    .required('Nome é obrigatório')
+    .min(6, 'Minímo de 6 caracteres')
+    .max(20, 'Máximo de 20 caracteres'),
+  email: Yup.string().required('Email é obrigatório').email('Insira um email válido'),
+  phoneNumber: Yup.string().required('Número de Telemóvel é obrigatório'),
   password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Password should be of minimum 6 characters length'),
+    .required('Insira uma Password')
+    .min(6, 'Password incorreta'),
   confirmPassword: Yup.string()
-    .required('Confirm password is required')
-    .oneOf([Yup.ref('password')], "Password's not match"),
+    .required('Confirme a sua password')
+    .oneOf([Yup.ref('password')], "Password não corresponde"),
 });
 
 export default function RegisterForm() {
+  const { register } = useAuthContext();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     reset,
     control,
+    setError,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm({
@@ -41,6 +46,7 @@ export default function RegisterForm() {
     defaultValues: {
       fullName: '',
       email: '',
+      phoneNumber:'',
       password: '',
       confirmPassword: '',
     },
@@ -51,10 +57,26 @@ export default function RegisterForm() {
   };
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
+    try {
+      if (register) {
+        await register(data.email, data.password, data.firstName, data.lastName);
+      }
+      await new Promise((resolve) => setTimeout(resolve, 500));
     alert(JSON.stringify(data, null, 2));
     reset();
+
+    } catch (error) {
+      console.error(error);
+
+      reset();
+
+      setError('afterSubmit', {
+        ...error,
+        message: error.message,
+      });
+    }
   };
+    
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +87,7 @@ export default function RegisterForm() {
           render={({ field, fieldState: { error } }) => (
             <TextField
               {...field}
-              label="Full Name"
+              label="Nome Completo"
               error={Boolean(error)}
               helperText={error?.message}
             />
@@ -79,7 +101,21 @@ export default function RegisterForm() {
             <TextField
               {...field}
               fullWidth
-              label="Email address"
+              label="Email"
+              error={Boolean(error)}
+              helperText={error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          name="phoneNumber"
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <TextField
+              {...field}
+              fullWidth
+              label="Telemóvel"
               error={Boolean(error)}
               helperText={error?.message}
             />
