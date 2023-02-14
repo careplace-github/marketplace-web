@@ -1,6 +1,5 @@
 // ----------------------------------------------------------------------
 
-
 const nextConfig = {
   async redirects() {
     return [
@@ -26,6 +25,5 @@ const nextConfig = {
     domains: ['flagcdn.com'],
   },
 };
-
 
 export default nextConfig;
