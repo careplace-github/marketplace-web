@@ -3,7 +3,7 @@ import { createContext, useEffect, useReducer, useCallback } from 'react';
 // utils
 import axios from '../utils/axios';
 //
-import { isValidToken, setSession } from './utils';
+import { isValidToken, setSession, setItem } from './utils';
 
 // ----------------------------------------------------------------------
 
@@ -79,18 +79,15 @@ export function AuthProvider({ children }) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const response = await axios.get('/users/account');
-
+        const response = await axios.get('/api/v1/users/account');
         const user = response.data;
-        const company = user.company;
+       
 
         dispatch({
           type: 'INITIAL',
           payload: {
             isAuthenticated: true,
-            user,
-            company,
-            
+            user,            
           },
         });
       } else {
@@ -124,16 +121,23 @@ export function AuthProvider({ children }) {
 
   // LOGIN
   const login = async (email, password) => {
-    const response = await axios.post('/auth/crm/login', {
+    const response = await axios.post('/api/v1/auth/marketplace/login', {
       email,
       password,
     });
-    const { accessToken, user } = response.data;
+    const { accessToken } = response.data;
 
     setSession(accessToken);
+    let user = await axios.get('/api/v1/users/account');
+    user = user.data;
+    user = JSON.stringify(user) 
+    console.log("Tenho este user depois de autenticar: " + user)
+    setItem("user", user);
 
-    const services = await axios.get('/services').data;
-
+    let services = await axios.get('/api/v1/services');
+    services = services.data 
+    services = JSON.stringify(services) 
+    setItem("services",services);
     dispatch({
       type: 'LOGIN',
       payload: {
@@ -145,7 +149,7 @@ export function AuthProvider({ children }) {
 
   // REGISTER
   const register = async (email, password, phoneNumber, firstName, lastName) => {
-    const response = await axios.post('/auth/register', {
+    const response = await axios.post('api/v1/auth/marketplace/signup', {
       email,
       password,
       phoneNumber,
@@ -167,6 +171,7 @@ export function AuthProvider({ children }) {
   // LOGOUT
   const logout = async () => {
     setSession(null);
+    const response = await axios.post('api/v1/auth/logout');
     dispatch({
       type: 'LOGOUT',
     });

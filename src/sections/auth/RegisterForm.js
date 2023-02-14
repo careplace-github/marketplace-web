@@ -12,6 +12,7 @@ import { Typography, Stack, Link, TextField, IconButton, InputAdornment } from '
 import { Iconify } from '../../components';
 import { useAuthContext } from '../../auth/useAuthContext';
 import Router from 'next/router';
+import axios from '../../utils/axios';
 
 
 // ----------------------------------------------------------------------
@@ -63,14 +64,15 @@ export default function RegisterForm() {
       if (register) {
         await register(data.email, data.password, data.firstName, data.lastName);
       }
-     // await new Promise((resolve) => setTimeout(resolve, 500));
-    
-     Router.push({ pathname: '/home' });
-
-    alert(JSON.stringify(data, null, 2  ));
-
-    
-    
+      let emailToSend = {email: data.email}
+      await axios.post('/api/v1/auth/marketplace/verify/confirmation-code', emailToSend)
+      .then(response => {
+        alert(JSON.stringify(response.data, null, 2));
+      })
+     // await new Promise((resolve) => setTimeout(resolve, 50));  
+     Router.push({ pathname: '/auth/verify-code/', query: { 
+      email: data.email,
+    } });
 
     } catch (error) {
       console.error(error);

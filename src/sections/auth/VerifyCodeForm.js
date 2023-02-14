@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Stack, FilledInput, FormHelperText } from '@mui/material';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +12,7 @@ const FormSchema = Yup.object().shape({
   code: Yup.array().of(Yup.string().required()),
 });
 
-export default function VerifyCodeForm() {
+export default function VerifyCodeForm({ email }) {
   const {
     reset,
     control,
@@ -25,8 +26,21 @@ export default function VerifyCodeForm() {
   });
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    alert(JSON.stringify(data.code.join(''), null, 2));
+   
+    let dataToSend = {
+      email: {email},
+      code: data.code.join('')
+    }
+    await axios.post('/api/v1/auth/marketplace/verify/confirmation-code', dataToSend)
+  .then(response => {
+    //await new Promise((resolve) => setTimeout(resolve, 500));
+    alert(JSON.stringify(dataToSend.code, null, 2));
+  })
+  .catch(error => {
+    //await new Promise((resolve) => setTimeout(resolve, 500));
+    alert(JSON.stringify(dataToSend.code, null, 2));
+  });
+    
     reset();
   };
 
@@ -61,7 +75,7 @@ export default function VerifyCodeForm() {
 
         {Boolean(errors.code) && (
           <FormHelperText sx={{ px: 2 }} error>
-            Code is required
+            Insira o código
           </FormHelperText>
         )}
 
@@ -72,7 +86,7 @@ export default function VerifyCodeForm() {
           variant="contained"
           loading={isSubmitting}
         >
-          Verify
+          Verificar
         </LoadingButton>
       </Stack>
     </form>

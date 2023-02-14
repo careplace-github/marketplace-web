@@ -1,12 +1,16 @@
 import Head from 'next/head';
-import { Box, Container, Grid, Typography } from '@mui/material';
-import { AccountProfile } from '../src/components/account/account-profile';
-import { AccountProfileDetails } from '../src/components/account/account-profile-details';
+import { Box, Button, Container, Grid, Typography } from '@mui/material';
+import AccountProfile from '../src/components/account';
+import { AccountProfileDetails, Relatives } from '../src/components/account';
 import Layout from '../src/layouts';
 import { CheckoutBillingAddress, CheckoutMethods } from '../src/sections/checkout';
 
+import{logout} from '../src/auth/JwtContext'
+
+
 const Page = () => (
-  <>
+  <>    
+
     <Head>
       <title>
         Minha Conta | Careplace
@@ -47,8 +51,8 @@ const Page = () => (
           >
             <AccountProfileDetails />
             <CheckoutBillingAddress />
-            
           </Grid>
+          <Relatives />
         </Grid>
       </Container>
     </Box>

@@ -13,6 +13,7 @@ import Layout from '../../src/layouts';
 import { Page, Iconify, Image } from '../../src/components';
 // sections
 import { VerifyCodeForm } from '../../src/sections/auth';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,8 @@ const RootStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function VerifyCodePage() {
+  const router = useRouter();
+  const { email } = router.query;
   return (
     <Page title="Verify Code">
       <RootStyle>
@@ -45,7 +48,7 @@ export default function VerifyCodePage() {
               left: { xs: 8, sm: 24 },
             }}
           >
-            Back
+            Voltar
           </Button>
         </NextLink>
 
@@ -57,19 +60,19 @@ export default function VerifyCodePage() {
           />
 
           <Typography variant="h3" paragraph>
-            Check Your Email
+            Verifique o seu email
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            We have emailed a 6-digit confirmation code to acb@domain, please enter the code in
-            below box to verify your email.
+            Enviámos-lhe um código de confirmação para o seu email. Insira-o 
+            a baixo para podermos validar o seu acesso.
           </Typography>
 
-          <VerifyCodeForm />
+          <VerifyCodeForm email={email}/>
 
           <Typography variant="body2" align="center">
-            Don’t have a code? {''}
-            <Link variant="subtitle2" underline="none" onClick={() => {}}>
-              Resend code
+            Não recebeu o código? {''}
+            <Link variant="subtitle2" underline="none" href="mailto:henrique.fonseca@careplace.pt">
+              Fale connosco
             </Link>
           </Typography>
         </Box>

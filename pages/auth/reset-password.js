@@ -44,11 +44,11 @@ export default function ResetPasswordPage() {
               />
 
               <Typography variant="h3" paragraph>
-                Forgot Your Password?
+                Esqueceu-se da Password?
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 5 }}>
-                Please enter the email address associated with your account and We will email you a
-                link to reset your password.
+                Escreva o email abaixo associado à sua conta e nós enviaremos-lhe um código para
+                poder alterar a password.
               </Typography>
 
               <ResetPasswordForm
@@ -59,7 +59,7 @@ export default function ResetPasswordPage() {
           ) : (
             <>
               <Image
-                alt="email sent"
+                alt="email enviado"
                 src="https://zone-assets-api.vercel.app/assets/icons/ic_email_sent.svg"
                 sx={{
                   mb: 5,
@@ -70,18 +70,18 @@ export default function ResetPasswordPage() {
               />
 
               <Typography variant="h3" paragraph>
-                Request Sent Successfully
+                Pedido enviado com sucesso
               </Typography>
               <Typography>
-                We have sent a confirmation email to {''}
+                Enviámos um código para {''}
                 <strong>{email}</strong>
                 <br />
-                Please check your email.
+                Por favor valide o seu email.
               </Typography>
 
               <NextLink href={Routes.loginCover} passHref>
                 <Button size="large" variant="contained" sx={{ mt: 5 }}>
-                  Back
+                  Voltar
                 </Button>
               </NextLink>
             </>
