@@ -18,7 +18,7 @@ const nextConfig = {
   },
   trailingSlash: true,
   env: {
-    DEV_API: 'http://localhost:7777',
+    DEV_API: 'http://localhost:8080',
     PRODUCTION_API: 'https://zone-assets-api.vercel.app',
     GOOGLE_API: '',
   },

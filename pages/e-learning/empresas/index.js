@@ -15,6 +15,7 @@ import { Page, ErrorScreen, Iconify } from '../../../src/components';
 // sections
 import { NewsletterElearning } from '../../../src/sections/newsletter';
 import { ElearningCourseList, ElearningCourseBarFilters } from '../../../src/sections/@e-learning';
+import axios from '../../../src/utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -30,8 +31,19 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function ElearningCoursesPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  const { data: courses = [], error, isLoading } = useRequest('/api/e-learning/courses');
-
+  let services = []
+  let error=false
+  let isLoading = false
+  const onLoad = async () => {
+    try {
+      const response = await axios.get('/api/v1/services');
+      services = response.data.services;
+      console.log(services);
+    } catch (bug) {
+      error=true
+    }
+  };
+  //const { data: courses = [], error, isLoading } = localStorage.getItem('services')
   const handleMobileOpen = () => {
     setMobileOpen(true);
   };
@@ -80,7 +92,7 @@ export default function ElearningCoursesPage() {
                 width: { md: `calc(100% - ${DRAWER_WIDTH}px)` },
               }}
             >
-              <ElearningCourseList courses={courses} loading={isLoading} />
+              <ElearningCourseList courses={services} loading={isLoading} />
             </Box>
           </Stack>
         </Container>

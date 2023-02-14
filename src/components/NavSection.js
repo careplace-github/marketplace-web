@@ -95,7 +95,6 @@ const ListSubItemIconStyle = styled(Box, {
 }));
 
 // ----------------------------------------------------------------------
-
 NavSection.propTypes = {
   navConfig: PropTypes.array.isRequired,
 };
