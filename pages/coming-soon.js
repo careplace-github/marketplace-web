@@ -56,7 +56,7 @@ export default function ComingSoonPage() {
             sx={{ my: 3, maxWidth: 320 }}
           />
 
-          <CountdownStyle>
+         {/*} <CountdownStyle>
             {TimeBox(countdown.days, 'Days')}
             <SeparatorStyle variant="h2">:</SeparatorStyle>
             {TimeBox(countdown.hours, 'Hours')}
@@ -64,7 +64,7 @@ export default function ComingSoonPage() {
             {TimeBox(countdown.minutes, 'Minutes')}
             <SeparatorStyle variant="h2">:</SeparatorStyle>
             {TimeBox(countdown.seconds, 'Seconds')}
-          </CountdownStyle>
+  </CountdownStyle>
 
           <FilledInput
             fullWidth
@@ -82,7 +82,7 @@ export default function ComingSoonPage() {
               '& .MuiFilledInput-input': { py: '18px' },
             }}
           />
-
+*/}
           <Stack alignItems="center">
             <SocialsButton initialColor />
           </Stack>
@@ -96,7 +96,7 @@ export default function ComingSoonPage() {
 
 ComingSoonPage.getLayout = function getLayout(page) {
   return (
-    <Layout simpleHeader disabledFooter>
+    <Layout >
       {page}
     </Layout>
   );

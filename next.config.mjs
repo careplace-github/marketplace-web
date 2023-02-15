@@ -17,8 +17,10 @@ const nextConfig = {
   },
   trailingSlash: true,
   env: {
+
     DEV_API: 'http://localhost:7777',
     PRODUCTION_API: 'https://www.staging.api.careplace.pt/api/v1',
+
     GOOGLE_API: '',
   },
   images: {

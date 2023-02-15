@@ -36,17 +36,17 @@ const Routes = {
   },
   // E-Learning
   eLearning: {
-    landing: '/e-learning',
-    courses: '/e-learning/courses',
-    course: (id) => `/e-learning/courses/${id}`,
-    posts: '/e-learning/blog',
+    //landing: '/e-learning',
+    courses: '/e-learning/empresas',
+    course: (id) => `/e-learning/empresas/${id}`,
+    //posts: '/e-learning/blog',
     post: (slug) => `/e-learning/blog/${slug}`,
-    about: '/e-learning/about-us',
-    contact: '/e-learning/contact-us',
+   // about: '/e-learning/about-us',
+    //contact: '/e-learning/contact-us',
   },
   // Common
-  loginCover: '/auth/login-cover',
-  registerCover: '/auth/register-cover',
+  loginCover: '/auth/login',
+  registerCover: '/auth/register',
   loginIllustration: '/auth/login',
   registerIllustration: '/auth/register',
   resetPassword: '/auth/reset-password',
@@ -63,6 +63,7 @@ const Routes = {
   profile: '/user-profile',
   // Others
   pages: '/pages',
+  
   componentsUI: '/components-ui',
   componentUI: (slug) => `/components-ui/${slug}`,
   muiComponents: 'https://mui.com/components',

@@ -2,14 +2,14 @@
 import NextLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Grid, Link, Stack, Divider, Container, Typography } from '@mui/material';
+import { Grid, Link, Stack,  Container, Typography } from '@mui/material';
 // routes
 import Routes from '../../src/routes';
 // layouts
 import Layout from '../../src/layouts';
 // components
 import { Page, Image } from '../../src/components';
-import { AuthWithSocial, RegisterForm } from '../../src/sections/auth';
+import { RegisterForm } from '../../src/sections/auth';
 
 // ----------------------------------------------------------------------
 

@@ -24,7 +24,7 @@ export default function Header({ transparent }) {
   const theme = useTheme();
 
   const isDesktop = useResponsive('up', 'md');
-  const hasAuth = false
+  const hasAuth = localStorage.getItem('accessToken') !== undefined
 
   const isLight = theme.palette.mode === 'light';
 
@@ -75,7 +75,7 @@ export default function Header({ transparent }) {
 
             {isDesktop && !hasAuth && (
               <Stack direction="row" spacing={1}>
-                { 
+                 
                  <NextLink href={'/auth/register/'} prefetch={false} passHref>
                    <Button
                     color="inherit"
@@ -90,7 +90,7 @@ export default function Header({ transparent }) {
                     Registar
                   </Button>
                 </NextLink>
-                 }
+                 
 
                 <Button variant="contained" href={'/auth/login/'} target="_blank" rel="noopener">
                   Entrar
@@ -101,7 +101,8 @@ export default function Header({ transparent }) {
           <Stack spacing={2} direction="row" alignItems="center">
             {isDesktop && hasAuth && (
               <Stack direction="row" spacing={1}>
-                <Button variant="contained" href={'localhost:3031'} target="_blank" rel="noopener">
+        
+                <Button variant="contained" href='/account' rel="noopener">
                   A minha conta
                 </Button>
               </Stack>

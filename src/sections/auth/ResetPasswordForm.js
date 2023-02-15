@@ -48,7 +48,7 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
             <TextField
               {...field}
               fullWidth
-              label="Email address"
+              label="Email"
               error={Boolean(error)}
               helperText={error?.message}
             />
@@ -62,7 +62,7 @@ export default function ResetPasswordForm({ onSent, onGetEmail }) {
           variant="contained"
           loading={isSubmitting}
         >
-          Reset Password
+          Recuperar Password
         </LoadingButton>
       </Stack>
     </form>
