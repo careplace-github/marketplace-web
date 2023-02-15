@@ -82,3 +82,21 @@ export const setSession = (accessToken) => {
     delete axios.defaults.headers.common.Authorization;
   }
 };
+
+export const setItem = (item, objectRead ) => {
+  if (item) {
+    JSON.stringify(objectRead)
+    localStorage.setItem(item , objectRead);
+  } else {
+    localStorage.removeItem(item);
+  }
+};
+
+export const getItem = (item) => {
+  item.toString()
+  if (item) {
+    localStorage.getItem(item);
+  } else {
+    console.log("Get Item Function NULL")
+  }
+};

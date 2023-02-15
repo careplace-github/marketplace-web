@@ -22,6 +22,7 @@ import { _paymentMethods } from '../../../_data/mock';
 import { Image, Iconify } from '../../components';
 //
 import CheckoutNewCardForm from './CheckoutNewCardForm';
+import axios from '../../utils/axios';
 
 // ----------------------------------------------------------------------
 
@@ -72,6 +73,38 @@ const OptionStyle = styled(Paper, {
 export default function CheckoutMethods() {
   const [show, setShow] = useState(false);
   const [method, setMethod] = useState('paypal');
+
+  const onLoadPaymentMethods = async () => {
+    try {
+      const response = await axios.get('/api/v1/users/payment-methods');
+      const data = response.data;
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  const newPaymentMethods = async () => {
+    let payment_method_id = '' 
+    try {
+      const response = await axios.post('/api/v1/users/payment-methods', payment_method_id);
+      const data = response.data;
+      console.log("New payment method created " + data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const deletePaymentMethod = async () => {
+    let payment_method_id = '' 
+    try {
+      const response = await axios.delete('/api/v1/users/payment-methods', payment_method_id);
+      const data = response.data;
+      console.log("New payment method created " + data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
 
   const handleCollapseIn = () => {
     if (method !== 'paypal') {

@@ -14,22 +14,26 @@ import { Stack, Link, TextField, IconButton, InputAdornment } from '@mui/materia
 import Routes from '../../routes';
 // components
 import { Iconify } from '../../components';
+import { useAuthContext } from '../../auth/useAuthContext';
+import Router from 'next/router';
 
 // ----------------------------------------------------------------------
 
 const FormSchema = Yup.object().shape({
-  email: Yup.string().required('Email is required').email('That is not an email'),
+  email: Yup.string().required('Email é obrigatório').email('Coloque um email válido'),
   password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Password should be of minimum 6 characters length'),
+    .required('Password é obrigatória')
 });
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuthContext();
+
 
   const {
     reset,
     control,
+    setError,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm({
@@ -46,9 +50,23 @@ export default function LoginForm() {
   };
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    alert(JSON.stringify(data, null, 2));
-    reset();
+    //await new Promise((resolve) => setTimeout(resolve, 500));
+      try {
+        await login(data.email, data.password);
+        if(localStorage.getItem('accessToken') !== undefined) {
+          alert(JSON.stringify("Autenticação bem sucedida", null, 2  ));
+          Router.push({ pathname: '/home' });
+        }
+      } catch (error) {
+        console.error(error);
+  
+        reset();
+  
+        setError('afterSubmit', {
+          ...error,
+          message: error.message,
+        });
+      }
   };
 
   return (
@@ -61,7 +79,7 @@ export default function LoginForm() {
             <TextField
               {...field}
               fullWidth
-              label="Email address"
+              label="Email"
               error={Boolean(error)}
               helperText={error?.message}
             />
@@ -94,7 +112,7 @@ export default function LoginForm() {
 
         <NextLink href={Routes.resetPassword} passHref>
           <Link variant="body3" underline="always" color="text.secondary">
-            Forgot password?
+            Esqueceu-se da password?
           </Link>
         </NextLink>
 

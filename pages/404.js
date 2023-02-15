@@ -28,17 +28,17 @@ const RootStyle = styled('div')(({ theme }) => ({
 export default function PageNotFound() {
   return (
     <MotionContainer>
-      <Page title="404 Page Not Found">
+      <Page title="404 Ooops">
         <RootStyle>
           <Stack alignItems="center" sx={{ maxWidth: 480 }}>
             <m.div variants={varBounce().in}>
               <Typography variant="h3" paragraph>
-                Page Not Found!
+              Página não encontrada!
               </Typography>
             </m.div>
             <Typography sx={{ color: 'text.secondary' }}>
-              Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL?
-              Be sure to check your spelling.
+              A página que está à procura parece não existir. 
+              Talvez seja melhor rever o URL ou voltar à página principal.
             </Typography>
 
             <m.div variants={varBounce().in}>
@@ -49,9 +49,9 @@ export default function PageNotFound() {
               />
             </m.div>
 
-            <NextLink href="/" passHref>
+            <NextLink href="/home" passHref>
               <Button size="large" variant="contained">
-                Go to Home
+                Voltar
               </Button>
             </NextLink>
           </Stack>
