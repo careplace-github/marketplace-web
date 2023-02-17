@@ -75,4 +75,11 @@ const Routes = {
     '',
 };
 
+export const PATH_AUTH = {
+  login:'/auth/login'
+}
+
+
+
 export default Routes;
+
