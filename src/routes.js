@@ -5,12 +5,12 @@ const Routes = {
   marketing: {
     landing: '/home',
     services: '/marketing/services',
-    caseStudies: '/marketing/case-studies',
-    caseStudy: (slug) => `/marketing/case-studies/${slug}`,
-    posts: '/marketing/blog',
-    post: (slug) => `/marketing/blog/${slug}`,
-    about: '/marketing/about-us',
-    contact: '/marketing/contact-us',
+   // caseStudies: '/marketing/case-studies',
+   // caseStudy: (slug) => `/marketing/case-studies/${slug}`,
+  //  posts: '/marketing/blog',
+   // post: (slug) => `/marketing/blog/${slug}`,
+   // about: '/marketing/about-us',
+   // contact: '/marketing/contact-us',
   },
   // Travel
   travel: {
@@ -25,7 +25,7 @@ const Routes = {
     contact: '/travel/contact-us',
   },
   // Career
-  career: {
+ /* career: {
     landing: '/career',
     jobs: '/career/jobs',
     job: (id) => `/career/jobs/${id}`,
@@ -33,7 +33,7 @@ const Routes = {
     post: (slug) => `/career/blog/${slug}`,
     about: '/career/about-us',
     contact: '/career/contact-us',
-  },
+  },*/
   // E-Learning
   eLearning: {
     //landing: '/e-learning',
