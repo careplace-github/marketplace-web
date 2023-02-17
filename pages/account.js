@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { Box, Container, Grid, Typography } from '@mui/material';
-import AccountProfile, { Relatives, AccountProfileDetails } from '../src/components/account';
+import {AccountProfile, Relatives, AccountProfileDetails, trace} from '../src/components/account';
 import Layout from '../src/layouts';
 import { CheckoutBillingAddress, CheckoutMethods } from '../src/sections/checkout';
 
