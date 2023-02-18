@@ -13,8 +13,8 @@ export const PageLinks = [
     items: [
       { title: 'Landing', path: Routes.marketing.landing },
       { title: 'Services', path: Routes.marketing.services },
-      { title: 'Case Studies', path: Routes.marketing.caseStudies },
-      { title: 'Case Study', path: Routes.marketing.caseStudy('case-study-01') },
+      // { title: 'Case Studies', path: Routes.marketing.caseStudies },
+      //{ title: 'Case Study', path: Routes.marketing.caseStudy('case-study-01') },
       { title: 'Blog Posts', path: Routes.marketing.posts },
       { title: 'Blog Post', path: Routes.marketing.post('post-01') },
       { title: 'About', path: Routes.marketing.about },

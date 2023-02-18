@@ -38,7 +38,7 @@ import axiosInstance from '../../utils/axios';
  
 
   
-  export default function AccountProfile (props) {
+  export function AccountProfile (props) {
     const [userAccount, setuserAccount] = useState([]);
     const getuserAccount = useCallback(async () => {
     
@@ -108,4 +108,4 @@ import axiosInstance from '../../utils/axios';
       */} 
     </Card>);
   }
-  
+  export default AccountProfile

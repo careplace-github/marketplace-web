@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 // utils
-import { getAllPosts } from '../../src/utils/get-mardown/marketing/posts';
-import { getAllCaseStudies } from '../../src/utils/get-mardown/marketing/case-studies';
+//import { getAllPosts } from '../../src/utils/get-mardown/marketing/posts';
+//import { getAllCaseStudies } from '../../src/utils/get-mardown/marketing/case-studies';
 // _data
 import { _testimonials, _brands, _members, _pricingMarketing } from '../../_data/mock';
 // layouts
@@ -11,7 +11,7 @@ import { Page } from '../../src/components';
 // sections
 import { PricingMarketing } from '../../src/sections/pricing';
 import { TeamMarketingLangding } from '../../src/sections/team';
-import { BlogMarketingLatestPosts } from '../../src/sections/blog';
+//import { BlogMarketingLatestPosts } from '../../src/sections/blog';
 import { NewsletterMarketing } from '../../src/sections/newsletter';
 import { TestimonialsMarketing } from '../../src/sections/testimonials';
 import { OurClientsMarketingLanding } from '../../src/sections/our-clients';
@@ -28,11 +28,11 @@ import {
 // ----------------------------------------------------------------------
 
 MarketingLandingPage.propTypes = {
-  caseStudies: PropTypes.array,
-  posts: PropTypes.array,
+ // caseStudies: PropTypes.array,
+  // posts: PropTypes.array,
 };
 
-export default function MarketingLandingPage({ posts, caseStudies }) {
+export default function MarketingLandingPage(  ) {
   return (
     <Page title="Bem-vindo">
       <LandingPage1stSection />
@@ -78,8 +78,8 @@ MarketingLandingPage.getLayout = function getLayout(page) {
 export async function getStaticProps() {
   return {
     props: {
-      posts: getAllPosts(),
-      caseStudies: getAllCaseStudies(),
+      //posts: getAllPosts(),
+      //caseStudies: getAllCaseStudies(),
     },
   };
 }

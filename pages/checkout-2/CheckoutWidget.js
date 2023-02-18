@@ -11,7 +11,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import ReviewOrder from './ReviewOrder';
-import { Typography } from '../../src/components';
+import { Typography } from '@mui/material';
 
 
 
