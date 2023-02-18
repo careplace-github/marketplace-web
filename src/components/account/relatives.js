@@ -56,7 +56,7 @@ const familyMembersAdded = [
     }
   ];
 
-export const Relatives = (props) => (
+const Relatives = (props) => (
   <Card {...props}>
     <CardHeader title="Familiares" />
       <Box sx={{ minWidth: 800 }}>
@@ -96,3 +96,5 @@ export const Relatives = (props) => (
       </Box>
   </Card>
 );
+
+export default Relatives

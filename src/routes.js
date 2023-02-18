@@ -3,14 +3,15 @@
 const Routes = {
   // Marketing
   marketing: {
-    landing: '/home',
+    landing: '/',
     services: '/marketing/services',
-    caseStudies: '/marketing/case-studies',
-    caseStudy: (slug) => `/marketing/case-studies/${slug}`,
+    //caseStudies: '/marketing/case-studies',
+    //caseStudy: (slug) => `/marketing/case-studies/${slug}`,
     posts: '/marketing/blog',
     post: (slug) => `/marketing/blog/${slug}`,
-    about: '/marketing/about-us',
-    contact: '/marketing/contact-us',
+
+
+
   },
   // Travel
   travel: {
@@ -36,10 +37,10 @@ const Routes = {
   },
   // E-Learning
   eLearning: {
-    //landing: '/e-learning',
+    landing: '/e-learning',
     courses: '/e-learning/empresas',
     course: (id) => `/e-learning/empresas/${id}`,
-    //posts: '/e-learning/blog',
+    posts: '/e-learning/blog',
     post: (slug) => `/e-learning/blog/${slug}`,
    // about: '/e-learning/about-us',
     //contact: '/e-learning/contact-us',
@@ -75,4 +76,11 @@ const Routes = {
     '',
 };
 
+export const PATH_AUTH = {
+  login:'/auth/login'
+}
+
+
+
 export default Routes;
+

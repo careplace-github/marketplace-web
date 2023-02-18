@@ -132,3 +132,5 @@ export const AccountProfileDetails = (props) => {
     </form>
   );
 };
+
+export default AccountProfileDetails

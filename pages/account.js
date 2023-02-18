@@ -1,12 +1,8 @@
 import Head from 'next/head';
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
-import AccountProfile from '../src/components/account';
-import { AccountProfileDetails, Relatives } from '../src/components/account';
+import { Box, Container, Grid, Typography } from '@mui/material';
+import {AccountProfile, Relatives, AccountProfileDetails, trace} from '../src/components/account';
 import Layout from '../src/layouts';
 import { CheckoutBillingAddress, CheckoutMethods } from '../src/sections/checkout';
-
-import{logout} from '../src/auth/JwtContext'
-
 
 const Page = () => (
   <>    
