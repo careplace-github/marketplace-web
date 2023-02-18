@@ -51,7 +51,7 @@ export default function ElearningCoursesPage() {
   const handleMobileClose = () => {
     setMobileOpen(false);
   };
-
+  onLoad()
   if (error) {
     return <ErrorScreen />;
   }

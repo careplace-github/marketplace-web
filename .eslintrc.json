@@ -33,7 +33,7 @@
     "react/no-unescaped-entities": 0,
     "import/no-useless-path-segments": 1,
     "no-unused-vars": [
-      1,
+      0,
       {
         "ignoreRestSiblings": false
       }
