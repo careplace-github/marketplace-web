@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Radio, FormControlLabel, RadioGroup, Stack, Rating } from '@mui/material';
 
@@ -11,7 +11,7 @@ type Props = {
   onChangeRating: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function ElearningFilterRating({ filterRating, onChangeRating }: Props) {
+export default function FilterRating({ filterRating, onChangeRating }: Props) {
   return (
     <RadioGroup value={filterRating} onChange={onChangeRating}>
       <Stack spacing={2} alignItems="flex-start">

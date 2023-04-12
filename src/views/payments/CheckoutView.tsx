@@ -8,7 +8,7 @@ import { PaymentSummary, PaymentMethodsList, PaymentBillingAddress } from '../..
 
 // ----------------------------------------------------------------------
 
-export default function PaymentView() {
+export default function CheckoutView() {
   const isMdUp = useResponsive('up', 'md');
 
   return (

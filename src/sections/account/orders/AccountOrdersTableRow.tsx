@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import {
@@ -17,17 +17,17 @@ import { fCurrency } from 'src/utils/formatNumber';
 // components
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
-import { IProductOrderProps } from 'src/types/product';
+import { IOrderProps } from 'src/types/order';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  row: IProductOrderProps;
+  row: IOrderProps;
   selected: boolean;
   onSelectRow: VoidFunction;
 };
 
-export default function EcommerceAccountOrdersTableRow({ row, onSelectRow, selected }: Props) {
+export default function AccountOrdersTableRow({ row, onSelectRow, selected }: Props) {
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {

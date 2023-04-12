@@ -1,15 +1,12 @@
-import PropTypes from 'prop-types';
+ 
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-// next
-import { useRouter } from 'next/router';
-import { useSearchParams } from 'next/navigation';
 // @mui
 import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // _mock
-import { _tours } from 'src/_mock';
+import { _tours as _companies} from 'src/_mock';
 // components
 import FormProvider from 'src/components/hook-form';
 //
@@ -20,7 +17,7 @@ import {
 
 // ----------------------------------------------------------------------
 
-export default function TravelCheckoutView() {
+export default function OrderQuestionnaireView() {
 
   const [sameBilling, setSameBilling] = useState(false);
 
@@ -143,7 +140,7 @@ export default function TravelCheckoutView() {
           <Grid xs={12} md={5}>
             <OrderQuestionnaireSummary
               guests={guests}
-              tour={_tours[0]}
+              company={_companies[0]}
               departureDay={departureDay}
               isSubmitting={isSubmitting}
               onDecreaseGuests={handleDecreaseGuests}
@@ -158,8 +155,12 @@ export default function TravelCheckoutView() {
 }
 
 // ----------------------------------------------------------------------
+type StepLabelProps = {
+  step: string;
+  title: string;
+};
 
-function StepLabel({ step, title }) {
+function StepLabel({ step, title }: StepLabelProps) {
   return (
     <Stack direction="row" alignItems="center" sx={{ mb: 3, typography: 'h5' }}>
       <Box
@@ -183,8 +184,3 @@ function StepLabel({ step, title }) {
     </Stack>
   );
 }
-
-StepLabel.propTypes = {
-  step: PropTypes.string,
-  title: PropTypes.string,
-};

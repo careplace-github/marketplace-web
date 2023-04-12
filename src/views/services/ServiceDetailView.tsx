@@ -1,7 +1,7 @@
 // @mui
 import { Container, Unstable_Grid2 as Grid } from '@mui/material';
 // _mock
-import { _caseStudies, _testimonials } from '../../_mock';
+import { _caseStudies as _services } from '../../_mock';
 // components
 import Image from '../../components/image';
 import Markdown from '../../components/markdown';
@@ -12,9 +12,9 @@ import { SimilarServicesList, ServiceDetailSummary, ServiceDetailGallery } from 
 
 // ----------------------------------------------------------------------
 
-const _mockCaseStudy = _caseStudies[0];
+const _mockService = _services[0];
 
-export default function MarketingCaseStudyView() {
+export default function ServiceDetailView() {
   return (
     <>
       <Container
@@ -24,30 +24,30 @@ export default function MarketingCaseStudyView() {
           pb: { xs: 10, md: 15 },
         }}
       >
-        <Image alt="hero" src={_mockCaseStudy.heroImg} ratio="16/9" sx={{ borderRadius: 2 }} />
+        <Image alt="hero" src={_mockService.heroImg} ratio="16/9" sx={{ borderRadius: 2 }} />
 
         <CustomBreadcrumbs
           sx={{ my: 5 }}
           links={[
             { name: 'Home', href: '/' },
             { name: 'Case Studies', href: '/' },
-            { name: _mockCaseStudy.title },
+            { name: _mockService.title },
           ]}
         />
 
         <Grid container spacing={{ xs: 5, md: 8 }} direction={{ md: 'row-reverse' }}>
           <Grid xs={12} md={4}>
-            <ServiceDetailSummary caseStudy={_caseStudies[0]} />
+            <ServiceDetailSummary service={_services[0]} />
           </Grid>
 
           <Grid xs={12} md={8}>
-            <Markdown content={_mockCaseStudy.content} />
-            <ServiceDetailGallery images={_mockCaseStudy.galleryImgs} />
+            <Markdown content={_mockService.content} />
+            <ServiceDetailGallery images={_mockService.galleryImgs} />
           </Grid>
         </Grid>
       </Container>
 
-      <SimilarServicesList caseStudies={_caseStudies.slice(0, 3)} />
+      <SimilarServicesList services={_services.slice(0, 3)} />
     </>
   );
 }

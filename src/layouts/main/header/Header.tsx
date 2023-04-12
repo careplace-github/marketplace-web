@@ -10,12 +10,11 @@ import { bgBlur } from 'src/utils/cssStyles';
 import { HEADER } from 'src/config';
 // components
 import Logo from 'src/components/logo';
-import Label from 'src/components/label';
-import SettingsDrawer from 'src/components/settings/drawer';
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
-import Searchbar from '../../components/Searchbar';
 import HeaderShadow from '../../components/HeaderShadow';
+// auth
+import { useAuthContext } from '../../../auth/AuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -24,6 +23,9 @@ type Props = {
 };
 
 export default function Header({ headerOnDark }: Props) {
+
+  const { isAuthenticated } = useAuthContext();
+
   const theme = useTheme();
 
   const isMdUp = useResponsive('up', 'md');

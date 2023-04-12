@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Box, Autocomplete, Checkbox, TextField } from '@mui/material';
 // assets
 import { countries } from 'src/assets/data';
 // types
-import { ICountriesProps } from 'src/types/contact';
+import { ICountriesProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ type Props = {
   onChangeLanguage: (keyword: ICountriesProps[]) => void;
 };
 
-export default function ElearningFilterLanguage({ filterLanguage, onChangeLanguage }: Props) {
+export default function FilterLanguage({ filterLanguage, onChangeLanguage }: Props) {
   return (
     <Autocomplete
       multiple

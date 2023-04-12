@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // next
 import NextLink from 'next/link';
 // @mui
@@ -8,7 +8,7 @@ import useResponsive from '../../../hooks/useResponsive';
 // components
 import Iconify from '../../../components/iconify';
 // types
-import { ICaseStudyProps } from '../../../types/case-study'
+import { IServiceProps } from '../../../types/service'
 //
 import { ServiceItem } from '../item';
  
@@ -16,10 +16,10 @@ import { ServiceItem } from '../item';
 // ----------------------------------------------------------------------
 
 type Props = {
-  caseStudies: ICaseStudyProps[];
+  services: IServiceProps[];
 };
 
-export default function MarketingCaseStudyListSimilar({ caseStudies }: Props) {
+export default function SimilarServicesList({ services }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   const viewAllBtn = (
@@ -63,8 +63,8 @@ export default function MarketingCaseStudyListSimilar({ caseStudies }: Props) {
           },
         }}
       >
-        {caseStudies.map((project) => (
-          <ServiceItem key={project.id} project={project} />
+        {services.map((service) => (
+          <ServiceItem key={service.id} service={service} />
         ))}
       </Box>
 

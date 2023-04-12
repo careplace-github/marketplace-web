@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Typography, Stack, Box, Divider } from '@mui/material';
 // utils
@@ -6,28 +6,25 @@ import { fDate } from '../../../utils/formatTime';
 // components
 import Iconify, { IconifyProps } from '../../../components/iconify';
 // types
-import { ITourProps } from '../../../types/tour';
+import { ICompanyProps } from '../../../types/company';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  company: ICompanyProps;
 };
 
-export default function TravelTourDetailsSummary({ tour }: Props) {
+export default function CompanyDetailSummary({ company }: Props) {
   const {
     program,
     includes,
-    location,
-    duration,
     tourGuide,
-    languages,
     highlights,
     description,
     availableEnd,
     availableStart,
-  } = tour;
+  } = company;
 
   return (
     <Stack spacing={5}>
@@ -52,15 +49,15 @@ export default function TravelTourDetailsSummary({ tour }: Props) {
             label="Available"
             text={`${fDate(availableStart, 'dd/MM/yyyy')} - ${fDate(availableEnd, 'dd/MM/yyyy')}`}
           />
-          <OverviewItem icon="carbon:user" label="Contact name" text={tourGuide?.name} />
-          <OverviewItem icon="carbon:location" label="Location" text={location} />
+          <OverviewItem icon="carbon:user" label="Contact name" text="Jayvion Simon" />
+          <OverviewItem icon="carbon:location" label="Location" text="Kenya" />
           <OverviewItem
             icon="carbon:mobile"
             label="Contact phone"
             text={tourGuide?.phoneNumber || ''}
           />
-          <OverviewItem icon="carbon:time" label="Durations" text={duration} />
-          <OverviewItem icon="carbon:translate" label="Languages" text={languages.join(', ')} />
+          <OverviewItem icon="carbon:time" label="Durations" text="3 days 2 nights" />
+          <OverviewItem icon="carbon:translate" label="Languages" text="Russian, Spanish"/>
         </Box>
       </div>
 

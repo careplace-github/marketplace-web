@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -16,7 +16,7 @@ type Props = {
   onChangeFee: (event: SelectChangeEvent<string[]>) => void;
 };
 
-export default function ElearningFilterFee({ filterFee, onChangeFee }: Props) {
+export default function FilterFee({ filterFee, onChangeFee }: Props) {
   return (
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select

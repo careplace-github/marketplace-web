@@ -10,17 +10,17 @@ import Image from '../../../components/image';
 import Iconify from '../../../components/iconify';
 import TextMaxLine from '../../../components/text-max-line';
 // types
-import { ITourProps } from '../../../types/tour';
+import { ICompanyProps } from '../../../types/company';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  company: ICompanyProps;
 };
 
-export default function TravelTourItem({ tour }: Props) {
-  const { slug, location, price, priceSale, favorited, duration, ratings, coverImg } = tour;
+export default function CompanyDetailtem({ company }: Props) {
+  const { slug, location, price, priceSale, favorited, duration, ratings, coverImg } = company;
 
   const [favorite, setFavorite] = useState(favorited);
 

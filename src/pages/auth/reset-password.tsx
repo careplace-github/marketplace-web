@@ -18,7 +18,7 @@ export default function ResetPasswordPage() {
   return (
     <>
       <Head>
-        <title>Reset Password | Careplace</title>
+        <title>Repor Password | Careplace</title>
       </Head>
 
       <ResetPasswordView />

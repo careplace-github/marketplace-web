@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -16,7 +16,7 @@ type Props = {
   onChangeLevel: (event: SelectChangeEvent<string[]>) => void;
 };
 
-export default function ElearningFilterLevel({ filterLevel, onChangeLevel }: Props) {
+export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
   return (
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select

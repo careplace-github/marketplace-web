@@ -18,7 +18,7 @@ export default function VerifyCodePage() {
   return (
     <>
       <Head>
-        <title>Verify Code | Careplace </title>
+        <title>Verificar Código | Careplace </title>
       </Head>
 
       <VerifyCodeView />

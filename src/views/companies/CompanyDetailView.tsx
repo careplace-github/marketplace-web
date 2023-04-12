@@ -10,28 +10,29 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 // _mock
-import { _socials, _tours } from '../../_mock';
+import { _socials, _courses as _companies } from '../../_mock';
 // components
 import Iconify from '../../components/iconify';
 import LoadingScreen from '../../components/loading-screen';
 import CustomBreadcrumbs from '../../components/custom-breadcrumbs';
 //
-import {CompanyDetailReviews} from '../../sections/reviews';
+import {} from '../../sections/companies';
 import {
   CompanyDetailHeader,
   CompanyDetailGallery,
   CompanyDetailSummary,
   CompanyDetailReserveForm,
-  SimilarCompaniesList
+  SimilarCompaniesList,
+  CompanyDetailReviews
 } from '../../sections/companies';
 
  
 
 // ----------------------------------------------------------------------
 
-const _mockTour = _tours[0];
+const _mockCompany = _companies[0];
 
-export default function TravelTourView() {
+export default function CompanyDetailView() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -52,25 +53,25 @@ export default function TravelTourView() {
         <CustomBreadcrumbs
           links={[
             { name: 'Home', href: '/' },
-            { name: 'Tours', href: "/" },
+            { name: 'companys', href: "/" },
             { name: "id" },
           ]}
           sx={{ mt: 3, mb: 5 }}
         />
 
-        <CompanyDetailGallery images={_mockTour.gallery} />
+        <CompanyDetailGallery images={_mockCompany.gallery} />
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
-            <CompanyDetailReserveForm tour={_mockTour} />
+            <CompanyDetailReserveForm company={_mockCompany} />
           </Grid>
 
           <Grid xs={12} md={7} lg={8}>
-            <CompanyDetailHeader tour={_mockTour} />
+            <CompanyDetailHeader company={_mockCompany} />
 
             <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
 
-            <CompanyDetailSummary tour={_mockTour} />
+            <CompanyDetailSummary company={_mockCompany} />
 
             <Stack direction="row" flexWrap="wrap" sx={{ mt: 5 }}>
               <Typography variant="subtitle2" sx={{ mt: 0.75, mr: 1.5 }}>
@@ -108,7 +109,7 @@ export default function TravelTourView() {
 
       <CompanyDetailReviews />
 
-      <SimilarCompaniesList courses={_tours.slice(-4)} />
+      <SimilarCompaniesList companies={_companies.slice(-3)} />
 
 
     </>

@@ -1,13 +1,13 @@
 // next
 import { useRouter } from 'next/router';
 // react
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 // routes
 import { PATHS } from '../routes/paths';
 // components
 import LoadingScreen from '../components/loading-screen';
 //
-import { AuthContext } from './AuthContext';
+import { useAuthContext } from './AuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -17,14 +17,14 @@ type GuestGuardProps = {
 };
 
 export default function GuestGuard({ children }: GuestGuardProps) {
-  const { isAuthenticated, isInitialized } = AuthContext();
+  const { isAuthenticated, isInitialized } = useAuthContext();
 
   if (isAuthenticated) {
     
     const { pathname, push } = useRouter();
 
   useEffect(() => {
-    push(PATHS.orders.questionnaire(''));
+    push(PATHS.account.root);
   }, [pathname, push]);
   }
 

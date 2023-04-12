@@ -18,7 +18,7 @@ import {
   ListItemButton,
 } from '@mui/material';
 // config
-import { NAV, ICON } from '../../config';
+import { NAV, ICON } from '../../config/config';
 // types
 import { ParentItemProps, MegaMenuItemProps } from './types';
 //

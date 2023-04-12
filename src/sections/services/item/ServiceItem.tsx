@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // next
 import NextLink from 'next/link';
 // @mui
@@ -7,17 +7,17 @@ import { Stack, Typography, Link } from '@mui/material';
 import Image from '../../../components/image';
 import TextMaxLine from '../../../components/text-max-line';
 // types
-import { ICaseStudyProps } from '../../../types/case-study';
+import { IServiceProps } from '../../../types/service';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  project: ICaseStudyProps;
+  service: IServiceProps;
 };
 
-export default function MarketingCaseStudyItem({ project }: Props) {
-  const { title, coverImg, category } = project;
+export default function ServiceItem({ service }: Props) {
+  const { title, coverImg, category } = service;
 
   return (
     <div>

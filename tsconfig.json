@@ -21,6 +21,7 @@
     "jsxImportSource": "@emotion/react",
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false, // remove
+    "useUnknownInCatchVariables": false,
   },
   "exclude": [
     "node_modules"
@@ -29,6 +30,5 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "src/**/*"
-, "../../../../../../Users/henriquefonseca/Downloads/Zone_TypeScript_v2.0.0/next_TS/src/auth/JwtContext copy.tsx"  ]
+    "src/**/*"]
 }

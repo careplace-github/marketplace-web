@@ -43,7 +43,7 @@ export default function LandingHero() {
               textAlign: { xs: 'center', md: 'left' },
             }}
           >
-            <Typography variant="overline" sx={{ color: 'secondary.main' }}>
+            <Typography variant="overline" sx={{ color: 'primary.main' }}>
               Digital Marketing
             </Typography>
 

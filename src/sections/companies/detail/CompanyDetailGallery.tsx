@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { m } from 'framer-motion';
 // @mui
 import { Box } from '@mui/material';
@@ -14,7 +13,7 @@ type Props = {
   images: string[];
 };
 
-export default function TravelTourDetailsGallery({ images }: Props) {
+export default function CompanyDetailGallery({ images }: Props) {
   const slides = images.map((slide) => ({
     src: slide,
   }));

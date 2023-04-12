@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // next
 import NextLink from 'next/link';
 // @mui
@@ -8,17 +8,17 @@ import useResponsive from '../../../hooks/useResponsive';
 // components
 import Iconify from '../../../components/iconify';
 // types
-import { ICourseProps } from '../../../types/course';
+import { ICompanyProps } from '../../../types/company';
  
 import { CompanyListItem } from '../item';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  courses: ICourseProps[];
+  companies: ICompanyProps[];
 };
 
-export default function ElearningCourseListSimilar({ courses }: Props) {
+export default function SimilarCompaniesList({ companies }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   const viewAllBtn = (
@@ -48,7 +48,7 @@ export default function ElearningCourseListSimilar({ courses }: Props) {
             mb: { xs: 8, md: 10 },
           }}
         >
-          <Typography variant="h3">Similar Courses</Typography>
+          <Typography variant="h3">Similar companies</Typography>
 
           {isMdUp && viewAllBtn}
         </Stack>
@@ -64,8 +64,8 @@ export default function ElearningCourseListSimilar({ courses }: Props) {
             },
           }}
         >
-          {courses.map((course) => (
-            <CompanyListItem key={course.id} course={course} vertical />
+          {companies.map((company) => (
+            <CompanyListItem key={company.id} company={company} vertical />
           ))}
         </Box>
 

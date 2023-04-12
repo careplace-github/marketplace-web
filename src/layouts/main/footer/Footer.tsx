@@ -16,6 +16,9 @@ import {
   InputAdornment,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
+// paths
+import { PATHS } from 'src/routes/paths';
+import { startsWith } from 'lodash';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // components
@@ -27,6 +30,7 @@ import { socials } from '../../../assets/data';
 import { footerLinks, navConfig } from '../nav/config-navigation';
 import ListDesktop from './ListDesktop';
 import ListMobile from './ListMobile';
+
 
 // ----------------------------------------------------------------------
 
@@ -55,7 +59,8 @@ export default function Footer() {
 
   const renderLists = isMdUp ? desktopList : mobileList;
 
-  const isHome = pathname === '/';
+  // Check if pathname begins with /account
+  const isAccount = startsWith(pathname, PATHS.account.root);
 
   const simpleFooter = (
     <Container sx={{ py: 8, textAlign: 'center' }}>
@@ -187,7 +192,7 @@ export default function Footer() {
     </>
   );
 
-  return <footer>{mainFooter}</footer>;
+  return <footer>{isAccount ? simpleFooter : mainFooter}</footer>;
 }
 
 // ----------------------------------------------------------------------

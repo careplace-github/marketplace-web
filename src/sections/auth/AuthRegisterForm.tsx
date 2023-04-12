@@ -5,6 +5,7 @@ import { useState } from 'react';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Typography, Stack, Link, IconButton, InputAdornment } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
@@ -17,6 +18,8 @@ type FormValuesProps = {
 };
 
 export default function AuthRegisterForm() {
+  const theme = useTheme();
+  
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -105,6 +108,16 @@ export default function AuthRegisterForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
+          sx={{
+            px: 4,
+            bgcolor: 'primary.main',
+            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+              color: 
+                theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            },
+          }}
         >
           Register
         </LoadingButton>

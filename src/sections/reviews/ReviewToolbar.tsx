@@ -1,5 +1,5 @@
 // @mui
-import { Stack, Button, Select, MenuItem, Typography, FormControl, SelectChangeEvent } from '@mui/material';
+import { Stack, Select, MenuItem, Typography, FormControl, SelectChangeEvent } from '@mui/material';
  
 
 // ----------------------------------------------------------------------
@@ -29,12 +29,10 @@ const MenuProps = {
 
 type Props = {
   sort: string;
-  totalReview: number;
-  onOpenReview: VoidFunction;
   onChangeSort: (event: SelectChangeEvent) => void;
 };
 
-export default function ReviewToolbar({ sort, totalReview, onOpenReview, onChangeSort }: Props) {
+export default function ReviewToolbar({ sort, onChangeSort }: Props) {
   return (
     <Stack
       spacing={5}
@@ -43,7 +41,7 @@ export default function ReviewToolbar({ sort, totalReview, onOpenReview, onChang
       sx={{ mb: 5 }}
     >
       <Typography variant="h4" sx={{ width: 1 }}>
-        {totalReview} Reviews
+       Reviews
       </Typography>
 
       <Stack direction="row" spacing={2} flexShrink={0} alignItems="center">
@@ -57,9 +55,7 @@ export default function ReviewToolbar({ sort, totalReview, onOpenReview, onChang
           </Select>
         </FormControl>
 
-        <Button size="large" variant="contained" color="inherit" onClick={onOpenReview}>
-          Write a Review
-        </Button>
+        
       </Stack>
     </Stack>
   );

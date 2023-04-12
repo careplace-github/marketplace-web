@@ -1,25 +1,25 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Pagination, Stack } from '@mui/material';
 //
 import { CompanyListItem, CompanyListItemSkeleton } from '../item';
 // types
-import { ICourseProps } from '../../../types/course';
+import { ICompanyProps } from '../../../types/company';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  courses: ICourseProps[];
+  companies: ICompanyProps[];
   loading?: boolean;
 };
 
-export default function ElearningCourseList({ courses, loading }: Props) {
+export default function CompaniesList({ companies, loading }: Props) {
   return (
     <>
       <Stack spacing={4}>
-        {(loading ? [...Array(9)] : courses).map((course, index) =>
-          course ? (
-            <CompanyListItem key={course.id} course={course} />
+        {(loading ? [...Array(9)] : companies).map((company, index) =>
+          company ? (
+            <CompanyListItem key={company.id} company={company} />
           ) : (
             <CompanyListItemSkeleton key={index} />
           )

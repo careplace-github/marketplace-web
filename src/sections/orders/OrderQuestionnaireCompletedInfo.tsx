@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Typography, Stack, Avatar, Box, Link } from '@mui/material';
 // utils
@@ -6,17 +6,17 @@ import { fShortenNumber } from '../../utils/formatNumber';
 // components
 import Iconify from '../../components/iconify';
 // types
-import { ITourProps } from '../../types/tour';
+import { ICompanyProps } from '../../types/company';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  company: ICompanyProps;
 };
 
-export default function TravelOrderCompletedInfo({ tour }: Props) {
-  const { slug, ratings, reviews, tourGuide } = tour;
+export default function OrderQuestionnaireCompletedInfo({ company }: Props) {
+  const { slug, ratings, reviews, tourGuide } = company;
 
   return (
     <Stack

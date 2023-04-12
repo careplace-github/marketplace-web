@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react';
 // utils
 import axios from '../utils/axios';
@@ -92,7 +91,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (accessToken && isValidToken(accessToken)) {
         setSession(accessToken);
 
-        const response = await axios.get('/api/account/my-account');
+        const response = await axios.get('/users/account');
 
         const { user } = response.data;
 
@@ -130,13 +129,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
-    const response = await axios.post('/api/account/login', {
+    let response = await axios.post('/auth/marketplace/login', {
       email,
       password,
     });
-    const { accessToken, user } = response.data;
-
+    const { accessToken } = response.data;
     setSession(accessToken);
+
+    response = await axios.get('/users/account');
+
+    const user = response.data;
+
+    
 
     dispatch({
       type: Types.LOGIN,

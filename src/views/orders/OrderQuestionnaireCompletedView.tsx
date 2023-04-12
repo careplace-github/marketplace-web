@@ -8,15 +8,15 @@ import useResponsive from 'src/hooks/useResponsive';
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 // _mock
-import { _tours } from 'src/_mock';
+import { _tours as _companies } from 'src/_mock';
 //
 import { OrderQuestionnaireCompletedInfo, OrderQuestionnaireCompletedSummary } from '../../sections/orders';
 
 // ----------------------------------------------------------------------
 
-const _mockTour = _tours[1];
+const _mockCompany = _companies[1];
 
-export default function TravelOrderCompletedView() {
+export default function OrderQuestionnaireCompletedView() {
   const isMdUp = useResponsive('up', 'md');
 
   return (
@@ -31,13 +31,13 @@ export default function TravelOrderCompletedView() {
       }}
     >
       {isMdUp && (
-        <Image alt="cover" src={_mockTour.coverImg} ratio="3/4" sx={{ borderRadius: 2 }} />
+        <Image alt="cover" src={_mockCompany.coverImg} ratio="3/4" sx={{ borderRadius: 2 }} />
       )}
 
       <Stack spacing={5}>
         <Typography variant="h2">Completed 🎉</Typography>
 
-        <OrderQuestionnaireCompletedInfo tour={_mockTour} />
+        <OrderQuestionnaireCompletedInfo company={_mockCompany} />
 
         <OrderQuestionnaireCompletedSummary />
 

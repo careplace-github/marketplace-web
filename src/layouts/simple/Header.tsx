@@ -9,7 +9,6 @@ import { HEADER } from 'src/config';
 import { bgBlur } from 'src/utils/cssStyles';
 // components
 import Logo from 'src/components/logo';
-import SettingsDrawer from 'src/components/settings/drawer';
 //
 import HeaderShadow from '../components/HeaderShadow';
 

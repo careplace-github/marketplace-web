@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Typography, Divider, Stack, IconButton, Link } from '@mui/material';
 // utils
@@ -8,17 +8,17 @@ import { _socials } from '../../../_mock';
 // components
 import Iconify from '../../../components/iconify';
 // types
-import { ICaseStudyProps } from '../../../types/case-study';
+import { IServiceProps } from '../../../types/service';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  caseStudy: ICaseStudyProps;
+  service: IServiceProps;
 };
 
-export default function MarketingCaseStudyDetailsSummary({ caseStudy }: Props) {
-  const { title, description, category, website, createdAt } = caseStudy;
+export default function ServiceDetailSummary({ service }: Props) {
+  const { title, description, category, website, createdAt } = service;
 
   return (
     <Stack spacing={3} sx={{ p: 5, borderRadius: 2, bgcolor: 'background.neutral' }}>

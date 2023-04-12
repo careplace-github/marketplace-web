@@ -34,7 +34,7 @@ export default function ResetPasswordView() {
 
       <Link
         component={NextLink}
-        href="/"
+        href={PATHS.auth.login}
         color="inherit"
         variant="subtitle2"
         sx={{

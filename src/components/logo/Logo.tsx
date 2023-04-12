@@ -2,7 +2,6 @@ import { memo } from 'react';
 // next
 import NextLink from 'next/link';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps, Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -12,7 +11,7 @@ interface LogoProps extends BoxProps {
 }
 
 function Logo({ single = false, sx }: LogoProps) {
-  const theme = useTheme();
+  
 
   const singleLogo = (<svg width="125" height="135" viewBox="0 0 125 135" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M69.5776 90.5194C55.8859 98.5087 49.5138 88.5413 48.2568 82.8484C48.3052 91.0983 48.1849 109.442 48.692 114.401C49.4171 121.493 52.608 132.782 67.6921 134.808C79.7593 136.429 94.6693 127.378 100.616 122.65C105.934 118.694 117.731 109.566 122.372 104.703C127.013 99.8403 124.306 94.379 122.372 92.2562L95.2495 67.7961L69.5776 90.5194Z" fill="url(#paint0_linear_57_21)"/>

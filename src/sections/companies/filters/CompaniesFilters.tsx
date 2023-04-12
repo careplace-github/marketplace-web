@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import { Stack, Drawer, Typography, TextField, InputAdornment, SelectChangeEvent } from '@mui/material';
@@ -18,8 +18,8 @@ import {
   FilterCategories,
 } from './components';
 // types
-import { ICountriesProps } from '../../../types/contact';
-import { ICourseFiltersProps } from '../../../types/course';
+import { ICountriesProps } from '../../../types/utils';
+import { ICompanyFiltersProps } from '../../../types/company';
 
 // ----------------------------------------------------------------------
 
@@ -37,10 +37,10 @@ type Props = {
   onMobileClose: VoidFunction;
 };
 
-export default function ElearningFilters({ mobileOpen, onMobileClose }: Props) {
+export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
-  const [filters, setFilters] = useState<ICourseFiltersProps>(defaultValues);
+  const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
 
   const handleChangeRating = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFilters({

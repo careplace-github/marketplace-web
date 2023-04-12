@@ -16,7 +16,7 @@ interface Prop {
   onSelectAllRows: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function EcommerceAccountOrdersTableHead({
+export default function AccountOrdersTableHead({
   order,
   onSort,
   orderBy,

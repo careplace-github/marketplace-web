@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -48,7 +48,7 @@ const CARD_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function PaymentMethods() {
+export default function PaymentMethodsList() {
   const [method, setMethod] = useState('paypal');
 
   const [openNewForm, setOpenNewForm] = useState(false);

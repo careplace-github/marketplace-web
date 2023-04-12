@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import { Pagination, Tabs, Tab, Box } from '@mui/material';
 // types
-import { ICaseStudyProps } from '../../../types/case-study';
+import { IServiceProps } from '../../../types/service';
 //
 import { ServiceItem } from '../item';
  
@@ -11,17 +11,17 @@ import { ServiceItem } from '../item';
 // ----------------------------------------------------------------------
 
 type Props = {
-  caseStudies: ICaseStudyProps[];
+  services: IServiceProps[];
 };
 
-export default function MarketingCaseStudyList({ caseStudies }: Props) {
+export default function ServicesList({ services }: Props) {
   const [tab, setTab] = useState('All');
 
-  const getCategories = caseStudies.map((project) => project.category);
+  const getCategories = services.map((service) => service.category);
 
   const categories = ['All', ...Array.from(new Set(getCategories))];
 
-  const filtered = applyFilter(caseStudies, tab);
+  const filtered = applyFilter(services, tab);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
@@ -54,8 +54,8 @@ export default function MarketingCaseStudyList({ caseStudies }: Props) {
           },
         }}
       >
-        {filtered.map((project) => (
-          <ServiceItem key={project.id} project={project} />
+        {filtered.map((service) => (
+          <ServiceItem key={service.id} service={service} />
         ))}
       </Box>
 
@@ -76,9 +76,9 @@ export default function MarketingCaseStudyList({ caseStudies }: Props) {
 
 // ----------------------------------------------------------------------
 
-function applyFilter(arr: ICaseStudyProps[], category: string) {
+function applyFilter(arr: IServiceProps[], category: string) {
   if (category !== 'All') {
-    arr = arr.filter((project) => project.category === category);
+    arr = arr.filter((service) => service.category === category);
   }
   return arr;
 }

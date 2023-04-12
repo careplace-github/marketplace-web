@@ -1,9 +1,9 @@
 // @mui
-import PropTypes from 'prop-types';
+
 import { Box, Pagination } from '@mui/material';
 //
 import ReviewItem from '../item/ReviewItem';
- 
+
 // types
 import { IReviewItemProp } from '../../../types/review';
 
@@ -17,10 +17,8 @@ export default function ReviewList({ reviews }: Props) {
   return (
     <>
       {reviews.map((review) => {
-        const { id, name, rating, helpful, message, postedAt, avatarUrl, replyComment, users } =
+        const { id, name, rating, helpful, message, postedAt, avatarUrl } =
           review;
-
-        const hasReply = !!replyComment.length;
 
         return (
           <Box key={id}>
@@ -33,22 +31,7 @@ export default function ReviewList({ reviews }: Props) {
               helpful={helpful}
             />
 
-            {hasReply &&
-              replyComment.map((reply) => {
-                const userReply = users.filter((user) => user.id === reply.userId)[0];
 
-                return (
-                  <ReviewItem
-                    key={reply.id}
-                    tagUser={reply.tagUser}
-                    postedAt={reply.postedAt}
-                    message={reply.message}
-                    name={userReply.name}
-                    avatarUrl={userReply.avatarUrl}
-                    hasReply
-                  />
-                );
-              })}
           </Box>
         );
       })}

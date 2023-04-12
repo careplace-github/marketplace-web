@@ -8,17 +8,17 @@ import { ServiceDetailView } from '../../../views';
 
 // ----------------------------------------------------------------------
 
-MarketingCaseStudyPage.getLayout = (page: React.ReactElement) => (
+ServiceDetailPage.getLayout = (page: React.ReactElement) => (
   <MainLayout>{page}</MainLayout>
 );
 
 // ----------------------------------------------------------------------
 
-export default function MarketingCaseStudyPage() {
+export default function ServiceDetailPage() {
   return (
     <>
       <Head>
-        <title>Bank of America - Case Study | Careplace</title>
+        <title>Serviço de Apoio Domiciliário | Careplace</title>
       </Head>
 
       <ServiceDetailView />

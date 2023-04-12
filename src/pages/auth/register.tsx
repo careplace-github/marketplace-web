@@ -3,23 +3,26 @@ import Head from 'next/head';
 // layouts
 import SimpleLayout from '../../layouts/simple';
 // sections
+import GuestGuard from '../../auth/GuestGuard';
 import { RegisterView } from '../../views';
- 
+
 
 // ----------------------------------------------------------------------
 
-RegisterBackgroundPage.getLayout = (page) => <SimpleLayout>{page}</SimpleLayout>;
+RegisterPage.getLayout = (page) => <SimpleLayout>{page}</SimpleLayout>;
 
 // ----------------------------------------------------------------------
 
-export default function RegisterBackgroundPage() {
+export default function RegisterPage() {
   return (
     <>
       <Head>
-        <title> Sign Up | Careplace </title>
+        <title> Registar | Careplace </title>
       </Head>
 
-      <RegisterView />
+      <GuestGuard>
+        <RegisterView />
+      </GuestGuard>
     </>
   );
 }

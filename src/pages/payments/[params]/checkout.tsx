@@ -8,18 +8,18 @@ import { CheckoutView } from '../../../views';
 
 // ----------------------------------------------------------------------
 
-PaymentPage.getLayout = (page: React.ReactElement) => (
+CheckoutPage.getLayout = (page: React.ReactElement) => (
   <SimpleLayout>{page}</SimpleLayout>
 );
 
 
 // ----------------------------------------------------------------------
 
-export default function PaymentPage() {
+export default function CheckoutPage() {
   return (
     <>
       <Head>
-        <title>Payment | Careplace</title>
+        <title>Pagamento | Careplace</title>
       </Head>
 
       <CheckoutView />

@@ -6,14 +6,6 @@ type IReviewUsers = {
   avatarUrl: string;
 };
 
-type IReviewReplyComment = {
-  id: string;
-  userId: string;
-  message: string;
-  postedAt: Date | string | number;
-  tagUser?: string;
-};
-
 export type IReviewItemProp = {
   id: string;
   name: string;
@@ -23,5 +15,4 @@ export type IReviewItemProp = {
   helpful: number;
   avatarUrl: string;
   users: IReviewUsers[];
-  replyComment: IReviewReplyComment[];
 };

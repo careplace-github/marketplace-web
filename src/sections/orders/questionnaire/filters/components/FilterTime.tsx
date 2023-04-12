@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { MobileDatePicker } from '@mui/x-date-pickers';
 import { InputAdornment, InputBase, SxProps, TextFieldProps, Theme } from '@mui/material';
@@ -20,7 +20,7 @@ type Props = {
 
 // ----------------------------------------------------------------------
 
-export default function TravelFilterTime({ departureDay, onChangeDepartureDay, sx }: Props) {
+export default function FilterTime({ departureDay, onChangeDepartureDay, sx }: Props) {
   return (
     <MobileDatePicker
       value={departureDay}

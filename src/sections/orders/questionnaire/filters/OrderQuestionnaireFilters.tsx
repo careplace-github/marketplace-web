@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import { Stack, Button, Divider, StackProps } from '@mui/material';
@@ -10,7 +10,7 @@ import { FilterTime, FilterGuests, FilterLocation } from './components';
 
 // ----------------------------------------------------------------------
 
-export default function Filters({ sx, ...other }: StackProps) {
+export default function OrderQuestionnaireFilters({ sx, ...other }: StackProps) {
   const [departureDay, setDepartureDay] = useState<Date | null>(null);
 
   const [guests, setGuests] = useState({

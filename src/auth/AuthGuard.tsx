@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 // next
 import { useRouter } from 'next/router';
 // components
 import LoadingScreen from '../components/loading-screen';
 //
 import Login from '../pages/auth/login';
-import { AuthContext } from './AuthContext';
+import { useAuthContext } from './AuthContext';
 import { PATHS } from '../routes/paths';
 
 // ----------------------------------------------------------------------
@@ -15,7 +14,7 @@ type AuthGuardProps = {
 };
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { isAuthenticated, isInitialized } = AuthContext();
+  const { isAuthenticated, isInitialized } = useAuthContext();
 
   const { pathname, push } = useRouter();
 
@@ -35,10 +34,8 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   if (requestedLocation && pathname !== requestedLocation) {
     setRequestedLocation(null);
 
-
-
     useEffect(() => {
-      push(PATHS.orders.questionnaire(''));
+      push(PATHS.companies.root);
     }, [pathname, push]);
   }
 

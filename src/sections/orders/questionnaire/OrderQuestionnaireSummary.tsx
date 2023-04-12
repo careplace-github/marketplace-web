@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Card, Stack, Divider, Typography, Avatar, Box, Link } from '@mui/material';
@@ -13,13 +13,13 @@ import TextMaxLine from '../../../components/text-max-line';
 //
 import { FilterGuests, FilterTime } from './filters/components';
 // types
-import { ITourProps } from '../../../types/tour';
+import { ICompanyProps } from '../../../types/company';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  company: ICompanyProps;
   guests: {
     adults: number;
     children: number;
@@ -31,8 +31,8 @@ type Props = {
   onChangeDepartureDay: (newValue: Date | null) => void;
 };
 
-export default function TravelCheckOutSummary({
-  tour,
+export default function OrderQuestionnaireSummary({
+  company,
   guests,
   departureDay,
   isSubmitting,
@@ -42,7 +42,7 @@ export default function TravelCheckOutSummary({
 }: Props) {
   const isSmUp = useResponsive('up', 'sm');
 
-  const { coverImg, slug, ratings, reviews, price, tourGuide } = tour;
+  const { coverImg, slug, ratings, reviews, price, tourGuide } = company;
 
   return (
     <Card>

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // next
 import { useRouter } from 'next/router';
@@ -10,16 +10,16 @@ import { fCurrency } from '../../../utils/formatNumber';
 //
 import { FilterTime, FilterGuests } from '../../orders/questionnaire/filters';
 // types
-import { ITourProps } from '../../../types/tour';
- 
+import { ICompanyProps } from '../../../types/company';
+
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  company: ICompanyProps;
 };
 
-export default function TravelTourDetailsReserveForm({ tour }: Props) {
+export default function CompanyDetailReserveForm({ company }: Props) {
   const { push } = useRouter();
 
   const [departureDay, setDepartureDay] = useState<Date | null>(null);
@@ -29,7 +29,7 @@ export default function TravelTourDetailsReserveForm({ tour }: Props) {
     children: 0,
   });
 
-  const { price, priceSale } = tour;
+  const { price, priceSale } = company;
 
   const handleChangeDepartureDay = (newValue: Date | null) => {
     setDepartureDay(newValue);

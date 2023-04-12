@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Tooltip, Typography, IconButton, Checkbox, Stack } from '@mui/material';
 // components
@@ -12,7 +12,7 @@ interface Props {
   onSelectAllRows: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function EcommerceAccountOrdersTableToolbar({
+export default function AccountOrdersTableToolbar({
   rowCount,
   numSelected,
   onSelectAllRows,
