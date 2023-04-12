@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Stack, Switch, Collapse, Typography, FormControlLabel } from '@mui/material';
 // components
@@ -12,7 +12,7 @@ type Props = {
   onChangeSameBilling: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function TravelCheckOutShippingForm({ sameBilling, onChangeSameBilling }: Props) {
+export default function OrderQuestionnaireShippingForm({ sameBilling, onChangeSameBilling }: Props) {
   return (
     <Stack spacing={5}>
       <div>

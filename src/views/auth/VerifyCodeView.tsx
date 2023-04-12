@@ -39,7 +39,7 @@ export default function VerifyCodeView() {
 
       <Link
         component={NextLink}
-        href="/"
+        href={PATHS.auth.login}
         color="inherit"
         variant="subtitle2"
         sx={{

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import {
@@ -26,7 +26,7 @@ interface Props extends InputBaseProps {
   onDecreaseGuests: (guest?: string) => void;
 }
 
-export default function TravelFilterGuests({
+export default function FilterGuests({
   guests,
   onIncrementGuests,
   onDecreaseGuests,

@@ -16,7 +16,7 @@ type Props = {
   images: string[];
 };
 
-export default function MarketingCaseStudyDetailsGallery({ images }: Props) {
+export default function ServiceDetailGallery({ images }: Props) {
   const theme = useTheme();
 
   const carouselRef = useRef<Carousel | null>(null);

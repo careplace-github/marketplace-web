@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Typography, Stack, Divider } from '@mui/material';
 // utils
@@ -10,7 +10,7 @@ import Iconify, { IconifyProps } from '../../components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function TravelOrderCompletedSummary() {
+export default function OrderQuestionnaireCompletedSummary() {
   return (
     <Stack
       spacing={3}

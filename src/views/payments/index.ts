@@ -1,2 +1,2 @@
 export { default as CheckoutView } from './CheckoutView';
-export { default as CheckoutCompletedView } from './CheckoutCompletedView'
+export { default as CheckoutSuccessView } from './CheckoutSuccessView'

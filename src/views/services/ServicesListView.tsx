@@ -1,14 +1,14 @@
 // @mui
 import { Container, Typography, Stack } from '@mui/material';
 // _mock
-import { _caseStudies, _blogMarketingPosts, _testimonials } from '../../_mock';
+import { _caseStudies as _services } from '../../_mock';
 //
 import { ServicesList } from '../../sections/services';
  
 
 // ----------------------------------------------------------------------
 
-export default function MarketingCaseStudiesView() {
+export default function ServicesListView() {
   return (
     <>
       <Container>
@@ -27,7 +27,7 @@ export default function MarketingCaseStudiesView() {
           </Typography>
         </Stack>
 
-        <ServicesList caseStudies={_caseStudies} />
+        <ServicesList services={_services} />
       </Container>
     </>
   );

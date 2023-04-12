@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -20,7 +20,7 @@ type Props = {
   };
 };
 
-export default function EcommerceAccountPaymentCard({ card }: Props) {
+export default function AccountPaymentCard({ card }: Props) {
   const { value, label, cardNumber, cardHolder, expirationDate, isPrimary } = card;
 
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);

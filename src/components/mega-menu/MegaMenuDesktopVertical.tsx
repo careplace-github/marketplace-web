@@ -7,7 +7,7 @@ import { Link, List, Paper, ListItem, Typography, Divider, Stack } from '@mui/ma
 // types
 import { ParentItemProps, MegaMenuItemProps } from './types';
 // config
-import { NAV } from '../../config';
+import { NAV } from '../../config/config';
 //
 import Iconify from '../iconify';
 //

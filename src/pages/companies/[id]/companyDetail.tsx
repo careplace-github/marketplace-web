@@ -18,7 +18,7 @@ export default function CompanyDetailPage() {
   return (
     <>
       <Head>
-        <title>Italian Delights - 12 Days | Careplace</title>
+        <title>Empresa de Serviço de Apoio Domiciliário | Careplace</title>
       </Head>
 
       <CompanyDetailView />

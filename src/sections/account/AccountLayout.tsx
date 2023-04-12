@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+ import { useState } from 'react';
 // @mui
 import { Container, Stack, Typography, Button, Box } from '@mui/material';
 // hooks
@@ -17,7 +16,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function EcommerceAccountLayout({ children }: Props) {
+export default function AccountLayout({ children }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   const [menuOpen, setMemuOpen] = useState(false);

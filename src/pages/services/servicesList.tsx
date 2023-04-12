@@ -19,7 +19,7 @@ export default function ServicesPage() {
   return (
     <>
       <Head>
-        <title>Case Studies | Careplace</title>
+        <title>Serviços de Apoio Domiciliário | Careplace</title>
       </Head>
 
       <ServicesListView />

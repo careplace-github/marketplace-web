@@ -1,7 +1,7 @@
 // next
 import NextLink from 'next/link';
 // @mui
-import { Link, Stack, Divider, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // routes
 import { PATHS } from 'src/routes/paths';
@@ -52,7 +52,7 @@ export default function RegisterView() {
             {`Already have an account? `}
             <Link
               component={NextLink}
-              href="/"
+              href={PATHS.auth.login}
               variant="subtitle2"
               color="primary"
             >

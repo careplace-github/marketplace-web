@@ -1,11 +1,8 @@
-import PropTypes from 'prop-types';
+ 
 // next
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 // @mui
 import { Divider, Stack, Card, Typography, Box, Link, Avatar } from '@mui/material';
-// routes
-import { PATHS } from '../../../routes/paths';
 // utils
 import { fCurrency, fShortenNumber } from '../../../utils/formatNumber';
 // components
@@ -14,16 +11,16 @@ import Label from '../../../components/label';
 import Iconify from '../../../components/iconify';
 import TextMaxLine from '../../../components/text-max-line';
 // types
-import { ICourseProps } from '../../../types/course';
+import { ICompanyProps } from '../../../types/company';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  course: ICourseProps;
+  company: ICompanyProps;
   vertical?: boolean;
 };
 
-export default function ElearningCourseItem({ course, vertical }: Props) {
+export default function CompanyListItem({ company, vertical }: Props) {
   const {
     slug,
     level,
@@ -31,14 +28,13 @@ export default function ElearningCourseItem({ course, vertical }: Props) {
     ratings,
     reviews,
     teachers,
-    students,
     coverImg,
     category,
     priceSale,
     bestSeller,
     totalHours,
     description,
-  } = course;
+  } = company;
 
 
   return (
@@ -144,12 +140,7 @@ export default function ElearningCourseItem({ course, vertical }: Props) {
             )}
           </Stack>
 
-          <Stack direction="row" sx={{ typography: 'subtitle2' }}>
-            {fShortenNumber(students)}
-            <Box component="span" typography="body2" sx={{ ml: 0.5 }}>
-              students
-            </Box>
-          </Stack>
+          
         </Stack>
 
         <Stack direction="row" alignItems="center">

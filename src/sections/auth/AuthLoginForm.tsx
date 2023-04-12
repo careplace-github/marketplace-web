@@ -7,20 +7,28 @@ import NextLink from 'next/link';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Stack, Link, Alert, IconButton, InputAdornment } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // routes
 import { PATHS } from 'src/routes/paths';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
+// auth
+import { useAuthContext } from '../../auth/AuthContext';
 
 // ----------------------------------------------------------------------
 
 type FormValuesProps = {
   email: string;
   password: string;
+  afterSubmit?: string;
 };
 
 export default function AuthLoginForm() {
+  const theme = useTheme();
+
+  const { login } = useAuthContext();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const LoginSchema = Yup.object().shape({
@@ -42,8 +50,9 @@ export default function AuthLoginForm() {
 
   const {
     reset,
+    setError,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { errors, isSubmitting },
   } = methods;
 
   const handleShowPassword = () => {
@@ -52,18 +61,25 @@ export default function AuthLoginForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      console.log('DATA', data);
+      await login(data.email, data.password);
     } catch (error) {
-      console.error(error);
+      console.log(error)
+      reset();
+      
+      setError('afterSubmit', {
+        ...error,
+        message: error.message || error,
+      });
     }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5} alignItems="flex-end">
+      {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+
         <RHFTextField name="email" label="Email address" />
+
 
         <RHFTextField
           name="password"
@@ -82,7 +98,7 @@ export default function AuthLoginForm() {
 
         <Link
           component={NextLink}
-          href="/auth/reset-password"
+          href={PATHS.auth.resetPassword}
           variant="body2"
           underline="always"
           color="text.secondary"
@@ -97,10 +113,21 @@ export default function AuthLoginForm() {
           type="submit"
           variant="contained"
           loading={isSubmitting}
+          sx={{
+            px: 4,
+            bgcolor: 'primary.main',
+            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+              color: 
+                theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            },
+          }}
         >
-          Login
+          Entrar
         </LoadingButton>
       </Stack>
     </FormProvider>
   );
 }
+

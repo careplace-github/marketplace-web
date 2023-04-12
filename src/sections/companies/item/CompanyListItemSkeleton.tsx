@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Skeleton, Stack, Card, CardProps } from '@mui/material';
 // hooks
@@ -10,7 +10,7 @@ interface Props extends CardProps {
   vertical?: boolean;
 }
 
-export default function ElearningCourseItemSkeleton({ vertical, ...other }: Props) {
+export default function CompanyListItemSkeleton({ vertical, ...other }: Props) {
   const isSmUp = useResponsive('up', 'sm');
 
   const verticalStyle = vertical || !isSmUp;

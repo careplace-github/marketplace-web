@@ -1,8 +1,7 @@
 // next
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 // @mui
-import { Link, Stack, Divider, Typography } from '@mui/material';
+import { Link, Stack, Typography } from '@mui/material';
 import { alpha, styled } from '@mui/material/styles';
 // routes
 import { PATHS } from 'src/routes/paths';

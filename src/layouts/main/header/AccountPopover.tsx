@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // @mui
@@ -7,7 +6,7 @@ import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
 import { PATHS } from '../../../routes/paths';
 // auth
-import { AuthContext } from '../../../auth/AuthContext';
+import { useAuthContext } from '../../../auth/AuthContext';
 // components
 import { CustomAvatar } from '../../../components/custom-avatar';
 import { useSnackbar } from '../../../components/snackbar';
@@ -19,16 +18,16 @@ import { IconButtonAnimate } from '../../../components/animate';
 
 const OPTIONS = [
   {
-    label: 'Home',
-    linkTo: '/',
+    label: 'Início',
+    linkTo: PATHS.home,
   },
   {
-    label: 'Profile',
-    linkTo: PATHS.auth.login,
+    label: 'Conta',
+    linkTo: PATHS.account.root,
   },
   {
-    label: 'Settings',
-    linkTo: PATHS.auth.login,
+    label: 'Familiares',
+    linkTo: PATHS.account.relatives,
   },
 ];
 
@@ -37,7 +36,7 @@ const OPTIONS = [
 export default function AccountPopover() {
   const navigate = useNavigate();
 
-  const { user, logout } = AuthContext();
+  const { user, logout } = useAuthContext();
 
   const { enqueueSnackbar } = useSnackbar();
 

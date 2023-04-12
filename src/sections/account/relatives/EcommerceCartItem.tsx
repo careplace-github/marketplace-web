@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Stack, TextField, IconButton, Typography } from '@mui/material';
 // utils
@@ -6,7 +6,7 @@ import { fCurrency } from 'src/utils/formatNumber';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { IProductItemProps } from 'src/types/product';
+import { IProductItemProps } from 'src/types/relative';
 
 // ----------------------------------------------------------------------
 

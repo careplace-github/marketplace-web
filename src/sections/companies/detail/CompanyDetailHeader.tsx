@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 import { useState } from 'react';
 // @mui
 import {
@@ -19,17 +19,17 @@ import { _socials } from '../../../_mock';
 // components
 import Iconify from '../../../components/iconify';
 // types
-import { ITourProps } from '../../../types/tour';
+import { ICompanyProps } from '../../../types/company';
  
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  tour: ITourProps;
+  company: ICompanyProps;
 };
 
-export default function TravelTourDetailsHeader({ tour }: Props) {
-  const { slug, ratings, reviews, location, favorited, tourGuide } = tour;
+export default function CompanyDetailHeader({ company }: Props) {
+  const { slug, ratings, reviews, location, favorited, tourGuide } = company;
 
   const [favorite, setFavorite] = useState(favorited);
 

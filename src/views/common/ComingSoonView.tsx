@@ -1,7 +1,6 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import {
-  Box,
   Stack,
   Button,
   TextField,
@@ -9,8 +8,6 @@ import {
   IconButton,
   InputAdornment,
 } from '@mui/material';
-// hooks
-import useCountdown from 'src/hooks/useCountdown';
 // _mock
 import { _socials } from 'src/_mock';
 // components
@@ -20,7 +17,6 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function ComingSoonView() {
-  const { days, hours, minutes, seconds } = useCountdown(new Date('07/07/2024 21:30'));
 
   return (
     <>

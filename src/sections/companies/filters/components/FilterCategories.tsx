@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // @mui
 import { Box, Autocomplete, Checkbox, TextField } from '@mui/material';
 // _mock
@@ -11,7 +11,7 @@ type Props = {
   onChangeCategory: (keyword: string[]) => void;
 };
 
-export default function ElearningFilterCategories({ filterCategories, onChangeCategory }: Props) {
+export default function FilterCategories({ filterCategories, onChangeCategory }: Props) {
   return (
     <Autocomplete
       multiple

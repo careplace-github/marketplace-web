@@ -2,9 +2,9 @@ import { useState, useEffect } from 'react';
 // @mui
 import { Container, Stack, Typography, Button, Box } from '@mui/material';
 // config
-import { NAV } from '../../config';
+import { NAV } from '../../config/config';
 // _mock
-import { _courses } from '../../_mock';
+import { _courses as _companies } from '../../_mock';
 // components
 import Iconify from '../../components/iconify';
 //
@@ -14,7 +14,7 @@ import { CompaniesFilters } from '../../sections/companies/filters';
 
 // ----------------------------------------------------------------------
 
-export default function ElearningCoursesView() {
+export default function CompaniesListView() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ export default function ElearningCoursesView() {
             py: 5,
           }}
         >
-          <Typography variant="h2">Courses</Typography>
+          <Typography variant="h2">companies</Typography>
 
           <Button
             color="inherit"
@@ -71,7 +71,7 @@ export default function ElearningCoursesView() {
               width: { md: `calc(100% - ${NAV.W_DRAWER}px)` },
             }}
           >
-            <CompaniesList courses={_courses} loading={loading} />
+            <CompaniesList companies={_companies} loading={loading} />
           </Box>
         </Stack>
       </Container>

@@ -5,7 +5,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function EcommerceAccountNewCardForm() {
+export default function AccountNewCardForm() {
   return (
     <Stack spacing={2.5}>
       <TextField

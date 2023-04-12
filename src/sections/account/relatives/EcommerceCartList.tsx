@@ -1,8 +1,8 @@
 // @mui
-import PropTypes from 'prop-types';
+ 
 import { Stack } from '@mui/material';
 // types
-import { IProductItemProps } from 'src/types/product';
+import { IProductItemProps } from 'src/types/relative';
 // components
 import Scrollbar from 'src/components/scrollbar';
 //

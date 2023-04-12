@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+ 
 // next
 import NextLink from 'next/link';
 // @mui
@@ -59,7 +59,7 @@ type Props = {
   onClose: VoidFunction;
 };
 
-export default function EcommerceAccountMenu({ open, onClose }: Props) {
+export default function AccountMenu({ open, onClose }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   const renderContent = (
