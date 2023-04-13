@@ -4,6 +4,7 @@ import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/mater
 // hooks
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
+import { useState } from 'react';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 // config
@@ -12,6 +13,7 @@ import { HEADER } from 'src/config';
 import Logo from 'src/components/logo';
 import Label from 'src/components/label';
 import SettingsDrawer from 'src/components/settings/drawer';
+import AccountPopover from "./AccountPopover"
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import Searchbar from '../../components/Searchbar';
@@ -25,6 +27,7 @@ type Props = {
 
 export default function Header({ headerOnDark }: Props) {
   const theme = useTheme();
+  const [isLogged, setIsLogged] = useState(true);
 
   const isMdUp = useResponsive('up', 'md');
 
@@ -69,18 +72,18 @@ export default function Header({ headerOnDark }: Props) {
             alignItems="center"
             justifyContent="flex-end"
           >
-            
 
-            <Link
+
+            {!isLogged && <Link
               href="/auth/register"
               variant='subtitle1'
               underline='none'
-              
+
 
               sx={{
-                color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white'  ,
+                color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
                 '&:hover': {
-                  color: 
+                  color:
                     theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
                 },
 
@@ -88,9 +91,9 @@ export default function Header({ headerOnDark }: Props) {
               }}
             >
               Registar
-            </Link>
+            </Link>}
 
-            {isMdUp && (
+            {isMdUp && isLogged ? <AccountPopover /> : (
               <Button
                 variant="contained"
                 color="inherit"
@@ -102,7 +105,7 @@ export default function Header({ headerOnDark }: Props) {
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                   '&:hover': {
                     bgcolor: 'primary.dark',
-                    color: 
+                    color:
                       theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                   },
                 }}
@@ -110,6 +113,7 @@ export default function Header({ headerOnDark }: Props) {
                 Entrar
               </Button>
             )}
+
           </Stack>
 
           {!isMdUp && <NavMobile data={navConfig} />}

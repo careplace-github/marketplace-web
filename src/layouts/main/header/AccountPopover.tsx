@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+// next
+import { useRouter } from 'next/router';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
@@ -35,9 +37,8 @@ const OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const navigate = useNavigate();
-
   const { user, logout } = AuthContext();
+
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -54,7 +55,7 @@ export default function AccountPopover() {
   const handleLogout = async () => {
     try {
       logout();
-      navigate(PATHS.auth.login, { replace: true });
+
       handleClosePopover();
     } catch (error) {
       console.error(error);
@@ -64,7 +65,7 @@ export default function AccountPopover() {
 
   const handleClickItem = (path: string) => {
     handleClosePopover();
-    navigate(path);
+
   };
 
   return (
@@ -86,7 +87,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <CustomAvatar src={user?.photoURL} alt={user?.displayName} name={user?.displayName} />
+        <CustomAvatar src={user?.profile_picture} alt={user?.displayName} name={user?.displayName} />
       </IconButtonAnimate>
 
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
