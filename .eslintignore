@@ -1,4 +1,10 @@
 // .eslintignore
-**/node_modules/*
+/node_modules
+src/_mock/
 **/out/*
-**/.next/*
+**/.next/**
+**/_next/**
+**/dist/**
+package.json
+package-lock.json
+

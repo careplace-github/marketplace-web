@@ -40,9 +40,11 @@
     }
   },
   "rules": {
-    "import/no-unresolved": "off", // Remove
+    "import/no-unresolved": 0, // Remove
     "react-hooks/rules-of-hooks": 0, // Remove
     "prefer-regex-literals": 0, // Remove
+    "import/no-named-as-default-member": 0, // Remove
+    "import/no-named-as-default": 0, // Remove
 
     "react/jsx-no-constructed-context-values": 0,
 
