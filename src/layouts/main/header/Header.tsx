@@ -4,21 +4,21 @@ import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/mater
 // hooks
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
-import { useEffect } from 'react';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 // auth
 import { useAuthContext } from 'src/contexts';
 // config
 import { HEADER } from 'src/layouts/config';
+// paths
+import { PATHS } from "src/routes"
 // components
 import Logo from 'src/components/logo';
 import AccountPopover from "./AccountPopover"
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-//paths
-import { PATHS } from "src/routes"
+
 
 
 // ----------------------------------------------------------------------
