@@ -17,8 +17,6 @@ import AccountPopover from "./AccountPopover"
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-// auth
-import { useAuthContext } from 'src/contexts';
 //paths
 import { PATHS } from "src/routes"
 
