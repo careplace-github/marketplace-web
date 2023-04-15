@@ -27,6 +27,7 @@ export const PATHS = {
     relatives: `/account/relatives`,
     orders: `/account/orders`,
     payment: `/account/payment`,
+    settings: `/account/settings`,
   },
 
   // Order
