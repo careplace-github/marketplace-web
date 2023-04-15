@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react';
 // utils
 import axios from 'src/lib/axios';
-import { localStorageAvailable, setItem } from 'src/utils';
+import { localStorageAvailable, setItem, getItem } from 'src/utils';
 //
 import { isValidToken, setSession } from '../utils';
 import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../types';
@@ -85,12 +85,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const storageAvailable = localStorageAvailable();
 
-  
+
   const initialize = useCallback(async () => {
+
     try {
       const accessToken = storageAvailable ? localStorage.getItem('accessToken') : '';
 
       if (accessToken && isValidToken(accessToken)) {
+
+        let user = {
+          name: getItem('name'),
+          profile_picture: getItem('profile_picture')
+        }
 
         /**
          * Allows to initialize a login protected page without having to wait for the user to be fetched
@@ -99,19 +105,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
           type: Types.INITIAL,
           payload: {
             isAuthenticated: true,
-            user: null,
+            user: user,
           },
         });
-        
+
         setSession(accessToken);
 
         const response = await axios.get('/users/account');
 
-        const { user } = response.data;
+        user = response.data;
 
         setItem('profile_picture', user.profile_picture)
         setItem('name', user.name);
- 
+
 
         dispatch({
           type: Types.INITIAL,
@@ -165,7 +171,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const user = response.data;
 
-    
+    setItem('profile_picture', user.profile_picture)
+    setItem('name', user.name);
+
+
 
     dispatch({
       type: Types.LOGIN,
@@ -203,7 +212,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setSession(null);
     setItem('profile_picture', null)
     setItem('name', null);
-    
+
     dispatch({
       type: Types.LOGOUT,
     });
@@ -216,9 +225,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       user: state.user,
       method: 'jwt',
       login,
-      loginWithGoogle: () => {},
-      loginWithGithub: () => {},
-      loginWithTwitter: () => {},
+      loginWithGoogle: () => { },
+      loginWithGithub: () => { },
+      loginWithTwitter: () => { },
       register,
       logout,
     }),
