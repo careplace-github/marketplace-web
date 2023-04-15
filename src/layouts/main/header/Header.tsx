@@ -7,6 +7,8 @@ import useResponsive from 'src/hooks/useResponsive';
 import { useEffect } from 'react';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
+// auth
+import { useAuthContext } from 'src/contexts';
 // config
 import { HEADER } from 'src/layouts/config';
 // components
@@ -15,8 +17,7 @@ import AccountPopover from "./AccountPopover"
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-// auth
-import { useAuthContext } from 'src/contexts';
+
 
 
 // ----------------------------------------------------------------------
@@ -35,7 +36,7 @@ export default function Header({ headerOnDark }: Props) {
 
   const isOffset = useOffSetTop();
 
-  return isInitialized && (
+  return isInitialized ? (
     <AppBar color="transparent" sx={{ boxShadow: 'none' }}>
       <Toolbar
         disableGutters
@@ -124,5 +125,7 @@ export default function Header({ headerOnDark }: Props) {
 
       {isOffset && <HeaderShadow />}
     </AppBar>
-  );
+  ) :<></> 
+
+  ;
 }
