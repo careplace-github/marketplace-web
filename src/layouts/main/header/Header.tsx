@@ -16,8 +16,10 @@ import SettingsDrawer from 'src/components/settings/drawer';
 import AccountPopover from "./AccountPopover"
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
-import Searchbar from '../../components/Searchbar';
 import HeaderShadow from '../../components/HeaderShadow';
+// auth
+import { useAuthContext } from '../../../auth/AuthContext';
+
 
 // ----------------------------------------------------------------------
 
@@ -26,6 +28,9 @@ type Props = {
 };
 
 export default function Header({ headerOnDark }: Props) {
+
+  const { isAuthenticated } = useAuthContext();
+
   const theme = useTheme();
   const [isLogged, setIsLogged] = useState(true);
 
@@ -74,7 +79,7 @@ export default function Header({ headerOnDark }: Props) {
           >
 
 
-            {!isLogged && <Link
+            {!isAuthenticated && <Link
               href="/auth/register"
               variant='subtitle1'
               underline='none'
@@ -93,7 +98,7 @@ export default function Header({ headerOnDark }: Props) {
               Registar
             </Link>}
 
-            {isMdUp && isLogged ? <AccountPopover /> : (
+            {isMdUp && isAuthenticated ? <AccountPopover /> : (
               <Button
                 variant="contained"
                 color="inherit"
