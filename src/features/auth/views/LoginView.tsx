@@ -10,6 +10,7 @@ import { bgGradient } from 'src/utils/cssStyles';
 //
 import { AuthLoginForm } from '../components';
 
+
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled('div')(({ theme }) => ({
@@ -27,6 +28,8 @@ const StyledRoot = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+
+
   return (
     <StyledRoot>
       <Stack
