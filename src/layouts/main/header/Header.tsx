@@ -4,17 +4,19 @@ import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/mater
 // hooks
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
-// auth
-import { useAuthContext } from 'src/contexts/useAuthContext';
+import { useEffect } from 'react';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 // config
-import { HEADER } from 'src/layouts';
+import { HEADER } from 'src/layouts/config';
 // components
 import Logo from 'src/components/logo';
+import AccountPopover from "./AccountPopover"
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
+// auth
+import { useAuthContext } from 'src/contexts';
 
 
 // ----------------------------------------------------------------------
@@ -25,7 +27,7 @@ type Props = {
 
 export default function Header({ headerOnDark }: Props) {
 
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, isInitialized } = useAuthContext();
 
   const theme = useTheme();
 
@@ -33,7 +35,7 @@ export default function Header({ headerOnDark }: Props) {
 
   const isOffset = useOffSetTop();
 
-  return (
+  return isInitialized && (
     <AppBar color="transparent" sx={{ boxShadow: 'none' }}>
       <Toolbar
         disableGutters
@@ -72,18 +74,18 @@ export default function Header({ headerOnDark }: Props) {
             alignItems="center"
             justifyContent="flex-end"
           >
-            
 
-            <Link
+
+            {!isAuthenticated && <Link
               href="/auth/register"
               variant='subtitle1'
               underline='none'
-              
+
 
               sx={{
-                color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white'  ,
+                color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
                 '&:hover': {
-                  color: 
+                  color:
                     theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
                 },
 
@@ -91,9 +93,9 @@ export default function Header({ headerOnDark }: Props) {
               }}
             >
               Registar
-            </Link>
+            </Link>}
 
-            {isMdUp && (
+            {isMdUp && isAuthenticated ? <AccountPopover /> : (
               <Button
                 variant="contained"
                 color="inherit"
@@ -105,7 +107,7 @@ export default function Header({ headerOnDark }: Props) {
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                   '&:hover': {
                     bgcolor: 'primary.dark',
-                    color: 
+                    color:
                       theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                   },
                 }}
@@ -113,6 +115,7 @@ export default function Header({ headerOnDark }: Props) {
                 Entrar
               </Button>
             )}
+
           </Stack>
 
           {!isMdUp && <NavMobile data={navConfig} />}
