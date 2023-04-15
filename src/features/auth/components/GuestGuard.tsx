@@ -20,12 +20,12 @@ export default function GuestGuard({ children }: GuestGuardProps) {
   const { isAuthenticated, isInitialized } = useAuthContext();
 
   if (isAuthenticated) {
-    
+
     const { pathname, push } = useRouter();
 
-  useEffect(() => {
-    push(PATHS.account.root);
-  }, [pathname, push]);
+    useEffect(() => {
+      push(PATHS.companies.root);
+    }, [pathname, push]);
   }
 
   if (!isInitialized) {

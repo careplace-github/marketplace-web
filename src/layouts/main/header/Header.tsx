@@ -4,13 +4,14 @@ import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/mater
 // hooks
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
-import { useEffect } from 'react';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 // auth
 import { useAuthContext } from 'src/contexts';
 // config
 import { HEADER } from 'src/layouts/config';
+// paths
+import { PATHS } from "src/routes"
 // components
 import Logo from 'src/components/logo';
 import AccountPopover from "./AccountPopover"
@@ -62,7 +63,7 @@ export default function Header({ headerOnDark }: Props) {
         }}
       >
         <Container sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ lineHeight: 0, position: 'relative', pr: 15 }}>
+          <Box sx={{ lineHeight: 0, position: 'relative', pr: isMdUp ? 15 : 0 }}>
             <Logo />
           </Box>
 
@@ -77,12 +78,10 @@ export default function Header({ headerOnDark }: Props) {
           >
 
 
-            {!isAuthenticated && <Link
-              href="/auth/register"
+            {!isAuthenticated && isMdUp && <Link
+              href={PATHS.auth.register}
               variant='subtitle1'
               underline='none'
-
-
               sx={{
                 color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
                 '&:hover': {
@@ -96,11 +95,11 @@ export default function Header({ headerOnDark }: Props) {
               Registar
             </Link>}
 
-            {isMdUp && isAuthenticated ? <AccountPopover /> : (
+            {isMdUp && (isAuthenticated ? <AccountPopover /> : (
               <Button
                 variant="contained"
                 color="inherit"
-                href='/auth/login'
+                href={PATHS.auth.login}
                 rel="noopener"
                 sx={{
                   px: 4,
@@ -115,7 +114,7 @@ export default function Header({ headerOnDark }: Props) {
               >
                 Entrar
               </Button>
-            )}
+            ))}
 
           </Stack>
 
@@ -125,7 +124,5 @@ export default function Header({ headerOnDark }: Props) {
 
       {isOffset && <HeaderShadow />}
     </AppBar>
-  ) :<></> 
-
-  ;
+  ) : <></>;
 }
