@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 // next
 import { useRouter } from 'next/router';
+// auth
+import { useAuthContext } from 'src/contexts';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
 import { PATHS } from '../../../routes/paths';
-// auth
-import { useAuthContext } from 'src/contexts';
 // components
 import { CustomAvatar } from '../../../components/custom-avatar';
 import { useSnackbar } from '../../../components/snackbar';

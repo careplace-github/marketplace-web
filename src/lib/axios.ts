@@ -2,13 +2,13 @@ import axios from 'axios';
 
 // ----------------------------------------------------------------------
 
-const HOST_API_KEY = process.env.HOST_API_KEY || 'http://localhost:8080/api/v1';
+const HOST_API = process.env.NEXT_PUBLIC_HOST_API;
 
-const axiosInstance = axios.create({ baseURL: HOST_API_KEY });
+const axiosInstance = axios.create({ baseURL: HOST_API });
 
 axiosInstance.interceptors.response.use(
   (response) => response,
-  (error) => Promise.reject((error.response && error.response.data) || 'Algo correu mal')
+  (error) => Promise.reject((error.response && error.response.data) || 'Erro ao conectar com o servidor.')
 );
 
 export default axiosInstance;
