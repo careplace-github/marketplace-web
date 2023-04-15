@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // next
 import NextLink from 'next/link';
 // @mui
@@ -31,12 +31,12 @@ export default function AuthLoginForm() {
   const { login } = useAuthContext();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState()
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().required('Email is required').email('That is not an email'),
+    email: Yup.string().required('O Email é obrigatório.').email('Este email não é válido.'),
     password: Yup.string()
-      .required('Password is required')
-      .min(6, 'Password should be of minimum 6 characters length'),
+      .required('A Password é obrigatória.')
   });
 
   const defaultValues = {
@@ -63,24 +63,23 @@ export default function AuthLoginForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await login(data.email, data.password);
-
+      setErrorMessage()
     } catch (error) {
-      console.log(error)
       reset();
-
-      setError('afterSubmit', {
-        ...error,
-        message: error.message || error,
-      });
+      if (error.error.message === "Incorrect username or password.") {
+        setErrorMessage("O email ou a password estão incorretos")
+      } else {
+        setErrorMessage("Algo correu mal. Tente novamente.");
+      }
     }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={2.5} alignItems="flex-end">
-        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+      <Stack sx={{ width: "100%" }} spacing={2.5} alignItems="center">
+        {errorMessage && <Alert sx={{ width: "100%" }} severity="error">{errorMessage}</Alert>}
 
-        <RHFTextField name="email" label="Email address" />
+        <RHFTextField name="email" label="Email" />
 
 
         <RHFTextField
