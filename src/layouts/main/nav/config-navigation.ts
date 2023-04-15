@@ -1,5 +1,5 @@
 // routes
-import { PATHS } from '../../../routes/paths';
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -14,9 +14,6 @@ export const footerLinks = [
       { title: 'Suporte', path: '/' },
       { title: 'Equipa', path: '/' },
       { title: 'Perguntas Frequentes', path: '/' },
-      
-      
-    
     ],
   },
   {
@@ -100,7 +97,6 @@ export const navLinks = [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
       { title: 'Suporte', path: PATHS.comingsoon },
-      
     ],
   },
 ];

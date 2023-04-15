@@ -2,9 +2,9 @@
 import Head from 'next/head';
  
 // layouts
-import MainLayout from '../../layouts/main';
-// sections
-import { AccountRelativesView } from '../../views';
+import MainLayout from 'src/layouts/main';
+// features
+import { AccountRelativesView } from 'src/features/account';
 
 // ----------------------------------------------------------------------
 

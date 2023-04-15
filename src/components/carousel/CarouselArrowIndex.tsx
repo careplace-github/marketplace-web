@@ -4,7 +4,7 @@ import { Typography, Box, IconButton, SxProps } from '@mui/material';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 //
-import { IconifyProps } from '../iconify';
+import { IconifyProps } from 'src/components/iconify';
 //
 import { LeftIcon, RightIcon } from './Icon';
 

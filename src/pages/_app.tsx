@@ -29,9 +29,9 @@ import ThemeProvider from 'src/theme';
 import createEmotionCache from 'src/utils/createEmotionCache';
 // components
 import ProgressBar from 'src/components/progress-bar';
-import { ThemeSettings, SettingsProvider } from 'src/components/settings';
+import { ThemeSettings, SettingsProvider } from 'src/features/settings';
 import MotionLazyContainer from 'src/components/animate/MotionLazyContainer';
-import { AuthProvider } from '../auth/JwtContext'
+import { AuthProvider } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 

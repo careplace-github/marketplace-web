@@ -2,10 +2,10 @@
 import Head from 'next/head';
  
 // layouts
-import MainLayout from '../../../layouts/main';
-// sections
+import MainLayout from 'src/layouts/main';
+// features
 import { CheckoutSuccessView
- } from '../../../views';
+ } from 'src/features/payments';
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
 module.exports = {
   swcMinify: false,
-  trailingSlash: true,
+  trailingSlash: false,
 };

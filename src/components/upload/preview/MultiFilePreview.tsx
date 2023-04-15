@@ -1,4 +1,3 @@
-import React from 'react';
 import { m, AnimatePresence } from 'framer-motion';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -11,7 +10,6 @@ import { varFade } from '../../animate';
 import FileThumbnail, { fileData } from '../../file-thumbnail';
 //
 import { UploadProps } from '../types';
-
 
 // ----------------------------------------------------------------------
 

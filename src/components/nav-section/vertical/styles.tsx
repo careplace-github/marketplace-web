@@ -2,9 +2,9 @@
 import { alpha, styled } from '@mui/material/styles';
 import { ListItemIcon, ListSubheader, ListItemButton } from '@mui/material';
 // config
-import { ICON, NAV } from 'src/config';
+import { ICON, NAV } from 'src/layouts/config';
 //
-import { NavItemProps } from '../types';
+import { NavItemProps } from 'src/components/nav-section/types';
 
 // ----------------------------------------------------------------------
 

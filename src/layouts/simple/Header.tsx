@@ -4,7 +4,7 @@ import NextLink from 'next/link';
 import { useTheme } from '@mui/material/styles';
 import { AppBar, Toolbar, Link, Stack } from '@mui/material';
 // config
-import { HEADER } from 'src/config';
+import { HEADER } from 'src/layouts';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 // components

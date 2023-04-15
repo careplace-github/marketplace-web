@@ -9,7 +9,7 @@ import { useLightboxState } from 'yet-another-react-lightbox/core';
 // @mui
 import { Typography } from '@mui/material';
 //
-import Iconify from '../iconify';
+import Iconify from 'src/components/iconify';
 //
 import { LightBoxProps } from './types';
 import StyledLightbox from './styles';

@@ -4,10 +4,10 @@ import NextLink from 'next/link';
 import Masonry from '@mui/lab/Masonry';
 import { alpha, Theme } from '@mui/material/styles';
 import { Link, List, Paper, ListItem, Typography, Divider, Stack } from '@mui/material';
+// config
+import { NAV } from 'src/layouts';
 // types
 import { ParentItemProps, MegaMenuItemProps } from './types';
-// config
-import { NAV } from '../../config/config';
 //
 import Iconify from '../iconify';
 //

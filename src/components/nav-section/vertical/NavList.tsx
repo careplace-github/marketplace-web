@@ -6,7 +6,7 @@ import { Collapse } from '@mui/material';
 // hooks
 import useActiveLink from 'src/hooks/useActiveLink';
 //
-import { NavListProps } from '../types';
+import { NavListProps } from 'src/components/nav-section/types';
 import NavItem from './NavItem';
 
 // ----------------------------------------------------------------------

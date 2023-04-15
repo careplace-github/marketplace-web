@@ -2,9 +2,9 @@
 import Head from 'next/head';
  
 // layouts
-import MainLayout from '../../../layouts/main';
-// sections
-import { ServiceDetailView } from '../../../views';
+import MainLayout from 'src/layouts/main';
+// features
+import { ServiceDetailView } from 'src/features/services';
 
 // ----------------------------------------------------------------------
 

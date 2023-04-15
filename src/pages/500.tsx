@@ -1,9 +1,12 @@
 // next
 import Head from 'next/head';
+// react
+import React from 'react';
 // layouts
 import CompactLayout from 'src/layouts/compact';
-// sections
-import { Error500View } from '../views';
+// features
+import { Error500View } from 'src/features/common';
+
 
 // ----------------------------------------------------------------------
 

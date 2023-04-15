@@ -1,7 +1,6 @@
 import { add } from 'date-fns';
 //
 import _mock from '../_mock';
-import { jobContent } from '../assets';
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +38,6 @@ export const _jobs = [...Array(12)].map((_, index) => ({
     'Device support',
     'Health care',
   ],
-  content: jobContent,
   shareLinks: _mock.shareLinks,
 }));
 

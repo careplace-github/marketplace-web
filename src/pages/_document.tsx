@@ -35,7 +35,7 @@ const Meta = () => (
     <meta name="theme-color" content={palette('light').primary.main} />
     <meta
       name="description"
-      content="The ZONE is built on top of MUI, a powerful library that provides flexible, customizable, and easy-to-use components."
+      content="Careplace Description"
     />
     <meta name="keywords" content="react,material,kit,application,landing & corporate,template" />
     <meta name="author" content="Careplace Kit" />
@@ -48,7 +48,7 @@ interface MyDocumentProps extends DocumentProps {
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang="en" className={primaryFont.className}>
+    <Html lang="pt" className={primaryFont.className}>
       <Head>
         <Favicon />
         <Meta />

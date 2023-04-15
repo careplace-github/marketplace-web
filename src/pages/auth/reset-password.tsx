@@ -1,9 +1,9 @@
 // next
 import Head from 'next/head';
 // layouts
-import CompactLayout from '../../layouts/compact';
-// sections
-import { ResetPasswordView } from '../../views';
+import CompactLayout from 'src/layouts/compact';
+// features
+import { ResetPasswordView } from 'src/features/auth';
  
 
 // ----------------------------------------------------------------------

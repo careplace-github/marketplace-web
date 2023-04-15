@@ -16,7 +16,7 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
-    "plugin:@next/next/recommended"
+    "plugin:@next/next/recommended",
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -45,6 +45,7 @@
     "prefer-regex-literals": 0, // Remove
     "import/no-named-as-default-member": 0, // Remove
     "import/no-named-as-default": 0, // Remove
+    "import/extensions": 0, // Remove
 
     "react/jsx-no-constructed-context-values": 0,
 

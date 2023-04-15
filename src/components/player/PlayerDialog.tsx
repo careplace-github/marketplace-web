@@ -3,7 +3,7 @@ import { ReactPlayerProps } from 'react-player';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { CircularProgress, Dialog, IconButton } from '@mui/material';
-import Iconify from '../iconify';
+import Iconify from 'src/components/iconify';
 //
 import { StyledReactPlayer } from './styles';
 

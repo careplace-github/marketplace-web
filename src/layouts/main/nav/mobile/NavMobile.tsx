@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 // @mui
 import { List, Drawer, IconButton, Button, Stack } from '@mui/material';
 // config
-import { NAV } from 'src/config';
+import { NAV } from 'src/layouts';
 // components
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';

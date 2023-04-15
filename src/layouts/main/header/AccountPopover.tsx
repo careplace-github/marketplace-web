@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 // routes
-import { PATHS } from '../../../routes/paths';
+import { PATHS } from 'src/routes/paths';
 // auth
-import { useAuthContext } from '../../../auth/AuthContext';
+import { useAuthContext } from 'src/contexts/useAuthContext';
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
-import { useSnackbar } from '../../../components/snackbar';
-import MenuPopover from '../../../components/menu-popover';
-import { IconButtonAnimate } from '../../../components/animate';
+import { CustomAvatar } from 'src/components/custom-avatar';
+import { useSnackbar } from 'src/components/snackbar';
+import MenuPopover from 'src/components/menu-popover';
+import { IconButtonAnimate } from 'src/components/animate';
 
 
 // ----------------------------------------------------------------------

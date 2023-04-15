@@ -1,9 +1,9 @@
 import keyBy from 'lodash/keyBy';
 import { createSlice, Dispatch } from '@reduxjs/toolkit';
 // utils
-import axios from '../../utils/axios';
+import axios from 'src/lib/axios';
 // @types
-import { IChatState } from '../../types/chat';
+import { IChatState } from 'src/types/chat';
 
 // ----------------------------------------------------------------------
 
