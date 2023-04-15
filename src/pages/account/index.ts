@@ -10,9 +10,9 @@ export default function Index() {
   const { pathname, push } = useRouter();
 
   useEffect(() => {
-    
-      push(PATHS.account.personal);
-    
+
+    push(PATHS.account.personal);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 

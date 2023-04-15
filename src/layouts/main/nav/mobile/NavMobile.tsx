@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
-import { List, Drawer, IconButton, Button, Stack } from '@mui/material';
+import { List, Drawer, IconButton, Button, Stack, Box, Avatar, Typography, Divider } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // config
 import { NAV } from 'src/layouts';
 // components
@@ -12,11 +13,18 @@ import Scrollbar from 'src/components/scrollbar';
 //
 import { NavProps } from '../types';
 import NavList from './NavList';
+//auth
+import { useAuthContext } from 'src/contexts';
+//paths
+import { PATHS } from "src/routes"
 
 // ----------------------------------------------------------------------
 
 export default function NavMobile({ data }: NavProps) {
   const { pathname } = useRouter();
+  const router = useRouter();
+  const theme = useTheme();
+  const { isAuthenticated, isInitialized, user, logout } = useAuthContext();
 
   const [open, setOpen] = useState(false);
 
@@ -35,6 +43,17 @@ export default function NavMobile({ data }: NavProps) {
     setOpen(false);
   };
 
+  const handleLogout = async () => {
+    try {
+      logout();
+      handleClose();
+      router.push(PATHS.home)
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar('Unable to logout!', { variant: 'error' });
+    }
+  };
+
   return (
     <>
       <IconButton onClick={handleOpen} sx={{ ml: 1, color: 'inherit' }}>
@@ -42,6 +61,7 @@ export default function NavMobile({ data }: NavProps) {
       </IconButton>
 
       <Drawer
+        anchor='right'
         open={open}
         onClose={handleClose}
         PaperProps={{
@@ -52,7 +72,16 @@ export default function NavMobile({ data }: NavProps) {
         }}
       >
         <Scrollbar>
-          <Logo sx={{ mx: 2.5, my: 3 }} />
+          <Logo sx={{ mx: 2.5 }} />
+
+          {isAuthenticated &&
+            <>
+              <Box sx={{ display: "flex", flexDirection: "row", gap: "15px", pl: "16px", alignItems: "center", mb: "20px" }}>
+                <Avatar src={user?.profile_picture} />
+                <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>{user?.name}</Typography>
+              </Box>
+              {/* <Divider sx={{ width: "calc(100% - 32px )", ml: "16px", mb: "12px" }} /> */}
+            </>}
 
           <List component="nav" disablePadding>
             {data.map((link) => (
@@ -61,9 +90,25 @@ export default function NavMobile({ data }: NavProps) {
           </List>
 
           <Stack spacing={1.5} sx={{ p: 3 }}>
-            <Button fullWidth variant="contained" color="inherit">
-              Buy Now
-            </Button>
+            {isAuthenticated ?
+              <Box sx={{ width: "100%", mt: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Typography onClick={handleLogout} variant="body2" sx={{ color: 'red' }} noWrap>Terminar Sessão</Typography>
+              </Box> :
+              <Button fullWidth variant="contained" color="inherit"
+                sx={{
+                  mt: "20px",
+                  px: 4,
+                  bgcolor: 'primary.main',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    color:
+                      theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  },
+                }} href={PATHS.auth.login} >
+                Entrar
+              </Button>
+            }
           </Stack>
         </Scrollbar>
       </Drawer>

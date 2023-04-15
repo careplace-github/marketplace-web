@@ -27,6 +27,7 @@ type FormValuesProps = {
 export default function AuthLoginForm() {
   const theme = useTheme();
 
+
   const { login } = useAuthContext();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -62,10 +63,11 @@ export default function AuthLoginForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await login(data.email, data.password);
+
     } catch (error) {
       console.log(error)
       reset();
-      
+
       setError('afterSubmit', {
         ...error,
         message: error.message || error,
@@ -76,7 +78,7 @@ export default function AuthLoginForm() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5} alignItems="flex-end">
-      {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+        {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
 
         <RHFTextField name="email" label="Email address" />
 
@@ -89,7 +91,7 @@ export default function AuthLoginForm() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={handleShowPassword} edge="end">
-                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -119,7 +121,7 @@ export default function AuthLoginForm() {
             color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
             '&:hover': {
               bgcolor: 'primary.dark',
-              color: 
+              color:
                 theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
             },
           }}

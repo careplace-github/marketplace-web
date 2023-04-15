@@ -37,8 +37,6 @@ const OPTIONS = [
 
 export default function AccountPopover() {
   const { user, logout } = useAuthContext();
-  console.log(user)
-
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -55,7 +53,6 @@ export default function AccountPopover() {
   const handleLogout = async () => {
     try {
       logout();
-
       handleClosePopover();
     } catch (error) {
       console.error(error);
