@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
-import { List, Drawer, IconButton, Button, Stack, Box, Avatar, Typography, Divider } from '@mui/material';
+import { List, Drawer, IconButton, Button, Stack, Box, Avatar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // config
 import { NAV } from 'src/layouts';
@@ -10,13 +10,15 @@ import { NAV } from 'src/layouts';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+// paths
+import { PATHS } from "src/routes"
+// auth
+import { useAuthContext } from 'src/contexts';
 //
+import { useSnackbar } from 'src/components/snackbar';
 import { NavProps } from '../types';
 import NavList from './NavList';
-//auth
-import { useAuthContext } from 'src/contexts';
-//paths
-import { PATHS } from "src/routes"
+
 
 // ----------------------------------------------------------------------
 
@@ -24,8 +26,9 @@ export default function NavMobile({ data }: NavProps) {
   const { pathname } = useRouter();
   const router = useRouter();
   const theme = useTheme();
-  const { isAuthenticated, isInitialized, user, logout } = useAuthContext();
+  const { isAuthenticated, user, logout } = useAuthContext();
 
+  const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
