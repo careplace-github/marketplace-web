@@ -7,4 +7,5 @@
 package.json
 package-lock.json
 
-
+src/_mock
+/config

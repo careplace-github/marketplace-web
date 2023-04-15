@@ -7,6 +7,8 @@ import useResponsive from 'src/hooks/useResponsive';
 import { useEffect } from 'react';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
+// auth
+import { useAuthContext } from 'src/contexts';
 // config
 import { HEADER } from 'src/layouts/config';
 // components
