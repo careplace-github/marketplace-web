@@ -25,7 +25,7 @@ import useResponsive from 'src/hooks/useResponsive';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 // _mock
-import { socials } from '../../../assets/data';
+import { socials } from 'src/data';
 //
 import { footerLinks, navConfig } from '../nav/config-navigation';
 import ListDesktop from './ListDesktop';

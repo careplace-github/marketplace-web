@@ -2,8 +2,8 @@
 import Head from 'next/head';
 // layouts
 import MainLayout from 'src/layouts/main';
-// sections
-import { LandingView } from 'src/views';
+// features
+import { LandingView } from 'src/features/home';
 
 // ----------------------------------------------------------------------
 

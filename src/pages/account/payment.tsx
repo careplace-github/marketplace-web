@@ -1,9 +1,9 @@
 // next
 import Head from 'next/head';
 // layouts
-import MainLayout from '../../layouts/main';
-// sections
-import { AccountPaymentView } from '../../views';
+import MainLayout from 'src/layouts/main';
+// features
+import { AccountPaymentView } from 'src/features/account';
 
 // ----------------------------------------------------------------------
 

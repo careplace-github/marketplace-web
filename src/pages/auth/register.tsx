@@ -1,15 +1,16 @@
 // next
 import Head from 'next/head';
 // layouts
-import SimpleLayout from '../../layouts/simple';
-// sections
-import GuestGuard from '../../auth/GuestGuard';
-import { RegisterView } from '../../views';
+import SimpleLayout from 'src/layouts/simple';
+// features
+import { GuestGuard, RegisterView } from 'src/features/auth';
 
 
 // ----------------------------------------------------------------------
 
-RegisterPage.getLayout = (page) => <SimpleLayout>{page}</SimpleLayout>;
+RegisterPage.getLayout = (page: React.ReactElement) => (
+  <SimpleLayout>{page}</SimpleLayout>
+);
 
 // ----------------------------------------------------------------------
 

@@ -1,10 +1,9 @@
 // next
 import Head from 'next/head';
 // layouts
-import SimpleLayout from '../../layouts/simple';
-// sections
-import GuestGuard from '../../auth/GuestGuard';
-import { LoginView } from '../../views';
+import SimpleLayout from 'src/layouts/simple';
+// features
+import { GuestGuard, LoginView } from 'src/features/auth';
  
 
 // ----------------------------------------------------------------------

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 // @mui
 import { Box } from '@mui/material';
 // config
-import { HEADER } from 'src/config';
+import { HEADER } from 'src/layouts';
 //
 import Header from './header/Header';
 import Footer from './footer/Footer';

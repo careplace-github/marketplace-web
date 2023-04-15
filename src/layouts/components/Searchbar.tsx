@@ -11,7 +11,7 @@ import {
   ClickAwayListener,
 } from '@mui/material';
 // config
-import { HEADER } from 'src/config';
+import { HEADER } from 'src/layouts';
 // components
 import Iconify from 'src/components/iconify';
 

@@ -3,9 +3,9 @@ import NextLink from 'next/link';
 // @mui
 import { Box, Tooltip, Link, ListItemText } from '@mui/material';
 //
-import Iconify from '../../iconify';
+import Iconify from 'src/components/iconify';
 //
-import { NavItemProps } from '../types';
+import { NavItemProps } from 'src/components/nav-section/types';
 import { StyledItem, StyledIcon, StyledDotIcon } from './styles';
 
 // ----------------------------------------------------------------------

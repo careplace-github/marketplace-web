@@ -1,5 +1,5 @@
 // @types
-import { VariantsType } from '../types';
+import { VariantsType } from 'src/components/animate/types';
 //
 import { varTranEnter, varTranExit } from './transition';
 

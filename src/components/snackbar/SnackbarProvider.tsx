@@ -4,8 +4,8 @@ import { SnackbarProvider as NotistackProvider, SnackbarKey } from 'notistack';
 import { alpha } from '@mui/material/styles';
 import { Box, Collapse, IconButton } from '@mui/material';
 //
-import { useSettingsContext } from '../settings';
-import Iconify, { IconifyProps } from '../iconify';
+import { useSettingsContext } from 'src/contexts';
+import Iconify, { IconifyProps } from 'src/components/iconify';
 //
 import StyledNotistack from './styles';
 

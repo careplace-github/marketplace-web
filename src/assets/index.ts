@@ -1,2 +1,2 @@
-export * from './data'
+export * from 'src/data'
 export * from './illustrations'

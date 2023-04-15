@@ -2,8 +2,8 @@
 import Head from 'next/head';
 // layouts
 import CompactLayout from 'src/layouts/compact';
-// sections
-import { Error404View } from '../views';
+// features
+import { Error404View } from 'src/features/common';
 
 // ----------------------------------------------------------------------
 

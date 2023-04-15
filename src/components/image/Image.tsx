@@ -8,7 +8,7 @@ import { ImageProps } from './types';
 
 // ----------------------------------------------------------------------
 
-const Image = forwardRef<unknown | undefined, ImageProps>(
+const Image = forwardRef<HTMLSpanElement, ImageProps>(
   ({ ratio, disabledEffect = false, effect = 'blur', sx, ...other }, ref) => {
     const content = (
       <Box

@@ -2,8 +2,8 @@
 import Head from 'next/head';
 // layouts
 import CompactLayout from 'src/layouts/compact';
-// sections
-import { MaintenanceView } from '../views';
+// features
+import { MaintenanceView } from 'src/features/common';
 
 // ----------------------------------------------------------------------
 

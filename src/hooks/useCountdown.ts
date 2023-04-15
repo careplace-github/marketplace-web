@@ -57,4 +57,4 @@ export default function useCountdown(date: Date): ReturnType {
 }
 
 // Usage
-// const countdown = useCountdown(new Date('07/07/2022 21:30'));
+// const countdown = useCountdown(new Date('src/2022 21:30'));

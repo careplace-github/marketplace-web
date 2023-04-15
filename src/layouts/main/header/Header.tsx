@@ -4,17 +4,18 @@ import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/mater
 // hooks
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
+// auth
+import { useAuthContext } from 'src/contexts/useAuthContext';
 // utils
 import { bgBlur } from 'src/utils/cssStyles';
 // config
-import { HEADER } from 'src/config';
+import { HEADER } from 'src/layouts';
 // components
 import Logo from 'src/components/logo';
 //
 import { NavMobile, NavDesktop, navConfig } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-// auth
-import { useAuthContext } from '../../../auth/AuthContext';
+
 
 // ----------------------------------------------------------------------
 

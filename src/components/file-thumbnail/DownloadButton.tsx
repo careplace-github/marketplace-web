@@ -2,9 +2,9 @@
 import { useTheme } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
 // utils
-import { bgBlur } from '../../utils/cssStyles';
+import { bgBlur } from 'src/utils/cssStyles';
 //
-import Iconify from '../iconify';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 

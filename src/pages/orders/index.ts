@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // routes
-import { PATHS } from '../../routes/paths';
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 

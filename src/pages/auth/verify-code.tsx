@@ -2,9 +2,9 @@
 import Head from 'next/head';
  
 // layouts
-import CompactLayout from '../../layouts/compact';
-// sections
-import { VerifyCodeView } from '../../views';
+import CompactLayout from 'src/layouts/compact';
+// features
+import { VerifyCodeView } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 
