@@ -17,7 +17,13 @@ type GuestGuardProps = {
 };
 
 export default function GuestGuard({ children }: GuestGuardProps) {
+
   const { isAuthenticated, isInitialized } = useAuthContext();
+
+  if (!isInitialized) {
+    return <LoadingScreen />;
+  }
+
 
   if (isAuthenticated) {
 
@@ -28,9 +34,7 @@ export default function GuestGuard({ children }: GuestGuardProps) {
     }, [pathname, push]);
   }
 
-  if (!isInitialized) {
-    return <LoadingScreen />;
-  }
 
-  return <> {children} </>;
+
+  return <LoadingScreen />;
 }

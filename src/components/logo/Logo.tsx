@@ -3,6 +3,10 @@ import { memo } from 'react';
 import NextLink from 'next/link';
 // @mui
 import { Box, BoxProps, Link } from '@mui/material';
+// auth
+import { useAuthContext } from 'src/contexts';
+// paths
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -11,6 +15,8 @@ interface LogoProps extends BoxProps {
 }
 
 function Logo({ single = false, sx }: LogoProps) {
+
+  const { isAuthenticated } = useAuthContext();
   
 
   const singleLogo = (<svg width="125" height="135" viewBox="0 0 125 135" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -72,7 +78,7 @@ function Logo({ single = false, sx }: LogoProps) {
   return (
     <Link
       component={NextLink}
-      href="/"
+      href={ isAuthenticated ? PATHS.companies.root : PATHS.home }
       color="inherit"
       aria-label="go to homepage"
       sx={{ lineHeight: 0 }}
