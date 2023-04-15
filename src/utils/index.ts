@@ -1,2 +1,2 @@
 export { default as localStorageAvailable } from './localStorageAvailable';
-export { setItem } from './localStorage';
+export { setItem, getItem } from './localStorage';
