@@ -4,10 +4,13 @@ import { List, Stack } from '@mui/material';
 import { NavSectionProps } from 'src/components/nav-section/types';
 import { StyledSubheader } from './styles';
 import NavList from './NavList';
+// auth
+import { useAuthContext } from 'src/contexts';
 
 // ----------------------------------------------------------------------
 
 export default function NavSectionVertical({ data, sx, ...other }: NavSectionProps) {
+  const { isAuthenticated } = useAuthContext();
   return (
     <Stack sx={sx} {...other}>
       {data.map((group) => {
@@ -17,14 +20,17 @@ export default function NavSectionVertical({ data, sx, ...other }: NavSectionPro
           <List key={key} disablePadding sx={{ px: 2 }}>
             {group.subheader && <StyledSubheader disableSticky>{group.subheader}</StyledSubheader>}
 
-            {group.items.map((list) => (
-              <NavList
-                key={list.title + list.path}
-                data={list}
-                depth={1}
-                hasChild={!!list.children}
-              />
-            ))}
+            {group.items.map((list) => {
+              if (isAuthenticated && (list.title === "Entrar" || list.title === "Registar")) return;
+              return (
+                <NavList
+                  key={list.title + list.path}
+                  data={list}
+                  depth={1}
+                  hasChild={!!list.children}
+                />
+              )
+            })}
           </List>
         );
       })}

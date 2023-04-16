@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 // next
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
+// auth
+import { useAuthContext } from 'src/contexts';
 // @mui
 import { Fade, Portal, Stack, Box, Link, Unstable_Grid2 as Grid } from '@mui/material';
 // hooks
@@ -109,8 +111,9 @@ export default function NavList({ item }: { item: NavItemBaseProps }) {
 
 // ----------------------------------------------------------------------
 
-function NavSubList({ subheader, isNew, cover, items, type }: { subheader: string, isNew?: boolean, cover?: string , items?: {title: string, path: string}[], type: string }) {
+function NavSubList({ subheader, isNew, cover, items, type }: { subheader: string, isNew?: boolean, cover?: string, items?: { title: string, path: string }[], type: string }) {
   const { pathname } = useRouter();
+  const { isAuthenticated } = useAuthContext();
 
   const coverPath = items?.length ? items[0].path : '';
 
@@ -149,19 +152,22 @@ function NavSubList({ subheader, isNew, cover, items, type }: { subheader: strin
       )}
 
       <Stack spacing={1.5} alignItems="flex-start">
-        {items?.map((item) => (
-          <NavItem
-            key={item.title}
-            item={item}
-            active={item.path === pathname}
-            subItem
-            sx={{
-              '&:hover': {
-                color: 'primary.main',
-              },
-            }}
-          />
-        ))}
+        {items?.map((item) => {
+          if (isAuthenticated && (item.title === "Entrar" || item.title === "Registar")) return;
+          return (
+            <NavItem
+              key={item.title}
+              item={item}
+              active={item.path === pathname}
+              subItem
+              sx={{
+                '&:hover': {
+                  color: 'primary.main',
+                },
+              }}
+            />
+          )
+        })}
       </Stack>
     </Stack>
   );

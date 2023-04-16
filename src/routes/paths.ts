@@ -37,8 +37,8 @@ export const PATHS = {
     questionnaireCompleted: (query: string) => `/order/questionnaire/${query}/completed`,
   },
 
-  // Payment
-  payment: {
+  // Payments
+  payments: {
     checkout: (query: string) => `/payment/${query}/checkout`,
     success: (query: string) => `/payment/${query}/success`,
   },

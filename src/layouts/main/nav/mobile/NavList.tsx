@@ -35,7 +35,6 @@ export default function NavList({ item }: NavListProps) {
         active={pathname === path}
         isExternalLink={isExternalLink}
       />
-
       {!!children && (
         <Collapse in={open} unmountOnExit>
           <NavSectionVertical data={children} />
