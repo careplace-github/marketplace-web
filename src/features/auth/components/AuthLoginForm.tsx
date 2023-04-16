@@ -31,7 +31,7 @@ export default function AuthLoginForm() {
   const { login } = useAuthContext();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState()
+  const [errorMessage, setErrorMessage] = useState<string | undefined>()
 
   const LoginSchema = Yup.object().shape({
     email: Yup.string().required('O Email é obrigatório.').email('Este email não é válido.'),
@@ -63,7 +63,7 @@ export default function AuthLoginForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       await login(data.email, data.password);
-      setErrorMessage()
+      setErrorMessage(undefined)
     } catch (error) {
       reset();
       if (error.error.message === "Incorrect username or password.") {

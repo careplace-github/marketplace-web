@@ -16,7 +16,7 @@ import { PATHS } from "src/routes"
 import Logo from 'src/components/logo';
 import AccountPopover from "./AccountPopover"
 //
-import { NavMobile, NavDesktop, navConfig } from '../nav';
+import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
 
 
@@ -56,9 +56,6 @@ export default function Header({ headerOnDark }: Props) {
           ...(isOffset && {
             ...bgBlur({ color: theme.palette.background.default }),
             color: 'text.primary',
-            height: {
-              md: HEADER.H_MAIN_DESKTOP - 16,
-            },
           }),
         }}
       >
@@ -121,7 +118,7 @@ export default function Header({ headerOnDark }: Props) {
 
           </Stack>
 
-          {!isMdUp && <NavMobile data={navConfig} />}
+          {!isMdUp && <NavMobile data={navConfigMobile} />}
         </Container>
       </Toolbar>
       <HeaderShadow />

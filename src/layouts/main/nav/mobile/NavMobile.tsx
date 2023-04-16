@@ -59,9 +59,10 @@ export default function NavMobile({ data }: NavProps) {
 
   return (
     <>
-      <IconButton onClick={handleOpen} sx={{ ml: 1, color: 'inherit' }}>
-        <Iconify icon="carbon:menu" />
-      </IconButton>
+      {isAuthenticated ? <Avatar sx={{ width: "35px", height: "35px" }} src={user?.profile_picture} onClick={handleOpen} /> :
+        <IconButton onClick={handleOpen} sx={{ ml: 1, color: 'inherit' }}>
+          <Iconify icon="carbon:menu" />
+        </IconButton>}
 
       <Drawer
         anchor='right'
@@ -75,11 +76,10 @@ export default function NavMobile({ data }: NavProps) {
         }}
       >
         <Scrollbar>
-          <Logo sx={{ mx: 2.5 }} />
-
+          {!isAuthenticated && <Logo sx={{ mx: 2.5 }} />}
           {isAuthenticated &&
             <>
-              <Box sx={{ display: "flex", flexDirection: "row", gap: "15px", pl: "16px", alignItems: "center", mb: "20px" }}>
+              <Box sx={{ mt: "50px", display: "flex", flexDirection: "row", gap: "15px", pl: "16px", alignItems: "center", mb: "30px" }}>
                 <Avatar src={user?.profile_picture} />
                 <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>{user?.name}</Typography>
               </Box>
@@ -87,9 +87,14 @@ export default function NavMobile({ data }: NavProps) {
             </>}
 
           <List component="nav" disablePadding>
-            {data.map((link) => (
-              <NavList key={link.title} item={link} />
-            ))}
+            {data.map((link) => {
+              if (!isAuthenticated && (
+                link.title === "Dados Pessoais" || link.title === "Pedidos" || link.title === "Familiares" || link.title === "Informações de Pagamento" || link.title === "Definições"
+              )) return;
+              return (
+                <NavList key={link.title} item={link} />
+              )
+            })}
           </List>
 
           <Stack spacing={1.5} sx={{ p: 3 }}>
@@ -99,7 +104,7 @@ export default function NavMobile({ data }: NavProps) {
               </Box> :
               <Button fullWidth variant="contained" color="inherit"
                 sx={{
-                  mt: "20px",
+                  mt: "10px",
                   px: 4,
                   bgcolor: 'primary.main',
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
