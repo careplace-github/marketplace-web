@@ -9,8 +9,15 @@ import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../t
 
 enum Types {
   INITIAL = 'INITIAL',
-  LOGIN = 'LOGIN',
+
   REGISTER = 'REGISTER',
+  CONFIRMATION_CODE = 'CONFIRMATION_CODE',
+  CONFIRM_USER = 'CONFIRM_USER',
+  FORGOT_PASSWORD = 'FORGOT_PASSWORD',
+  RESET_PASSWORD = 'RESET_PASSWORD',
+  LOGIN = 'LOGIN',
+  CHANGE_PASSWORD = 'CHANGE_PASSWORD',
+  UPDATE_USER = 'UPDATE_USER',
   LOGOUT = 'LOGOUT',
 }
 
@@ -19,10 +26,25 @@ type Payload = {
     isAuthenticated: boolean;
     user: AuthUserType;
   };
+
+  [Types.REGISTER]: {
+  };
+  [Types.CONFIRMATION_CODE]: {
+  };
+  [Types.CONFIRM_USER]: {
+    isAuthenticated: boolean;
+    user: AuthUserType;
+  };
+  [Types.FORGOT_PASSWORD]: {
+  };
+  [Types.RESET_PASSWORD]: {
+  };
   [Types.LOGIN]: {
     user: AuthUserType;
   };
-  [Types.REGISTER]: {
+  [Types.CHANGE_PASSWORD]: {
+  };
+  [Types.UPDATE_USER]: {
     user: AuthUserType;
   };
   [Types.LOGOUT]: undefined;
@@ -46,6 +68,34 @@ const reducer = (state: AuthStateType, action: ActionsType) => {
       user: action.payload.user,
     };
   }
+
+  if (action.type === Types.REGISTER) {
+    return {
+      ...state,
+    };
+  }
+  if (action.type === Types.CONFIRMATION_CODE) {
+    return {
+      ...state,
+    };
+  }
+  if (action.type === Types.CONFIRM_USER) {
+    return {
+      ...state,
+      isAuthenticated: action.payload.isAuthenticated,
+      user: action.payload.user,
+    };
+  }
+  if (action.type === Types.FORGOT_PASSWORD) {
+    return {
+      ...state,
+    };
+  }
+  if (action.type === Types.RESET_PASSWORD) {
+    return {
+      ...state,
+    };
+  }
   if (action.type === Types.LOGIN) {
     return {
       ...state,
@@ -53,10 +103,14 @@ const reducer = (state: AuthStateType, action: ActionsType) => {
       user: action.payload.user,
     };
   }
-  if (action.type === Types.REGISTER) {
+  if (action.type === Types.CHANGE_PASSWORD) {
     return {
       ...state,
-      isAuthenticated: true,
+    };
+  }
+  if (action.type === Types.UPDATE_USER) {
+    return {
+      ...state,
       user: action.payload.user,
     };
   }
@@ -158,6 +212,125 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
 
+
+  // REGISTER
+  const register = useCallback(
+    async (email: string, password: string, name: string, phone: string, country: string) => {
+      const response = await axios.post('/auth/marketplace/signup', {
+        email,
+        password,
+        name,
+        phone,
+        address: {
+          country
+        }
+      });
+
+
+      dispatch({
+        type: Types.REGISTER,
+        payload: {
+        },
+      });
+    },
+    []
+  );
+
+  // CONFIRMATION_CODE
+  const confirmationCode = useCallback(
+    async (email: string) => {
+      const response = await axios.post('/auth/marketplace/send/confirmation-code', {
+        email
+      });
+    },
+    []
+  );
+
+
+
+  // CONFIRM_USER
+  const confirmUser = useCallback(
+    async (
+      email: string,
+      password: string,
+      code: string,
+    ) => {
+      const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
+        email,
+        code
+      });
+
+
+      // Check if the api response has a 200 status code
+      if (response.status !== 200) {
+        dispatch({
+          type: Types.CONFIRM_USER,
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        });
+
+        throw new Error('Invalid confirmation code');
+      }
+
+
+      const accessToken = (await axios.post('/auth/marketplace/login', {
+        email,
+        password,
+      })).data.accessToken;
+
+      setSession(accessToken);
+
+
+
+      const user = (await axios.get('/users/account')).data;
+
+
+      setItem('profile_picture', user.profile_picture)
+      setItem('name', user.name);
+
+      dispatch({
+        type: Types.CONFIRM_USER,
+        payload: {
+          isAuthenticated: true,
+          user,
+        },
+      });
+    },
+    []
+  );
+
+
+  // FORGOT_PASSWORD
+  const forgotPassword = useCallback(
+    async (
+      email: string,
+    ) => {
+      const response = await axios.post('/auth/marketplace/send/reset-password-code', {
+        email
+      });
+    },
+    []
+  );
+
+  // RESET_PASSWORD
+  const resetPassword = useCallback(
+    async (
+      email: string,
+      code: string,
+      newPassword: string,
+    ) => {
+
+      const response = await axios.post('/auth/marketplace/verify/reset-password-code', {
+        email,
+        code,
+        newPassword
+      });
+    },
+    []
+  );
+
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
     let response = await axios.post('/auth/marketplace/login', {
@@ -184,28 +357,44 @@ export function AuthProvider({ children }: AuthProviderProps) {
     });
   }, []);
 
-  // REGISTER
-  const register = useCallback(
-    async (email: string, password: string, firstName: string, lastName: string) => {
-      const response = await axios.post('/api/account/register', {
-        email,
-        password,
-        firstName,
-        lastName,
+  // CHANGE_PASSWORD
+  const changePassword = useCallback(
+    async (
+      oldPassword: string,
+      newPassword: string,
+    ) => { 
+      const response = await axios.post('/auth/change-password', {
+        oldPassword,
+        newPassword
       });
-      const { accessToken, user } = response.data;
+    },
+    []
+  );
 
-      localStorage.setItem('accessToken', accessToken);
+  // UPDATE_USER
+  const updateUser = useCallback(
+    async (
+      user: AuthUserType,
+    ) => { 
+      const updatedUser = (await axios.put('/users/account', {
+        user
+      })).data;
+
+
+      setItem('profile_picture', updatedUser.profile_picture)
+      setItem('name', updatedUser.name);
 
       dispatch({
-        type: Types.REGISTER,
+        type: Types.UPDATE_USER,
         payload: {
-          user,
+          user: updatedUser,
         },
       });
     },
     []
   );
+  
+          
 
   // LOGOUT
   const logout = useCallback(() => {
@@ -224,14 +413,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
       isAuthenticated: state.isAuthenticated,
       user: state.user,
       method: 'jwt',
-      login,
-      loginWithGoogle: () => { },
-      loginWithGithub: () => { },
-      loginWithTwitter: () => { },
+
+
       register,
+      confirmationCode,
+      confirmUser,
+      forgotPassword,
+      resetPassword,
+      login,
+      changePassword,
+      updateUser,
       logout,
     }),
-    [state.isAuthenticated, state.isInitialized, state.user, login, logout, register]
+    [state.isAuthenticated, state.isInitialized, state.user, register, confirmationCode, confirmUser, forgotPassword, resetPassword, login, changePassword, updateUser, logout]
   );
 
   return <JwtAuthContext.Provider value={memoizedValue}>{children}</JwtAuthContext.Provider>;
