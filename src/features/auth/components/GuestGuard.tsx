@@ -9,6 +9,7 @@ import LoadingScreen from 'src/components/loading-screen';
 //
 import { useAuthContext } from 'src/contexts/useAuthContext';
 
+
 // ----------------------------------------------------------------------
 
 
@@ -27,14 +28,18 @@ export default function GuestGuard({ children }: GuestGuardProps) {
 
   if (isAuthenticated) {
 
+   
+
     const { pathname, push } = useRouter();
 
     useEffect(() => {
       push(PATHS.companies.root);
     }, [pathname, push]);
+
+    return <LoadingScreen />;
   }
 
 
 
-  return <> {children} </>;
+  return <>{children}</>;
 }
