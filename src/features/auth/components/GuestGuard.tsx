@@ -28,8 +28,6 @@ export default function GuestGuard({ children }: GuestGuardProps) {
 
   if (isAuthenticated) {
 
-   
-
     const { pathname, push } = useRouter();
 
     useEffect(() => {
