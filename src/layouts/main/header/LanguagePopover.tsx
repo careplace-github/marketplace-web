@@ -32,6 +32,7 @@ export default function LanguagePopover() {
   return (
     <>
       <IconButtonAnimate
+        disableAnimation={false}
         onClick={handleOpenPopover}
         sx={{
           width: 40,

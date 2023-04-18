@@ -1,6 +1,6 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/material';
+import { Box, Link, Stack, Button, AppBar, Toolbar, Container, Typography } from '@mui/material';
 // hooks
 import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
@@ -16,7 +16,7 @@ import { PATHS } from "src/routes"
 import Logo from 'src/components/logo';
 import AccountPopover from "./AccountPopover"
 //
-import { NavMobile, NavDesktop, navConfig } from '../nav';
+import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
 
 
@@ -29,7 +29,7 @@ type Props = {
 
 export default function Header({ headerOnDark }: Props) {
 
-  const { isAuthenticated, isInitialized } = useAuthContext();
+  const { user, isAuthenticated, isInitialized } = useAuthContext();
 
   const theme = useTheme();
 
@@ -56,14 +56,13 @@ export default function Header({ headerOnDark }: Props) {
           ...(isOffset && {
             ...bgBlur({ color: theme.palette.background.default }),
             color: 'text.primary',
-            height: {
-              md: HEADER.H_MAIN_DESKTOP - 16,
-            },
           }),
         }}
       >
-        <Container sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ lineHeight: 0, position: 'relative', pr: isMdUp ? 15 : 0 }}>
+        <Container sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
+          <Box sx={{
+            lineHeight: 0, position: 'relative'
+          }}>
             <Logo />
           </Box>
 
@@ -71,7 +70,6 @@ export default function Header({ headerOnDark }: Props) {
 
           <Stack
             spacing={2}
-            flexGrow={1}
             direction="row"
             alignItems="center"
             justifyContent="flex-end"
@@ -95,34 +93,35 @@ export default function Header({ headerOnDark }: Props) {
               Registar
             </Link>}
 
-            {isMdUp && (isAuthenticated ? <AccountPopover /> : (
-              <Button
-                variant="contained"
-                color="inherit"
-                href={PATHS.auth.login}
-                rel="noopener"
-                sx={{
-                  px: 4,
-                  bgcolor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                    color:
-                      theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  },
-                }}
-              >
-                Entrar
-              </Button>
-            ))}
+            {isMdUp && (isAuthenticated ?
+              <AccountPopover />
+              : (
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  href={PATHS.auth.login}
+                  rel="noopener"
+                  sx={{
+                    px: 4,
+                    bgcolor: 'primary.main',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color:
+                        theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                >
+                  Entrar
+                </Button>
+              ))}
 
           </Stack>
 
-          {!isMdUp && <NavMobile data={navConfig} />}
+          {!isMdUp && <NavMobile data={navConfigMobile} />}
         </Container>
       </Toolbar>
-
-      {isOffset && <HeaderShadow />}
+      <HeaderShadow />
     </AppBar>
-  ) : <></>;
+  ) : null;
 }

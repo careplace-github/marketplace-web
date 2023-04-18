@@ -5,9 +5,17 @@ import { Box, IconButton, IconButtonProps } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-const IconButtonAnimate = forwardRef<HTMLButtonElement, IconButtonProps>(
-  ({ children, size = 'medium', ...other }, ref) => (
-    <AnimateWrap size={size}>
+
+type AnimateWrapProp = {
+  children: React.ReactNode;
+  size: 'small' | 'medium' | 'large';
+  disableAnimation: boolean;
+};
+
+
+const IconButtonAnimate = forwardRef<HTMLButtonElement, IconButtonProps & { disableAnimation: boolean }>(
+  ({ disableAnimation = false, children, size = 'medium', ...other }, ref) => (
+    <AnimateWrap disableAnimation={disableAnimation} size={size}>
       <IconButton size={size} ref={ref} {...other}>
         {children}
       </IconButton>
@@ -18,11 +26,6 @@ const IconButtonAnimate = forwardRef<HTMLButtonElement, IconButtonProps>(
 export default IconButtonAnimate;
 
 // ----------------------------------------------------------------------
-
-type AnimateWrapProp = {
-  children: React.ReactNode;
-  size: 'small' | 'medium' | 'large';
-};
 
 const varSmall = {
   hover: { scale: 1.1 },
@@ -39,7 +42,7 @@ const varLarge = {
   tap: { scale: 0.99 },
 };
 
-function AnimateWrap({ size, children }: AnimateWrapProp) {
+function AnimateWrap({ size, children, disableAnimation }: AnimateWrapProp) {
   const isSmall = size === 'small';
   const isLarge = size === 'large';
 
@@ -48,7 +51,7 @@ function AnimateWrap({ size, children }: AnimateWrapProp) {
       component={m.div}
       whileTap="tap"
       whileHover="hover"
-      variants={(isSmall && varSmall) || (isLarge && varLarge) || varMedium}
+      variants={disableAnimation ? undefined : (isSmall && varSmall) || (isLarge && varLarge) || varMedium}
       sx={{
         display: 'inline-flex',
       }}
