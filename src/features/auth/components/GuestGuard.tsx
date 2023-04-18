@@ -11,22 +11,18 @@ import { useAuthContext } from 'src/contexts/useAuthContext';
 
 // ----------------------------------------------------------------------
 
-
 type GuestGuardProps = {
   children: React.ReactNode;
 };
 
 export default function GuestGuard({ children }: GuestGuardProps) {
-
   const { isAuthenticated, isInitialized } = useAuthContext();
 
   if (!isInitialized) {
     return <LoadingScreen />;
   }
 
-
   if (isAuthenticated) {
-
     const { pathname, push } = useRouter();
 
     useEffect(() => {
@@ -34,7 +30,5 @@ export default function GuestGuard({ children }: GuestGuardProps) {
     }, [pathname, push]);
   }
 
-
-
-  return <> {children} </>;
+  return <LoadingScreen />;
 }
