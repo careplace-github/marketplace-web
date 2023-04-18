@@ -153,7 +153,7 @@ function NavSubList({ subheader, isNew, cover, items, type }: { subheader: strin
 
       <Stack spacing={1.5} alignItems="flex-start">
         {items?.map((item) => {
-          if (isAuthenticated && (item.title === "Entrar" || item.title === "Registar")) return;
+          if (isAuthenticated && (item.title === "Entrar" || item.title === "Registar")) return null;
           return (
             <NavItem
               key={item.title}

@@ -1,11 +1,13 @@
 // @mui
 import { List, Stack } from '@mui/material';
+// auth
+import { useAuthContext } from 'src/contexts';
 //
 import { NavSectionProps } from 'src/components/nav-section/types';
 import { StyledSubheader } from './styles';
 import NavList from './NavList';
-// auth
-import { useAuthContext } from 'src/contexts';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +23,7 @@ export default function NavSectionVertical({ data, sx, ...other }: NavSectionPro
             {group.subheader && <StyledSubheader disableSticky>{group.subheader}</StyledSubheader>}
 
             {group.items.map((list) => {
-              if (isAuthenticated && (list.title === "Entrar" || list.title === "Registar")) return;
+              if (isAuthenticated && (list.title === "Entrar" || list.title === "Registar")) return null;
               return (
                 <NavList
                   key={list.title + list.path}

@@ -28,7 +28,7 @@ export type MenuHotProductsProps = {
 export type ParentItemProps = {
   title: string;
   path?: string;
-  icon?: React.ReactElement;
+  icon?: React.ReactElement | string;
   open?: boolean;
   hasSub?: boolean;
   onClick?: VoidFunction;
@@ -41,7 +41,7 @@ export type ParentItemProps = {
 export type MegaMenuItemProps = {
   title: string;
   path: string;
-  icon: React.ReactElement;
+  icon: React.ReactElement | string;
   more?: {
     title: string;
     path: string;

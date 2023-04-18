@@ -6,7 +6,7 @@ import { Box, Stack, StackProps } from '@mui/material';
 
 interface Props extends StackProps {
   text: string;
-  icon: React.ReactElement;
+   icon: React.ReactElement | string;
 }
 
 function Label({ icon, text, sx, ...other }: Props) {
@@ -31,7 +31,7 @@ function Label({ icon, text, sx, ...other }: Props) {
       }}
       {...other}
     >
-      {icon}
+      {/* {icon} */}
       <Box sx={{ ml: 1 }}>{text}</Box>
     </Stack>
   );
