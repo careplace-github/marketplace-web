@@ -18,9 +18,7 @@ export default function NavDesktop({ data, sx }: NavProps) {
         ...sx,
       }}
     >
-      {data.map((link) => (
-        <NavList key={link.title} item={link} />
-      ))}
+      {data.map((link) => <NavList key={link.title} item={link} />)}
     </Stack>
   );
 }

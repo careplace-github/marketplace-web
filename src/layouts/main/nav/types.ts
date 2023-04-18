@@ -1,12 +1,13 @@
 import { Theme } from '@mui/material/styles';
 import { ListItemButtonProps, SxProps } from '@mui/material';
+import React, {JSXElementConstructor} from 'react';
 
 // ----------------------------------------------------------------------
 
 export type NavItemBaseProps = {
   title: string;
-  path: string;
-  icon?: React.ReactElement;
+  path?: string;
+  icon?: React.ReactElement<any, string | JSXElementConstructor<any>> | string;
   children?: NavListProps[];
 };
 
@@ -15,7 +16,8 @@ export type NavListProps = {
   subheader: string;
   isNew?: boolean;
   cover?: string;
-  items: { title: string; path: string }[];
+  items: { title: string; path: string, icon?: string  }[];
+  children?: Array<any>;
 };
 
 export type NavItemProps = ListItemButtonProps & {

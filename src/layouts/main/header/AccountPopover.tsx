@@ -7,6 +7,8 @@ import { useAuthContext } from 'src/contexts';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import Iconify from "src/components/iconify"
 // routes
 import { PATHS } from '../../../routes/paths';
 // components
@@ -20,23 +22,39 @@ import { IconButtonAnimate } from '../../../components/animate';
 
 const OPTIONS = [
   {
-    label: 'Início',
-    linkTo: PATHS.home,
+    label: 'Dados Pessoais',
+    linkTo: PATHS.account.personal,
+    icon: "material-symbols:account-circle"
   },
   {
-    label: 'Conta',
-    linkTo: PATHS.account.root,
+    label: 'Pedidos',
+    linkTo: PATHS.account.orders,
+    icon: "material-symbols:reorder-rounded"
   },
   {
     label: 'Familiares',
     linkTo: PATHS.account.relatives,
+    icon: "material-symbols:family-restroom-rounded"
   },
+  {
+    label: 'Informações de Pagamento',
+    linkTo: PATHS.account.payment,
+    icon: "ic:round-payment"
+  },
+  {
+    label: 'Definições ',
+    linkTo: PATHS.account.settings,
+    icon: "material-symbols:settings-outline-rounded"
+  },
+
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const { user, logout } = useAuthContext();
+  const router = useRouter();
+  const theme = useTheme();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -54,6 +72,7 @@ export default function AccountPopover() {
     try {
       logout();
       handleClosePopover();
+      router.push(PATHS.home)
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
@@ -61,32 +80,25 @@ export default function AccountPopover() {
   };
 
   const handleClickItem = (path: string) => {
+    router.push(path)
     handleClosePopover();
   };
 
   return (
     <>
-      <IconButtonAnimate
-        onClick={handleOpenPopover}
-        sx={{
-          p: 0,
-          ...(openPopover && {
-            '&:before': {
-              zIndex: 1,
-              content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
-            },
-          }),
-        }}
-      >
-        <CustomAvatar src={user?.profile_picture} alt={user?.displayName} name={user?.displayName} />
+      <IconButtonAnimate disableAnimation disableRipple onClick={handleOpenPopover} sx={{
+        "&:hover": {
+          bgcolor: "transparent",
+        }
+      }} >
+        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: "15px", cursor: "pointer" }}>
+          <CustomAvatar src={user?.profile_picture} alt={user?.displayName} name={user?.displayName} />
+          <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>{user?.name}</Typography>
+          <Iconify icon="ic:baseline-keyboard-arrow-down" width="30px" sx={openPopover ? { transform: "rotate(180deg)", transition: "500ms" } : { transform: "rotate(0deg)", transition: "500ms" }} />
+        </Box>
       </IconButtonAnimate>
 
-      <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: 200, p: 0 }}>
+      <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: "300px", p: 0 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
             {user?.displayName}
@@ -101,16 +113,21 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
-              <a href={option.linkTo}> {option.label}</a>
+            <MenuItem key={option.label} sx={{ pt: "12px", width: "100%", display: "flex", flexDirection: "row", gap: "5px", alignItems: "center", justifyContent: "flex-start" }} onClick={() => handleClickItem(option.linkTo)}>
+              <Iconify icon={option.icon} color='#637381' />
+              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>{option.label}</Typography>
             </MenuItem>
+            // <Box href={option.linkTo} key={option.label} sx={{ p: "12px 20px", width: "100%", display: "flex", flexDirection: "row", gap: "5px", alignItems: "center", justifyContent: "flex-start" }}>
+            //   <Iconify icon={option.icon} />
+            //   <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>{option.label}</Typography>
+            // </Box>
           ))}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
-          Logout
+          Terminar Sessão
         </MenuItem>
       </MenuPopover>
     </>

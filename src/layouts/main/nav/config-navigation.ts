@@ -1,7 +1,12 @@
 // routes
 import { PATHS } from 'src/routes/paths';
 
+
+
+
 // ----------------------------------------------------------------------
+
+
 
 export const footerLinks = [
   {
@@ -40,6 +45,7 @@ export const navLinks = [
       { title: 'Equipamentos Médicos', path: PATHS.comingsoon },
       { title: 'Lares', path: PATHS.comingsoon },
       { title: 'Residências Sénior', path: PATHS.comingsoon },
+      { title: 'Registar como Cuidador', path: PATHS.comingsoon },
     ],
   },
 
@@ -57,38 +63,6 @@ export const navLinks = [
     ],
   },
 
-  /**
-   * {
-    order: '3',
-    subheader: 'Careplace Jobs',
-    cover: '/assets/images/menu/menu_marketing.jpg',
-    items: [
-      { title: 'Encontrar Emprego / Turno', path: PATHS.home },
-      { title: 'Anunciar Emprego / Turno', path: PATHS.home},
-      { title: 'Funcionamento', path: PATHS.home},
-      { title: 'Preçário', path: PATHS.home },
- 
-    ],
-  },
-
-   */
-
-  /**
-   *  {
-    order: '4',
-    subheader: 'Careplace Learning',
-    cover: '/assets/images/menu/menu_marketing.jpg',
-    items: [
-      { title: 'Cursos', path: PATHS.home },
-      { title: 'Instrutores', path: PATHS.home},
-      { title: 'Vantagens', path: PATHS.home},
-      { title: 'Funcionamento', path: PATHS.home},
-      { title: 'Preçário', path: PATHS.home },
- 
-    ],
-  },
-   */
-
   {
     order: '3',
     type: 'Common',
@@ -102,12 +76,50 @@ export const navLinks = [
 ];
 
 export const navConfig = [
+  {
+    title: 'Encontrar Cuidador', path: PATHS.companies.root
+  },
   { title: 'Serviços', path: PATHS.services.root },
   {
     title: 'Produtos',
-    path: 'https://www.careplace.pt',
     children: [navLinks[0], navLinks[1], navLinks[2]],
   },
-  { title: 'Unidades de Saúde', path: PATHS.healthUnits },
-  { title: 'Profissionais', path: PATHS.caregivers },
+];
+
+export const navConfigMobile = [
+  {
+    title: 'Encontrar Cuidador', path: PATHS.companies.root, icon: "fa6-solid:user-nurse"
+  },
+  { title: 'Serviços', path: PATHS.services.root, icon: "material-symbols:medical-services-outline-rounded" },
+  {
+    title: 'Dados Pessoais',
+    path: PATHS.account.personal,
+    icon: "material-symbols:account-circle"
+  },
+  {
+    title: 'Pedidos',
+    path: PATHS.account.orders,
+    icon: "material-symbols:reorder-rounded"
+  },
+  {
+    title: 'Familiares',
+    path: PATHS.account.relatives,
+    icon: "material-symbols:family-restroom-rounded"
+  },
+  {
+    title: 'Informações de Pagamento',
+    path: PATHS.account.payment,
+    icon: "ic:round-payment"
+  },
+  {
+    title: 'Definições',
+    path: PATHS.account.settings,
+    icon: "material-symbols:settings-outline-rounded"
+  },
+
+  {
+    title: 'Produtos',
+    icon: "nimbus:ecosystem",
+    children: [navLinks[0], navLinks[1], navLinks[2]],
+  },
 ];

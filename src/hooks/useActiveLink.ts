@@ -8,13 +8,19 @@ type ReturnType = {
   isExternalLink: boolean;
 };
 
-export default function useActiveLink(path: string, deep = true): ReturnType {
+export default function useActiveLink(path?: string | undefined, deep = true): ReturnType {
+  if (!path) {
+    return {
+      active: false,
+      isExternalLink: false,
+    }
+  }
   const { pathname, asPath } = useRouter();
 
-  const checkPath = path.startsWith('#');
+  const checkPath = path?.startsWith('#');
+
 
   const currentPath = path === '/' ? '/' : `${path}/`;
-
   const normalActive =
     (!checkPath && pathname === currentPath) || (!checkPath && asPath === currentPath);
 
@@ -25,4 +31,7 @@ export default function useActiveLink(path: string, deep = true): ReturnType {
     active: deep ? deepActive : normalActive,
     isExternalLink: path.includes('http'),
   };
+
+
+
 }

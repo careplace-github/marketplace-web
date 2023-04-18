@@ -10,7 +10,7 @@ export const PATHS = {
 
   // Services
   services: {
-    root: `services`,
+    root: `/services`,
     view: (id: string) => `/services/${id}`,
   },
 
@@ -27,6 +27,7 @@ export const PATHS = {
     relatives: `/account/relatives`,
     orders: `/account/orders`,
     payment: `/account/payment`,
+    settings: `/account/settings`,
   },
 
   // Order
@@ -36,8 +37,8 @@ export const PATHS = {
     questionnaireCompleted: (query: string) => `/order/questionnaire/${query}/completed`,
   },
 
-  // Payment
-  payment: {
+  // Payments
+  payments: {
     checkout: (query: string) => `/payment/${query}/checkout`,
     success: (query: string) => `/payment/${query}/success`,
   },
