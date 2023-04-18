@@ -3,6 +3,7 @@ import Head from 'next/head';
 // layouts
 import MainLayout from 'src/layouts/main';
 // features
+import  { GuestGuard } from 'src/features/auth';
 import { LandingView } from 'src/features/home';
 
 // ----------------------------------------------------------------------
@@ -18,7 +19,11 @@ export default function TravelLandingPage() {
         <title>Careplace</title>
       </Head>
 
+
+      <GuestGuard>
       <LandingView />
+      </GuestGuard>
+      
     </>
   );
 }
