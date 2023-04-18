@@ -10,7 +10,7 @@ export const PATHS = {
 
   // Services
   services: {
-    root: `services`,
+    root: `/services`,
     view: (id: string) => `/services/${id}`,
   },
 

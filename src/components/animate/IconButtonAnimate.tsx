@@ -13,8 +13,8 @@ type AnimateWrapProp = {
 };
 
 
-const IconButtonAnimate = forwardRef<HTMLButtonElement, IconButtonProps, AnimateWrapProp>(
-  ({ children, disableAnimation = false, size = 'medium', ...other }, ref) => (
+const IconButtonAnimate = forwardRef<HTMLButtonElement, IconButtonProps & { disableAnimation: boolean }>(
+  ({ disableAnimation = false, children, size = 'medium', ...other }, ref) => (
     <AnimateWrap disableAnimation={disableAnimation} size={size}>
       <IconButton size={size} ref={ref} {...other}>
         {children}
@@ -42,22 +42,16 @@ const varLarge = {
   tap: { scale: 0.99 },
 };
 
-const varNoAnimation = {
-  hover: { scale: 0 },
-  tap: { scale: 0 }
-}
-
 function AnimateWrap({ size, children, disableAnimation }: AnimateWrapProp) {
   const isSmall = size === 'small';
   const isLarge = size === 'large';
-  const noAnimation = size === 'noAnimation';
 
   return (
     <Box
       component={m.div}
       whileTap="tap"
       whileHover="hover"
-      variants={disableAnimation ? null : (isSmall && varSmall) || (isLarge && varLarge) || varMedium || (noAnimation && varNoAnimation)}
+      variants={disableAnimation ? undefined : (isSmall && varSmall) || (isLarge && varLarge) || varMedium}
       sx={{
         display: 'inline-flex',
       }}

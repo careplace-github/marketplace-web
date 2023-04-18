@@ -123,5 +123,5 @@ export default function Header({ headerOnDark }: Props) {
       </Toolbar>
       <HeaderShadow />
     </AppBar>
-  ) : <></>;
+  ) : null;
 }

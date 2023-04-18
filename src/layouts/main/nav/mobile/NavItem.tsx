@@ -15,14 +15,13 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
 
   const renderContent = (
     <StyledNavItem active={active} {...other}>
-      <Iconify icon={icon} sx={{ mr: "10px" }} />
-
+      {icon !== undefined && <Iconify icon={icon} sx={{ mr: "10px" }} />}
       <ListItemText disableTypography primary={title} />
 
       {!!children && (
         <Iconify
           width={16}
-          icon={'carbon:chevron-down'}
+          icon='carbon:chevron-down'
           sx={open ? { ml: 1, transform: "rotate(180deg)", transition: "500ms" } : { ml: 1, transform: "rotate(0deg)", transition: "500ms" }}
         />
       )}

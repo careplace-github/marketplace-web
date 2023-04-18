@@ -86,7 +86,7 @@ export default function AccountPopover() {
 
   return (
     <>
-      <IconButtonAnimate disableAnimation disableRipple size='noAnimation' onClick={handleOpenPopover} sx={{
+      <IconButtonAnimate disableAnimation disableRipple onClick={handleOpenPopover} sx={{
         "&:hover": {
           bgcolor: "transparent",
         }

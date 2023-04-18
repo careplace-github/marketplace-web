@@ -77,13 +77,11 @@ export const navLinks = [
 
 export const navConfig = [
   {
-    title: 'Encontrar Cuidador', path: PATHS.companies.root, icon: "fa6-solid:user-nurse"
+    title: 'Encontrar Cuidador', path: PATHS.companies.root
   },
-  { title: 'Serviços', path: PATHS.services.root, icon: "material-symbols:medical-services-outline-rounded" },
+  { title: 'Serviços', path: PATHS.services.root },
   {
     title: 'Produtos',
-    icon: "",
-    // path: 'https://www.careplace.pt',
     children: [navLinks[0], navLinks[1], navLinks[2]],
   },
 ];

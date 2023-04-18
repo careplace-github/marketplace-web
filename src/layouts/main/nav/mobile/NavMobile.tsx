@@ -90,7 +90,7 @@ export default function NavMobile({ data }: NavProps) {
             {data.map((link) => {
               if (!isAuthenticated && (
                 link.title === "Dados Pessoais" || link.title === "Pedidos" || link.title === "Familiares" || link.title === "Informações de Pagamento" || link.title === "Definições"
-              )) return;
+              )) return null;
               return (
                 <NavList key={link.title} item={link} />
               )
