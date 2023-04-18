@@ -27,15 +27,16 @@ const OPTIONS = [
     icon: "material-symbols:account-circle"
   },
   {
-    label: 'Pedidos',
-    linkTo: PATHS.account.orders,
-    icon: "material-symbols:reorder-rounded"
-  },
-  {
     label: 'Familiares',
     linkTo: PATHS.account.relatives,
     icon: "material-symbols:family-restroom-rounded"
   },
+  {
+    label: 'Pedidos',
+    linkTo: PATHS.account.orders,
+    icon: "material-symbols:reorder-rounded"
+  },
+
   {
     label: 'Informações de Pagamento',
     linkTo: PATHS.account.payment,
