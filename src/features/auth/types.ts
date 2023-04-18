@@ -26,12 +26,17 @@ export type ActionMapType<M extends { [index: string]: any }> = {
     isAuthenticated: boolean;
     isInitialized: boolean;
     user: AuthUserType;
+    
+    register: (email: string, password: string, name: string, phone: string, country: string) => Promise<void>;
+    confirmationCode: (email: string) => Promise<void>;
+    confirmUser: (email: string, password: string, code: string) => Promise<void>;
+    forgotPassword: (email: string) => Promise<void>;
+    resetPassword: (email: string, code: string, newPassword: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
-    register: (email: string, password: string, firstName: string, lastName: string) => Promise<void>;
+    changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+    updateUser: (user: AuthUserType) => Promise<void>;
     logout: () => void;
-    loginWithGoogle?: () => void;
-    loginWithGithub?: () => void;
-    loginWithTwitter?: () => void;
+    
   };
   
   
