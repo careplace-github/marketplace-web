@@ -4,9 +4,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useEffect, useState } from 'react';
 // next
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Stack, Link, Alert, IconButton, InputAdornment } from '@mui/material';
+import { Stack, Alert, IconButton, InputAdornment, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // routes
 import { PATHS } from 'src/routes/paths';
@@ -25,18 +26,26 @@ type FormValuesProps = {
 };
 
 export default function AuthLoginForm() {
-  const theme = useTheme();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
+  const theme = useTheme();
 
   const { login } = useAuthContext();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | undefined>()
+  const { pathname, push } = useRouter();
+
+  const handleForgotPassword = () => {
+    const path = methods.getValues('email')
+      ? `${PATHS.auth.resetPassword}?email=${methods.getValues('email')}`
+      : PATHS.auth.resetPassword;
+    push(path);
+  };
 
   const LoginSchema = Yup.object().shape({
-    email: Yup.string().required('O Email é obrigatório.').email('Este email não é válido.'),
-    password: Yup.string()
-      .required('A Password é obrigatória.')
+    email: Yup.string().required('O email é obrigatório.').email('O email inserido não é válido.'),
+    password: Yup.string().required('A password é obrigatória.'),
   });
 
   const defaultValues = {
@@ -51,9 +60,12 @@ export default function AuthLoginForm() {
 
   const {
     reset,
+    setValue,
+    getValues,
+    register,
     setError,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = methods;
 
   const handleShowPassword = () => {
@@ -62,25 +74,32 @@ export default function AuthLoginForm() {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
+      setIsSubmitting(true);
       await login(data.email, data.password);
-      setErrorMessage(undefined)
+      setErrorMessage(undefined);
     } catch (error) {
-      reset();
-      if (error.error.message === "Incorrect username or password.") {
-        setErrorMessage("O email ou a password estão incorretos")
-      } else {
-        setErrorMessage("Algo correu mal. Tente novamente.");
+      setIsSubmitting(false);
+
+      switch (error.error.type) {
+        case 'UNAUTHORIZED':
+          setErrorMessage('O email ou a password estão incorretos.');
+          break;
+        default:
+          setErrorMessage('Algo correu mal. Por favor tente novamente.');
       }
     }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack sx={{ width: "100%" }} spacing={2.5} alignItems="center">
-        {errorMessage && <Alert sx={{ width: "100%" }} severity="error">{errorMessage}</Alert>}
+      <Stack spacing={2.5} alignItems="flex-end">
+        {errorMessage && (
+          <Alert sx={{ width: '100%' }} severity="error">
+            {errorMessage}
+          </Alert>
+        )}
 
-        <RHFTextField name="email" label="Email" />
-
+        <RHFTextField name="email" label="Email" type="email" />
 
         <RHFTextField
           name="password"
@@ -97,15 +116,14 @@ export default function AuthLoginForm() {
           }}
         />
 
-        <Link
-          component={NextLink}
-          href={PATHS.auth.resetPassword}
+        <Typography
+          onClick={handleForgotPassword}
           variant="body2"
-          underline="always"
+          sx={{ cursor: 'pointer', textDecoration: 'underline' }}
           color="text.secondary"
         >
           Esqueceu-se da password?
-        </Link>
+        </Typography>
 
         <LoadingButton
           fullWidth
@@ -120,8 +138,7 @@ export default function AuthLoginForm() {
             color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
             '&:hover': {
               bgcolor: 'primary.dark',
-              color:
-                theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
             },
           }}
         >
@@ -131,4 +148,3 @@ export default function AuthLoginForm() {
     </FormProvider>
   );
 }
-
