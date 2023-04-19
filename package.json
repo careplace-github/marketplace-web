@@ -5,8 +5,8 @@
   "description": "Careplace - Marketplace de Cuidadores Domiciliários. A Careplace conecta Empresas de que prestam Serviços de Apoio Domiciliário às pessoas que precisam de encontrar um Cuidador Domiciliário.",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3001",
-    "start": "next start -p 3001",
+    "dev": "next dev -p 3000",
+    "start": "next start -p 3000",
     "build": "next build",
     "build-netlify": "next build && cp -r .next _next && mv _next .next/",
     "export": "yarn build && next export -o _static",
