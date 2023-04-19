@@ -1,7 +1,5 @@
 // @mui
 import { Stack, Button, TextField, Typography, IconButton, InputAdornment } from '@mui/material';
-// _mock
-import { _socials } from 'src/_mock';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
