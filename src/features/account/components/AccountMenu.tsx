@@ -1,10 +1,13 @@
 // next
 import NextLink from 'next/link';
-
+// react 
+import { useCallback } from 'react';
+import { useForm } from 'react-hook-form';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
 import { alpha } from '@mui/material/styles';
+import { LoadingButton } from '@mui/lab';
 import Modal from '@mui/material/Modal';
 import {
   Link,
@@ -34,6 +37,9 @@ import _mock from 'src/_mock';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import FormProvider, { RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from 'src/components/hook-form';
+import { CustomFile } from 'src/components/upload';
+import axios from 'src/lib/axios';
 
 // ----------------------------------------------------------------------
 
@@ -67,23 +73,86 @@ const navigations = [
 
 // ----------------------------------------------------------------------
 
-type Props = {
+type FormValuesProps = {
   open: boolean;
   onClose: VoidFunction;
+  profile_picture: string | null;
 };
 
-export default function AccountMenu({ open, onClose }: Props) {
+
+export default function AccountMenu({ open, onClose }: FormValuesProps) {
   const isMdUp = useResponsive('up', 'md');
-  const { user, logout } = useAuthContext();
+  const { user, updateUser, logout } = useAuthContext();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
+  // Form Data State
+  const [fileData, setFileData] = useState(null);
+  //const [fileUpload, setFileUpload] = useState<any>(null);
   const routes = useRouter();
+
 
   const handleLogoutClick = () => {
     setIsLoading(true);
     logout();
     routes.push(PATHS.home);
   };
+
+  const defaultValues = {
+    profile_picture: user?.profile_picture
+  };
+
+  const methods = useForm<FormValuesProps>({
+    defaultValues
+  });
+
+  const {
+    setValue,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = methods;
+
+  const onSubmit = async (data: FormValuesProps) => {
+    try {
+      let fileURL;
+      const response = await axios.post('/files',
+        fileData
+      );
+
+      const uploadedFileURL = response.data.url;
+      user.profile_picture = uploadedFileURL;
+      setValue('profile_picture', uploadedFileURL);
+
+      updateUser(user);
+
+      // Close Modal
+      setOpenModal(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+
+      const formData = new FormData();
+      formData.append('file', file, file.name);
+
+      setFileData(formData);
+
+      const newFile = Object.assign(file, {
+        preview: URL.createObjectURL(file),
+      });
+
+      if (file) {
+        setValue('profile_picture', newFile);
+      }
+    },
+    [setValue]
+  );
+
+
+
 
   const renderContent = (
     <Stack
@@ -127,34 +196,59 @@ export default function AccountMenu({ open, onClose }: Props) {
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'flex-start',
-              padding: '10px',
-              gap: '10px',
+              padding: '0px',
+              gap: '0px',
             }}
           >
-            <Avatar
-              src={user?.profile_picture}
-              sx={{ width: '100px', height: '100px', mb: '50px' }}
-            />
-            <Box
-              sx={{
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
-                gap: '20px',
-              }}
-            >
-              <Button
-                variant="outlined"
-                sx={{ width: '100%', height: '50px', color: 'red', borderColor: 'red' }}
+            <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+              <RHFUploadAvatar
+                name="profile_picture"
+                maxSize={3145728}
+                onDrop={handleDrop}
+                helperText={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      mt: 2,
+                      mx: 'auto',
+                      display: 'block',
+                      textAlign: 'center',
+                      color: 'text.secondary',
+                    }}
+                  >
+                    Allowed *.jpeg, *.jpg, *.png, *.gif
+                    <br /> max size of 3MB
+                  </Typography>
+                }
+              />
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'flex-end',
+                  gap: '20px',
+                  mt: '20px',
+
+                }}
               >
-                Cancelar
-              </Button>
-              <Button variant="contained" sx={{ width: '100%', height: '50px' }}>
-                Guardar
-              </Button>
-            </Box>
+
+
+                <Button
+                  variant="outlined"
+                  sx={{ width: '100%', height: '50px', color: 'red', borderColor: 'red' }}
+                >
+                  Cancelar
+                </Button>
+
+                <LoadingButton type="submit" variant="contained" loading={isSubmitting} sx={{ width: '100%', height: '50px' }}>
+                  Guardar
+                </LoadingButton>
+
+              </Box>
+            </FormProvider>
+
           </Box>
         </Box>
       </Modal>

@@ -10,9 +10,10 @@ import { Box, Typography, Stack, IconButton, InputAdornment } from '@mui/materia
 import { countries } from 'src/data';
 // components
 import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar} from 'src/components/hook-form';
 //
 import { AccountLayout } from '../components';
+
 
 // ----------------------------------------------------------------------
 
