@@ -5,7 +5,7 @@ import Head from 'next/head';
 import MainLayout from 'src/layouts/main';
 // features
 import { AccountOrdersView } from 'src/features/account';
-import { AuthGuard } from 'src/features/auth';
+
 // ----------------------------------------------------------------------
 
 AccountOrdersPage.getLayout = (page: React.ReactElement) => (
@@ -21,9 +21,7 @@ export default function AccountOrdersPage() {
         <title>Conta: Pedidos | Careplace</title>
       </Head>
 
-      <AuthGuard>
       <AccountOrdersView />
-      </AuthGuard>
     </>
   );
 }

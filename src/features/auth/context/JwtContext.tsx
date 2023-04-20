@@ -6,6 +6,7 @@ import { localStorageAvailable, setItem, getItem } from 'src/utils';
 import { isValidToken, setSession } from '../utils';
 import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../types';
 
+
 enum Types {
   INITIAL = 'INITIAL',
 
@@ -26,18 +27,23 @@ type Payload = {
     user: AuthUserType;
   };
 
-  [Types.REGISTER]: {};
-  [Types.CONFIRMATION_CODE]: {};
+  [Types.REGISTER]: {
+  };
+  [Types.CONFIRMATION_CODE]: {
+  };
   [Types.CONFIRM_USER]: {
     isAuthenticated: boolean;
     user: AuthUserType;
   };
-  [Types.FORGOT_PASSWORD]: {};
-  [Types.RESET_PASSWORD]: {};
+  [Types.FORGOT_PASSWORD]: {
+  };
+  [Types.RESET_PASSWORD]: {
+  };
   [Types.LOGIN]: {
     user: AuthUserType;
   };
-  [Types.CHANGE_PASSWORD]: {};
+  [Types.CHANGE_PASSWORD]: {
+  };
   [Types.UPDATE_USER]: {
     user: AuthUserType;
   };
@@ -133,15 +139,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const storageAvailable = localStorageAvailable();
 
+
   const initialize = useCallback(async () => {
+
     try {
       const accessToken = storageAvailable ? localStorage.getItem('accessToken') : '';
 
       if (accessToken && isValidToken(accessToken)) {
+
         let user = {
           name: getItem('name'),
-          profile_picture: getItem('profile_picture'),
-        };
+          profile_picture: getItem('profile_picture')
+        }
 
         /**
          * Allows to initialize a login protected page without having to wait for the user to be fetched
@@ -160,8 +169,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         user = response.data;
 
-        setItem('profile_picture', user.profile_picture);
+        setItem('profile_picture', user.profile_picture)
         setItem('name', user.name);
+
 
         dispatch({
           type: Types.INITIAL,
@@ -191,6 +201,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [storageAvailable]);
 
+
   /**
    * Refresh the auth context
    * This will c
@@ -198,6 +209,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     initialize();
   }, [initialize]);
+
+
+
 
   // REGISTER
   const register = useCallback(
@@ -208,83 +222,114 @@ export function AuthProvider({ children }: AuthProviderProps) {
         name,
         phone,
         address: {
-          country,
-        },
+          country
+        }
       });
+
 
       dispatch({
         type: Types.REGISTER,
-        payload: {},
+        payload: {
+        },
       });
     },
     []
   );
 
   // CONFIRMATION_CODE
-  const confirmationCode = useCallback(async (email: string) => {
-    const response = await axios.post('/auth/marketplace/send/confirmation-code', {
-      email,
-    });
-  }, []);
+  const confirmationCode = useCallback(
+    async (email: string) => {
+      const response = await axios.post('/auth/marketplace/send/confirmation-code', {
+        email
+      });
+    },
+    []
+  );
+
+
 
   // CONFIRM_USER
-  const confirmUser = useCallback(async (email: string, password: string, code: string) => {
-    const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
-      email,
-      code,
-    });
+  const confirmUser = useCallback(
+    async (
+      email: string,
+      password: string,
+      code: string,
+    ) => {
+      const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
+        email,
+        code
+      });
 
-    // Check if the api response has a 200 status code
-    if (response.status !== 200) {
+
+      // Check if the api response has a 200 status code
+      if (response.status !== 200) {
+        dispatch({
+          type: Types.CONFIRM_USER,
+          payload: {
+            isAuthenticated: false,
+            user: null,
+          },
+        });
+
+        throw new Error('Invalid confirmation code');
+      }
+
+
+      const accessToken = (await axios.post('/auth/marketplace/login', {
+        email,
+        password,
+      })).data.accessToken;
+
+      setSession(accessToken);
+
+
+
+      const user = (await axios.get('/users/account')).data;
+
+
+      setItem('profile_picture', user.profile_picture)
+      setItem('name', user.name);
+
       dispatch({
         type: Types.CONFIRM_USER,
         payload: {
-          isAuthenticated: false,
-          user: null,
+          isAuthenticated: true,
+          user,
         },
       });
+    },
+    []
+  );
 
-      throw new Error('Invalid confirmation code');
-    }
-
-    const accessToken = (
-      await axios.post('/auth/marketplace/login', {
-        email,
-        password,
-      })
-    ).data.accessToken;
-
-    setSession(accessToken);
-
-    const user = (await axios.get('/users/account')).data;
-
-    setItem('profile_picture', user.profile_picture);
-    setItem('name', user.name);
-
-    dispatch({
-      type: Types.CONFIRM_USER,
-      payload: {
-        isAuthenticated: true,
-        user,
-      },
-    });
-  }, []);
 
   // FORGOT_PASSWORD
-  const forgotPassword = useCallback(async (email: string) => {
-    const response = await axios.post('/auth/marketplace/send/forgot-password-code', {
-      email,
-    });
-  }, []);
+  const forgotPassword = useCallback(
+    async (
+      email: string,
+    ) => {
+      const response = await axios.post('/auth/marketplace/send/reset-password-code', {
+        email
+      });
+    },
+    []
+  );
 
   // RESET_PASSWORD
-  const resetPassword = useCallback(async (email: string, code: string, newPassword: string) => {
-    const response = await axios.post('/auth/marketplace/verify/reset-password-code', {
-      email,
-      code,
-      newPassword,
-    });
-  }, []);
+  const resetPassword = useCallback(
+    async (
+      email: string,
+      code: string,
+      newPassword: string,
+    ) => {
+
+      const response = await axios.post('/auth/marketplace/verify/reset-password-code', {
+        email,
+        code,
+        newPassword
+      });
+    },
+    []
+  );
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
@@ -299,8 +344,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const user = response.data;
 
-    setItem('profile_picture', user.profile_picture);
+    setItem('profile_picture', user.profile_picture)
     setItem('name', user.name);
+
+
 
     dispatch({
       type: Types.LOGIN,
@@ -311,36 +358,48 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // CHANGE_PASSWORD
-  const changePassword = useCallback(async (oldPassword: string, newPassword: string) => {
-    const response = await axios.post('/auth/change-password', {
-      oldPassword,
-      newPassword,
-    });
-  }, []);
+  const changePassword = useCallback(
+    async (
+      oldPassword: string,
+      newPassword: string,
+    ) => { 
+      const response = await axios.post('/auth/change-password', {
+        oldPassword,
+        newPassword
+      });
+    },
+    []
+  );
 
   // UPDATE_USER
-  const updateUser = useCallback(async (user: AuthUserType) => {
-    const updatedUser = (
-      await axios.put('/users/account', {
-        user,
-      })
-    ).data;
+  const updateUser = useCallback(
+    async (
+      user: AuthUserType,
+    ) => { 
+      const updatedUser = (await axios.put('/users/account', {
+        user
+      })).data;
 
-    setItem('profile_picture', updatedUser.profile_picture);
-    setItem('name', updatedUser.name);
 
-    dispatch({
-      type: Types.UPDATE_USER,
-      payload: {
-        user: updatedUser,
-      },
-    });
-  }, []);
+      setItem('profile_picture', updatedUser.profile_picture)
+      setItem('name', updatedUser.name);
+
+      dispatch({
+        type: Types.UPDATE_USER,
+        payload: {
+          user: updatedUser,
+        },
+      });
+    },
+    []
+  );
+  
+          
 
   // LOGOUT
   const logout = useCallback(() => {
     setSession(null);
-    setItem('profile_picture', null);
+    setItem('profile_picture', null)
     setItem('name', null);
 
     dispatch({
@@ -355,6 +414,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       user: state.user,
       method: 'jwt',
 
+
       register,
       confirmationCode,
       confirmUser,
@@ -365,20 +425,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       updateUser,
       logout,
     }),
-    [
-      state.isAuthenticated,
-      state.isInitialized,
-      state.user,
-      register,
-      confirmationCode,
-      confirmUser,
-      forgotPassword,
-      resetPassword,
-      login,
-      changePassword,
-      updateUser,
-      logout,
-    ]
+    [state.isAuthenticated, state.isInitialized, state.user, register, confirmationCode, confirmUser, forgotPassword, resetPassword, login, changePassword, updateUser, logout]
   );
 
   return <JwtAuthContext.Provider value={memoizedValue}>{children}</JwtAuthContext.Provider>;
