@@ -48,6 +48,7 @@ export const PATHS = {
     login: '/auth/login',
     register: '/auth/register',
     resetPassword: '/auth/reset-password',
+    forgotPassword: '/auth/forgot-password',
     verifyCode: '/auth/verify-code',
   },
 
