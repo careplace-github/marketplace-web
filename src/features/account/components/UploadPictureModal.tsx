@@ -11,7 +11,7 @@ import useResponsive from 'src/hooks/useResponsive';
 
 type UploadPictureModalProps = {
   open: boolean;
-  onClose: Function;
+  onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
 };
 type FormValuesProps = {
   open: boolean;
@@ -22,7 +22,7 @@ type FormValuesProps = {
 const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
   const { user, updateUser } = useAuthContext();
   const isMdUp = useResponsive('up', 'md');
-  const [fileData, setFileData] = useState(null);
+  const [fileData, setFileData] = useState<FormData>();
   const defaultValues = {
     profile_picture: user?.profile_picture,
   };
@@ -42,13 +42,15 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       const response = await axios.post('/files', fileData);
 
       const uploadedFileURL = response.data.url;
-      user.profile_picture = uploadedFileURL;
-      setValue('profile_picture', uploadedFileURL);
+      if (user) {
+        user.profile_picture = uploadedFileURL;
+        setValue('profile_picture', uploadedFileURL);
 
-      updateUser(user);
+        updateUser(user);
+      }
 
       // Close Modal
-      onClose();
+      onClose({}, 'backdropClick');
     } catch (error) {
       console.error(error);
     }
@@ -68,7 +70,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       });
 
       if (file) {
-        setValue('profile_picture', newFile);
+        setValue('profile_picture', newFile.preview);
       }
     },
     [setValue]
@@ -76,11 +78,11 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
 
   // function when the user clicks cancel button (modal opened)
   const handleCancelClick = () => {
-    const prevImage = Object.assign(user.profile_picture, {
-      preview: user.profile_picture,
+    const prevImage = Object.assign(user?.profile_picture, {
+      preview: user?.profile_picture,
     });
     setValue('profile_picture', prevImage);
-    onClose();
+    onClose({}, 'backdropClick');
   };
 
   return (
