@@ -15,10 +15,6 @@ type AuthGuardProps = {
 export default function AuthGuard({ children }: AuthGuardProps) {
   const { isAuthenticated, isInitialized } = useAuthContext();
 
-  const { pathname, push } = useRouter();
-
-  const [requestedLocation, setRequestedLocation] = useState<string | null>(null);
-
   // Return loading screen if auth context is not initialized
   if (!isInitialized) {
     return <LoadingScreen />;
@@ -26,25 +22,14 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   // Redirect to login page if user is not authenticated
   if (!isAuthenticated) {
-    // Save requested location if user is not authenticated
-    if (pathname !== requestedLocation) {
-      setRequestedLocation(pathname);
-    }
+    const { pathname, push } = useRouter();
 
     // Redirect to login page
     useEffect(() => {
       push(PATHS.auth.login);
-    },
-      [push]);
-  }
+    }, [push]);
 
-  // Redirect to requested location if user is authenticated
-  if (requestedLocation && pathname !== requestedLocation) {
-    setRequestedLocation(null);
-
-    useEffect(() => {
-      push(PATHS.companies.root);
-    }, [pathname, push]);
+    return <LoadingScreen />;
   }
 
   return <> {children} </>;

@@ -38,8 +38,8 @@ export default function AuthLoginForm() {
 
   const handleForgotPassword = () => {
     const path = methods.getValues('email')
-      ? `${PATHS.auth.resetPassword}?email=${methods.getValues('email')}`
-      : PATHS.auth.resetPassword;
+      ? `${PATHS.auth.forgotPassword}?email=${methods.getValues('email')}`
+      : PATHS.auth.forgotPassword;
     push(path);
   };
 
