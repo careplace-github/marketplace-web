@@ -8,6 +8,8 @@ import { useAuthContext } from 'src/contexts';
 import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+// components
+import { useSnackbar } from 'src/components/snackbar';
 
 type UploadPictureModalProps = {
   open: boolean;
@@ -20,6 +22,8 @@ type FormValuesProps = {
 };
 
 const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const { user, updateUser } = useAuthContext();
   const isMdUp = useResponsive('up', 'md');
   const [fileData, setFileData] = useState<FormData>();
@@ -39,6 +43,14 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
+      // If the user didn't select a new image, return
+      if (!fileData) {
+        enqueueSnackbar('Por favor selecione uma imagem', {
+          variant: 'error',
+        });
+        return;
+      }
+
       const response = await axios.post('/files', fileData);
 
       const uploadedFileURL = response.data.url;
@@ -47,12 +59,18 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
         setValue('profile_picture', uploadedFileURL);
 
         updateUser(user);
+
+        enqueueSnackbar('Imagem de perfil alterada com sucesso', {
+          variant: 'success',
+        });
       }
 
       // Close Modal
       onClose({}, 'backdropClick');
     } catch (error) {
-      console.error(error);
+      enqueueSnackbar('Erro ao alterar imagem de perfil, por favor tente novamente.', {
+        variant: 'error',
+      });
     }
   };
 
