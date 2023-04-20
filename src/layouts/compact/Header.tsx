@@ -45,9 +45,8 @@ export default function Header({ isOffset }: Props) {
         <Logo />
 
         <Stack spacing={1} direction="row" alignItems="center">
-
           <Link href="/" component={NextLink} variant="subtitle2" color="inherit">
-            Need Help?
+            Precisa de Ajuda?
           </Link>
         </Stack>
       </Toolbar>
