@@ -97,6 +97,13 @@ const typography = {
     fontFamily: secondaryFont.style.fontFamily,
     ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
   },
+  h7: {
+    fontWeight: 600,
+    lineHeight: 28 / 18,
+    fontSize: pxToRem(15),
+    fontFamily: secondaryFont.style.fontFamily,
+    ...responsiveFontSizes({ sm: 16, md: 16, lg: 16 }),
+  },
   subtitle1: {
     fontWeight: 600,
     lineHeight: 1.5,

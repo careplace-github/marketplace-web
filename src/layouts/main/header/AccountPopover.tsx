@@ -94,8 +94,8 @@ export default function AccountPopover() {
       }} >
         <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: "15px", cursor: "pointer" }}>
           <CustomAvatar src={user?.profile_picture} alt={user?.displayName} name={user?.displayName} />
-          <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>{user?.name}</Typography>
-          <Iconify icon="ic:baseline-keyboard-arrow-down" width="30px" sx={openPopover ? { transform: "rotate(180deg)", transition: "500ms" } : { transform: "rotate(0deg)", transition: "500ms" }} />
+          <Typography variant="h7" sx={{ color: 'text.primary' }} noWrap>{user?.name}</Typography>
+          <Iconify icon="ic:baseline-keyboard-arrow-down" width="30px" sx={openPopover ? {ml: "-15px", transform: "rotate(180deg)", transition: "500ms" } : {ml: "-15px", transform: "rotate(0deg)", transition: "500ms" }} />
         </Box>
       </IconButtonAnimate>
 
