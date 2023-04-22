@@ -1,14 +1,17 @@
- import { useState } from 'react';
+import { useState } from 'react';
 // @mui
 import { Container, Stack, Typography, Button, Box } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+// auth
+import { useAuthContext } from 'src/contexts';
 // config
 import { NAV } from 'src/layouts';
 // components
 import Iconify from 'src/components/iconify';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
-import EcommerceAccountMenu from './AccountMenu';
+import AccountMenu from './AccountMenu';
 
 // ----------------------------------------------------------------------
 
@@ -18,36 +21,36 @@ type Props = {
 
 export default function AccountLayout({ children }: Props) {
   const isMdUp = useResponsive('up', 'md');
-
-  const [menuOpen, setMemuOpen] = useState(false);
+  const { isInitialized } = useAuthContext();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleMenuOpen = () => {
-    setMemuOpen(true);
+    setMenuOpen(true);
   };
 
   const handleMenuClose = () => {
-    setMemuOpen(false);
+    setMenuOpen(false);
   };
 
-  return (
+  return !isInitialized ? (
+    <LoadingScreen />
+  ) : (
     <>
-     
-
       {isMdUp ? (
         <Container sx={{ my: 5 }}>
-          <Typography variant="h3">Account</Typography>
+          <Typography variant="h3">A Minha Conta</Typography>
         </Container>
       ) : (
         <Box sx={{ py: 2, mb: 5, borderBottom: (theme) => `solid 1px ${theme.palette.divider}` }}>
           <Container>
-            <Button
-              size="small"
-              color="inherit"
-              startIcon={<Iconify icon="carbon:menu" />}
-              onClick={handleMenuOpen}
+            <Typography
+              variant="subtitle2"
+              sx={{
+                fontWeight: 700,
+              }}
             >
-              Account
-            </Button>
+              A Minha Conta
+            </Typography>
           </Container>
         </Box>
       )}
@@ -67,7 +70,7 @@ export default function AccountLayout({ children }: Props) {
             },
           }}
         >
-          <EcommerceAccountMenu open={menuOpen} onClose={handleMenuClose} />
+          <AccountMenu open={menuOpen} onClose={handleMenuClose} />
 
           <Box
             sx={{

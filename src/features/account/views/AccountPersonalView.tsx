@@ -5,12 +5,17 @@ import { useState } from 'react';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { Box, Typography, Stack, IconButton, InputAdornment } from '@mui/material';
+import { Box, Avatar, Typography, Stack, IconButton, InputAdornment } from '@mui/material';
 // assets
 import { countries } from 'src/data';
+// auth
+import { useAuthContext } from 'src/contexts';
+// hooks
+import useResponsive from 'src/hooks/useResponsive';
 // components
 import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
+import UploadPictureModal from '../components/UploadPictureModal';
 //
 import { AccountLayout } from '../components';
 
@@ -22,6 +27,9 @@ const GENDER_OPTIONS = ['Male', 'Female', 'Other'];
 
 export default function AccountPersonalView() {
   const [showPassword, setShowPassword] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const isMdUp = useResponsive('up', 'md');
+  const { user } = useAuthContext();
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -82,7 +90,35 @@ export default function AccountPersonalView() {
         <Typography variant="h5" sx={{ mb: 3 }}>
           Personal
         </Typography>
-
+        {!isMdUp && (
+          <Box
+            sx={{
+              width: '100%',
+              pb: '40px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '15px',
+            }}
+          >
+            <UploadPictureModal open={openModal} onClose={() => setOpenModal(false)} />
+            <Avatar
+              onClick={() => setOpenModal(true)}
+              src={user?.profile_picture}
+              sx={{ width: '150px', height: '150px' }}
+            />
+            <Stack
+              direction="row"
+              alignItems="center"
+              onClick={() => setOpenModal(true)}
+              sx={{ typography: 'caption', cursor: 'pointer', '&:hover': { opacity: 0.72 } }}
+            >
+              <Iconify icon="carbon:edit" sx={{ mr: 1 }} />
+              Alterar imagem
+            </Stack>
+          </Box>
+        )}
         <Box
           rowGap={2.5}
           columnGap={2}
@@ -150,7 +186,7 @@ export default function AccountPersonalView() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -165,7 +201,7 @@ export default function AccountPersonalView() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -180,7 +216,7 @@ export default function AccountPersonalView() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                     </IconButton>
                   </InputAdornment>
                 ),
