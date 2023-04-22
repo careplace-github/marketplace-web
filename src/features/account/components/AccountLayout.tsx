@@ -38,19 +38,19 @@ export default function AccountLayout({ children }: Props) {
     <>
       {isMdUp ? (
         <Container sx={{ my: 5 }}>
-          <Typography variant="h3">Account</Typography>
+          <Typography variant="h3">A Minha Conta</Typography>
         </Container>
       ) : (
         <Box sx={{ py: 2, mb: 5, borderBottom: (theme) => `solid 1px ${theme.palette.divider}` }}>
           <Container>
-            <Button
-              size="small"
-              color="inherit"
-              startIcon={<Iconify icon="carbon:menu" />}
-              onClick={handleMenuOpen}
+            <Typography
+              variant="subtitle2"
+              sx={{
+                fontWeight: 700,
+              }}
             >
-              Account
-            </Button>
+              A Minha Conta
+            </Typography>
           </Container>
         </Box>
       )}
