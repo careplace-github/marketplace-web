@@ -48,6 +48,9 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
         enqueueSnackbar('Por favor selecione uma imagem', {
           variant: 'error',
         });
+
+        onClose({}, 'backdropClick');
+
         return;
       }
 
