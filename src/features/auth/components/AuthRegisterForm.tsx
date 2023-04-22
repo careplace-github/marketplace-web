@@ -4,9 +4,11 @@ import { MuiTelInput } from 'mui-tel-input';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+// next
+import { useRouter } from 'next/router';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Typography, Stack, Link, IconButton, InputAdornment } from '@mui/material';
+import { Typography, Stack, Alert, Link, IconButton, InputAdornment } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // components
 import Iconify from 'src/components/iconify';
@@ -32,12 +34,16 @@ type FormValuesProps = {
 };
 
 export default function AuthRegisterForm() {
+  const { pathname, push } = useRouter();
+
   const { enqueueSnackbar } = useSnackbar();
 
   const { register } = useAuthContext();
 
   const theme = useTheme();
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -95,22 +101,27 @@ export default function AuthRegisterForm() {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting },
+    setError,
+    formState: { errors },
   } = methods;
 
   const onSubmit = async (data: FormValuesProps) => {
     try {
-      // Get the country from the /data/countries.ts file by the phone number
-      const countryCode = (countries.find((country) => country.phone === data.phone.slice(0, data.phone.indexOf(' ')).replace('+', '')) as any).code;
-     // get the frst character unil the first space eg: +351 123 456 789 => +351
-      
+      setIsSubmitting(true);
 
-     console.log("countryCode",countryCode)
+      // Get the country from the /data/countries.ts file by the phone number
+      const countryCode = (
+        countries.find(
+          (country) =>
+            country.phone === data.phone.slice(0, data.phone.indexOf(' ')).replace('+', '')
+        ) as any
+      ).code;
+      // get the frst character unil the first space eg: +351 123 456 789 => +351
+
+      console.log('countryCode', countryCode);
 
       // Remove spaces from the phone number
       const phone = data.phone.replace(/\s/g, '');
-
-
 
       // Create the user object
 
@@ -127,15 +138,33 @@ export default function AuthRegisterForm() {
       await register(user);
 
       enqueueSnackbar('Conta criada com sucesso.', { variant: 'success' });
+
+      push(PATHS.auth.verifyCode);
+
+      setErrorMessage(undefined);
     } catch (error) {
+      setIsSubmitting(false);
+
       enqueueSnackbar('Erro ao criar conta. Por favor tente novamente', { variant: 'error' });
-      console.error(error);
+      switch (error?.error?.type) {
+        case 'UNAUTHORIZED':
+          setErrorMessage('O email ou a password estão incorretos.');
+          break;
+        default:
+          setErrorMessage('Algo correu mal. Por favor tente novamente.');
+      }
     }
   };
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5}>
+        {errorMessage && (
+          <Alert sx={{ width: '100%' }} severity="error">
+            {errorMessage}
+          </Alert>
+        )}
+
         <RHFTextField name="name" label="Nome" />
 
         <RHFTextField name="email" label="Email" />
