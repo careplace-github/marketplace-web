@@ -210,7 +210,7 @@ export default function AccountPersonalView() {
               variant="contained"
               loading={isSubmitting}
             >
-              Save Changes
+              Guardar
             </LoadingButton>
           </Box>
         </FormProvider>
