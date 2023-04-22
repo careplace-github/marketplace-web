@@ -3,12 +3,18 @@ import { useFormContext, Controller } from 'react-hook-form';
 // @mui
 import { TextField, TextFieldProps } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
-
+// 
 import styled from 'styled-components';
+
 // ----------------------------------------------------------------------
 
 type Props = TextFieldProps & {
-  phone: string;
+  name: string;
+  helperText?: string;
+  focusOnSelectCountry?: boolean ;
+  defaultCountry?: string ;
+  forceCallingCode?: string;
+  flagSize?: string | 'small';
 };
 
 /**
@@ -36,7 +42,15 @@ const MuiTelInputStyled = styled(MuiTelInput)`
 /**
  * @see https://viclafouch.github.io/mui-tel-input/docs/api-reference/
  */
-export default function RHFPhoneField({ name, helperText, ...other }: Props) {
+export default function RHFPhoneField({
+  name,
+  helperText,
+  focusOnSelectCountry,
+  defaultCountry,
+  forceCallingCode,
+  flagSize,
+  ...other
+}: Props) {
   const { control } = useFormContext();
 
   return (
@@ -50,9 +64,10 @@ export default function RHFPhoneField({ name, helperText, ...other }: Props) {
           value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           error={!!error}
           helperText={error ? error?.message : helperText}
-          // Change the font size of the country code
-
-          {...other}
+          defaultCountry={defaultCountry}
+          forceCallingCode={forceCallingCode}
+          flagSize={flagSize || 'small'}
+          focusOnSelectCountry={focusOnSelectCountry}
         />
       )}
     />
