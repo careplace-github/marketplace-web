@@ -4,7 +4,7 @@ import { useFormContext, Controller } from 'react-hook-form';
 import { TextField, TextFieldProps } from '@mui/material';
 import { MuiTelInput } from 'mui-tel-input';
 
-import styled from 'styled-components' 
+import styled from 'styled-components';
 // ----------------------------------------------------------------------
 
 type Props = TextFieldProps & {
@@ -16,24 +16,22 @@ type Props = TextFieldProps & {
  */
 // Country code font size should be the same has the input font size
 const MuiTelInputStyled = styled(MuiTelInput)`
-
-.MuiTelInput-Input {
-  font-size: 0.875rem;
-}
-
-
-.MuiTelInput-Typography-calling-code {
-  font-size: 0.875rem;
-
-  &.MuiTypography-root {
+  .MuiTelInput-Input {
     font-size: 0.875rem;
   }
 
+  .MuiTelInput-Typography-calling-code {
+    font-size: 0.875rem;
+    &.MuiTypography-root {
+      font-size: 0.875rem;
+    }
+  }
 
-}
-
-
-`
+  .MuiTypography-root {
+    font-size: 0.875rem;
+    margin-top: 1px;
+  }
+`;
 
 /**
  * @see https://viclafouch.github.io/mui-tel-input/docs/api-reference/
