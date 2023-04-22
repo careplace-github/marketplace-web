@@ -131,7 +131,7 @@ export default function AccountPopover() {
             {user?.displayName}
           </Typography>
 
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+          <Typography variant="body2" sx={{ color: '#212B36' }} noWrap>
             {user?.email}
           </Typography>
         </Box>
@@ -153,21 +153,17 @@ export default function AccountPopover() {
               }}
               onClick={() => handleClickItem(option.linkTo)}
             >
-              <Iconify icon={option.icon} color="#637381" />
-              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+              <Iconify icon={option.icon} color="#212B36" />
+              <Typography variant="body2" sx={{ color: '#212B36' }} noWrap>
                 {option.label}
               </Typography>
             </MenuItem>
-            // <Box href={option.linkTo} key={option.label} sx={{ p: "12px 20px", width: "100%", display: "flex", flexDirection: "row", gap: "5px", alignItems: "center", justifyContent: "flex-start" }}>
-            //   <Iconify icon={option.icon} />
-            //   <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>{option.label}</Typography>
-            // </Box>
           ))}
         </Stack>
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1, color: '#212B36' }}>
           Terminar Sessão
         </MenuItem>
       </MenuPopover>
