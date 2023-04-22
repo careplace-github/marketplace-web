@@ -7,7 +7,7 @@ import { useAuthContext } from 'src/contexts';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { Box, Avatar, Typography, Stack, IconButton, InputAdornment } from '@mui/material';
+import { Box, Avatar, Typography, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // assets
 import { countries, genders } from 'src/data';
@@ -72,17 +72,19 @@ export default function AccountPersonalView() {
   const onSubmit = async (data: typeof defaultValues) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      user.name = data.firstName + ' ' + data.lastName;
-      user.email = data.emailAddress;
-      user.phone = data.phoneNumber;
-      user.birthdate = data.birthday;
-      user.gender = data.gender;
-      user.address.street = data.streetAddress;
-      user.address.postal_code = data.zipCode;
-      user.address.city = data.city;
-      user.address.country = data.country;
-      updateUser(user);
-      reset(data);
+      if (user) {
+        user.name = `${data.firstName} ${data.lastName}`;
+        user.email = data.emailAddress;
+        user.phone = data.phoneNumber;
+        user.birthdate = data.birthday;
+        user.gender = data.gender;
+        user.address.street = data.streetAddress;
+        user.address.postal_code = data.zipCode;
+        user.address.city = data.city;
+        user.address.country = data.country;
+        updateUser(user);
+        reset(data);
+      }
     } catch (error) {
       console.error(error);
     }
