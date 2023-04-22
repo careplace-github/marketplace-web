@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // auth
 import { useAuthContext } from 'src/contexts';
 
@@ -15,6 +15,7 @@ import { countries } from 'src/data';
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
 //
 import { AccountLayout } from '../components';
 
@@ -26,7 +27,7 @@ const GENDER_OPTIONS = ['Male', 'Female', 'Other'];
 
 export default function AccountPersonalView() {
   const [showPassword, setShowPassword] = useState(false);
-  const { user, isInitialized } = useAuthContext();
+  const { user } = useAuthContext();
 
   console.log(user);
 
@@ -47,16 +48,16 @@ export default function AccountPersonalView() {
   });
 
   const defaultValues = {
-    firstName: user?.name ? user.name.split(' ')[0] : '',
-    lastName: user?.name ? user.name.split(' ').pop() : '',
-    emailAddress: user?.email ? user.email : '',
-    phoneNumber: '365-374-4961',
-    birthday: null,
-    gender: 'Male',
-    streetAddress: '',
-    zipCode: '',
-    city: '',
-    country: 'United States',
+    firstName: user?.name ? user.name.split(' ')[0] : null,
+    lastName: user?.name ? user.name.split(' ').pop() : null,
+    emailAddress: user?.email ? user.email : null,
+    phoneNumber: user?.phone ? user.phone : null,
+    birthday: user?.birthdate ? user.birthdate : null,
+    gender: user?.gender ? user.gender : null,
+    streetAddress: user?.address.street ? user.address.street : null,
+    zipCode: user?.address.street ? user.address.street : null,
+    city: user?.address.street ? user.address.street : null,
+    country: user?.address.street ? user.address.street : null,
     oldPassword: '',
     newPassword: '',
     confirmNewPassword: '',
@@ -83,7 +84,7 @@ export default function AccountPersonalView() {
     }
   };
 
-  return isInitialized && user ? (
+  return (
     <AccountLayout>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h5" sx={{ mb: 3 }}>
@@ -102,7 +103,13 @@ export default function AccountPersonalView() {
 
           <RHFTextField name="emailAddress" label="Email Address" />
 
-          <RHFTextField name="phoneNumber" label="Phone Number" />
+          <RHFPhoneField
+            name="phoneNumber"
+            label="Telemóvel"
+            defaultCountry="PT"
+            forceCallingCode
+          />
+          {/* <RHFTextField name="phoneNumber" label="Phone Number" /> */}
 
           <Controller
             name="birthday"
@@ -207,7 +214,5 @@ export default function AccountPersonalView() {
         </LoadingButton>
       </FormProvider>
     </AccountLayout>
-  ) : (
-    <LoadingScreen />
   );
 }
