@@ -2,6 +2,9 @@ import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+// auth
+import { useAuthContext } from 'src/contexts';
+
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -11,6 +14,7 @@ import { countries } from 'src/data';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
 import { AccountLayout } from '../components';
 
@@ -22,27 +26,30 @@ const GENDER_OPTIONS = ['Male', 'Female', 'Other'];
 
 export default function AccountPersonalView() {
   const [showPassword, setShowPassword] = useState(false);
+  const { user, isInitialized } = useAuthContext();
+
+  console.log(user);
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
   const AccountPersonalSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
-    emailAddress: Yup.string().required('Email address is required'),
-    phoneNumber: Yup.string().required('Phone number is required'),
-    birthday: Yup.string().required('Birthday is required'),
-    gender: Yup.string().required('Gender is required'),
-    streetAddress: Yup.string().required('Street address is required'),
-    city: Yup.string().required('City is required'),
-    zipCode: Yup.string().required('Zip code is required'),
+    firstName: Yup.string().required('O nome é obrigatório'),
+    lastName: Yup.string().required('O apelido é obrigatório'),
+    emailAddress: Yup.string().required('O email é obrigatório'),
+    phoneNumber: Yup.string().required('O telemóvel é obrigatório'),
+    birthday: Yup.string().required('O aniversário é obrigatório'),
+    gender: Yup.string().required('O género é obrigatório'),
+    streetAddress: Yup.string().required('A morada is required'),
+    city: Yup.string().required('A cidade é obrigatória'),
+    zipCode: Yup.string().required('O código postal é obrigatório'),
   });
 
   const defaultValues = {
-    firstName: 'Jayvion',
-    lastName: 'Simon',
-    emailAddress: 'nannie_abernathy70@yahoo.com',
+    firstName: user?.name ? user.name.split(' ')[0] : '',
+    lastName: user?.name ? user.name.split(' ').pop() : '',
+    emailAddress: user?.email ? user.email : '',
     phoneNumber: '365-374-4961',
     birthday: null,
     gender: 'Male',
@@ -76,11 +83,11 @@ export default function AccountPersonalView() {
     }
   };
 
-  return (
+  return isInitialized && user ? (
     <AccountLayout>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h5" sx={{ mb: 3 }}>
-          Personal
+          Dados Pessoais
         </Typography>
 
         <Box
@@ -150,7 +157,7 @@ export default function AccountPersonalView() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -165,7 +172,7 @@ export default function AccountPersonalView() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -180,7 +187,7 @@ export default function AccountPersonalView() {
                 endAdornment: (
                   <InputAdornment position="end">
                     <IconButton onClick={handleShowPassword} edge="end">
-                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -200,5 +207,7 @@ export default function AccountPersonalView() {
         </LoadingButton>
       </FormProvider>
     </AccountLayout>
+  ) : (
+    <LoadingScreen />
   );
 }
