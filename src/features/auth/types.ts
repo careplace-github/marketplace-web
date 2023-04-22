@@ -1,3 +1,6 @@
+import { IUserProps } from 'src/features/user/types';
+
+
 // ----------------------------------------------------------------------
 
 export type ActionMapType<M extends { [index: string]: any }> = {
@@ -27,7 +30,7 @@ export type ActionMapType<M extends { [index: string]: any }> = {
     isInitialized: boolean;
     user: AuthUserType;
     
-    register: (email: string, password: string, name: string, phone: string, country: string) => Promise<void>;
+    register: (user: IUserProps) => Promise<void>;
     confirmationCode: (email: string) => Promise<void>;
     confirmUser: (email: string, password: string, code: string) => Promise<void>;
     forgotPassword: (email: string) => Promise<void>;

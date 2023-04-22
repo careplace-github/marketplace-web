@@ -65,20 +65,20 @@ export default function AuthRegisterForm() {
 
       .test('phone', 'O número de telemóvel é obrigatório', (value) => {
         // If the value is equal to a country phone number, then it is empty
-        const code = countries.find((country) => country.phone === value.replace('+', ''))?.phone;
-        const phone = value.replace('+', '');
+        const code = countries.find((country) => country.phone === value?.replace('+', ''))?.phone;
+        const phone = value?.replace('+', '');
 
         return code !== phone;
       })
 
       .test('phone', 'O número de telemóvel introduzido não é válido.', (value) => {
         // Portuguese phone number verification
-        if (value.startsWith('+351')) {
+        if (value?.startsWith('+351')) {
           // Remove spaces and the +351 sign
-          value = value.replace(/\s/g, '').replace('+351', '');
+          value = value?.replace(/\s/g, '').replace('+351', '');
 
           // Check if the phone number is valid
-          return value.length === 9;
+          return value?.length === 9;
         }
 
         return true;
@@ -121,7 +121,7 @@ export default function AuthRegisterForm() {
       console.log('countryCode', countryCode);
 
       // Remove spaces from the phone number
-      const phone = data.phone.replace(/\s/g, '');
+      const phone = data.phone.replace(/\s/g, '') as string;
 
       // Create the user object
 
