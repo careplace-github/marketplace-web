@@ -5,6 +5,7 @@ import { localStorageAvailable, setItem, getItem } from 'src/utils';
 //
 import { isValidToken, setSession } from '../utils';
 import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../types';
+import { IUserProps } from 'src/types/user';
 
 enum Types {
   INITIAL = 'INITIAL',
@@ -200,25 +201,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [initialize]);
 
   // REGISTER
-  const register = useCallback(
-    async (email: string, password: string, name: string, phone: string, country: string) => {
-      const response = await axios.post('/auth/marketplace/signup', {
-        email,
-        password,
-        name,
-        phone,
-        address: {
-          country,
-        },
-      });
+  const register = useCallback(async (user: IUserProps) => {
+    const response = await axios.post('/auth/marketplace/signup', {
+      user,
+    });
 
-      dispatch({
-        type: Types.REGISTER,
-        payload: {},
-      });
-    },
-    []
-  );
+    dispatch({
+      type: Types.REGISTER,
+      payload: {},
+    });
+  }, []);
 
   // CONFIRMATION_CODE
   const confirmationCode = useCallback(async (email: string) => {
