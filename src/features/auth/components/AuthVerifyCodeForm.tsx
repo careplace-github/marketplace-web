@@ -66,7 +66,7 @@ export default function AuthVerifyCodeForm() {
     email: emailRecovery || '',
   };
 
-  var resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
+  let resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
 
   const methods = useForm({
     mode: 'onChange',
