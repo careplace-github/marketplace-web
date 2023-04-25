@@ -1,24 +1,26 @@
 // @mui
- 
-import { Stack } from '@mui/material';
+import { Stack, Box } from '@mui/material';
 // types
 import { IProductItemProps } from 'src/types/relative';
+// hooks
+import { useResponsive } from 'src/hooks';
 // components
 import Scrollbar from 'src/components/scrollbar';
 //
 import EcommerceCartItem from './EcommerceCartItem';
 
-
 // ----------------------------------------------------------------------
 
 type Props = {
-  products: IProductItemProps[];
+  userRelatives: Array;
   wishlist?: boolean;
 };
 
-export default function EcommerceCartList({ products, wishlist = false }: Props) {
+export default function EcommerceCartList({ userRelatives, wishlist = false }: Props) {
+  const isMdUp = useResponsive('up', 'md');
+
   return (
-    <Scrollbar>
+    <Scrollbar sx={{ maxHeight: '520px' }}>
       <Stack
         direction="row"
         alignItems="center"
@@ -29,15 +31,14 @@ export default function EcommerceCartList({ products, wishlist = false }: Props)
           borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
         }}
       >
-        <Stack flexGrow={1}>Item</Stack>
-        <Stack sx={{ width: 120 }}>Qty</Stack>
-        <Stack sx={{ width: 120 }}>Subtotal</Stack>
-        <Stack sx={{ width: 36 }} />
-        {wishlist && <Stack sx={{ width: 36 }} />}
+        <Stack sx={{ width: isMdUp ? '120px' : '80px' }} />
+        <Stack sx={{ width: '30%', textAlign: 'left', pl: 2 }}>Nome</Stack>
+        <Stack sx={{ width: '45%', textAlign: 'left', pl: 2 }}>Morada</Stack>
+        <Stack sx={{ width: '15%', textAlign: 'left', pl: 2 }}>Idade</Stack>
+        <Stack sx={{ width: '70px', textAlign: 'left', pl: 2 }} />
       </Stack>
-
-      {products.map((product) => (
-        <EcommerceCartItem key={product.id} product={product} wishlist={wishlist} />
+      {userRelatives.map((relative) => (
+        <EcommerceCartItem key={relative._id} relative={relative} />
       ))}
     </Scrollbar>
   );
