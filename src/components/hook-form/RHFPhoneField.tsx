@@ -59,7 +59,7 @@ export default function RHFPhoneField({
           value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           error={!!error}
           forceCallingCode={forceCallingCode}
-          defaultCountry={defaultCountry}
+         /// defaultCountry={defaultCountry}
           helperText={error ? error?.message : helperText}
           // Change the font size of the country code
 

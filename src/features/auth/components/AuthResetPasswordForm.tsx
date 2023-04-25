@@ -57,8 +57,8 @@ export default function AuthNewPasswordForm() {
   const [resendAvailable, setResendAvailable] = useState(false);
   const [resetTimer, setResetTimer] = useState(false);
 
-  //const [resendTimer, setResendTimer] = useState(useCountdown(new Date(Date.now() + 10000)).seconds); --> doesn't work
-  var resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
+  // const [resendTimer, setResendTimer] = useState(useCountdown(new Date(Date.now() + 10000)).seconds); --> doesn't work
+  let resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
 
   const VerifyCodeSchema = Yup.object().shape({
     code1: Yup.string().required('Code is required'),
