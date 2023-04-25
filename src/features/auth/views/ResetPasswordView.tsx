@@ -1,23 +1,18 @@
-// react
-import { useState, useEffect } from 'react';
 // next
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 // @mui
-import { Link, Typography, Box } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 // routes
 import { PATHS } from 'src/routes/paths';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar'; //
+//
 import { AuthResetPasswordForm } from '../components';
 
 // ----------------------------------------------------------------------
 
 export default function ResetPasswordView() {
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <>
       <Image
@@ -27,16 +22,15 @@ export default function ResetPasswordView() {
       />
 
       <Typography variant="h3" paragraph>
-        Repor Password
+        Forgot Your Password?
       </Typography>
 
-      <Typography sx={{ color: 'text.secondary', mb: 5 }}>
-        Enviámos-lhe um código com 6 dígitos para o seu telemóvel.
-        <br />
-        Por favor escreva o código abaixo para definir a sua nova password.
+      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 5 }}>
+        Please enter the email address associated with your account and We will email you a link to
+        reset your password.
       </Typography>
 
-      <AuthResetPasswordForm  />
+      <AuthResetPasswordForm />
 
       <Link
         component={NextLink}
@@ -51,7 +45,7 @@ export default function ResetPasswordView() {
         }}
       >
         <Iconify icon="carbon:chevron-left" width={16} sx={{ mr: 1 }} />
-        Voltar ao Login
+        Return to sign in
       </Link>
     </>
   );
