@@ -40,6 +40,8 @@
     }
   },
   "rules": {
+    "eqeqeq": 0, // Remove
+    "react-hooks/exhaustive-deps": 0, // Remove
     "import/no-unresolved": 0, // Remove
     "react-hooks/rules-of-hooks": 0, // Remove
     "prefer-regex-literals": 0, // Remove
