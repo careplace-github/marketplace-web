@@ -10,7 +10,6 @@ type ReturnType = {
 };
 
 export default function useCountdown(date: Date): ReturnType {
-  
   const [countdown, setCountdown] = useState({
     days: '00',
     hours: '00',
