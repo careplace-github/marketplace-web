@@ -11,15 +11,13 @@ import { useAuthContext } from 'src/contexts';
 // config
 import { HEADER } from 'src/layouts/config';
 // paths
-import { PATHS } from "src/routes"
+import { PATHS } from 'src/routes';
 // components
 import Logo from 'src/components/logo';
-import AccountPopover from "./AccountPopover"
+import AccountPopover from './AccountPopover';
 //
 import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-
-
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +26,6 @@ type Props = {
 };
 
 export default function Header({ headerOnDark }: Props) {
-
   const { user, isAuthenticated, isInitialized } = useAuthContext();
 
   const theme = useTheme();
@@ -38,7 +35,7 @@ export default function Header({ headerOnDark }: Props) {
   const isOffset = useOffSetTop();
 
   return isInitialized ? (
-    <AppBar color="transparent" sx={{ boxShadow: 'none' }}>
+    <AppBar color="transparent" sx={{ boxShadow: '0px 1px 20px rgba(0,0,0,0.07)' }}>
       <Toolbar
         disableGutters
         sx={{
@@ -46,6 +43,8 @@ export default function Header({ headerOnDark }: Props) {
             xs: HEADER.H_MOBILE,
             md: HEADER.H_MAIN_DESKTOP,
           },
+          color: 'text.primary',
+          backgroundColor: 'white',
           transition: theme.transitions.create(['height', 'background-color'], {
             easing: theme.transitions.easing.easeInOut,
             duration: theme.transitions.duration.shorter,
@@ -53,49 +52,45 @@ export default function Header({ headerOnDark }: Props) {
           ...(headerOnDark && {
             color: 'common.white',
           }),
-          ...(isOffset && {
-            ...bgBlur({ color: theme.palette.background.default }),
-            color: 'text.primary',
-          }),
         }}
       >
-        <Container sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: "space-between" }}>
-          <Box sx={{
-            lineHeight: 0, position: 'relative'
-          }}>
+        <Container
+          sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+        >
+          <Box
+            sx={{
+              lineHeight: 0,
+              position: 'relative',
+            }}
+          >
             <Logo />
           </Box>
 
           {isMdUp && <NavDesktop data={navConfig} />}
 
-          <Stack
-            spacing={2}
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-end"
-          >
+          <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
+            {!isAuthenticated && isMdUp && (
+              <Link
+                href={PATHS.auth.register}
+                variant="subtitle1"
+                underline="none"
+                sx={{
+                  color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
+                  '&:hover': {
+                    color: theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
+                  },
 
+                  pr: 2,
+                }}
+              >
+                Registar
+              </Link>
+            )}
 
-            {!isAuthenticated && isMdUp && <Link
-              href={PATHS.auth.register}
-              variant='subtitle1'
-              underline='none'
-              sx={{
-                color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
-                '&:hover': {
-                  color:
-                    theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
-                },
-
-                pr: 2,
-              }}
-            >
-              Registar
-            </Link>}
-
-            {isMdUp && (isAuthenticated ?
-              <AccountPopover />
-              : (
+            {isMdUp &&
+              (isAuthenticated ? (
+                <AccountPopover />
+              ) : (
                 <Button
                   variant="contained"
                   color="inherit"
@@ -107,15 +102,13 @@ export default function Header({ headerOnDark }: Props) {
                     color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                     '&:hover': {
                       bgcolor: 'primary.dark',
-                      color:
-                        theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                     },
                   }}
                 >
                   Entrar
                 </Button>
               ))}
-
           </Stack>
 
           {!isMdUp && <NavMobile data={navConfigMobile} />}
