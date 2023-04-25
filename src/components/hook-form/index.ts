@@ -10,3 +10,4 @@ export { default as RHFTextField } from './RHFTextField';
 export { default as RHFRadioGroup } from './RHFRadioGroup';
 export { default as RHFAutocomplete } from './RHFAutocomplete';
 export { default as RHFPhoneField } from './RHFPhoneField';
+export { RHFUploadAvatar } from './RHFUpload';

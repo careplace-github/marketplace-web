@@ -220,7 +220,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // CONFIRM_USER
-  const confirmUser = useCallback(async (email: string, password: string, code: string) => {
+  const confirmUser = useCallback(async (email: string, code: string, password?: string) => {
     const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
       email,
       code,
