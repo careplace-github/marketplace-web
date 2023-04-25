@@ -3,5 +3,4 @@ const genders = [
     { value: 'female', label: 'Feminino' },
     { value: 'other', label: 'Outro / Prefiro não especificar' },
   ];
-  
-  export default genders;
+ export default genders; 
