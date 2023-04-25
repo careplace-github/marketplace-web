@@ -3,24 +3,22 @@ import { useState, useEffect } from 'react';
 // next
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-
 // @mui
 import { Link, Typography, Stack } from '@mui/material';
+import { Box } from '@mui/system';
 // routes
 import { PATHS } from 'src/routes/paths';
+// contexts
+import { useAuthContext } from 'src/contexts';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { AuthVerifyCodeForm } from '../components';
 import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
-
 //
-
 import useCountdown from 'src/hooks/useCountdown';
-// auth
-import { useAuthContext } from 'src/contexts';
-import { Box } from '@mui/system';
+// hooks
+import { AuthVerifyCodeForm } from '../components';
 
 // ----------------------------------------------------------------------
 
