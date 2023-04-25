@@ -43,16 +43,14 @@ export default function Header({ headerOnDark }: Props) {
             xs: HEADER.H_MOBILE,
             md: HEADER.H_MAIN_DESKTOP,
           },
+          color: 'text.primary',
+          backgroundColor: 'white',
           transition: theme.transitions.create(['height', 'background-color'], {
             easing: theme.transitions.easing.easeInOut,
             duration: theme.transitions.duration.shorter,
           }),
           ...(headerOnDark && {
             color: 'common.white',
-          }),
-          ...(isOffset && {
-            ...bgBlur({ color: theme.palette.background.default }),
-            color: 'text.primary',
           }),
         }}
       >
