@@ -19,7 +19,7 @@ type FormValuesProps = {
 
 export default function AuthRegisterForm() {
   const theme = useTheme();
-  
+
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -52,6 +52,8 @@ export default function AuthRegisterForm() {
     reset,
     handleSubmit,
     formState: { isSubmitting },
+    //   setError,
+    formState: { errors },
   } = methods;
 
   const onSubmit = async (data: FormValuesProps) => {
@@ -79,7 +81,7 @@ export default function AuthRegisterForm() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -94,7 +96,7 @@ export default function AuthRegisterForm() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'}/>
+                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -114,8 +116,7 @@ export default function AuthRegisterForm() {
             color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
             '&:hover': {
               bgcolor: 'primary.dark',
-              color: 
-                theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
             },
           }}
         >
@@ -136,4 +137,3 @@ export default function AuthRegisterForm() {
     </FormProvider>
   );
 }
-

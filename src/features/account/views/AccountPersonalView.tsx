@@ -30,15 +30,35 @@ export default function AccountPersonalView() {
   const theme = useTheme();
 
   const AccountPersonalSchema = Yup.object().shape({
-    firstName: Yup.string().required('O nome é obrigatório'),
-    lastName: Yup.string().required('O apelido é obrigatório'),
-    emailAddress: Yup.string().required('O email é obrigatório'),
-    phoneNumber: Yup.string().required('O telemóvel é obrigatório'),
-    birthday: Yup.string().required('O aniversário é obrigatório'),
-    gender: Yup.string().required('O género é obrigatório'),
-    streetAddress: Yup.string().required('A morada is required'),
-    city: Yup.string().required('A cidade é obrigatória'),
-    zipCode: Yup.string().required('O código postal é obrigatório'),
+    firstName: Yup.string().required('O nome é obrigatório.'),
+    lastName: Yup.string().required('O apelido é obrigatório.'),
+    emailAddress: Yup.string().required('O email é obrigatório.'),
+    birthday: Yup.string().required('O aniversário é obrigatório.'),
+    gender: Yup.string().required('O género é obrigatório.'),
+    streetAddress: Yup.string().required('A morada is required.'),
+    city: Yup.string().required('A cidade é obrigatória.'),
+    zipCode: Yup.string().required('O código postal é obrigatório.'),
+    phoneNumber: Yup.string()
+      .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
+        console.log('value =', value);
+        // If the value is equal to a country phone number, then it is empty
+        const code = countries.find((country) => country.phone === value?.replace('+', ''))?.phone;
+        const phoneNumber = value?.replace('+', '');
+
+        return code !== phoneNumber;
+      })
+      .test('phoneNumber', 'O número de telemóvel introduzido não é válido.', (value) => {
+        // Portuguese phone number verification
+        if (value?.startsWith('+351')) {
+          // Remove spaces and the +351 sign
+          value = value?.replace(/\s/g, '').replace('+351', '');
+
+          // Check if the phone number is valid
+          return value?.length === 9;
+        }
+
+        return true;
+      }),
   });
 
   const defaultValues = {
@@ -52,26 +72,23 @@ export default function AccountPersonalView() {
     zipCode: user?.address.postal_code ? user.address.postal_code : null,
     city: user?.address.city ? user.address.city : null,
     country: user?.address.country ? user.address.country : null,
-    oldPassword: '',
-    newPassword: '',
-    confirmNewPassword: '',
   };
 
   const methods = useForm<typeof defaultValues>({
     mode: 'onChange',
     resolver: yupResolver(AccountPersonalSchema),
+
     defaultValues,
   });
 
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, isDirty },
+    formState: { isSubmitting, isDirty, errors },
   } = methods;
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
       if (user) {
         user.name = `${data.firstName} ${data.lastName}`;
         user.email = data.emailAddress;
@@ -197,7 +214,8 @@ export default function AccountPersonalView() {
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
             <LoadingButton
               sx={{
-                mt: '20px',
+                width: isMdUp ? 'auto' : '100%',
+                mt: isMdUp ? '20px' : '40px',
                 backgroundColor: 'primary.main',
                 color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                 '&:hover': {
