@@ -29,7 +29,7 @@ export type ActionMapType<M extends { [index: string]: any }> = {
     
     register: (email: string, password: string, name: string, phone: string, country: string) => Promise<void>;
     confirmationCode: (email: string) => Promise<void>;
-    confirmUser: (email: string, password: string, code: string) => Promise<void>;
+    confirmUser: (email: string, code: string, password?: string) => Promise<void>;
     forgotPassword: (email: string) => Promise<void>;
     resetPassword: (email: string, code: string, newPassword: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;

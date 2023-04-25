@@ -26,7 +26,9 @@ import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, { RHFTextField, RHFCodes } from 'src/components/hook-form';
 import useCountdown from 'src/hooks/useCountdown';
 // lib
-import axios from '/src/lib/axios';
+import axios from 'src/lib/axios';
+// contexts
+import { useAuthContext } from 'src/contexts';
 
 // ----------------------------------------------------------------------
 
@@ -85,6 +87,7 @@ export default function AuthNewPasswordForm() {
     password: '',
     confirmPassword: '',
   };
+  const { forgotPassword, resetPassword } = useAuthContext();
 
   const methods = useForm({
     mode: 'onChange',
@@ -110,11 +113,7 @@ export default function AuthNewPasswordForm() {
         getValues('code5') +
         getValues('code6');
 
-      await axios.post('/auth/marketplace/verify/forgot-password-code', {
-        email: data.email,
-        code,
-        newPassword: data.password,
-      });
+      await resetPassword(data.email, code, data.password);
 
       // Show success message popup
       enqueueSnackbar('Change password success!');
@@ -133,13 +132,13 @@ export default function AuthNewPasswordForm() {
    */
   const onResendCode = async () => {
     try {
-      // await axios.post('/auth/marketplace/send/forgot-password-code', { email: getValues('email') });
+      setResetTimer(true);
+      setResendAvailable(false);
+
+      await forgotPassword(getValues('email'));
 
       // Show success message popup
       enqueueSnackbar('Code sent successfully!');
-
-      setResetTimer(true);
-      setResendAvailable(false);
     } catch (error) {
       // Show error message popup
       console.error(error);
@@ -158,7 +157,6 @@ export default function AuthNewPasswordForm() {
       resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
       setResetTimer(false);
     }
-
   }, [resendTimer]);
 
   useEffect(() => {
@@ -175,7 +173,13 @@ export default function AuthNewPasswordForm() {
       <Stack spacing={3}>
         <RHFTextField name="email" label="Email" disabled={!!emailRecovery} />
 
-        <RHFCodes keyName="code" inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
+        <RHFCodes
+          keyName="code"
+          inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']}
+          sx={{
+            justifyContent: 'space-between',
+          }}
+        />
 
         {resendAvailable && (
           <Typography variant="body2" sx={{ my: 3 }}>

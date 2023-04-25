@@ -36,7 +36,7 @@ export default function ResetPasswordView() {
         Por favor escreva o código abaixo para definir a sua nova password.
       </Typography>
 
-      <AuthResetPasswordForm />
+      <AuthResetPasswordForm  />
 
       <Link
         component={NextLink}
