@@ -1,4 +1,4 @@
-import { IUserProps } from 'src/features/user/types';
+import { IUserProps } from 'src/types/user';
 
 
 // ----------------------------------------------------------------------

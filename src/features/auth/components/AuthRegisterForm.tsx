@@ -129,7 +129,7 @@ export default function AuthRegisterForm() {
         name: data.name,
         email: data.email,
         password: data.password,
-        phone: phone,
+        phone,
         address: {
           country: countryCode,
         },
@@ -172,7 +172,6 @@ export default function AuthRegisterForm() {
         <RHFPhoneField
           name="phone"
           label="Telemóvel"
-          focusOnSelectCountry
           defaultCountry="PT"
           forceCallingCode
           flagSize="small"

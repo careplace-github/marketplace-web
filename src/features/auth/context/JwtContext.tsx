@@ -1,11 +1,13 @@
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react';
+// types
+import { IUserProps } from 'src/types/user';
 // utils
 import axios from 'src/lib/axios';
 import { localStorageAvailable, setItem, getItem } from 'src/utils';
 //
 import { isValidToken, setSession } from '../utils';
 import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../types';
-import { IUserProps } from 'src/types/user';
+
 
 enum Types {
   INITIAL = 'INITIAL',
