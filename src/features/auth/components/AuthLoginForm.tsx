@@ -78,9 +78,11 @@ export default function AuthLoginForm() {
       await login(data.email, data.password);
       setErrorMessage(undefined);
     } catch (error) {
+      console.error(error);
+
       setIsSubmitting(false);
 
-      switch (error.error.type) {
+      switch (error?.error?.type) {
         case 'UNAUTHORIZED':
           setErrorMessage('O email ou a password estão incorretos.');
           break;
