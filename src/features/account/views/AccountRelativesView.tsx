@@ -14,24 +14,25 @@ import { useEffect, useState } from 'react';
 // components
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import Iconify from 'src/components/iconify';
+import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
 //
 import { AccountLayout, EcommerceCartList } from '../components';
+import { formatRelative } from 'date-fns';
 
 // ----------------------------------------------------------------------
 
 export default function AccountRelativesView() {
   const [userRelatives, setUserRelatives] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [openAddRelativeModal, setOpenAddRelativeModal] = useState<Object>({
+    open: false,
+    action: '',
+  });
   const theme = useTheme();
 
   const fetchUserRelatives = async () => {
     const response = await axios.get('users/relatives');
-    const auxArray = response.data;
-    // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < 3; i++) {
-      auxArray.push(response.data[0]);
-    }
-    setUserRelatives(auxArray);
+    setUserRelatives(response.data);
     setIsLoading(false);
   };
 
@@ -43,6 +44,18 @@ export default function AccountRelativesView() {
     <LoadingScreen />
   ) : (
     <AccountLayout>
+      {openAddRelativeModal.open && (
+        <RelativeInformationModal
+          open={openAddRelativeModal.open}
+          onClose={() => setOpenAddRelativeModal({ open: false, action: '' })}
+          action={openAddRelativeModal.action}
+          relative={
+            openAddRelativeModal.action === 'edit' && openAddRelativeModal.relativeSelected
+              ? openAddRelativeModal.relativeSelected
+              : null
+          }
+        />
+      )}
       <Box
         sx={{
           p: 3,
@@ -56,14 +69,18 @@ export default function AccountRelativesView() {
           Familiares
         </Typography>
         <Box sx={{ maxHeight: '700px' }}>
-          <EcommerceCartList userRelatives={userRelatives} />
+          <EcommerceCartList
+            userRelatives={userRelatives}
+            onEditClick={(relative) =>
+              setOpenAddRelativeModal({ open: true, action: 'edit', relativeSelected: relative })
+            }
+          />
         </Box>
 
         <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>
           <Stack spacing={3} sx={{ minWidth: 240, marginTop: '30px' }}>
             <Button
-              component={NextLink}
-              href="/"
+              onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
               size="large"
               color="inherit"
               sx={{
