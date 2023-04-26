@@ -14,9 +14,10 @@ import EcommerceCartItem from './EcommerceCartItem';
 type Props = {
   userRelatives: Array;
   wishlist?: boolean;
+  onEditClick?: Function;
 };
 
-export default function EcommerceCartList({ userRelatives, wishlist = false }: Props) {
+export default function EcommerceCartList({ userRelatives, wishlist = false, onEditClick }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   return (
@@ -38,7 +39,7 @@ export default function EcommerceCartList({ userRelatives, wishlist = false }: P
         <Stack sx={{ width: '70px', textAlign: 'left', pl: 2 }} />
       </Stack>
       {userRelatives.map((relative) => (
-        <EcommerceCartItem key={relative._id} relative={relative} />
+        <EcommerceCartItem key={relative._id} relative={relative} onEditClick={onEditClick} />
       ))}
     </Scrollbar>
   );

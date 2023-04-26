@@ -9,7 +9,7 @@ type Props = TextFieldProps & {
   name: string;
 };
 
-export default function RHFTextField({ name, helperText, ...other }: Props) {
+export default function RHFTextField({ name, helperText, multiline, ...other }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -20,6 +20,7 @@ export default function RHFTextField({ name, helperText, ...other }: Props) {
         <TextField
           {...field}
           fullWidth
+          multiline={multiline}
           value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           error={!!error}
           helperText={error ? error?.message : helperText}
