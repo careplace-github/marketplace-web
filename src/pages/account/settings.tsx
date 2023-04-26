@@ -1,6 +1,6 @@
 // next
 import Head from 'next/head';
-// 
+//
 // layouts
 import MainLayout from 'src/layouts/main';
 // features
@@ -8,9 +8,7 @@ import { AccountSettingsView } from 'src/features/account';
 import { AuthGuard } from 'src/features/auth';
 // ----------------------------------------------------------------------
 
-AccountSettingsPage.getLayout = (page: React.ReactElement) => (
-  <MainLayout>{page}</MainLayout>
-);
+AccountSettingsPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +20,7 @@ export default function AccountSettingsPage() {
       </Head>
 
       <AuthGuard>
-      <AccountSettingsView />
+        <AccountSettingsView />
       </AuthGuard>
     </>
   );
