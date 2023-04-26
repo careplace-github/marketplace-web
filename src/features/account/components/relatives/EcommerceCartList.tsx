@@ -15,9 +15,15 @@ type Props = {
   userRelatives: Array;
   wishlist?: boolean;
   onEditClick?: Function;
+  onDeleteRelative?: Function;
 };
 
-export default function EcommerceCartList({ userRelatives, wishlist = false, onEditClick }: Props) {
+export default function EcommerceCartList({
+  userRelatives,
+  wishlist = false,
+  onEditClick,
+  onDeleteRelative,
+}: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   return (
@@ -39,7 +45,12 @@ export default function EcommerceCartList({ userRelatives, wishlist = false, onE
         <Stack sx={{ width: '70px', textAlign: 'left', pl: 2 }} />
       </Stack>
       {userRelatives.map((relative) => (
-        <EcommerceCartItem key={relative._id} relative={relative} onEditClick={onEditClick} />
+        <EcommerceCartItem
+          key={relative._id}
+          relative={relative}
+          onEditClick={onEditClick}
+          onDeleteRelative={onDeleteRelative}
+        />
       ))}
     </Scrollbar>
   );
