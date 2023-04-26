@@ -17,8 +17,6 @@ import useResponsive from 'src/hooks/useResponsive';
 import Iconify from 'src/components/iconify';
 import { RHFSwitch } from 'src/components/hook-form';
 import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
-import UploadPictureModal from '../components/UploadPictureModal';
-//
 
 // ----------------------------------------------------------------------
 
@@ -43,11 +41,8 @@ export default function AccountSettingsGeneral() {
     formState: { isSubmitting, isDirty, errors },
   } = methods;
 
-  const onSubmit = async (data: typeof defaultValues) => {
-    try {
-    } catch (error) {
-      console.error(error);
-    }
+  const onSubmit = async (data) => {
+    reset(data);
   };
 
   return (
@@ -62,12 +57,11 @@ export default function AccountSettingsGeneral() {
         display="grid"
         gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
       >
-       <RHFSwitch
-            name="marketing_notifications"
-            label="Receber notificações de marketing"
-            sx={{ mt: 3 }}
-            />
-            
+        <RHFSwitch
+          name="marketing_notifications"
+          label="Receber notificações de marketing"
+          sx={{ mt: 3 }}
+        />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
         <LoadingButton

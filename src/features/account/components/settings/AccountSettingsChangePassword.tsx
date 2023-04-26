@@ -17,10 +17,6 @@ import useResponsive from 'src/hooks/useResponsive';
 import Iconify from 'src/components/iconify';
 import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
 import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
-import UploadPictureModal from '../components/UploadPictureModal';
-//
-import { AccountLayout } from '../components';
-
 
 // ----------------------------------------------------------------------
 
@@ -36,12 +32,9 @@ export default function AccountPersonalView() {
     oldPassword: Yup.string().required('A Password Antiga é obrigatóri.'),
     newPassword: Yup.string().required('A Nova Password  é obrigatória.'),
     confirmNewPassword: Yup.string()
-        .oneOf([Yup.ref('newPassword'), null], 'As Passwords não coincidem.')
-        .required('A Confirmação de Password é obrigatória.'),
-
+      .oneOf([Yup.ref('newPassword')], 'As Passwords não coincidem.')
+      .required('A Confirmação de Password é obrigatória.'),
   });
-
-
 
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -60,8 +53,6 @@ export default function AccountPersonalView() {
   };
 
   const defaultValues = {
-    marketing_notifications: user?.notifications?.email,
-
     oldPassword: '',
     newPassword: '',
     confirmNewPassword: '',
@@ -81,8 +72,8 @@ export default function AccountPersonalView() {
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
-        await changePassword(data.oldPassword, data.newPassword);
-        reset();
+      await changePassword(data.oldPassword, data.newPassword);
+      reset();
     } catch (error) {
       console.error(error);
     }
@@ -98,12 +89,7 @@ export default function AccountPersonalView() {
         display="flex"
         flexDirection={{ xs: 'column', md: 'column' }}
         alignItems={{ xs: 'flex-start', md: 'center' }}
-
         rowGap={2.5}
-        
-
-
-
       >
         <RHFTextField
           name="oldPassword"
