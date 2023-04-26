@@ -62,5 +62,5 @@ export const PATHS = {
   page404: '/404',
   page500: '/500',
   privacyPolicy: '/privacy-policy',
-  termsOfService: '/terms-of-service',
+  termsAndConditions: '/terms-and-conditions',
 };
