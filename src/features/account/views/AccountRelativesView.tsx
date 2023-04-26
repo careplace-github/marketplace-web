@@ -40,6 +40,12 @@ export default function AccountRelativesView() {
     fetchUserRelatives();
   }, []);
 
+  const handleDeleteRelative = async (relativeToDelete) => {
+    const response = await axios.delete(`/users/relatives/${relativeToDelete._id}`);
+    console.log(response);
+    fetchUserRelatives();
+  };
+
   return isLoading ? (
     <LoadingScreen />
   ) : (
@@ -47,7 +53,10 @@ export default function AccountRelativesView() {
       {openAddRelativeModal.open && (
         <RelativeInformationModal
           open={openAddRelativeModal.open}
-          onClose={() => setOpenAddRelativeModal({ open: false, action: '' })}
+          onClose={() => {
+            setOpenAddRelativeModal({ open: false, action: '' });
+            fetchUserRelatives();
+          }}
           action={openAddRelativeModal.action}
           relative={
             openAddRelativeModal.action === 'edit' && openAddRelativeModal.relativeSelected
@@ -74,6 +83,7 @@ export default function AccountRelativesView() {
             onEditClick={(relative) =>
               setOpenAddRelativeModal({ open: true, action: 'edit', relativeSelected: relative })
             }
+            onDeleteRelative={handleDeleteRelative}
           />
         </Box>
 

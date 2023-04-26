@@ -25,6 +25,7 @@ import { IProductItemProps } from 'src/types/relative';
 type Props = {
   relative: Object;
   onEditClick?: Function;
+  onDeleteRelative?: Function;
 };
 
 const getKinshipDegree = (degree) => {
@@ -37,7 +38,7 @@ const getKinshipDegree = (degree) => {
   return kinship;
 };
 
-export default function EcommerceCartItem({ relative, onEditClick }: Props) {
+export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelative }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
@@ -68,8 +69,9 @@ export default function EcommerceCartItem({ relative, onEditClick }: Props) {
     setAnchorEl(null);
   };
 
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (relativeToDelete) => {
     setAnchorEl(null);
+    onDeleteRelative(relativeToDelete);
   };
 
   return (
@@ -108,7 +110,8 @@ export default function EcommerceCartItem({ relative, onEditClick }: Props) {
         <Stack sx={{ p: 2, width: '30%' }}>
           <Typography variant="subtitle2">{relative.name}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {getKinshipDegree(relative.kinship_degree.to)}
+            {/* {getKinshipDegree(relative.kinship_degree.to)} */}
+            Pai
           </Typography>
         </Stack>
         <Stack sx={{ p: 2, width: '45%', minWidth: '0px' }}>
@@ -149,7 +152,7 @@ export default function EcommerceCartItem({ relative, onEditClick }: Props) {
                   <Typography>Editar</Typography>
                 </IconButton>
               </MenuItem>
-              <MenuItem onClick={handleDeleteClick}>
+              <MenuItem onClick={() => handleDeleteClick(relative)}>
                 <IconButton
                   disableanimation="true"
                   disableRipple
