@@ -38,6 +38,8 @@ export default function AuthVerifyCodeForm() {
     code6: '',
   };
 
+  let resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
+
   const methods = useForm({
     mode: 'onChange',
     resolver: yupResolver(VerifyCodeSchema),

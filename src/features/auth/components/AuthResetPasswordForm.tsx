@@ -14,8 +14,29 @@ type FormValuesProps = {
   password: string;
 };
 
-export default function AuthResetPasswordForm() {
-  const ResetPasswordSchema = Yup.object().shape({
+export default function AuthNewPasswordForm() {
+  const { enqueueSnackbar } = useSnackbar();
+
+  const { push } = useRouter();
+  const router = useRouter();
+
+  const [emailRecovery, setEmailRecovery] = useState(router.query.email as string | null);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [resendAvailable, setResendAvailable] = useState(false);
+  const [resetTimer, setResetTimer] = useState(false);
+
+  // const [resendTimer, setResendTimer] = useState(useCountdown(new Date(Date.now() + 10000)).seconds); --> doesn't work
+  let resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
+
+  const VerifyCodeSchema = Yup.object().shape({
+    code1: Yup.string().required('Code is required'),
+    code2: Yup.string().required('Code is required'),
+    code3: Yup.string().required('Code is required'),
+    code4: Yup.string().required('Code is required'),
+    code5: Yup.string().required('Code is required'),
+    code6: Yup.string().required('Code is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
   });
 
