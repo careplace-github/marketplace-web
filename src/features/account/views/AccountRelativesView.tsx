@@ -11,6 +11,7 @@ import { _products } from 'src/_mock';
 import axios from 'src/lib/axios';
 // hooks
 import { useEffect, useState } from 'react';
+import { useResponsive } from 'src/hooks';
 // components
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import Iconify from 'src/components/iconify';
@@ -29,6 +30,7 @@ export default function AccountRelativesView() {
     action: '',
   });
   const theme = useTheme();
+  const isMdUp = useResponsive('up', 'md');
 
   const fetchUserRelatives = async () => {
     const response = await axios.get('users/relatives');
@@ -74,9 +76,38 @@ export default function AccountRelativesView() {
             'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
         }}
       >
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Familiares
-        </Typography>
+        <Stack
+          sx={{ mb: 3 }}
+          flexDirection="row"
+          justifyContent="space-between"
+          alignItems="center"
+          width="100%"
+        >
+          <Typography variant="h5">Familiares</Typography>
+
+          {isMdUp && (
+            <Stack spacing={3} sx={{ width: 'fit-content' }}>
+              <Button
+                onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
+                size="large"
+                color="inherit"
+                sx={{
+                  px: 4,
+                  bgcolor: 'primary.main',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  },
+                }}
+                variant="contained"
+                startIcon={<Iconify icon="material-symbols:add" />}
+              >
+                Adiconar Familiar
+              </Button>
+            </Stack>
+          )}
+        </Stack>
         <Box sx={{ maxHeight: '700px' }}>
           <EcommerceCartList
             userRelatives={userRelatives}
@@ -86,29 +117,30 @@ export default function AccountRelativesView() {
             onDeleteRelative={handleDeleteRelative}
           />
         </Box>
-
-        <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>
-          <Stack spacing={3} sx={{ minWidth: 240, marginTop: '30px' }}>
-            <Button
-              onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
-              size="large"
-              color="inherit"
-              sx={{
-                px: 4,
-                bgcolor: 'primary.main',
-                color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                '&:hover': {
-                  bgcolor: 'primary.dark',
+        {!isMdUp && (
+          <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>
+            <Stack spacing={3} sx={{ minWidth: 240, marginTop: '30px' }}>
+              <Button
+                onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
+                size="large"
+                color="inherit"
+                sx={{
+                  px: 4,
+                  bgcolor: 'primary.main',
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                },
-              }}
-              variant="contained"
-              startIcon={<Iconify icon="material-symbols:add" />}
-            >
-              Adiconar Familiar
-            </Button>
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  },
+                }}
+                variant="contained"
+                startIcon={<Iconify icon="material-symbols:add" />}
+              >
+                Adiconar Familiar
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Box>
     </AccountLayout>
   );

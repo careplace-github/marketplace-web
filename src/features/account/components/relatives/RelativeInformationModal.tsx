@@ -23,7 +23,7 @@ import axios from 'src/lib/axios';
 import useResponsive from 'src/hooks/useResponsive';
 import { useCallback, useState, useEffect } from 'react';
 // assets
-import { countries, genders } from 'src/data';
+import { countries, genders, kinshipDegrees } from 'src/data';
 import { set } from 'lodash';
 
 type Props = {
@@ -44,19 +44,22 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     action === 'edit'
       ? {
           profile_picture: relative.profile_picture,
-          name: relative.name,
-          phoneNumber: relative.phone,
+          firstName: relative.name.split(' ')[0],
+          lastName: relative.name.split(' ').pop(),
+          phoneNumber: relative.phone_number,
+          kinshipDegree: relative.kinship.to,
           birthday: relative.birthdate,
           gender: relative.gender,
           streetAddress: relative.address.street,
           zipCode: relative.address.postal_code,
           city: relative.address.city,
           country: relative.address.country,
-          medicalConditions: relative.medical_conditions[0],
+          medicalConditions: relative.medical_conditions,
         }
       : {
           profile_picture: null,
           name: '',
+          kinshipDegree: '',
           phoneNumber: '',
           birthday: '',
           gender: '',
@@ -68,12 +71,13 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         };
 
   const AccountPersonalSchema = Yup.object().shape({
-    name: Yup.string()
+    firstName: Yup.string()
       .required('O nome é obrigatório.')
-      .test('name', 'O primeiro e último nome são obrigatórios', (value) => {
-        const numberOfNames = value.split(' ');
-        return numberOfNames.length >= 2;
-      }),
+      .test('name', 'Retire todos os espaços', (value) => !value.includes(' ')),
+    kinshipDegree: Yup.string().required('O Grau de Parentesco é obrigatório'),
+    lastName: Yup.string()
+      .required('O nome é obrigatório.')
+      .test('name', 'Retire todos os espaços', (value) => !value.includes(' ')),
     birthday: Yup.string().required('O aniversário é obrigatório.'),
     gender: Yup.string().required('O género é obrigatório.'),
     streetAddress: Yup.string().required('A morada is required.'),
@@ -106,8 +110,6 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         return true;
       }),
   });
-
-  console.log(relative);
 
   const methods = useForm<FormValuesProps>({
     resolver: yupResolver(AccountPersonalSchema),
@@ -151,8 +153,8 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     if (action === 'edit') {
       const response = await axios.put(`/users/relatives/${relative._id}`, {
         profile_picture: data.profile_picture,
-        name: data.name,
-        phone: data.phoneNumber,
+        name: `${data.firstName} ${data.lastName}`,
+        phone_number: data.phoneNumber,
         birthdate: data.birthday,
         address: {
           street: data.streetAddress,
@@ -162,6 +164,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         },
         gender: data.gender,
         medical_conditions: data.medicalConditions,
+        kinship: { to: data.kinshipDegree, from: 'son' },
       });
 
       console.log(response);
@@ -169,8 +172,8 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     if (action === 'add') {
       const response = await axios.post(`/users/relatives/`, {
         profile_picture: data.profile_picture,
-        name: data.name,
-        phone: data.phoneNumber,
+        name: `${data.firstName} ${data.lastName}`,
+        phone_number: data.phoneNumber,
         birthdate: data.birthday,
         address: {
           street: data.streetAddress,
@@ -180,7 +183,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         },
         gender: data.gender,
         medical_conditions: data.medicalConditions,
-        kinship_degree: { to: 'father', from: 'son' },
+        kinship: { to: data.kinshipDegree, from: 'son' },
       });
       console.log(response);
     }
@@ -189,11 +192,13 @@ export default function RelativeInformationModal({ action, relative, open, onClo
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} sx={{ width: '100vw', heigth: '100vh' }}>
       <Box
         sx={{
           width: isMdUp ? 'auto' : '100vw',
           height: isMdUp ? 'auto' : '100vh',
+          minWidth: isMdUp && '800px',
+          maxHeight: isMdUp ? '90vh' : '100vh',
           p: isMdUp ? '50px' : '20px',
           backgroundColor: 'white',
           borderRadius: isMdUp ? '16px' : '0',
@@ -222,100 +227,108 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         <Typography variant="h5" sx={{ mb: 3, width: '100%', alignText: 'left' }}>
           {action === 'edit' ? 'Editar Familiar' : 'Adicionar Familiar'}
         </Typography>
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', height: '100%' }}>
           <FormProvider methods={methods} onSubmit={handleSubmit(onFormSubmit)}>
-            <Scrollbar sx={{ maxHeight: '75vh', width: '100%' }}>
-              <RHFUploadAvatar
-                name="profile_picture"
-                maxSize={3145728}
-                onDrop={handleDrop}
-                helperText={
-                  <Typography
-                    variant="caption"
-                    sx={{
-                      mt: 2,
-                      mx: 'auto',
-                      display: 'block',
-                      textAlign: 'center',
-                      color: 'text.secondary',
-                    }}
-                  >
-                    Formatos permitidos: *.jpeg, *.jpg, *.png, *.gif
-                    <br /> tamanho máximo: 3MB
-                  </Typography>
-                }
-              />
-              <Box
-                rowGap={2.5}
-                columnGap={2}
-                display="grid"
-                gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
-                sx={{ mt: '40px' }}
-              >
-                <RHFTextField name="name" label="Nome" />
-
-                <RHFPhoneField
-                  name="phoneNumber"
-                  label="Telemóvel"
-                  defaultCountry="PT"
-                  forceCallingCode
-                />
-
-                <Controller
-                  name="birthday"
-                  render={({ field, fieldState: { error } }) => (
-                    <DatePicker
-                      format="dd-MM-yyyy"
-                      label="Data de nascimento"
-                      slotProps={{
-                        textField: {
-                          helperText: error?.message,
-                          error: !!error?.message,
-                        },
-                      }}
-                      {...field}
-                      value={new Date(field.value)}
-                    />
-                  )}
-                />
-
-                <RHFSelect native name="gender" label="Género">
-                  {genders.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
-                    </option>
-                  ))}
-                </RHFSelect>
-
-                <RHFTextField name="streetAddress" label="Morada" />
-
-                <RHFTextField name="zipCode" label="Código Postal" />
-
-                <RHFTextField name="city" label="Cidade" />
-
-                <RHFSelect native name="country" label="País">
-                  <option value="" />
-                  {countries.map((country) => (
-                    <option key={country.code} value={country.code}>
-                      {country.label}
-                    </option>
-                  ))}
-                </RHFSelect>
-                <RHFTextField
+            <RHFUploadAvatar
+              name="profile_picture"
+              maxSize={3145728}
+              onDrop={handleDrop}
+              helperText={
+                <Typography
+                  variant="caption"
                   sx={{
-                    gridColumn: isMdUp ? 'span 2' : null,
+                    mx: 'auto',
+                    display: 'block',
+                    textAlign: 'center',
+                    color: 'text.secondary',
                   }}
-                  name="medicalConditions"
-                  label="Condições Médicas (opcional)"
-                  multiline
-                  minRows={isMdUp ? 5 : 8}
-                />
-              </Box>
-            </Scrollbar>
+                >
+                  Formatos permitidos: *.jpeg, *.jpg, *.png, *.gif
+                  <br /> tamanho máximo: 3MB
+                </Typography>
+              }
+            />
+            <Box
+              rowGap={2.5}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+              sx={{ mt: '40px' }}
+            >
+              <RHFTextField name="firstName" label="Nome" />
+              <RHFTextField name="lastName" label="Apelido" />
+
+              <RHFPhoneField
+                name="phoneNumber"
+                label="Telemóvel"
+                defaultCountry="PT"
+                forceCallingCode
+              />
+
+              <Controller
+                name="birthday"
+                render={({ field, fieldState: { error } }) => (
+                  <DatePicker
+                    format="dd-MM-yyyy"
+                    label="Data de nascimento"
+                    slotProps={{
+                      textField: {
+                        helperText: error?.message,
+                        error: !!error?.message,
+                      },
+                    }}
+                    {...field}
+                    value={new Date(field.value)}
+                  />
+                )}
+              />
+
+              <RHFSelect native name="gender" label="Género">
+                {genders.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+
+              <RHFSelect native name="kinshipDegree" label="Grau de Parentesco">
+                <option value="" />
+                {kinshipDegrees.map((kinship) => (
+                  <option key={kinship.value} value={kinship.value}>
+                    {kinship.label}
+                  </option>
+                ))}
+              </RHFSelect>
+
+              <RHFTextField name="streetAddress" label="Morada" />
+
+              <RHFTextField name="zipCode" label="Código Postal" />
+
+              <RHFTextField name="city" label="Cidade" />
+
+              <RHFSelect native name="country" label="País">
+                <option value="" />
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.label}
+                  </option>
+                ))}
+              </RHFSelect>
+              <RHFTextField
+                sx={{
+                  gridColumn: isMdUp ? 'span 2' : null,
+                }}
+                name="medicalConditions"
+                label="Condições Médicas (opcional)"
+                multiline
+                minRows={isMdUp ? 3 : 5}
+              />
+            </Box>
+
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
               <LoadingButton
                 sx={{
-                  width: isMdUp ? 'auto' : '100%',
+                  width: '100%',
                   mt: isMdUp ? '20px' : '40px',
                   backgroundColor: 'primary.main',
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
