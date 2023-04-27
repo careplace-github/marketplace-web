@@ -44,8 +44,6 @@ export default function AccountPaymentView() {
     <AccountLayout>
       <Stack spacing={5}>
         <Stack spacing={3}>
-          <Typography variant="h5">Informações de Pagamento</Typography>
-
           <Box
             gap={3}
             display="grid"
@@ -63,15 +61,16 @@ export default function AccountPaymentView() {
               sx={{
                 width: '100%',
               }}
-            ></Stack>
+            >
+              {' '}
+              <Typography variant="h5">Informações de Pagamento</Typography>
+            </Stack>
 
             <Stack
               spacing={3}
               sx={{
                 width: '100%',
-
-                justifyContent: 'end',
-                justifyItems: 'end',
+                alignItems: 'flex-end',
               }}
             >
               <Button
@@ -95,10 +94,18 @@ export default function AccountPaymentView() {
                 Adiconar Cartão
               </Button>
             </Stack>
+
             {CARDS.map((card) => (
               <AccountPaymentCard
                 key={card.id}
                 card={card}
+                handleDelete={() =>
+                  axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
+                    getCards().then((data) => {
+                      setCARDS(data);
+                    });
+                  })
+                }
                 sx={{
                   p: 3,
                   bgcolor: 'white',
@@ -112,7 +119,15 @@ export default function AccountPaymentView() {
         </Stack>
 
         <Stack spacing={3}>
-          <AccountNewCardModal open={openModal} onClose={() => setOpenModal(false)} />
+          <AccountNewCardModal
+            open={openModal}
+            onClose={() => {
+              setOpenModal(false);
+              getCards().then((data) => {
+                setCARDS(data);
+              });
+            }}
+          />
         </Stack>
       </Stack>
     </AccountLayout>

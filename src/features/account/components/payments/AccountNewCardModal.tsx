@@ -19,8 +19,7 @@ import useResponsive from 'src/hooks/useResponsive';
 // contexts
 import { useAuthContext } from 'src/contexts';
 // lib
-import { Axios } from 'src/lib';
-import { Stripe } from 'src/lib';
+import axios from 'src/lib/axios';
 // routes
 import { PATHS } from 'src/routes/paths';
 
@@ -36,9 +35,9 @@ type FormValuesProps = {
   onClose: VoidFunction;
 
   cardHolder: string;
-  cardNumber: number;
-  cardExpirationDate: date;
-  cardCVV: number;
+  cardNumber: string;
+  cardExpirationDate: string;
+  cardCVV: string;
 };
 
 export default function AccountNewCardModal({ open, onClose }: NewCardModalProps) {
@@ -51,13 +50,13 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
 
   const CardSchema = Yup.object().shape({
     cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
-    cardNumber: Yup.number('Número do cartão inváçido.').required(
+    cardNumber: Yup.string('Número do cartão inváçido.').required(
       'Número do cartão é obrigatório.'
     ),
-    cardExpirationDate: Yup.date('Data de validade inválida.').required(
+    cardExpirationDate: Yup.string('Data de validade inválida.').required(
       'Data de validade é obrigatória.'
     ),
-    cardCVV: Yup.number('CVV inválido.').required('CVV é obrigatório.'),
+    cardCVV: Yup.string('CVV inválido.').required('CVV é obrigatório.'),
   });
 
   const defaultValues = {
@@ -85,8 +84,9 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
       const cardData = {
         card: {
           number: data.cardNumber,
-          exp_month: "03",
-          exp_year: "27",
+          // first 2 digits of the expiration month
+          exp_month: data.cardExpirationDate.substring(0, 2),
+          exp_year: data.cardExpirationDate.substring(3, 5),
           cvc: data.cardCVV,
         },
         billing_details: {
@@ -96,25 +96,20 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
 
       console.log(cardData);
 
-      const card_token = (await Axios.post('/payments/tokens/card', 
-        {
+      const card_token = (
+        await axios.post('/payments/tokens/card', {
           card: cardData.card,
           billing_details: cardData.billing_details,
-        },
-      )).data;
+        })
+      ).data;
 
-      console.log("TOKEN " + JSON.stringify(card_token, null, 2));
+      console.log('TOKEN ' + JSON.stringify(card_token, null, 2));
 
-      await Axios.post('/payments/payment-methods', {
+      await axios.post('/payments/payment-methods', {
         payment_method_token: card_token.id,
       });
 
       onClose();
-
-      useEffect(() => {
-        push(PATHS.account.payments);
-
-      }, [pathname]);
     } catch (error) {
       console.error(error);
     }
@@ -180,6 +175,21 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
               label="Número do Cartão"
               placeholder="XXXX XXXX XXXX XXXX"
               InputLabelProps={{ shrink: true }}
+              // Max 19 characters
+              inputProps={{ maxLength: 19 }}
+              onChange={(e) => {
+                // Only allow 0-9
+                // After typing 4 characters, add a space
+
+                const { value } = e.target;
+                const onlyNums = value.replace(/[^0-9]/g, '');
+                const cardNumber = onlyNums
+                  .split('')
+                  .reduce((acc, curr, i) => acc + curr + (i % 4 === 3 ? ' ' : ''), '')
+                  .trim();
+
+                setValue('cardNumber', cardNumber);
+              }}
             />
           </Stack>
           <Stack direction="row" spacing={2}>
@@ -189,6 +199,25 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
               label="Validade"
               placeholder="MM/YY"
               InputLabelProps={{ shrink: true }}
+              onChange={(e) => {
+                // Only allow 0-9
+                // After typing 2 characters, add a slash
+
+                const { value } = e.target;
+                const onlyNums = value.replace(/[^0-9]/g, '');
+                const month = onlyNums.slice(0, 2);
+                const year = onlyNums.slice(2, 4);
+
+                if (onlyNums.length <= 2) {
+                  setValue('cardExpirationDate', month);
+
+                  if (onlyNums > 12) {
+                    setValue('cardExpirationDate', '12');
+                  }
+                } else {
+                  setValue('cardExpirationDate', `${month}/${year}`);
+                }
+              }}
             />
             <RHFTextField
               name="cardCVV"
@@ -196,6 +225,12 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
               label="CVV/CVC"
               placeholder="***"
               InputLabelProps={{ shrink: true }}
+              inputProps={{ maxLength: 3 }}
+              onChange={(e) => {
+                const { value } = e.target;
+                const onlyNums = value.replace(/[^0-9]/g, '');
+                setValue('cardCVV', onlyNums);
+              }}
             />
           </Stack>
           <Stack
@@ -207,24 +242,29 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
             Transações seguras com encriptação SSL
           </Stack>
 
-          <LoadingButton
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-            sx={{
-              mt: 2,
-              alignSelf: 'flex-end',
-              bgcolor: 'primary.main',
-              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-              '&:hover': {
-                bgcolor: 'primary.dark',
+          <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+              sx={{
+                width: '100%',
+                pt: 1.5,
+                pb: 1.5,
+                mt: 2,
+                alignSelf: 'center',
+                bgcolor: 'primary.main',
                 color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-              },
-            }}
-            variant="contained"
-          >
-            Guardar
-          </LoadingButton>
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                },
+              }}
+              variant="contained"
+            >
+              Guardar
+            </LoadingButton>
+          </Stack>
         </FormProvider>
       </Box>
     </Modal>

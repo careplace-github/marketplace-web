@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Divider, Popover, MenuItem, Typography, IconButton } from '@mui/material';
@@ -18,6 +18,9 @@ import { PATHS } from 'src/routes/paths';
 // ----------------------------------------------------------------------
 
 type Props = {
+
+  handleDelete: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+
   card: {
     value: string;
     label: string;
@@ -28,7 +31,7 @@ type Props = {
   };
 };
 
-export default function AccountPaymentCard({ card }: Props) {
+export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const { user } = useAuthContext();
   const { pathname, push } = useRouter();
 
@@ -37,7 +40,10 @@ export default function AccountPaymentCard({ card }: Props) {
   const label = value.charAt(0).toUpperCase() + value.slice(1);
   const cardNumber = card.card.last4;
   const cardHolder = card.billing_details.name || user?.name;
-  const expirationDate = card.card.exp_month + '/' + card.card.exp_year;
+  const expirationDate =
+    card.card.exp_month > 12
+      ? card.card.exp_month + '/' + card.card.exp_year.toString().substring(2, 4)
+      : '0' + card.card.exp_month + '/' + card.card.exp_year.toString().substring(2, 4);
 
   const isPrimary = card.id === user?.stripe_information?.default_payment_method;
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
@@ -50,15 +56,6 @@ export default function AccountPaymentCard({ card }: Props) {
     setOpen(null);
   };
 
-  const handleDelete = async () => {
-   
-    await axios.delete(`/users/payment-methods/${card.id}`);
-
-    useEffect(() => {
-      push(PATHS.account.payments);
-
-    }, [pathname]);
-  };
 
   const handleSetPrimary = () => {};
 
@@ -136,10 +133,8 @@ export default function AccountPaymentCard({ card }: Props) {
 
         <Divider sx={{ borderStyle: 'dashed', mt: 0.5 }} />
 
-        <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
-          <span onClick={handleDelete}>
-            <Iconify icon="carbon:trash-can" sx={{ mr: 1 }} /> Eliminar
-          </span>
+        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+          <Iconify icon="carbon:trash-can" sx={{ mr: 1 }} /> Eliminar
         </MenuItem>
       </Popover>
     </>
