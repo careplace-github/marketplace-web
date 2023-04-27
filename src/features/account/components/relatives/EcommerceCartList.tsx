@@ -33,16 +33,24 @@ export default function EcommerceCartList({
         alignItems="center"
         sx={{
           py: 2,
-          minWidth: 720,
+          minWidth: isMdUp ? 720 : 0,
           typography: 'subtitle2',
           borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
         }}
       >
-        <Stack sx={{ width: isMdUp ? '120px' : '80px' }} />
-        <Stack sx={{ width: '30%', textAlign: 'left', pl: 2 }}>Nome</Stack>
-        <Stack sx={{ width: '45%', textAlign: 'left', pl: 2 }}>Morada</Stack>
-        <Stack sx={{ width: '15%', textAlign: 'left', pl: 2 }}>Idade</Stack>
-        <Stack sx={{ width: '70px', textAlign: 'left', pl: 2 }} />
+        <Stack sx={{ width: isMdUp ? '120px' : '80px', flex: !isMdUp && 1 }} />
+        <Stack
+          sx={{ width: isMdUp ? '30%' : '100%', textAlign: 'left', pl: 2, flex: !isMdUp && 2 }}
+        >
+          Nome
+        </Stack>
+        {isMdUp && (
+          <>
+            <Stack sx={{ width: '45%', textAlign: 'left', pl: 2 }}>Morada</Stack>
+            <Stack sx={{ width: '15%', textAlign: 'left', pl: 2 }}>Idade</Stack>{' '}
+          </>
+        )}
+        <Stack sx={{ width: '70px', textAlign: 'left', pl: 2, flex: !isMdUp && 1 }} />
       </Stack>
       {userRelatives.map((relative) => (
         <EcommerceCartItem

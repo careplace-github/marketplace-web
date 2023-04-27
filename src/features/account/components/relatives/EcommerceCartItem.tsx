@@ -81,20 +81,21 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
       sx={{
         py: 3,
         width: '100%',
-        minWidth: 720,
+        minWidth: isMdUp ? 720 : 0,
         borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
       }}
     >
       <Stack
         direction="row"
         alignItems="center"
+        justifyContent={!isMdUp && 'space-between'}
         sx={{
           width: '100%',
-          minWidth: 720,
+          minWidth: isMdUp ? 720 : 0,
           typography: 'subtitle2',
         }}
       >
-        <Stack sx={{ width: isMdUp ? '120px' : '80px' }}>
+        <Stack sx={{ width: isMdUp ? '120px' : '60px', flex: !isMdUp && 1 }}>
           <Image
             src={relative.profile_picture}
             sx={{
@@ -107,23 +108,38 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
           />
         </Stack>
 
-        <Stack sx={{ p: 2, width: '30%' }}>
+        <Stack sx={{ p: 2, width: '30%', flex: !isMdUp && 2 }}>
           <Typography variant="subtitle2">{relative.name}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {/* {getKinshipDegree(relative.kinship_degree.to)} */}
-            Pai
+            {getKinshipDegree(relative.kinship.to)}
           </Typography>
         </Stack>
-        <Stack sx={{ p: 2, width: '45%', minWidth: '0px' }}>
-          <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
-            {relative.address.street}
-          </Typography>
-        </Stack>
-        <Stack sx={{ width: '15%', pl: 2, fontSize: '14px', fontWeight: '400' }}>
-          {calculateAge(new Date(relative.birthdate))} anos
-        </Stack>
-        <Stack sx={{ width: '70px' }}>
-          <IconButton sx={{ width: '40px', height: '40px' }} onClick={handleMoreClick}>
+
+        {isMdUp && (
+          <>
+            {' '}
+            <Stack sx={{ p: 2, width: '45%', minWidth: '0px' }}>
+              <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
+                {relative.address.street}
+              </Typography>
+            </Stack>
+            <Stack sx={{ width: '15%', pl: 2, fontSize: '14px', fontWeight: '400' }}>
+              {calculateAge(new Date(relative.birthdate))} anos
+            </Stack>{' '}
+          </>
+        )}
+        <Stack sx={{ width: isMdUp ? '70px' : '40px', flex: !isMdUp && 1, alignItems: 'flex-end' }}>
+          <IconButton
+            sx={{
+              width: '40px',
+              height: '40px',
+              p: 0,
+              '&.MuiButtonBase-root': {
+                justifyContent: !isMdUp && 'flex-end',
+              },
+            }}
+            onClick={handleMoreClick}
+          >
             <Iconify icon="material-symbols:more-vert" />
           </IconButton>
           <Popover
@@ -131,7 +147,7 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
             anchorEl={anchorEl}
             onClose={handleMoreClose}
             anchorOrigin={{
-              vertical: 'top',
+              vertical: isMdUp ? 'top' : 'bottom',
               horizontal: 'right',
             }}
           >
