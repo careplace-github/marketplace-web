@@ -1,72 +1,118 @@
 // @mui
 import { Box, Stack, Button, Divider, Typography } from '@mui/material';
+import { useRef, useEffect, useState } from 'react';
+import { useTheme } from '@mui/material/styles';
+
 // _mock
 import _mock from 'src/_mock';
+// contexts
+import { useAuthContext } from 'src/contexts';
 //
-import { AccountLayout,AccountPaymentCard, AccountNewCardForm } from '../components';
-
-// ----------------------------------------------------------------------
-
-const CARD_OPTIONS = [
-  {
-    id: _mock.id(1),
-    value: 'paypal',
-    label: 'Paypal',
-    cardNumber: '2904 1902 1802 1234',
-    cardHolder: _mock.name.fullName(1),
-    expirationDate: 'src/24',
-    isPrimary: false,
-  },
-  {
-    id: _mock.id(2),
-    value: 'mastercard',
-    label: 'Mastercard',
-    cardNumber: '2904 1902 1802 5678',
-    cardHolder: _mock.name.fullName(2),
-    expirationDate: 'src/24',
-    isPrimary: true,
-  },
-  {
-    id: _mock.id(3),
-    value: 'visa',
-    label: 'Visa',
-    cardNumber: '2904 1902 1802 7890',
-    cardHolder: _mock.name.fullName(3),
-    expirationDate: 'src/24',
-    isPrimary: false,
-  },
-];
+import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../components';
+// components
+import Iconify from 'src/components/iconify';
+// lib
+import axios from 'src/lib/axios';
+// routes
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
 export default function AccountPaymentView() {
+  const { user } = useAuthContext();
+
+  const theme = useTheme();
+
+  const [openModal, setOpenModal] = useState(false);
+
+  async function getCards() {
+    const response = await axios.get('/payments/payment-methods');
+    return response.data;
+  }
+
+  const [CARDS, setCARDS] = useState([]);
+
+  useEffect(() => {
+    getCards().then((data) => {
+      setCARDS(data);
+
+      console.log(data);
+    });
+  }, []);
+
   return (
     <AccountLayout>
       <Stack spacing={5}>
         <Stack spacing={3}>
-          <Typography variant="h5">Payment Method</Typography>
+          <Typography variant="h5">Informações de Pagamento</Typography>
 
           <Box
             gap={3}
             display="grid"
             gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+            sx={{
+              p: 3,
+              bgcolor: 'white',
+              borderRadius: '16px',
+              boxShadow:
+                'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
+            }}
           >
-            {CARD_OPTIONS.map((card) => (
-              <AccountPaymentCard key={card.id} card={card} />
+            <Stack
+              spacing={3}
+              sx={{
+                width: '100%',
+              }}
+            ></Stack>
+
+            <Stack
+              spacing={3}
+              sx={{
+                width: '100%',
+
+                justifyContent: 'end',
+                justifyItems: 'end',
+              }}
+            >
+              <Button
+                size="large"
+                color="inherit"
+                onClick={() => setOpenModal(true)}
+                sx={{
+                  // Allign right
+
+                  width: 'fit-content',
+                  bgcolor: 'primary.main',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  },
+                }}
+                variant="contained"
+                startIcon={<Iconify icon="material-symbols:add" />}
+              >
+                Adiconar Cartão
+              </Button>
+            </Stack>
+            {CARDS.map((card) => (
+              <AccountPaymentCard
+                key={card.id}
+                card={card}
+                sx={{
+                  p: 3,
+                  bgcolor: 'white',
+                  borderRadius: '16px',
+                  boxShadow:
+                    'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
+                }}
+              />
             ))}
           </Box>
         </Stack>
 
-        <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
-
         <Stack spacing={3}>
-          <Typography variant="h5">Add New Card</Typography>
-
-          <AccountNewCardForm />
-
-          <Button color="inherit" size="large" variant="contained" sx={{ alignSelf: 'flex-end' }}>
-            Save
-          </Button>
+          <AccountNewCardModal open={openModal} onClose={() => setOpenModal(false)} />
         </Stack>
       </Stack>
     </AccountLayout>
