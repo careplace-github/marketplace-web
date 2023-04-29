@@ -23,9 +23,17 @@ import { IProductItemProps } from 'src/types/relative';
 // ----------------------------------------------------------------------
 
 type Props = {
-  relative: Object;
-  onEditClick?: Function;
-  onDeleteRelative?: Function;
+  relative: {
+    name: string;
+    profile_picture: string;
+    kinship: { to: string };
+    address: {
+      street: string;
+    };
+    birthdate: string;
+  };
+  onEditClick: Function;
+  onDeleteRelative: Function;
 };
 
 const getKinshipDegree = (degree) => {
@@ -88,14 +96,14 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
       <Stack
         direction="row"
         alignItems="center"
-        justifyContent={!isMdUp && 'space-between'}
+        justifyContent={!isMdUp ? 'space-between' : undefined}
         sx={{
           width: '100%',
           minWidth: isMdUp ? 720 : 0,
           typography: 'subtitle2',
         }}
       >
-        <Stack sx={{ width: isMdUp ? '120px' : '60px', flex: !isMdUp && 1 }}>
+        <Stack sx={{ width: isMdUp ? '120px' : '60px', flex: !isMdUp ? 1 : undefined }}>
           <Image
             src={relative.profile_picture}
             sx={{
@@ -108,7 +116,7 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
           />
         </Stack>
 
-        <Stack sx={{ p: 2, width: '30%', flex: !isMdUp && 2 }}>
+        <Stack sx={{ p: 2, width: '30%', flex: !isMdUp ? 2 : undefined }}>
           <Typography variant="subtitle2">{relative.name}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {getKinshipDegree(relative.kinship.to)}
@@ -128,14 +136,20 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
             </Stack>{' '}
           </>
         )}
-        <Stack sx={{ width: isMdUp ? '70px' : '40px', flex: !isMdUp && 1, alignItems: 'flex-end' }}>
+        <Stack
+          sx={{
+            width: isMdUp ? '70px' : '40px',
+            flex: !isMdUp ? 1 : undefined,
+            alignItems: 'flex-end',
+          }}
+        >
           <IconButton
             sx={{
               width: '40px',
               height: '40px',
               p: 0,
               '&.MuiButtonBase-root': {
-                justifyContent: !isMdUp && 'flex-end',
+                justifyContent: !isMdUp ? 'flex-end' : undefined,
               },
             }}
             onClick={handleMoreClick}
