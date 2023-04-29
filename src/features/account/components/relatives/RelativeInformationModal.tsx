@@ -151,48 +151,55 @@ export default function RelativeInformationModal({ action, relative, open, onClo
   const onFormSubmit = async (data: typeof defaultValues) => {
     setIsSubmiting(true);
     if (action === 'edit') {
-      const response = await axios.put(`/users/relatives/${relative._id}`, {
-        profile_picture: data.profile_picture,
-        name: `${data.firstName} ${data.lastName}`,
-        phone_number: data.phoneNumber,
-        birthdate: data.birthday,
-        address: {
-          street: data.streetAddress,
-          city: data.city,
-          country: data.country,
-          postal_code: data.zipCode,
-        },
-        gender: data.gender,
-        medical_conditions: data.medicalConditions,
-        kinship: { to: data.kinshipDegree, from: 'son' },
-      });
-
-      console.log(response);
+      try {
+        await axios.put(`/users/relatives/${relative._id}`, {
+          profile_picture: data.profile_picture,
+          name: `${data.firstName} ${data.lastName}`,
+          phone_number: data.phoneNumber,
+          birthdate: data.birthday,
+          address: {
+            street: data.streetAddress,
+            city: data.city,
+            country: data.country,
+            postal_code: data.zipCode,
+          },
+          gender: data.gender,
+          medical_conditions: data.medicalConditions,
+          kinship: { to: data.kinshipDegree, from: 'son' },
+        });
+      } catch (error) {
+        setIsSubmiting(false);
+        return null;
+      }
     }
     if (action === 'add') {
-      const response = await axios.post(`/users/relatives/`, {
-        profile_picture: data.profile_picture,
-        name: `${data.firstName} ${data.lastName}`,
-        phone_number: data.phoneNumber,
-        birthdate: data.birthday,
-        address: {
-          street: data.streetAddress,
-          city: data.city,
-          country: data.country,
-          postal_code: data.zipCode,
-        },
-        gender: data.gender,
-        medical_conditions: data.medicalConditions,
-        kinship: { to: data.kinshipDegree, from: 'son' },
-      });
-      console.log(response);
+      try {
+        await axios.post(`/users/relatives/`, {
+          profile_picture: data.profile_picture,
+          name: `${data.firstName} ${data.lastName}`,
+          phone_number: data.phoneNumber,
+          birthdate: data.birthday,
+          address: {
+            street: data.streetAddress,
+            city: data.city,
+            country: data.country,
+            postal_code: data.zipCode,
+          },
+          gender: data.gender,
+          medical_conditions: data.medicalConditions,
+          kinship: { to: data.kinshipDegree, from: 'son' },
+        });
+      } catch (error) {
+        setIsSubmiting(false);
+        return null;
+      }
     }
     setIsSubmiting(false);
     onClose();
   };
 
   return (
-    <Modal open={open} onClose={onClose} sx={{ width: '100vw', heigth: '100vh' }}>
+    <Modal open={open} onClose={onClose}>
       <Box
         sx={{
           width: isMdUp ? 'auto' : '100vw',
@@ -209,7 +216,8 @@ export default function RelativeInformationModal({ action, relative, open, onClo
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
+          justifyContent: 'flex-start',
+          overflowY: 'auto',
         }}
       >
         <Iconify
@@ -227,128 +235,126 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         <Typography variant="h5" sx={{ mb: 3, width: '100%', alignText: 'left' }}>
           {action === 'edit' ? 'Editar Familiar' : 'Adicionar Familiar'}
         </Typography>
-        <Box sx={{ width: '100%', height: '100%' }}>
-          <FormProvider methods={methods} onSubmit={handleSubmit(onFormSubmit)}>
-            <RHFUploadAvatar
-              name="profile_picture"
-              maxSize={3145728}
-              onDrop={handleDrop}
-              helperText={
-                <Typography
-                  variant="caption"
-                  sx={{
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
-                  }}
-                >
-                  Formatos permitidos: *.jpeg, *.jpg, *.png, *.gif
-                  <br /> tamanho máximo: 3MB
-                </Typography>
-              }
-            />
-            <Box
-              rowGap={2.5}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
-              sx={{ mt: '40px' }}
-            >
-              <RHFTextField name="firstName" label="Nome" />
-              <RHFTextField name="lastName" label="Apelido" />
 
-              <RHFPhoneField
-                name="phoneNumber"
-                label="Telemóvel"
-                defaultCountry="PT"
-                forceCallingCode
-              />
-
-              <Controller
-                name="birthday"
-                render={({ field, fieldState: { error } }) => (
-                  <DatePicker
-                    format="dd-MM-yyyy"
-                    label="Data de nascimento"
-                    slotProps={{
-                      textField: {
-                        helperText: error?.message,
-                        error: !!error?.message,
-                      },
-                    }}
-                    {...field}
-                    value={new Date(field.value)}
-                  />
-                )}
-              />
-
-              <RHFSelect native name="gender" label="Género">
-                {genders.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFSelect native name="kinshipDegree" label="Grau de Parentesco">
-                <option value="" />
-                {kinshipDegrees.map((kinship) => (
-                  <option key={kinship.value} value={kinship.value}>
-                    {kinship.label}
-                  </option>
-                ))}
-              </RHFSelect>
-
-              <RHFTextField name="streetAddress" label="Morada" />
-
-              <RHFTextField name="zipCode" label="Código Postal" />
-
-              <RHFTextField name="city" label="Cidade" />
-
-              <RHFSelect native name="country" label="País">
-                <option value="" />
-                {countries.map((country) => (
-                  <option key={country.code} value={country.code}>
-                    {country.label}
-                  </option>
-                ))}
-              </RHFSelect>
-              <RHFTextField
+        <FormProvider methods={methods} onSubmit={handleSubmit(onFormSubmit)}>
+          <RHFUploadAvatar
+            name="profile_picture"
+            maxSize={3145728}
+            onDrop={handleDrop}
+            helperText={
+              <Typography
+                variant="caption"
                 sx={{
-                  gridColumn: isMdUp ? 'span 2' : null,
+                  mx: 'auto',
+                  display: 'block',
+                  textAlign: 'center',
+                  color: 'text.secondary',
                 }}
-                name="medicalConditions"
-                label="Condições Médicas (opcional)"
-                multiline
-                minRows={isMdUp ? 3 : 5}
-              />
-            </Box>
-
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-              <LoadingButton
-                sx={{
-                  width: '100%',
-                  mt: isMdUp ? '20px' : '40px',
-                  backgroundColor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  '&:hover': {
-                    backgroundColor: 'primary.dark',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  },
-                }}
-                color="inherit"
-                disabled={action === 'add' ? !isValid : !isValid && !isDirty && !imageChanged}
-                size="large"
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
               >
-                {action === 'edit' ? 'Guardar' : 'Adicionar'}
-              </LoadingButton>
-            </Box>
-          </FormProvider>
-        </Box>
+                Formatos permitidos: *.jpeg, *.jpg, *.png, *.gif
+                <br /> tamanho máximo: 3MB
+              </Typography>
+            }
+          />
+          <Box
+            rowGap={2.5}
+            columnGap={2}
+            display="grid"
+            gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
+            sx={{ mt: '40px' }}
+          >
+            <RHFTextField name="firstName" label="Nome" />
+            <RHFTextField name="lastName" label="Apelido" />
+
+            <RHFPhoneField
+              name="phoneNumber"
+              label="Telemóvel"
+              defaultCountry="PT"
+              forceCallingCode
+            />
+
+            <Controller
+              name="birthday"
+              render={({ field, fieldState: { error } }) => (
+                <DatePicker
+                  format="dd-MM-yyyy"
+                  label="Data de nascimento"
+                  slotProps={{
+                    textField: {
+                      helperText: error?.message,
+                      error: !!error?.message,
+                    },
+                  }}
+                  {...field}
+                  value={new Date(field.value)}
+                />
+              )}
+            />
+
+            <RHFSelect native name="gender" label="Género">
+              {genders.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </RHFSelect>
+
+            <RHFSelect native name="kinshipDegree" label="Grau de Parentesco">
+              <option value="" />
+              {kinshipDegrees.map((kinship) => (
+                <option key={kinship.value} value={kinship.value}>
+                  {kinship.label}
+                </option>
+              ))}
+            </RHFSelect>
+
+            <RHFTextField name="streetAddress" label="Morada" />
+
+            <RHFTextField name="zipCode" label="Código Postal" />
+
+            <RHFTextField name="city" label="Cidade" />
+
+            <RHFSelect native name="country" label="País">
+              <option value="" />
+              {countries.map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.label}
+                </option>
+              ))}
+            </RHFSelect>
+            <RHFTextField
+              sx={{
+                gridColumn: isMdUp ? 'span 2' : null,
+              }}
+              name="medicalConditions"
+              label="Condições Médicas (opcional)"
+              multiline
+              minRows={isMdUp ? 3 : 5}
+            />
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+            <LoadingButton
+              sx={{
+                width: '100%',
+                mt: isMdUp ? '20px' : '40px',
+                backgroundColor: 'primary.main',
+                color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                '&:hover': {
+                  backgroundColor: 'primary.dark',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                },
+              }}
+              color="inherit"
+              disabled={action === 'add' ? !isValid : !isValid && !isDirty && !imageChanged}
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              {action === 'edit' ? 'Guardar' : 'Adicionar'}
+            </LoadingButton>
+          </Box>
+        </FormProvider>
       </Box>
     </Modal>
   );
