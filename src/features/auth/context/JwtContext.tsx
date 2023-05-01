@@ -1,10 +1,13 @@
 import { createContext, useEffect, useReducer, useCallback, useMemo } from 'react';
+// types
+import { IUserProps } from 'src/types/user';
 // utils
 import axios from 'src/lib/axios';
 import { localStorageAvailable, setItem, getItem } from 'src/utils';
 //
 import { isValidToken, setSession } from '../utils';
 import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../types';
+
 
 enum Types {
   INITIAL = 'INITIAL',
@@ -200,25 +203,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [initialize]);
 
   // REGISTER
-  const register = useCallback(
-    async (email: string, password: string, name: string, phone: string, country: string) => {
-      const response = await axios.post('/auth/marketplace/signup', {
-        email,
-        password,
-        name,
-        phone,
-        address: {
-          country,
-        },
-      });
+  const register = useCallback(async (user: IUserProps) => {
+    const response = await axios.post('/auth/marketplace/signup', {
+      user,
+    });
 
-      dispatch({
-        type: Types.REGISTER,
-        payload: {},
-      });
-    },
-    []
-  );
+    dispatch({
+      type: Types.REGISTER,
+      payload: {},
+    });
+  }, []);
 
   // CONFIRMATION_CODE
   const confirmationCode = useCallback(async (email: string) => {
@@ -228,7 +222,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // CONFIRM_USER
-  const confirmUser = useCallback(async (email: string, password: string, code: string) => {
+  const confirmUser = useCallback(async (email: string, code: string, password?: string) => {
     const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
       email,
       code,
