@@ -87,7 +87,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
           firstName: '',
           lastName: '',
           kinshipDegree: '',
-          phoneNumber: '',
+          phoneNumber: '+351',
           birthday: '',
           gender: '',
           streetAddress: '',
