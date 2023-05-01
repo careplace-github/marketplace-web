@@ -11,12 +11,8 @@ import { useTheme } from '@mui/material/styles';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
-import FormProvider, {
-  RHFTextField,
-  RHFSelect,
-  RHFUploadAvatar,
-  Avatar,
-} from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
+
 // axios
 import axios from 'src/lib/axios';
 // hooks
@@ -27,10 +23,40 @@ import { countries, genders, kinshipDegrees } from 'src/data';
 import { set } from 'lodash';
 
 type Props = {
-  action: 'create' | 'edit';
-  relative?: Object;
+  action: 'add' | 'edit';
+  relative?: {
+    _id: string;
+    name: string;
+    profile_picture: string;
+    kinship: { to: string; from: string };
+    birthdate: string;
+    phone_number: string;
+    address: {
+      street: string;
+      city: string;
+      country: string;
+      postal_code: string;
+    };
+    gender: string;
+    medical_conditions: string;
+  };
   open: boolean;
-  onClose: Function;
+  onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+};
+
+type FormProps = {
+  profile_picture: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  kinshipDegree: string;
+  birthday: string;
+  gender: string;
+  streetAddress: string;
+  zipCode: string;
+  city: string;
+  country: string;
+  medicalConditions: string;
 };
 
 export default function RelativeInformationModal({ action, relative, open, onClose }: Props) {
@@ -41,24 +67,25 @@ export default function RelativeInformationModal({ action, relative, open, onClo
   const [isSubmitting, setIsSubmiting] = useState(false);
 
   const defaultValues =
-    action === 'edit'
+    relative && action === 'edit'
       ? {
-          profile_picture: relative.profile_picture,
-          firstName: relative.name.split(' ')[0],
-          lastName: relative.name.split(' ').pop(),
-          phoneNumber: relative.phone_number,
-          kinshipDegree: relative.kinship.to,
-          birthday: relative.birthdate,
-          gender: relative.gender,
-          streetAddress: relative.address.street,
-          zipCode: relative.address.postal_code,
-          city: relative.address.city,
-          country: relative.address.country,
-          medicalConditions: relative.medical_conditions,
+          profile_picture: relative && relative.profile_picture,
+          firstName: relative && relative.name.split(' ')[0],
+          lastName: relative && relative.name.split(' ').pop(),
+          phoneNumber: relative && relative.phone_number,
+          kinshipDegree: relative && relative.kinship.to,
+          birthday: relative && relative.birthdate,
+          gender: relative && relative.gender,
+          streetAddress: relative && relative.address.street,
+          zipCode: relative && relative.address.postal_code,
+          city: relative && relative.address.city,
+          country: relative && relative.address.country,
+          medicalConditions: relative && relative.medical_conditions,
         }
       : {
-          profile_picture: null,
-          name: '',
+          profile_picture: '',
+          firstName: '',
+          lastName: '',
           kinshipDegree: '',
           phoneNumber: '',
           birthday: '',
@@ -111,7 +138,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
       }),
   });
 
-  const methods = useForm<FormValuesProps>({
+  const methods = useForm<FormProps>({
     resolver: yupResolver(AccountPersonalSchema),
     defaultValues,
   });
@@ -151,51 +178,56 @@ export default function RelativeInformationModal({ action, relative, open, onClo
   const onFormSubmit = async (data: typeof defaultValues) => {
     setIsSubmiting(true);
     if (action === 'edit') {
-      try {
-        await axios.put(`/users/relatives/${relative._id}`, {
-          profile_picture: data.profile_picture,
-          name: `${data.firstName} ${data.lastName}`,
-          phone_number: data.phoneNumber,
-          birthdate: data.birthday,
-          address: {
-            street: data.streetAddress,
-            city: data.city,
-            country: data.country,
-            postal_code: data.zipCode,
-          },
-          gender: data.gender,
-          medical_conditions: data.medicalConditions,
-          kinship: { to: data.kinshipDegree, from: 'son' },
-        });
-      } catch (error) {
-        setIsSubmiting(false);
-        return null;
+      if (relative && relative._id) {
+        try {
+          await axios.put(`/users/relatives/${relative._id}`, {
+            profile_picture: data.profile_picture,
+            name: `${data.firstName} ${data.lastName}`,
+            phone_number: data.phoneNumber,
+            birthdate: data.birthday,
+            address: {
+              street: data.streetAddress,
+              city: data.city,
+              country: data.country,
+              postal_code: data.zipCode,
+            },
+            gender: data.gender,
+            medical_conditions: data.medicalConditions,
+            kinship: { to: data.kinshipDegree, from: 'son' },
+          });
+        } catch (error) {
+          setIsSubmiting(false);
+          return null;
+        }
       }
     }
     if (action === 'add') {
-      try {
-        await axios.post(`/users/relatives/`, {
-          profile_picture: data.profile_picture,
-          name: `${data.firstName} ${data.lastName}`,
-          phone_number: data.phoneNumber,
-          birthdate: data.birthday,
-          address: {
-            street: data.streetAddress,
-            city: data.city,
-            country: data.country,
-            postal_code: data.zipCode,
-          },
-          gender: data.gender,
-          medical_conditions: data.medicalConditions,
-          kinship: { to: data.kinshipDegree, from: 'son' },
-        });
-      } catch (error) {
-        setIsSubmiting(false);
-        return null;
+      if (relative) {
+        try {
+          await axios.post(`/users/relatives/`, {
+            profile_picture: data.profile_picture,
+            name: `${data.firstName} ${data.lastName}`,
+            phone_number: data.phoneNumber,
+            birthdate: data.birthday,
+            address: {
+              street: data.streetAddress,
+              city: data.city,
+              country: data.country,
+              postal_code: data.zipCode,
+            },
+            gender: data.gender,
+            medical_conditions: data.medicalConditions,
+            kinship: { to: data.kinshipDegree, from: 'son' },
+          });
+        } catch (error) {
+          setIsSubmiting(false);
+          return null;
+        }
       }
     }
     setIsSubmiting(false);
-    onClose();
+    onClose({}, 'backdropClick');
+    return true;
   };
 
   return (
@@ -204,7 +236,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         sx={{
           width: isMdUp ? 'auto' : '100vw',
           height: isMdUp ? 'auto' : '100vh',
-          minWidth: isMdUp && '800px',
+          minWidth: isMdUp ? '800px' : undefined,
           maxHeight: isMdUp ? '90vh' : '100vh',
           p: isMdUp ? '50px' : '20px',
           backgroundColor: 'white',
@@ -230,7 +262,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
             right: isMdUp ? '50px' : '20px',
             cursor: 'pointer',
           }}
-          onClick={() => onClose()}
+          onClick={() => onClose({}, 'backdropClick')}
         />
         <Typography variant="h5" sx={{ mb: 3, width: '100%', alignText: 'left' }}>
           {action === 'edit' ? 'Editar Familiar' : 'Adicionar Familiar'}

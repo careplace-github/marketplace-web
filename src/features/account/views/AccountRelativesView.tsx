@@ -18,16 +18,37 @@ import Iconify from 'src/components/iconify';
 import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
 //
 import { AccountLayout, EcommerceCartList } from '../components';
-import { formatRelative } from 'date-fns';
 
 // ----------------------------------------------------------------------
+type RelativeProps = {
+  _id: string;
+  name: string;
+  profile_picture: string;
+  kinship: { to: string; from: string };
+  birthdate: string;
+  phone_number: string;
+  address: {
+    street: string;
+    city: string;
+    country: string;
+    postal_code: string;
+  };
+  gender: string;
+  medical_conditions: string;
+};
+
+type RelativeModalProps = {
+  open: boolean;
+  action: 'add' | 'edit';
+  relativeSelected?: RelativeProps;
+};
 
 export default function AccountRelativesView() {
   const [userRelatives, setUserRelatives] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [openAddRelativeModal, setOpenAddRelativeModal] = useState<Object>({
+  const [openAddRelativeModal, setOpenAddRelativeModal] = useState<RelativeModalProps>({
     open: false,
-    action: '',
+    action: 'add',
   });
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
@@ -56,14 +77,14 @@ export default function AccountRelativesView() {
         <RelativeInformationModal
           open={openAddRelativeModal.open}
           onClose={() => {
-            setOpenAddRelativeModal({ open: false, action: '' });
+            setOpenAddRelativeModal({ open: false, action: 'add' });
             fetchUserRelatives();
           }}
           action={openAddRelativeModal.action}
           relative={
             openAddRelativeModal.action === 'edit' && openAddRelativeModal.relativeSelected
               ? openAddRelativeModal.relativeSelected
-              : null
+              : undefined
           }
         />
       )}
