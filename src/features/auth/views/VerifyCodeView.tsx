@@ -1,13 +1,23 @@
+// react
+import { useState, useEffect } from 'react';
 // next
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 // @mui
-import { Link, Typography } from '@mui/material';
+import { Link, Typography, Stack } from '@mui/material';
+import { Box } from '@mui/system';
 // routes
 import { PATHS } from 'src/routes/paths';
+// contexts
+import { useAuthContext } from 'src/contexts';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
+import { useSnackbar } from 'src/components/snackbar';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
 //
+import useCountdown from 'src/hooks/useCountdown';
+// hooks
 import { AuthVerifyCodeForm } from '../components';
 
 // ----------------------------------------------------------------------
@@ -21,21 +31,14 @@ export default function VerifyCodeView() {
         sx={{ mb: 5, width: 96, height: 96, mx: 'auto' }}
       />
 
-      <Typography variant="h3">Check Your Email</Typography>
+      <Typography variant="h3">Confirmar Conta</Typography>
 
       <Typography variant="body2" sx={{ mt: 2, mb: 5, color: 'text.secondary' }}>
-        We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below
-        box to verify your email.
+        Enviámos-lhe um código com 6 dígitos para o seu telemóvel. Por favor escreva o código abaixo
+        para confirmar a sua conta.
       </Typography>
 
       <AuthVerifyCodeForm />
-
-      <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-        {`Don’t have a code? `}
-        <Link variant="subtitle2" underline="none">
-          Resend code
-        </Link>
-      </Typography>
 
       <Link
         component={NextLink}
@@ -50,7 +53,7 @@ export default function VerifyCodeView() {
         }}
       >
         <Iconify icon="carbon:chevron-left" width={16} sx={{ mr: 1 }} />
-        Return to sign in
+        Voltar ao Login
       </Link>
     </>
   );

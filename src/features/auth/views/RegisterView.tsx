@@ -45,18 +45,18 @@ export default function RegisterView() {
       >
         <div>
           <Typography variant="h3" paragraph>
-            Get Started
+            Criar Conta
           </Typography>
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {`Already have an account? `}
+            {`Já tem conta? `}
             <Link
               component={NextLink}
               href={PATHS.auth.login}
               variant="subtitle2"
               color="primary"
             >
-              Login
+              Entrar
             </Link>
           </Typography>
         </div>
