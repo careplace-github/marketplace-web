@@ -12,7 +12,7 @@ import EcommerceCartItem from './EcommerceCartItem';
 // ----------------------------------------------------------------------
 
 type Props = {
-  userRelatives: Array;
+  userRelatives: Array<any>;
   wishlist?: boolean;
   onEditClick?: Function;
   onDeleteRelative?: Function;
@@ -38,9 +38,14 @@ export default function EcommerceCartList({
           borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
         }}
       >
-        <Stack sx={{ width: isMdUp ? '120px' : '80px', flex: !isMdUp && 1 }} />
+        <Stack sx={{ width: isMdUp ? '120px' : '80px', flex: !isMdUp ? 1 : undefined }} />
         <Stack
-          sx={{ width: isMdUp ? '30%' : '100%', textAlign: 'left', pl: 2, flex: !isMdUp && 2 }}
+          sx={{
+            width: isMdUp ? '30%' : '100%',
+            textAlign: 'left',
+            pl: 2,
+            flex: !isMdUp ? 2 : undefined,
+          }}
         >
           Nome
         </Stack>
@@ -50,7 +55,7 @@ export default function EcommerceCartList({
             <Stack sx={{ width: '15%', textAlign: 'left', pl: 2 }}>Idade</Stack>{' '}
           </>
         )}
-        <Stack sx={{ width: '70px', textAlign: 'left', pl: 2, flex: !isMdUp && 1 }} />
+        <Stack sx={{ width: '70px', textAlign: 'left', pl: 2, flex: !isMdUp ? 1 : undefined }} />
       </Stack>
       {userRelatives.map((relative) => (
         <EcommerceCartItem

@@ -32,8 +32,8 @@ type Props = {
     };
     birthdate: string;
   };
-  onEditClick: Function;
-  onDeleteRelative: Function;
+  onEditClick?: Function;
+  onDeleteRelative?: Function;
 };
 
 const getKinshipDegree = (degree) => {
@@ -73,13 +73,13 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
   };
 
   const handleEditClick = (relativeSelected) => {
-    onEditClick(relativeSelected);
+    onEditClick?.(relativeSelected);
     setAnchorEl(null);
   };
 
   const handleDeleteClick = (relativeToDelete) => {
     setAnchorEl(null);
-    onDeleteRelative(relativeToDelete);
+    onDeleteRelative?.(relativeToDelete);
   };
 
   return (
@@ -168,7 +168,7 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
             <Stack sx={{ alignItems: 'flex-start' }}>
               <MenuItem onClick={() => handleEditClick(relative)}>
                 <IconButton
-                  disableanimation="true"
+                  // disableanimation="true"
                   disableRipple
                   sx={{
                     width: '120px',
@@ -184,7 +184,7 @@ export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelat
               </MenuItem>
               <MenuItem onClick={() => handleDeleteClick(relative)}>
                 <IconButton
-                  disableanimation="true"
+                  // disableanimation="true"
                   disableRipple
                   sx={{
                     width: '120px',
