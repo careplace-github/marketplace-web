@@ -23,25 +23,12 @@ import { countries, genders, kinshipDegrees } from 'src/data';
 import { set } from 'lodash';
 import React from 'react';
 import { watch } from 'fs';
+// types
+import { IRelativeProps } from 'src/types/relative';
 
 type Props = {
   action: 'add' | 'edit';
-  relative?: {
-    _id: string;
-    name: string;
-    profile_picture: string;
-    kinship: { to: string; from: string };
-    birthdate: string;
-    phone_number: string;
-    address: {
-      street: string;
-      city: string;
-      country: string;
-      postal_code: string;
-    };
-    gender: string;
-    medical_conditions: string;
-  };
+  relative?: IRelativeProps;
   open: boolean;
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
 };
@@ -75,7 +62,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
           firstName: relative && relative.name.split(' ')[0],
           lastName: relative && relative.name.split(' ').pop(),
           phoneNumber: relative && relative.phone_number,
-          kinshipDegree: relative && relative.kinship.to,
+          kinshipDegree: relative && relative.kinship,
           birthday: relative && relative.birthdate,
           gender: relative && relative.gender,
           streetAddress: relative && relative.address.street,
@@ -195,7 +182,8 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     if (action === 'edit') {
       if (relative && relative._id) {
         try {
-          await axios.put(`/users/relatives/${relative._id}`, {
+          const updateRelative: IRelativeProps = {
+            _id: relative._id,
             profile_picture: data.profile_picture,
             name: `${data.firstName} ${data.lastName}`,
             phone_number: data.phoneNumber,
@@ -206,10 +194,13 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               country: data.country,
               postal_code: data.zipCode,
             },
+            kinship: data.kinshipDegree,
+
             gender: data.gender,
             medical_conditions: data.medicalConditions,
-            kinship: { to: data.kinshipDegree, from: 'son' },
-          });
+          };
+
+          await axios.put(`/users/relatives/${relative._id}`, updateRelative);
         } catch (error) {
           setIsSubmiting(false);
           return null;
@@ -219,7 +210,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     if (action === 'add') {
       if (relative) {
         try {
-          await axios.post(`/users/relatives/`, {
+          const createRelative: IRelativeProps = {
             profile_picture: data.profile_picture,
             name: `${data.firstName} ${data.lastName}`,
             phone_number: data.phoneNumber,
@@ -230,10 +221,12 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               country: data.country,
               postal_code: data.zipCode,
             },
-            gender: data.gender,
+            kinship: data.kinshipDegree,
             medical_conditions: data.medicalConditions,
-            kinship: { to: data.kinshipDegree, from: 'son' },
-          });
+            gender: data.gender,
+          };
+
+          await axios.post(`/users/relatives/`, createRelative);
         } catch (error) {
           setIsSubmiting(false);
           return null;
@@ -336,8 +329,10 @@ export default function RelativeInformationModal({ action, relative, open, onClo
                 // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
                 if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
                   // (eg: +351 9123456780 -> +351 912 345 678)
-                  const newValue =
-                    `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(11, 14)}`;
+                  const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
+                    11,
+                    14
+                  )}`;
                   setValue('phoneNumber', newValue);
                   return;
                 }

@@ -18,26 +18,18 @@ import React, { useState } from 'react';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { IProductItemProps } from 'src/types/relative';
+import { IRelativeProps } from 'src/types/relative';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  relative: {
-    name: string;
-    profile_picture: string;
-    kinship: { to: string };
-    address: {
-      street: string;
-    };
-    birthdate: string;
-  };
+  relative: IRelativeProps;
   onEditClick?: Function;
   onDeleteRelative?: Function;
 };
 
 const getKinshipDegree = (degree) => {
-  let kinship;
+  let kinship = '';
   kinshipDegrees.forEach((item) => {
     if (degree === item.value) {
       kinship = item.label;
@@ -46,7 +38,7 @@ const getKinshipDegree = (degree) => {
   return kinship;
 };
 
-export default function RelativeItem ({ relative, onEditClick, onDeleteRelative }: Props) {
+export default function RelativeItem({ relative, onEditClick, onDeleteRelative }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
@@ -119,7 +111,7 @@ export default function RelativeItem ({ relative, onEditClick, onDeleteRelative 
         <Stack sx={{ p: 2, width: '30%', flex: !isMdUp ? 2 : undefined }}>
           <Typography variant="subtitle2">{relative.name}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {getKinshipDegree(relative.kinship.to)}
+            {getKinshipDegree(relative.kinship)}
           </Typography>
         </Stack>
 
