@@ -46,7 +46,7 @@ const getKinshipDegree = (degree) => {
   return kinship;
 };
 
-export default function EcommerceCartItem({ relative, onEditClick, onDeleteRelative }: Props) {
+export default function RelativeItem ({ relative, onEditClick, onDeleteRelative }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);

@@ -17,7 +17,7 @@ import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import Iconify from 'src/components/iconify';
 import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
 //
-import { AccountLayout, EcommerceCartList } from '../components';
+import { AccountLayout, RelativesList } from '../components';
 
 // ----------------------------------------------------------------------
 type RelativeProps = {
@@ -130,7 +130,7 @@ export default function AccountRelativesView() {
           )}
         </Stack>
         <Box sx={{ maxHeight: '700px' }}>
-          <EcommerceCartList
+          <RelativesList
             userRelatives={userRelatives}
             onEditClick={(relative) =>
               setOpenAddRelativeModal({ open: true, action: 'edit', relativeSelected: relative })
