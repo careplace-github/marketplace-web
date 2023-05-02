@@ -10,7 +10,7 @@ import { useAuthContext } from 'src/contexts';
 // components
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
-//lib
+// lib
 import axios from 'src/lib/axios';
 // routes
 import { PATHS } from 'src/routes/paths';
@@ -18,10 +18,12 @@ import { PATHS } from 'src/routes/paths';
 // ----------------------------------------------------------------------
 
 type Props = {
-
   handleDelete: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
 
   card: {
+    id: string;
+    billing_details: any;
+    card: any;
     value: string;
     label: string;
     cardNumber: string;
@@ -42,8 +44,8 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const cardHolder = card.billing_details.name || user?.name;
   const expirationDate =
     card.card.exp_month > 12
-      ? card.card.exp_month + '/' + card.card.exp_year.toString().substring(2, 4)
-      : '0' + card.card.exp_month + '/' + card.card.exp_year.toString().substring(2, 4);
+      ? `${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`
+      : `0${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`;
 
   const isPrimary = card.id === user?.stripe_information?.default_payment_method;
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
@@ -55,7 +57,6 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const handleClose = () => {
     setOpen(null);
   };
-
 
   const handleSetPrimary = () => {};
 
@@ -75,12 +76,6 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
         <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle1' }}>
           <Stack direction="row" alignItems="center" flexGrow={1}>
             <Box component="span">{label}</Box>
-
-            {isPrimary && (
-              <Label color="info" startIcon={<Iconify icon="carbon:star-filled" />} sx={{ ml: 1 }}>
-                Principal
-              </Label>
-            )}
           </Stack>
 
           <Iconify
@@ -127,13 +122,12 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
           sx: { p: 1 },
         }}
       >
-        <MenuItem disabled={isPrimary} onClick={handleClose}>
-          <Iconify icon="carbon:star-filled" sx={{ mr: 1 }} /> Definir como principal
-        </MenuItem>
-
-        <Divider sx={{ borderStyle: 'dashed', mt: 0.5 }} />
-
-        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+          }}
+          sx={{ color: 'error.main' }}
+        >
           <Iconify icon="carbon:trash-can" sx={{ mr: 1 }} /> Eliminar
         </MenuItem>
       </Popover>

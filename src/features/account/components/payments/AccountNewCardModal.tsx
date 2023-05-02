@@ -50,13 +50,9 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
 
   const CardSchema = Yup.object().shape({
     cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
-    cardNumber: Yup.string('Número do cartão inváçido.').required(
-      'Número do cartão é obrigatório.'
-    ),
-    cardExpirationDate: Yup.string('Data de validade inválida.').required(
-      'Data de validade é obrigatória.'
-    ),
-    cardCVV: Yup.string('CVV inválido.').required('CVV é obrigatório.'),
+    cardNumber: Yup.string().required('Número do cartão é obrigatório.'),
+    cardExpirationDate: Yup.string().required('Data de validade é obrigatória.'),
+    cardCVV: Yup.string().required('CVV é obrigatório.'),
   });
 
   const defaultValues = {
@@ -79,6 +75,10 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
     formState: { isSubmitting, errors, isDirty },
   } = methods;
 
+  const close = () => {
+    onClose({}, 'backdropClick');
+  };
+
   const onSubmit = async (data: FormValuesProps) => {
     try {
       const cardData = {
@@ -94,8 +94,6 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
         },
       };
 
-      console.log(cardData);
-
       const card_token = (
         await axios.post('/payments/tokens/card', {
           card: cardData.card,
@@ -103,13 +101,9 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
         })
       ).data;
 
-      console.log('TOKEN ' + JSON.stringify(card_token, null, 2));
-
       await axios.post('/payments/payment-methods', {
         payment_method_token: card_token.id,
       });
-
-      onClose();
     } catch (error) {
       console.error(error);
     }
@@ -147,7 +141,9 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
         <Iconify
           icon="mingcute:close-fill"
           color="#919EAB"
-          onClick={onClose}
+          onClick={() => {
+            close();
+          }}
           sx={{
             mr: 0.5,
             alignSelf: 'flex-end',
@@ -155,7 +151,6 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
             mb: 1,
             '&:hover': {
               cursor: 'pointer',
-              //pointer: 'cursor',
               color: theme.palette.mode === 'light' ? 'grey.400' : 'white',
             },
           }}
@@ -211,7 +206,11 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
                 if (onlyNums.length <= 2) {
                   setValue('cardExpirationDate', month);
 
-                  if (onlyNums > 12) {
+                  // convert onlyNums to a number
+                  // if it's greater than 12, set the value to 12
+                  // otherwise, set the value to the onlyNums
+
+                  if (Number(onlyNums) > 12) {
                     setValue('cardExpirationDate', '12');
                   }
                 } else {
@@ -260,7 +259,6 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                 },
               }}
-              variant="contained"
             >
               Guardar
             </LoadingButton>
