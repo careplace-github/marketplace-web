@@ -15,32 +15,18 @@ import { useResponsive } from 'src/hooks';
 // components
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import Iconify from 'src/components/iconify';
-import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
+// Types
+import { IRelativeProps } from 'src/types/relative';
 //
 import { AccountLayout, RelativesList } from '../components';
+import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
 
 // ----------------------------------------------------------------------
-type RelativeProps = {
-  _id: string;
-  name: string;
-  profile_picture: string;
-  kinship: { to: string; from: string };
-  birthdate: string;
-  phone_number: string;
-  address: {
-    street: string;
-    city: string;
-    country: string;
-    postal_code: string;
-  };
-  gender: string;
-  medical_conditions: string;
-};
 
 type RelativeModalProps = {
   open: boolean;
   action: 'add' | 'edit';
-  relativeSelected?: RelativeProps;
+  relativeSelected?: IRelativeProps;
 };
 
 export default function AccountRelativesView() {

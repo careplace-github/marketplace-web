@@ -1,7 +1,7 @@
 // @mui
 import { Stack, Box } from '@mui/material';
 // types
-import { IProductItemProps } from 'src/types/relative';
+import { IRelativeProps } from 'src/types/relative';
 // hooks
 import { useResponsive } from 'src/hooks';
 // components
@@ -12,18 +12,12 @@ import RelativeItem from './RelativeItem';
 // ----------------------------------------------------------------------
 
 type Props = {
-  userRelatives: Array<any>;
-  wishlist?: boolean;
+  userRelatives: Array<IRelativeProps>;
   onEditClick?: Function;
   onDeleteRelative?: Function;
 };
 
-export default function RelativesList ({
-  userRelatives,
-  wishlist = false,
-  onEditClick,
-  onDeleteRelative,
-}: Props) {
+export default function RelativesList({ userRelatives, onEditClick, onDeleteRelative }: Props) {
   const isMdUp = useResponsive('up', 'md');
 
   return (
