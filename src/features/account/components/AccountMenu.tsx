@@ -86,10 +86,6 @@ export default function AccountMenu({ open, onClose }: FormValuesProps) {
   // Form Data State
   const routes = useRouter();
 
-  useEffect(() => {
-    console.log('user typeof profile picture:', typeof user.profile_picture);
-  }, [user]);
-
   const handleLogoutClick = () => {
     setIsLoading(true);
     logout();
