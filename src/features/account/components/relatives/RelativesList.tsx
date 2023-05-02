@@ -7,7 +7,7 @@ import { useResponsive } from 'src/hooks';
 // components
 import Scrollbar from 'src/components/scrollbar';
 //
-import EcommerceCartItem from './EcommerceCartItem';
+import RelativeItem from './RelativeItem';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ type Props = {
   onDeleteRelative?: Function;
 };
 
-export default function EcommerceCartList({
+export default function RelativesList ({
   userRelatives,
   wishlist = false,
   onEditClick,
@@ -58,7 +58,7 @@ export default function EcommerceCartList({
         <Stack sx={{ width: '70px', textAlign: 'left', pl: 2, flex: !isMdUp ? 1 : undefined }} />
       </Stack>
       {userRelatives.map((relative) => (
-        <EcommerceCartItem
+        <RelativeItem
           key={relative._id}
           relative={relative}
           onEditClick={onEditClick}

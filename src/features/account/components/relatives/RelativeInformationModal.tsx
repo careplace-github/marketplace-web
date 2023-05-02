@@ -261,6 +261,11 @@ export default function RelativeInformationModal({ action, relative, open, onClo
             top: isMdUp ? '50px' : '20px',
             right: isMdUp ? '50px' : '20px',
             cursor: 'pointer',
+            '&:hover': {
+              cursor: 'pointer',
+              color: theme.palette.mode === 'light' ? 'grey.400' : 'white',
+            },
+
           }}
           onClick={() => onClose({}, 'backdropClick')}
         />
