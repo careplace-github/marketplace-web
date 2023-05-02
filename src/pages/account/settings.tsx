@@ -6,6 +6,7 @@ import MainLayout from 'src/layouts/main';
 // features
 import { AccountSettingsView } from 'src/features/account';
 import { AuthGuard } from 'src/features/auth';
+
 // ----------------------------------------------------------------------
 
 AccountSettingsPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;

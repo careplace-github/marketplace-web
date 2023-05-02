@@ -38,7 +38,7 @@ const OPTIONS = [
 
   {
     label: 'Informações de Pagamento',
-    linkTo: PATHS.account.payment,
+    linkTo: PATHS.account.payments,
     icon: 'ic:round-payment',
   },
   {

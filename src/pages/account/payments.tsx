@@ -4,6 +4,7 @@ import Head from 'next/head';
 import MainLayout from 'src/layouts/main';
 // features
 import { AccountPaymentView } from 'src/features/account';
+import { AuthGuard } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +22,10 @@ export default function AccountPaymentPage() {
         <title>Conta: Pagamentos | Careplace</title>
       </Head>
 
-      <AccountPaymentView />
+<AuthGuard>
+<AccountPaymentView />
+</AuthGuard>
+      
     </>
   );
 }
