@@ -61,8 +61,7 @@ export default function RHFPhoneField({
           value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           error={!!error}
           forceCallingCode={forceCallingCode}
-          // defaultCountry={defaultCountry}
-          // flagSize={flagSize || 'small'}
+          defaultCountry={defaultCountry ? defaultCountry : 'PT'}
           helperText={error ? error?.message : helperText}
           {...other}
         />
