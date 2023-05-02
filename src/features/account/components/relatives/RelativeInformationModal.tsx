@@ -117,16 +117,19 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         if (date < today) {
           return true;
         }
+
+        return false;
       }),
     gender: Yup.string().required('O género é obrigatório.'),
     streetAddress: Yup.string().required('A morada is required.'),
     city: Yup.string().required('A cidade é obrigatória.'),
     country: Yup.string().required('O país é obrigatório.'),
-    zipCode: Yup.string().required('O código postal é obrigatório.'),
-    //.test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
-    // const showErrorMessage = value.includes('-') && value.length === 8;
-    //return showErrorMessage;
-    //})
+    zipCode: Yup.string()
+      .required('O código postal é obrigatório.')
+      .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
+        const showErrorMessage = value.includes('-') && value.length === 8;
+        return showErrorMessage;
+      }),
     phoneNumber: Yup.string()
       .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
         // If the value is equal to a country phone number, then it is empty
@@ -334,8 +337,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
                 if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
                   // (eg: +351 9123456780 -> +351 912 345 678)
                   const newValue =
-                    value.slice(0, 8) + ' ' + value.slice(8, 11) + ' ' + value.slice(11, 14);
-                  console.log(newValue);
+                    `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(11, 14)}`;
                   setValue('phoneNumber', newValue);
                   return;
                 }
