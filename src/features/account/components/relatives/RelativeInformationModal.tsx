@@ -21,6 +21,8 @@ import { useCallback, useState, useEffect } from 'react';
 // assets
 import { countries, genders, kinshipDegrees } from 'src/data';
 import { set } from 'lodash';
+import React from 'react';
+import { watch } from 'fs';
 
 type Props = {
   action: 'add' | 'edit';
@@ -105,17 +107,26 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     lastName: Yup.string()
       .required('O nome é obrigatório.')
       .test('name', 'Retire todos os espaços', (value) => !value.includes(' ')),
-    birthday: Yup.string().required('O aniversário é obrigatório.'),
+    birthday: Yup.string()
+      .required('O aniversário é obrigatório.')
+      .test('birthday', 'Insira uma data válida', (value) => {
+        const date = new Date(value);
+        const today = new Date();
+
+        // Check if the date is in the future
+        if (date < today) {
+          return true;
+        }
+      }),
     gender: Yup.string().required('O género é obrigatório.'),
     streetAddress: Yup.string().required('A morada is required.'),
     city: Yup.string().required('A cidade é obrigatória.'),
     country: Yup.string().required('O país é obrigatório.'),
-    zipCode: Yup.string()
-      .required('O código postal é obrigatório.')
-      .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
-        const showErrorMessage = value.includes('-') && value.length === 8;
-        return showErrorMessage;
-      }),
+    zipCode: Yup.string().required('O código postal é obrigatório.'),
+    //.test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
+    // const showErrorMessage = value.includes('-') && value.length === 8;
+    //return showErrorMessage;
+    //})
     phoneNumber: Yup.string()
       .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
         // If the value is equal to a country phone number, then it is empty
@@ -146,6 +157,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
   console.log(defaultValues);
   const {
     setValue,
+    getValues,
     handleSubmit,
     formState: { isDirty, isValid },
   } = methods;
@@ -265,7 +277,6 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               cursor: 'pointer',
               color: theme.palette.mode === 'light' ? 'grey.400' : 'white',
             },
-
           }}
           onClick={() => onClose({}, 'backdropClick')}
         />
@@ -308,6 +319,34 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               label="Telemóvel"
               defaultCountry="PT"
               forceCallingCode
+              onChange={(value: string) => {
+                console.log(value);
+                console.log(value.length);
+
+                console.log(value[8]);
+                console.log(value[12]);
+
+                /**
+                 * Portuguese Number Validation
+                 */
+
+                // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
+                if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
+                  // (eg: +351 9123456780 -> +351 912 345 678)
+                  const newValue =
+                    value.slice(0, 8) + ' ' + value.slice(8, 11) + ' ' + value.slice(11, 14);
+                  console.log(newValue);
+                  setValue('phoneNumber', newValue);
+                  return;
+                }
+
+                // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
+                if (value.length > 16) {
+                  return;
+                }
+
+                setValue('phoneNumber', value);
+              }}
             />
 
             <Controller
@@ -336,7 +375,15 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               ))}
             </RHFSelect>
 
-            <RHFSelect native name="kinshipDegree" label="Grau de Parentesco">
+            <RHFSelect
+              native
+              name="kinshipDegree"
+              label="Grau de Parentesco"
+              onChange={(e) => {
+                const { value } = e.target;
+                console.log(value);
+              }}
+            >
               <option value="" />
               {kinshipDegrees.map((kinship) => (
                 <option key={kinship.value} value={kinship.value}>
@@ -347,7 +394,42 @@ export default function RelativeInformationModal({ action, relative, open, onClo
 
             <RHFTextField name="streetAddress" label="Morada" />
 
-            <RHFTextField name="zipCode" label="Código Postal" />
+            <RHFTextField
+              name="zipCode"
+              label="Código Postal"
+              onChange={(e) => {
+                const { value } = e.target;
+
+                console.log(getValues('zipCode'));
+                console.log(value);
+                console.log(value.length);
+
+                /**
+                 * Only allow numbers and dashes
+                 */
+                if (!/^[0-9-]*$/.test(value)) {
+                  return;
+                }
+
+                /**
+                 * Portugal Zip Code Validation
+                 */
+                if (getValues('country') === 'PT' || getValues('country') === '') {
+                  // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+                  if (value.length === 5 && value[4] !== '-') {
+                    setValue('zipCode', `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`);
+                    return;
+                  }
+
+                  // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                  if (value.length > 8) {
+                    return;
+                  }
+                }
+
+                setValue('zipCode', value);
+              }}
+            />
 
             <RHFTextField name="city" label="Cidade" />
 
