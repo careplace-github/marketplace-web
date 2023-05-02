@@ -154,7 +154,9 @@ export default function RelativeInformationModal({ action, relative, open, onClo
 
   useEffect(() => {
     console.log('Valid:', isValid);
-  }, [isValid]);
+    console.log('dirty:', isDirty);
+    console.log('image:', imageChanged);
+  }, [isValid, isDirty, imageChanged]);
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -470,7 +472,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
                 },
               }}
               color="inherit"
-              disabled={action === 'add' ? !isValid : !isValid && !isDirty && !imageChanged}
+              disabled={action === 'add' ? !isValid : (!isValid || !isDirty) && !imageChanged}
               size="large"
               type="submit"
               variant="contained"
