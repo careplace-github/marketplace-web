@@ -7,6 +7,7 @@ import {
   TextField,
   IconButton,
   Typography,
+  Avatar,
   MenuItem,
 } from '@mui/material';
 // utils
@@ -96,14 +97,13 @@ export default function RelativeItem({ relative, onEditClick, onDeleteRelative }
         }}
       >
         <Stack sx={{ width: isMdUp ? '120px' : '60px', flex: !isMdUp ? 1 : undefined }}>
-          <Image
+          <Avatar
             src={relative.profile_picture}
             sx={{
               width: isMdUp ? 80 : 60,
               height: isMdUp ? 80 : 60,
-              borderRadius: '50%',
               flexShrink: 0,
-              bgcolor: 'background.neutral',
+              // bgcolor: 'background.neutral',
             }}
           />
         </Stack>

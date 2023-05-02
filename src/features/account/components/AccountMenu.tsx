@@ -25,7 +25,7 @@ import {
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import useActiveLink from 'src/hooks/useActiveLink';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // config
 import { NAV } from 'src/layouts';
 // routes
@@ -85,6 +85,10 @@ export default function AccountMenu({ open, onClose }: FormValuesProps) {
   const [openModal, setOpenModal] = useState<boolean>(false);
   // Form Data State
   const routes = useRouter();
+
+  useEffect(() => {
+    console.log('user typeof profile picture:', typeof user.profile_picture);
+  }, [user]);
 
   const handleLogoutClick = () => {
     setIsLoading(true);

@@ -20,7 +20,7 @@ const getColorByName = (name: string) => {
 // ----------------------------------------------------------------------
 
 const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps>(
-  ({ color, name = '', BadgeProps, children, sx, ...other }, ref) => {
+  ({ color, name = '', BadgeProps, variant, children, sx, ...other }, ref) => {
     const theme = useTheme();
 
     const charAtName = getCharAtName(name);
@@ -29,13 +29,20 @@ const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps>(
 
     const colr = color || colorByName;
 
-    const renderContent =
-      colr === 'default' ? (
-        <Avatar ref={ref} sx={sx} {...other}>
-          {name && charAtName}
-          {children}
-        </Avatar>
-      ) : (
+    const getRenderContent = () => {
+      if (variant === 'normal') {
+        console.log('render normal avatar');
+        return <Avatar sx={sx} {...other} />;
+      }
+      if (colr === 'defaut') {
+        return (
+          <Avatar ref={ref} sx={sx} {...other}>
+            {name && charAtName}
+            {children}
+          </Avatar>
+        );
+      }
+      return (
         <Avatar
           ref={ref}
           sx={{
@@ -50,6 +57,9 @@ const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps>(
           {children}
         </Avatar>
       );
+    };
+
+    const renderContent = getRenderContent();
 
     return BadgeProps ? (
       <Badge
@@ -57,7 +67,7 @@ const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps>(
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         {...BadgeProps}
       >
-        {renderContent}
+        {renderContent()}
       </Badge>
     ) : (
       renderContent

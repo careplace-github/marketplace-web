@@ -6,6 +6,7 @@ import { BadgeProps, AvatarProps, AvatarGroupProps } from '@mui/material';
 export interface CustomAvatarProps extends AvatarProps {
   color?: 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
   name?: string;
+  variant?: "normal";
   BadgeProps?: BadgeProps;
 }
 
