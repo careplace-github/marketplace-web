@@ -7,14 +7,14 @@ import { useTheme } from '@mui/material/styles';
 import _mock from 'src/_mock';
 // contexts
 import { useAuthContext } from 'src/contexts';
-//
-import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../components';
-// components
-import Iconify from 'src/components/iconify';
 // lib
 import axios from 'src/lib/axios';
 // routes
 import { PATHS } from 'src/routes/paths';
+// components
+import Iconify from 'src/components/iconify';
+//
+import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../components';
 
 // ----------------------------------------------------------------------
 
@@ -95,7 +95,7 @@ export default function AccountPaymentView() {
               </Button>
             </Stack>
 
-            {CARDS.map((card) => (
+            {CARDS.map((card: any) => (
               <AccountPaymentCard
                 key={card.id}
                 card={card}
@@ -106,13 +106,6 @@ export default function AccountPaymentView() {
                     });
                   })
                 }
-                sx={{
-                  p: 3,
-                  bgcolor: 'white',
-                  borderRadius: '16px',
-                  boxShadow:
-                    'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
-                }}
               />
             ))}
           </Box>
