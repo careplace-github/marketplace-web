@@ -105,7 +105,7 @@ export default function AccountPopover() {
             cursor: 'pointer',
           }}
         >
-          <CustomAvatar src={user?.profile_picture} variant="normal" />
+          <CustomAvatar src={user?.profile_picture} type="normal" />
           <Typography sx={{ color: 'text.primary', fontSize: '1rem', fontWeight: '600' }} noWrap>
             {user?.name}
           </Typography>

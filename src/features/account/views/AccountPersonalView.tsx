@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
@@ -28,10 +28,6 @@ export default function AccountPersonalView() {
   const isMdUp = useResponsive('up', 'md');
   const { user, updateUser } = useAuthContext();
   const theme = useTheme();
-
-  useEffect(() => {
-    console.log('user picture:', typeof user.profile_picture);
-  }, [user]);
 
   const AccountPersonalSchema = Yup.object().shape({
     firstName: Yup.string().required('O nome é obrigatório.'),
