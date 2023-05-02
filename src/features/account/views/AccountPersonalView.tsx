@@ -29,6 +29,10 @@ export default function AccountPersonalView() {
   const { user, updateUser } = useAuthContext();
   const theme = useTheme();
 
+  useEffect(() => {
+    console.log('user picture:', typeof user.profile_picture);
+  }, [user]);
+
   const AccountPersonalSchema = Yup.object().shape({
     firstName: Yup.string().required('O nome é obrigatório.'),
     lastName: Yup.string().required('O apelido é obrigatório.'),

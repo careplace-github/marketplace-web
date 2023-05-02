@@ -181,10 +181,15 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     setIsSubmiting(true);
     if (action === 'edit') {
       if (relative && relative._id) {
+        let uploadedFileURL = data.profile_picture;
+        if (fileData) {
+          const response = await axios.post('/files', fileData);
+          uploadedFileURL = response.data.url;
+        }
         try {
           const updateRelative: IRelativeProps = {
             _id: relative._id,
-            profile_picture: data.profile_picture,
+            profile_picture: uploadedFileURL,
             name: `${data.firstName} ${data.lastName}`,
             phone_number: data.phoneNumber,
             birthdate: data.birthday,
@@ -208,29 +213,32 @@ export default function RelativeInformationModal({ action, relative, open, onClo
       }
     }
     if (action === 'add') {
-      if (relative) {
-        try {
-          const createRelative: IRelativeProps = {
-            profile_picture: data.profile_picture,
-            name: `${data.firstName} ${data.lastName}`,
-            phone_number: data.phoneNumber,
-            birthdate: data.birthday,
-            address: {
-              street: data.streetAddress,
-              city: data.city,
-              country: data.country,
-              postal_code: data.zipCode,
-            },
-            kinship: data.kinshipDegree,
-            medical_conditions: data.medicalConditions,
-            gender: data.gender,
-          };
+      let uploadedFileURL = '';
+      if (fileData) {
+        const response = await axios.post('/files', fileData);
+        uploadedFileURL = response.data.url;
+      }
+      try {
+        const createRelative: IRelativeProps = {
+          profile_picture: uploadedFileURL,
+          name: `${data.firstName} ${data.lastName}`,
+          phone_number: data.phoneNumber,
+          birthdate: data.birthday,
+          address: {
+            street: data.streetAddress,
+            city: data.city,
+            country: data.country,
+            postal_code: data.zipCode,
+          },
+          kinship: data.kinshipDegree,
+          medical_conditions: data.medicalConditions,
+          gender: data.gender,
+        };
 
-          await axios.post(`/users/relatives/`, createRelative);
-        } catch (error) {
-          setIsSubmiting(false);
-          return null;
-        }
+        await axios.post(`/users/relatives/`, createRelative);
+      } catch (error) {
+        setIsSubmiting(false);
+        return null;
       }
     }
     setIsSubmiting(false);
@@ -378,6 +386,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               label="Grau de Parentesco"
               onChange={(e) => {
                 const { value } = e.target;
+                setValue('kinshipDegree', value);
                 console.log(value);
               }}
             >
