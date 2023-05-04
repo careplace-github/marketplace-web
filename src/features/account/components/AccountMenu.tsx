@@ -60,7 +60,7 @@ const navigations = [
   },
   {
     title: 'Informações de Pagamento',
-    path: PATHS.account.payment,
+    path: PATHS.account.payments,
     icon: <Iconify icon="ic:round-payment" />,
   },
   {
