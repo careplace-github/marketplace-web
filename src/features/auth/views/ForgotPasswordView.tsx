@@ -17,8 +17,8 @@ export default function ForgotPasswordView() {
     <>
       <Image
         alt="reset password"
-        src="/assets/icons/ic_lock_password.svg"
-        sx={{ mb: 5, width: 96, height: 96, mx: 'auto' }}
+        src="/assets/icons/undraw_forgot_password_re.svg"
+        sx={{ mb: 5, width: 300, mx: 'auto' }}
       />
 
       <Typography variant="h3" paragraph>
