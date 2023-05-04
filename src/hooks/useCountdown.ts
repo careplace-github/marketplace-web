@@ -53,8 +53,8 @@ export default function useCountdown(date: Date): ReturnType {
     });
   };
 
-  const update = (date: Date) => {
-    setCountdownDate(date);
+  const update = (updateDate: Date) => {
+    setCountdownDate(updateDate);
     setNewTime();
   };
 
@@ -63,7 +63,7 @@ export default function useCountdown(date: Date): ReturnType {
     hours: countdown.hours,
     minutes: countdown.minutes,
     seconds: countdown.seconds,
-    update: update,
+    update,
   };
 }
 
