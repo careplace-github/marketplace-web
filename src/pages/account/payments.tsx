@@ -4,7 +4,6 @@ import Head from 'next/head';
 import MainLayout from 'src/layouts/main';
 // features
 import { AccountPaymentView } from 'src/features/account';
-import React from 'react';
 import { AuthGuard } from 'src/features/auth';
 
 // ----------------------------------------------------------------------

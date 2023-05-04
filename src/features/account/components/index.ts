@@ -5,8 +5,8 @@ export { default as AccountOrdersTableToolbar } from './orders/AccountOrdersTabl
 export * from './orders/utils';
 
 // Payment
-export { default as AccountNewCardForm } from './payment/AccountNewCardForm';
-export { default as AccountPaymentCard } from './payment/AccountPaymentCard';
+export { default as AccountNewCardModal } from './payments/AccountNewCardModal';
+export { default as AccountPaymentCard } from './payments/AccountPaymentCard';
 
 // Relatives
 export { default as RelativeItem } from './relatives/RelativeItem';

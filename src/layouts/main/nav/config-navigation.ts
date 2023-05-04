@@ -108,7 +108,7 @@ export const navConfigMobile = [
   },
   {
     title: 'Informações de Pagamento',
-    path: PATHS.account.payment,
+    path: PATHS.account.payments,
     icon: "ic:round-payment"
   },
   {
