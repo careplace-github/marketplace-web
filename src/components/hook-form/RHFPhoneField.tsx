@@ -14,6 +14,7 @@ type Props = {
   label?: string;
   forceCallingCode?: boolean;
   helperText?: string;
+  flagSize?: string;
 };
 
 /**
@@ -44,6 +45,7 @@ export default function RHFPhoneField({
   defaultCountry,
   name,
   helperText,
+  flagSize,
   ...other
 }: Props) {
   const { control } = useFormContext();
@@ -59,10 +61,9 @@ export default function RHFPhoneField({
           value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           error={!!error}
           forceCallingCode={forceCallingCode}
-         /// defaultCountry={defaultCountry}
+          // defaultCountry={defaultCountry}
+          // flagSize={flagSize || 'small'}
           helperText={error ? error?.message : helperText}
-          // Change the font size of the country code
-
           {...other}
         />
       )}
