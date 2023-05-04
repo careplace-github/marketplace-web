@@ -60,28 +60,22 @@ export default function NavMobile({ data }: NavProps) {
 
   return (
     <>
-      <Searchbar
-        sx={{
-          width: '100%',
-          mt: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      />
+ 
 
-      {isAuthenticated ? (
+      {isAuthenticated && (
         <Avatar
           sx={{ width: '35px', height: '35px' }}
           src={user?.profile_picture}
           onClick={handleOpen}
         />
-      ) : (
-        <IconButton onClick={handleOpen} sx={{ ml: 1, color: 'inherit' }}>
-          <Iconify icon="carbon:menu" />
-        </IconButton>
       )}
+      
+       
+      
 
+
+
+{isAuthenticated ? (
       <Drawer
         anchor="right"
         open={open}
@@ -171,6 +165,27 @@ export default function NavMobile({ data }: NavProps) {
           </Stack>
         </Scrollbar>
       </Drawer>
+      ) : (
+        <Button
+          
+          variant="contained"
+          color="inherit"
+          sx={{
+          
+            px: 4,
+            bgcolor: 'primary.main',
+            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            },
+          }}
+          href={PATHS.auth.login}
+        >
+          Entrar
+        </Button>
+      )}
+
     </>
   );
 }

@@ -12,15 +12,17 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-// types
-import { ILocationFiltersProps } from './types';
+
 // components
 import Iconify from 'src/components/iconify';
+// routes
+import { PATHS } from 'src/routes/paths';
+// types
+import { ILocationFiltersProps } from './types';
 //
 import { StyledBar } from './styles';
 import { LocationFilterKeyword } from './LocationFilterKeyword';
-// routes
-import { PATHS } from 'src/routes/paths';
+
 
 // ----------------------------------------------------------------------
 
@@ -62,15 +64,13 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
     }
   }, [router.isReady]);
 
-  const handleLoad = (isLoading: boolean) => {
-    onLoad && onLoad(isLoading);
-  };
 
-  const handleSelect = (location: Location, query: string) => {
+
+  const handleSelect = (location: Location, filterQuery: string) => {
     setFilters({
       lat: location.lat,
       lng: location.lng,
-      query,
+      query: filterQuery,
     });
   };
 
@@ -99,7 +99,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       >
         <LocationFilterKeyword
           onSelect={handleSelect}
-          onLoad={handleLoad}
+          
           query={filters.query}
           sx={{
             alignSelf: 'left',
@@ -125,7 +125,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
               height: 25,
             },
           }}
-          onClick={onSearch ? onSearch : handleSearch}
+          onClick={ handleSearch}
         >
           <Iconify icon="carbon:search" width={20} />
         </Button>
