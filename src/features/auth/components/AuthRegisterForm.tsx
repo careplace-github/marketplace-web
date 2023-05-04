@@ -63,7 +63,6 @@ export default function AuthRegisterForm() {
       .oneOf([Yup.ref('password')], 'As passwords não coincidem.'),
     phoneNumber: Yup.string()
       .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
-        console.log('value =', value);
         // If the value is equal to a country phone number, then it is empty
         const code = countries.find((country) => country.phone === value?.replace('+', ''))?.phone;
         const phoneNumber = value?.replace('+', '');
@@ -114,12 +113,11 @@ export default function AuthRegisterForm() {
       const countryCode = (
         countries.find(
           (country) =>
-            country.phone === data.phoneNumber.slice(0, data.phoneNumber.indexOf(' ')).replace('+', '')
+            country.phone ===
+            data.phoneNumber.slice(0, data.phoneNumber.indexOf(' ')).replace('+', '')
         ) as any
       ).code;
       // get the frst character unil the first space eg: +351 123 456 789 => +351
-
-      console.log('countryCode', countryCode);
 
       // Remove spaces from the phone number
       const phone = data.phoneNumber.replace(/\s/g, '') as string;
@@ -140,7 +138,12 @@ export default function AuthRegisterForm() {
 
       enqueueSnackbar('Conta criada com sucesso.', { variant: 'success' });
 
-      push(PATHS.auth.verifyCode);
+      push({
+        pathname: PATHS.auth.verifyCode,
+        query: {
+          email: data.email,
+        },
+      });
 
       setErrorMessage(undefined);
     } catch (error) {

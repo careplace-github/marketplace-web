@@ -17,6 +17,8 @@ import useCountdown from 'src/hooks/useCountdown';
 import { useSnackbar } from 'src/components/snackbar';
 // contexts
 import { useAuthContext } from 'src/contexts';
+// routes
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +33,7 @@ type FormValuesProps = {
 
 export default function AuthVerifyCodeForm() {
   const theme = useTheme();
+  const { push } = useRouter();
   const router = useRouter();
   const { confirmationCode, confirmUser } = useAuthContext();
   const [emailRecovery, setEmailRecovery] = useState(router.query.email as string | null);
@@ -86,6 +89,9 @@ export default function AuthVerifyCodeForm() {
         getValues('code6');
 
       await confirmUser(getValues('email'), code);
+
+      push(PATHS.auth.login)
+
     } catch (error) {
       console.error(error);
     }
@@ -131,6 +137,14 @@ export default function AuthVerifyCodeForm() {
       }, 1000);
 
       await confirmationCode(email);
+
+      // Reset the code inputs
+      setValue('code1', '');
+      setValue('code2', '');
+      setValue('code3', '');
+      setValue('code4', '');
+      setValue('code5', '');
+      setValue('code6', '');
 
       // Show success message popup
       enqueueSnackbar('Code sent successfully!');
