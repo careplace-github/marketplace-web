@@ -40,7 +40,6 @@ export default function AccountPersonalView() {
     zipCode: Yup.string().required('O código postal é obrigatório.'),
     phoneNumber: Yup.string()
       .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
-        console.log('value =', value);
         // If the value is equal to a country phone number, then it is empty
         const code = countries.find((country) => country.phone === value?.replace('+', ''))?.phone;
         const phoneNumber = value?.replace('+', '');
@@ -84,6 +83,8 @@ export default function AccountPersonalView() {
   const {
     reset,
     handleSubmit,
+    setValue,
+    getValues,
     formState: { isSubmitting, isDirty, errors },
   } = methods;
 
@@ -168,6 +169,29 @@ export default function AccountPersonalView() {
               label="Telemóvel"
               defaultCountry="PT"
               forceCallingCode
+              onChange={(value: string) => {
+                /**
+                 * Portuguese Number Validation
+                 */
+
+                // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
+                if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
+                  // (eg: +351 9123456780 -> +351 912 345 678)
+                  const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
+                    11,
+                    14
+                  )}`;
+                  setValue('phoneNumber', newValue);
+                  return;
+                }
+
+                // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
+                if (value.length > 16) {
+                  return;
+                }
+
+                setValue('phoneNumber', value);
+              }}
             />
 
             <Controller
@@ -198,7 +222,40 @@ export default function AccountPersonalView() {
 
             <RHFTextField name="streetAddress" label="Morada" />
 
-            <RHFTextField name="zipCode" label="Código Postal" />
+            <RHFTextField
+              name="zipCode"
+              label="Código Postal"
+              onChange={(e) => {
+                const { value } = e.target;
+
+                /**
+                 * Only allow numbers and dashes
+                 */
+                if (!/^[0-9-]*$/.test(value)) {
+                  return;
+                }
+
+                /**
+                 * Portugal Zip Code Validation
+                 */
+                if (getValues('country') === 'PT' || getValues('country') === '') {
+                  // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+                  if (value.length === 5 && value[4] !== '-') {
+                    setValue('zipCode', `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`);
+                    return;
+                  }
+
+                 
+
+                  // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                  if (value.length > 8) {
+                    return;
+                  }
+                }
+
+                setValue('zipCode', value);
+              }}
+            />
 
             <RHFTextField name="city" label="Cidade" />
 

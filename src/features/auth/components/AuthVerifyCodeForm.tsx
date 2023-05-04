@@ -15,7 +15,6 @@ import { LoadingButton } from '@mui/lab';
 import FormProvider, { RHFCodes, RHFTextField } from 'src/components/hook-form';
 import useCountdown from 'src/hooks/useCountdown';
 import { useSnackbar } from 'src/components/snackbar';
-
 // contexts
 import { useAuthContext } from 'src/contexts';
 
@@ -32,15 +31,12 @@ type FormValuesProps = {
 
 export default function AuthVerifyCodeForm() {
   const theme = useTheme();
-
   const router = useRouter();
-
   const { confirmationCode, confirmUser } = useAuthContext();
-
   const [emailRecovery, setEmailRecovery] = useState(router.query.email as string | null);
-  const [email, setEmail] = useState(router.query.email as string);
   const [resendAvailable, setResendAvailable] = useState(false);
-  const [resetTimer, setResetTimer] = useState(false);
+  // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
+  const countdown = useCountdown(new Date(Date.now() + 47000));
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -66,8 +62,6 @@ export default function AuthVerifyCodeForm() {
     email: emailRecovery || '',
   };
 
-  let resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
-
   const methods = useForm({
     mode: 'onChange',
     resolver: yupResolver(VerifyCodeSchema),
@@ -78,7 +72,7 @@ export default function AuthVerifyCodeForm() {
     handleSubmit,
     setValue,
     getValues,
-    formState: { isSubmitting, errors },
+    formState: { isSubmitting, errors, isDirty },
   } = methods;
 
   const onSubmit = async (data: FormValuesProps) => {
@@ -91,7 +85,7 @@ export default function AuthVerifyCodeForm() {
         getValues('code5') +
         getValues('code6');
 
-      await confirmUser(email, code);
+      await confirmUser(getValues('email'), code);
     } catch (error) {
       console.error(error);
     }
@@ -106,27 +100,35 @@ export default function AuthVerifyCodeForm() {
     }
   }, [router.isReady, router.query?.email, emailRecovery]);
 
+  // Set the resendvaialble to true when the countdown ends
   useEffect(() => {
-    // The countdown is initialized with 00 so we can't use it to check if the countdown is over
-    // We need to check if the seconds are 01 to know if the countdown is over and wait 1 second to show the button again
-    if (resendTimer == '01') {
-      // wait 1 second before showing the button again
-      setTimeout(() => setResendAvailable(true), 1000);
-    }
+    // The countdown starts at 00 so we need to check if it's 01 and if the resend is not available yet
+    if (countdown.seconds == '01' && resendAvailable == false) {
+      // Reset the resend available
 
-    if (resendTimer == '00' && resetTimer) {
-      resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
-      setResetTimer(false);
+      // Wait 1 second
+      setTimeout(() => {
+        setResendAvailable(true);
+      }, 1000);
     }
-  }, [resendTimer]);
+  }, [countdown]);
 
   /**
-   * Resend the reset password code
+   * Resend the confirmation code
    */
   const onResendCode = async () => {
     try {
-      setResetTimer(true);
-      setResendAvailable(false);
+      const email = getValues('email');
+
+      if (!email || email == '' || errors.email) return;
+
+      // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
+      countdown.update(new Date(Date.now() + 47000));
+
+      // Wait 1 second for the countdown component to update
+      setTimeout(() => {
+        setResendAvailable(false);
+      }, 1000);
 
       await confirmationCode(email);
 
@@ -143,13 +145,7 @@ export default function AuthVerifyCodeForm() {
       <Stack spacing={3}>
         <RHFTextField name="email" label="Email" disabled={!!emailRecovery} />
 
-        <RHFCodes
-          keyName="code"
-          inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']}
-          sx={{
-            justifyContent: 'space-between',
-          }}
-        />
+        <RHFCodes keyName="code" inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
 
         {resendAvailable && (
           <Typography variant="body2" sx={{ my: 3, justifyContent: 'space-between' }}>
@@ -184,7 +180,7 @@ export default function AuthVerifyCodeForm() {
               justifyContent: 'space-between',
             }}
           >
-            {resendTimer} segundos
+            {countdown.seconds} segundos
           </Typography>
         )}
 
