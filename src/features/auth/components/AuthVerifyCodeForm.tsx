@@ -114,7 +114,7 @@ export default function AuthVerifyCodeForm() {
   }, [countdown]);
 
   /**
-   * Resend the reset password code
+   * Resend the confirmation code
    */
   const onResendCode = async () => {
     try {
