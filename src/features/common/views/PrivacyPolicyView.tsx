@@ -10,7 +10,7 @@ export default function PrivacyPolicyView() {
   return (
     
     <Stack
-      pacing={3}
+      spacing={3}
       sx={{
         my: 5,
         p: 5,
@@ -44,7 +44,6 @@ export default function PrivacyPolicyView() {
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -97,7 +96,6 @@ Este documento sistematiza todas as atividades de tratamento de dados realizadas
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -127,7 +125,7 @@ Este documento sistematiza todas as atividades de tratamento de dados realizadas
             textTransform: 'inherit',
           }}
         >
-          {`A Careplace (CAREPLACE LDA., pessoa coletiva com o NIPC 517083817, com sede na Rua Adriano Correia de Oliveira 4 A, 1600-312 Lisboa) entidade que explora a Careplace e é a responsável pelo tratamento dos dados pessoais dos utilizadores da Careplace, para as finalidades referidas na presente política de privacidade, nos termos e para os efeitos do disposto no artigo 24.º do RGPD.`}
+          A Careplace (CAREPLACE LDA., pessoa coletiva com o NIPC 517083817, com sede na Rua Adriano Correia de Oliveira 4 A, 1600-312 Lisboa) entidade que explora a Careplace e é a responsável pelo tratamento dos dados pessoais dos utilizadores da Careplace, para as finalidades referidas na presente política de privacidade, nos termos e para os efeitos do disposto no artigo 24.º do RGPD.
         </pre>
       </Typography>
 
@@ -144,7 +142,6 @@ Este documento sistematiza todas as atividades de tratamento de dados realizadas
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -211,7 +208,6 @@ Estes dados serão tratados na estrita medida da prossecução das necessárias 
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -266,7 +262,6 @@ No entanto, sempre que tal seja necessário, implementaremos os mecanismos neces
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -315,7 +310,6 @@ Caso, no âmbito das suas relações comerciais com prestadores de serviços da 
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -345,7 +339,7 @@ Caso, no âmbito das suas relações comerciais com prestadores de serviços da 
             textTransform: 'inherit',
           }}
         >
-          {`A Careplace adota as medidas de segurança adequadas para proteger os dados pessoais dos Utilizadores para não sejam acedidos por pessoas não autorizadas. Para o efeito utiliza sistemas de segurança, regras e outros procedimentos, de modo a garantir a proteção dos dados pessoais, bem como para prevenir o acesso não autorizado aos dados, o uso impróprio, a sua divulgação, perda ou destruição.`}
+          A Careplace adota as medidas de segurança adequadas para proteger os dados pessoais dos Utilizadores para não sejam acedidos por pessoas não autorizadas. Para o efeito utiliza sistemas de segurança, regras e outros procedimentos, de modo a garantir a proteção dos dados pessoais, bem como para prevenir o acesso não autorizado aos dados, o uso impróprio, a sua divulgação, perda ou destruição.
         </pre>
       </Typography>
 
@@ -362,7 +356,6 @@ Caso, no âmbito das suas relações comerciais com prestadores de serviços da 
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -425,7 +418,6 @@ O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições 
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -455,7 +447,7 @@ O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições 
             textTransform: 'inherit',
           }}
         >
-          {`Os utilizadores podem actualizar, editar ou apagar os seus dados pessoais a qualquer momento bem como opor-se à utilização dos dados facultados para fins de marketing, para o envio de comunicações informativas ou outras, devendo para tal fazê-lo por e-mail para geral@careplace.pt. Os utilizadores podem também facilmente subscrever ou cancelar as diferentes campanhas de emails da Careplace clicando na opção “unsubscribe” em qualquer e-mail que receber da Careplace.`}
+          Os utilizadores podem actualizar, editar ou apagar os seus dados pessoais a qualquer momento bem como opor-se à utilização dos dados facultados para fins de marketing, para o envio de comunicações informativas ou outras, devendo para tal fazê-lo por e-mail para geral@careplace.pt. Os utilizadores podem também facilmente subscrever ou cancelar as diferentes campanhas de emails da Careplace clicando na opção “unsubscribe” em qualquer e-mail que receber da Careplace.
         </pre>
       </Typography>
 
@@ -472,7 +464,6 @@ O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições 
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -510,9 +501,9 @@ O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições 
 - Direito à Limitação do tratamento dos seus dados: direito de solicitar à Careplace a limitação do tratamento dos seus dados pessoais, em determinadas circunstâncias;
 - Direito ao apagamento dos seus dados: tem o direito de solicitar, em determinadas circunstâncias, o apagamento dos seus dados pessoais;
 - Direito à Portabilidade dos seus dados: tem o direito de nos solicitar os dados pessoais que nos tenha fornecido, num formato estruturado, de uso corrente e de leitura automática, bem como, a transferência dos mesmos para outro Responsável;
-- Direito de retirar o consentimento: Nos casos em que o tratamento de dados dependa de consentimento, o seu titular terá o direito de retirar. Se o consentimento for legalmente necessário para o tratamento de dados pessoais, o titular dos dados tem o direito de retirar consentimento em qualquer altura, embora esse direito não comprometa a licitude do tratamento efetuado com base no consentimento previamente dado, nem o tratamento posterior dos mesmos dados, baseado noutra base legal. No caso de dados necessários para criação do perfil dos Profissionais de Saúde na Careplace, a retirada do consentimento poderá pôr em causa a manutenção do perfil na plataforma.
+- Direito de retirar o consentimento: Nos casos em que o tratamento de dados dependa de consentimento, o seu titular terá o direito de retirar. Se o consentimento for legalmente necessário para o tratamento de dados pessoais, o titular dos dados tem o direito de retirar consentimento em qualquer altura, embora esse direito não comprometa a licitude do tratamento efetuado com base no consentimento previamente dado, nem o tratamento posterior dos mesmos dados, baseado noutra base legal. No caso de dados necessários para criação do perfil dos Profissionais de Saúde na Careplace, a retirada do consentimento poderá pôr em causa a manutenção do perfil na plataforma.
 
-Caso o titular dos dados pretenda exercer qualquer um dos seus direitos, deverá contactar a Careplace, por escrito, através do e-mail dpd@careplace.pt ou por carta, enviada para a Rua Frederico George, 33-B, Loja 4, 1600-012 Lisboa.
+Caso o titular dos dados pretenda exercer qualquer um dos seus direitos, deverá contactar a Careplace, por escrito, através do e-mail dpd@careplace.pt ou por carta, enviada para a Rua Frederico George, 33-B, Loja 4, 1600-012 Lisboa.
 
 Poderá ser-lhe pedido que faça prova da sua identidade de modo a assegurar que a partilha dos dados pessoais é apenas efetuada com o seu titular.
 
@@ -535,7 +526,6 @@ Tem ainda o direito de apresentar uma reclamação à Comissão Nacional de Prot
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -584,7 +574,6 @@ A Careplace pode negar o acesso a um nome de utilizador, se acreditar que ele es
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',

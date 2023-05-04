@@ -10,7 +10,7 @@ export default function TermsAndConditionsView() {
   return (
     //
     <Stack
-      pacing={3}
+      spacing={3}
       sx={{
         my: 5,
         p: 5,
@@ -43,7 +43,6 @@ export default function TermsAndConditionsView() {
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -96,7 +95,6 @@ A utilização da Plataforma Careplace pressupõe e implica a aceitação deste 
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -155,7 +153,6 @@ e. Uma fotografia de rosto atual que permita à Entidade Contratante identificá
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -214,7 +211,6 @@ e. Uma fotografia de rosto atual que permita à Entidade Contratante identificá
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -273,7 +269,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -328,7 +323,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -381,7 +375,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -421,7 +414,7 @@ g. Breve descrição das funções.`}
 
 6.5. O Profissional de Saúde procede ao *default cash-out*, quando dá instrução expressa à Careplace para proceder ao pagamento dos seus honorários, por cada turno realizado, que ocorrerá no primeiro dia do mês seguinte.
 
-6.6. Alternativamente, o Profissional de Saúde poderá proceder ao *custom cash-out*, através de instrução expressa na plataforma Careplace, sendo que o pagamento ocorre no prazo de  2 (dois) dias úteis. O *custom cash-out* encontra-se sujeito a uma penalização sobre o valor dos honorários relativos a turnos antecipados, que corresponde a 0,20€ (vinte cêntimos) + 2,5% sobre o valor ilíquido dos turnos antecipados.
+6.6. Alternativamente, o Profissional de Saúde poderá proceder ao *custom cash-out*, através de instrução expressa na plataforma Careplace, sendo que o pagamento ocorre no prazo de 2 (dois) dias úteis. O *custom cash-out* encontra-se sujeito a uma penalização sobre o valor dos honorários relativos a turnos antecipados, que corresponde a 0,20€ (vinte cêntimos) + 2,5% sobre o valor ilíquido dos turnos antecipados.
 
 6.7. O Profissional de Saúde declara ser conhecedor de que apenas pode proceder ao *custom cash-out* 72h após realização do respetivo turno, período este necessário para alterações necessárias que possam advir da duração efetiva do turno, tomadas pela Careplace ou Entidades Contratantes.
 
@@ -450,7 +443,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -508,7 +500,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -559,7 +550,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -608,7 +598,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -657,7 +646,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -687,7 +675,7 @@ g. Breve descrição das funções.`}
             textTransform: 'inherit',
           }}
         >
-          {`11.1. Todas as despesas em que o Profissional de Saúde incorra por força da prestação dos serviços serão da sua exclusiva responsabilidade, incluindo transporte e alimentação, salvo se previamente aprovadas pela Entidade Contratante na Plataforma Careplace.`}
+          11.1. Todas as despesas em que o Profissional de Saúde incorra por força da prestação dos serviços serão da sua exclusiva responsabilidade, incluindo transporte e alimentação, salvo se previamente aprovadas pela Entidade Contratante na Plataforma Careplace.
         </pre>
       </Typography>
 
@@ -704,7 +692,6 @@ g. Breve descrição das funções.`}
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -734,13 +721,13 @@ g. Breve descrição das funções.`}
             textTransform: 'inherit',
           }}
         >
-          {`12.1. O Profissional de Saúde reconhece e declara aceitar que:
+          12.1. O Profissional de Saúde reconhece e declara aceitar que:
 
 a. No caso de ser cuidador domiciliário, a prestação dos seus serviços de apoio ao domicílio às Entidades Contratantes está sujeita ao cumprimento normas de Deontologia Profissional  do Regulamento do Exercício Profissional dos cuidador domiciliários, aprovado pelo Decreto-Lei n.º 161/96, de 4 de setembro, alterado pelo Decreto-Lei n.º 104/98, de 21 de abril e que o seu incumprimento está sujeito à autoridade do Conselho Jurisdicional da Ordem dos cuidador domiciliários.
 
 b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou difundir, por qualquer forma ou meio, a nenhuma outra pessoa, em público ou em privado, toda e qualquer informação de que tenha conhecimento no âmbito da prestação dos serviços de apoio domiciliário às Entidades Contratantes, quer quanto aos seus pacientes, quer quanto à listas de clientes e parceiros quer quanto à gestão interna das Entidades Contratantes.
 
-12.2. Além das obrigações de confidencialidade aqui assumidas, as Entidades poderão solicitar ao Profissional de Saúde a assinatura de termos de confidencialidade adicionais. As obrigações de confidencialidade mantêm-se em vigor mesmo após cessação da relação contratual entre o Profissional de Saúde e a Entidade Contratante.`}
+12.2. Além das obrigações de confidencialidade aqui assumidas, as Entidades poderão solicitar ao Profissional de Saúde a assinatura de termos de confidencialidade adicionais. As obrigações de confidencialidade mantêm-se em vigor mesmo após cessação da relação contratual entre o Profissional de Saúde e a Entidade Contratante.
         </pre>
       </Typography>
 
@@ -757,7 +744,6 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -806,7 +792,6 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -836,7 +821,7 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
             textTransform: 'inherit',
           }}
         >
-          {`14.1 Todos os conteúdos que integram a nossa Plataforma Careplace, bem como a sua estrutura e layout, a seleção, organização e apresentação dos seus conteúdos, incluindo as suas funcionalidades e o software utilizado, marcas registadas, logótipos e símbolos que nela aparecem, estão protegidos por direitos Intelectuais e são propriedade ou foram licenciadas à Careplace.15.2 Está expressamente proibida a transferência, difusão, publicação, disponibilização ao público por qualquer forma ou meio, a modificação, transformação, cópia, utilização, venda, ou partilha, sob qualquer forma, os textos, imagens, ou outras informações contidas na nossa loja ou parte dela sem o consentimento prévio, por escrito, da Careplace.`}
+          14.1 Todos os conteúdos que integram a nossa Plataforma Careplace, bem como a sua estrutura e layout, a seleção, organização e apresentação dos seus conteúdos, incluindo as suas funcionalidades e o software utilizado, marcas registadas, logótipos e símbolos que nela aparecem, estão protegidos por direitos Intelectuais e são propriedade ou foram licenciadas à Careplace.15.2 Está expressamente proibida a transferência, difusão, publicação, disponibilização ao público por qualquer forma ou meio, a modificação, transformação, cópia, utilização, venda, ou partilha, sob qualquer forma, os textos, imagens, ou outras informações contidas na nossa loja ou parte dela sem o consentimento prévio, por escrito, da Careplace.
         </pre>
       </Typography>
 
@@ -853,7 +838,6 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -883,7 +867,7 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
             textTransform: 'inherit',
           }}
         >
-          {`15.1 Caso tenha algum comentário ou reclamação a fazer relativamente à utilização da Plataforma Careplace, por favor contactar geral@careplace.pt. Informa-se ainda que é assiste ao Profissional de Saúde o direito de apresentar uma reclamação através do Livro de Reclamações Online, disponível em www.livroreclamacoes.pt.`}
+          `15.1 Caso tenha algum comentário ou reclamação a fazer relativamente à utilização da Plataforma Careplace, por favor contactar geral@careplace.pt. Informa-se ainda que é assiste ao Profissional de Saúde o direito de apresentar uma reclamação através do Livro de Reclamações Online, disponível em www.livroreclamacoes.pt.
         </pre>
       </Typography>
 
@@ -900,7 +884,6 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -949,7 +932,6 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
@@ -979,7 +961,7 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
             textTransform: 'inherit',
           }}
         >
-          {`17.1. A lei aplicável aos presentes Termos e Condições é a lei portuguesa e qualquer litígio relativo à sua interpretação e execução está sujeito à competência dos Tribunais da Comarca de Lisboa.`}
+          17.1. A lei aplicável aos presentes Termos e Condições é a lei portuguesa e qualquer litígio relativo à sua interpretação e execução está sujeito à competência dos Tribunais da Comarca de Lisboa.
         </pre>
       </Typography>
 
@@ -996,7 +978,6 @@ b. Deve cumprir com os deveres especiais de confidencialidade ao não revelar ou
         variant="body2"
         sx={{
           color: 'text.secondary',
-          mb: 3,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-start',
