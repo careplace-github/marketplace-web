@@ -1,7 +1,13 @@
- 
 import { useState } from 'react';
 // @mui
-import { Stack, Drawer, Typography, TextField, InputAdornment, SelectChangeEvent } from '@mui/material';
+import {
+  Stack,
+  Drawer,
+  Typography,
+  TextField,
+  InputAdornment,
+  SelectChangeEvent,
+} from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // config
@@ -20,7 +26,6 @@ import {
   FilterDuration,
   FilterCategories,
 } from './components';
-
 
 // ----------------------------------------------------------------------
 
@@ -98,6 +103,7 @@ export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
     <Stack
       spacing={2.5}
       sx={{
+        mb: '50px',
         flexShrink: 0,
         width: { xs: 1, md: NAV.W_DRAWER },
       }}
@@ -116,10 +122,7 @@ export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
       />
 
       <Block title="Ratings">
-        <FilterRating
-          filterRating={filters.filterRating}
-          onChangeRating={handleChangeRating}
-        />
+        <FilterRating filterRating={filters.filterRating} onChangeRating={handleChangeRating} />
       </Block>
 
       <Block title="Duration">

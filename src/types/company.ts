@@ -20,45 +20,40 @@ export type ICompanyResponsibleProps = {
 };
 
 export type ICompanyProps = {
-  id: string;
-  slug: string;
-  price: number;
-  level: string;
-  ratings: number;
-  quizzes: number;
-  reviews: number;
-  coverImg: string;
-  category: string;
-  skills: string[];
-  students: number;
-  priceSale: number;
-  resources: number;
-  totalHours: number;
-  description: string;
-  bestSeller: boolean;
-  languages: string[];
-  learnList: string[];
-  shareLinks: ISocialLinks;
-  teachers: ICompanyResponsibleProps[];
-  createdAt: Date | string | number;
-  location: string;
-  duration: string;
-  continent: string;
-  gallery: string[];
-  favorited: boolean;
-  highlights: string[];
-  tourGuide: ICompanyResponsibleProps;
-  availableEnd: Date | string | number;
-  availableStart: Date | string | number;
-  program: {
-    label: string;
-    text: string;
-  }[];
-  includes: {
-    label: string;
-    enabled: boolean;
-  }[];
-
+  _id: string;
+  address?: {
+    city?: string;
+    coordinates: string[];
+    country?: string;
+    countryId?: string;
+    fullAddress?: string;
+    postal_code?: string;
+    street?: string;
+  };
+  business_profile: {
+    about: string;
+    address?: {
+      street?: string;
+      city?: string;
+      country?: string;
+      postal_code?: string;
+    };
+    average_hourly_rate: number;
+    email: string;
+    logo: string;
+    name: string;
+    phone?: string;
+    social_links?: {
+      facebook?: string;
+      instagram?: string;
+      linkedin?: string;
+    };
+    website?: string;
+    is_active: boolean;
+    rating?: { average?: number; count?: number };
+    service_area?: string[];
+    services?: string[];
+  };
 };
 
 export type ICompanyFiltersProps = {
@@ -69,4 +64,3 @@ export type ICompanyFiltersProps = {
   filterRating: string | null;
   filterLanguage: ICountriesProps[];
 };
-
