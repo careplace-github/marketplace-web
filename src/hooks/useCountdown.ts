@@ -7,10 +7,12 @@ type ReturnType = {
   hours: string;
   minutes: string;
   seconds: string;
+
+  // Update the countdown
+  update: (date: Date) => void;
 };
 
 export default function useCountdown(date: Date): ReturnType {
-  
   const [countdown, setCountdown] = useState({
     days: '00',
     hours: '00',
@@ -18,14 +20,16 @@ export default function useCountdown(date: Date): ReturnType {
     seconds: '00',
   });
 
+  const [countdownDate, setCountdownDate] = useState(date);
+
   useEffect(() => {
     const interval = setInterval(() => setNewTime(), 1000);
     return () => clearInterval(interval);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [countdownDate]);
 
   const setNewTime = () => {
-    const startTime = date;
+    const startTime = countdownDate;
 
     const endTime = new Date();
 
@@ -49,11 +53,17 @@ export default function useCountdown(date: Date): ReturnType {
     });
   };
 
+  const update = (updateDate: Date) => {
+    setCountdownDate(updateDate);
+    setNewTime();
+  };
+
   return {
     days: countdown.days,
     hours: countdown.hours,
     minutes: countdown.minutes,
     seconds: countdown.seconds,
+    update,
   };
 }
 

@@ -1,6 +1,5 @@
 import * as Yup from 'yup';
 import React from 'react';
-import { MuiTelInput } from 'mui-tel-input';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
@@ -29,7 +28,7 @@ type FormValuesProps = {
   email: string;
   password: string;
   name: string;
-  phone: string;
+  phoneNumber: string;
   confirmPassword: string;
 };
 
@@ -45,6 +44,7 @@ export default function AuthRegisterForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
     name: Yup.string()
@@ -61,17 +61,16 @@ export default function AuthRegisterForm() {
     confirmPassword: Yup.string()
       .required('A confirmação da password é obrigatória.')
       .oneOf([Yup.ref('password')], 'As passwords não coincidem.'),
-    phone: Yup.string()
-
-      .test('phone', 'O número de telemóvel é obrigatório', (value) => {
+    phoneNumber: Yup.string()
+      .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
+        console.log('value =', value);
         // If the value is equal to a country phone number, then it is empty
         const code = countries.find((country) => country.phone === value?.replace('+', ''))?.phone;
-        const phone = value?.replace('+', '');
+        const phoneNumber = value?.replace('+', '');
 
-        return code !== phone;
+        return code !== phoneNumber;
       })
-
-      .test('phone', 'O número de telemóvel introduzido não é válido.', (value) => {
+      .test('phoneNumber', 'O número de telemóvel introduzido não é válido.', (value) => {
         // Portuguese phone number verification
         if (value?.startsWith('+351')) {
           // Remove spaces and the +351 sign
@@ -90,7 +89,7 @@ export default function AuthRegisterForm() {
     email: '',
     password: '',
     confirmPassword: '',
-    phone: '+351',
+    phoneNumber: '+351',
   };
 
   const methods = useForm<FormValuesProps>({
@@ -101,6 +100,8 @@ export default function AuthRegisterForm() {
   const {
     reset,
     handleSubmit,
+    setValue,
+    getValues,
     setError,
     formState: { errors },
   } = methods;
@@ -113,7 +114,7 @@ export default function AuthRegisterForm() {
       const countryCode = (
         countries.find(
           (country) =>
-            country.phone === data.phone.slice(0, data.phone.indexOf(' ')).replace('+', '')
+            country.phone === data.phoneNumber.slice(0, data.phoneNumber.indexOf(' ')).replace('+', '')
         ) as any
       ).code;
       // get the frst character unil the first space eg: +351 123 456 789 => +351
@@ -121,7 +122,7 @@ export default function AuthRegisterForm() {
       console.log('countryCode', countryCode);
 
       // Remove spaces from the phone number
-      const phone = data.phone.replace(/\s/g, '') as string;
+      const phone = data.phoneNumber.replace(/\s/g, '') as string;
 
       // Create the user object
 
@@ -170,11 +171,31 @@ export default function AuthRegisterForm() {
         <RHFTextField name="email" label="Email" />
 
         <RHFPhoneField
-          name="phone"
+          name="phoneNumber"
           label="Telemóvel"
           defaultCountry="PT"
           forceCallingCode
           flagSize="small"
+          onChange={(value: string) => {
+            /**
+             * Portuguese Number Validation
+             */
+
+            // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
+            if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
+              // (eg: +351 9123456780 -> +351 912 345 678)
+              const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(11, 14)}`;
+              setValue('phoneNumber', newValue);
+              return;
+            }
+
+            // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
+            if (value.length > 16) {
+              return;
+            }
+
+            setValue('phoneNumber', value);
+          }}
         />
 
         <RHFTextField
@@ -195,12 +216,12 @@ export default function AuthRegisterForm() {
         <RHFTextField
           name="confirmPassword"
           label="Confirmar Password"
-          type={showPassword ? 'text' : 'password'}
+          type={showConfirmPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
+                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
+                  <Iconify icon={showConfirmPassword ? 'carbon:view' : 'carbon:view-off'} />
                 </IconButton>
               </InputAdornment>
             ),
