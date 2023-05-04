@@ -2,12 +2,12 @@
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
 import { TextField, TextFieldProps } from '@mui/material';
-import { MuiTelInput } from 'mui-tel-input';
+import { MuiTelInput, MuiTelInputProps } from 'mui-tel-input';
 
 import styled from 'styled-components';
 // ----------------------------------------------------------------------
 
-type Props = {
+type Props = MuiTelInputProps & {
   phone?: string;
   name: string;
   defaultCountry?: string;
@@ -15,6 +15,7 @@ type Props = {
   forceCallingCode?: boolean;
   helperText?: string;
   flagSize?: string;
+  onChange?: (value: string) => void;
 };
 
 /**
@@ -46,6 +47,7 @@ export default function RHFPhoneField({
   name,
   helperText,
   flagSize,
+
   ...other
 }: Props) {
   const { control } = useFormContext();
@@ -61,9 +63,9 @@ export default function RHFPhoneField({
           value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
           error={!!error}
           forceCallingCode={forceCallingCode}
-          // defaultCountry={defaultCountry}
-          // flagSize={flagSize || 'small'}
+          defaultCountry={defaultCountry || 'PT'}
           helperText={error ? error?.message : helperText}
+          onChange={field.onChange}
           {...other}
         />
       )}

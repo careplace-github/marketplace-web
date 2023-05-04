@@ -55,7 +55,6 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       }
 
       const response = await axios.post('/files', fileData);
-
       const uploadedFileURL = response.data.url;
       if (user) {
         user.profile_picture = uploadedFileURL;

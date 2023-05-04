@@ -5,8 +5,7 @@ import Head from 'next/head';
 import MainLayout from 'src/layouts/main';
 // features
 import { AccountPersonalView } from 'src/features/account';
-import { useAuthContext } from 'src/contexts';
-import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import { AuthGuard } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 
@@ -15,15 +14,15 @@ AccountPersonalPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}
 // ----------------------------------------------------------------------
 
 export default function AccountPersonalPage() {
-  const { user, isInitialized } = useAuthContext();
   return (
     <>
       <Head>
         <title>Conta | Careplace</title>
       </Head>
 
-      {user && user.email && <AccountPersonalView />}
-      {(!user || !isInitialized) && <LoadingScreen />}
+      <AuthGuard>
+        <AccountPersonalView />
+      </AuthGuard>
     </>
   );
 }

@@ -55,10 +55,8 @@ export default function AuthNewPasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [resendAvailable, setResendAvailable] = useState(false);
-  const [resetTimer, setResetTimer] = useState(false);
-
-  // const [resendTimer, setResendTimer] = useState(useCountdown(new Date(Date.now() + 10000)).seconds); --> doesn't work
-  let resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
+  // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
+  const countdown = useCountdown(new Date(Date.now() + 47000));
 
   const VerifyCodeSchema = Yup.object().shape({
     code1: Yup.string().required('Code is required'),
@@ -132,10 +130,19 @@ export default function AuthNewPasswordForm() {
    */
   const onResendCode = async () => {
     try {
-      setResetTimer(true);
-      setResendAvailable(false);
+      const email = getValues('email');
 
-      await forgotPassword(getValues('email'));
+      if (!email || email == '' || errors.email) return;
+
+      // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
+      countdown.update(new Date(Date.now() + 47000));
+
+      // Wait 1 second for the countdown component to update
+      setTimeout(() => {
+        setResendAvailable(false);
+      }, 1000);
+
+      await forgotPassword(email);
 
       // Show success message popup
       enqueueSnackbar('Code sent successfully!');
@@ -146,20 +153,6 @@ export default function AuthNewPasswordForm() {
   };
 
   useEffect(() => {
-    // The countdown is initialized with 00 so we can't use it to check if the countdown is over
-    // We need to check if the seconds are 01 to know if the countdown is over and wait 1 second to show the button again
-    if (resendTimer == '01') {
-      // wait 1 second before showing the button again
-      setTimeout(() => setResendAvailable(true), 1000);
-    }
-
-    if (resendTimer == '00' && resetTimer) {
-      resendTimer = useCountdown(new Date(Date.now() + 10000)).seconds;
-      setResetTimer(false);
-    }
-  }, [resendTimer]);
-
-  useEffect(() => {
     if (router.isReady) {
       if (router.query.email) {
         setEmailRecovery(router.query.email as string);
@@ -167,6 +160,19 @@ export default function AuthNewPasswordForm() {
       }
     }
   }, [router.isReady, router.query?.email, emailRecovery]);
+
+  // Set the resendvaialble to true when the countdown ends
+  useEffect(() => {
+    // The countdown starts at 00 so we need to check if it's 01 and if the resend is not available yet
+    if (countdown.seconds == '01' && resendAvailable == false) {
+      // Reset the resend available
+
+      // Wait 1 second
+      setTimeout(() => {
+        setResendAvailable(true);
+      }, 1000);
+    }
+  }, [countdown]);
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -213,7 +219,7 @@ export default function AuthNewPasswordForm() {
               mt: -20,
             }}
           >
-            {resendTimer} segundos
+            {countdown.seconds} segundos
           </Typography>
         )}
 
