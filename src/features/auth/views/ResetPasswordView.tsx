@@ -22,8 +22,8 @@ export default function ResetPasswordView() {
     <>
       <Image
         alt="reset password"
-        src="/assets/icons/ic_lock_password.svg"
-        sx={{ mb: 5, width: 96, height: 96, mx: 'auto' }}
+        src="/assets/icons/undraw_mobile_phone.svg"
+        sx={{ mb: 5, mx: 'auto' }}
       />
 
       <Typography variant="h3" paragraph>

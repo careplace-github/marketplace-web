@@ -55,8 +55,67 @@ export default function RHFCodes({ keyName = '', inputs = [], ...other }: Props)
 
   useEventListener('paste', handlePaste, codesRef);
 
+  // We need to handle the delete key press event to delete the text on the current field and move the focus to the previous field
+  const handleDelete = (event: React.KeyboardEvent<HTMLInputElement>, name: string) => {
+    const fieldIndex = name.replace(keyName, '');
+
+    const fieldIntIndex = Number(fieldIndex);
+
+    const previousField: HTMLElement | null = document.querySelector(
+      `input[name=${keyName}${fieldIntIndex - 1}]`
+    );
+
+    const currentField: string = (event.target as HTMLInputElement).value;
+
+    // If the user presses the backspace key and the field is empty, move the focus to the previous field without deleting the text
+    if (event.key === 'Backspace' && fieldIntIndex > 1 && currentField === '') {
+      (previousField as HTMLElement).focus();
+
+      event.preventDefault();
+    }
+  };
+
+  const handleArrowKeys = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const { name } = event.target as HTMLInputElement;
+
+    const fieldIndex = name.replace(keyName, '');
+
+    const fieldIntIndex = Number(fieldIndex);
+
+    const previousField: HTMLElement | null = document.querySelector(
+      `input[name=${keyName}${fieldIntIndex - 1}]`
+    );
+
+    const nextField: HTMLElement | null = document.querySelector(
+      `input[name=${keyName}${fieldIntIndex + 1}]`
+    );
+
+    if (event.key === 'ArrowLeft' && fieldIntIndex > 1) {
+      (previousField as HTMLElement).focus();
+
+      event.preventDefault();
+    }
+
+    if (event.key === 'ArrowRight' && fieldIntIndex < 6) {
+      (nextField as HTMLElement).focus();
+
+      event.preventDefault();
+    }
+  };
+
   return (
-    <Stack direction="row" spacing={2} justifyContent="center" ref={codesRef}>
+    <Stack
+      direction="row"
+      spacing={3}
+      justifyContent="center"
+      ref={codesRef}
+      // Stretch the component to fill the space
+      sx={{
+        '& > div': {
+          width: '100%',
+        },
+      }}
+    >
       {inputs.map((name, index) => (
         <Controller
           key={name}
@@ -72,6 +131,10 @@ export default function RHFCodes({ keyName = '', inputs = [], ...other }: Props)
                 handleChangeWithNextField(event, field.onChange);
               }}
               onFocus={(event) => event.currentTarget.select()}
+              onKeyDown={(event: React.KeyboardEvent<HTMLInputElement>) => {
+                handleDelete(event, field.name);
+                handleArrowKeys(event);
+              }}
               InputProps={{
                 sx: {
                   width: { xs: 36, sm: 56 },

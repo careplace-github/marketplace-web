@@ -15,6 +15,7 @@ type Props = MuiTelInputProps & {
   forceCallingCode?: boolean;
   helperText?: string;
   flagSize?: string;
+  onChange?: (value: string) => void;
 };
 
 /**
@@ -46,6 +47,7 @@ export default function RHFPhoneField({
   name,
   helperText,
   flagSize,
+
   ...other
 }: Props) {
   const { control } = useFormContext();
@@ -63,6 +65,7 @@ export default function RHFPhoneField({
           forceCallingCode={forceCallingCode}
           defaultCountry={defaultCountry || 'PT'}
           helperText={error ? error?.message : helperText}
+          onChange={field.onChange}
           {...other}
         />
       )}
