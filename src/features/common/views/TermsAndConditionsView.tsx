@@ -90,7 +90,7 @@ A utilização da Plataforma Careplace pressupõe e implica a aceitação deste 
           mb: 3,
         }}
       >
-        1. REQUISITOS PARA CRIAÇÃO DE CONTA Careplace
+        1. REQUISITOS PARA CRIAÇÃO DE CONTA
       </Typography>
       <Typography
         variant="body2"
@@ -149,7 +149,7 @@ e. Uma fotografia de rosto atual que permita à Entidade Contratante identificá
           mb: 3,
         }}
       >
-        2. RELAÇÃO CONTRATUAL COM A Careplace
+        2. RELAÇÃO CONTRATUAL
       </Typography>
       <Typography
         variant="body2"
