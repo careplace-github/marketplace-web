@@ -317,12 +317,12 @@ export default function RelativeInformationModal({ action, relative, open, onClo
             gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             sx={{ mt: '40px' }}
           >
-            <RHFTextField name="firstName" label="Nome" />
-            <RHFTextField name="lastName" label="Apelido" />
+            <RHFTextField name="firstName" label="Nome*" />
+            <RHFTextField name="lastName" label="Apelido*" />
 
             <RHFPhoneField
               name="phoneNumber"
-              label="Telemóvel"
+              label="Telemóvel*"
               defaultCountry="PT"
               forceCallingCode
               onChange={(value: string) => {
@@ -361,7 +361,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               render={({ field, fieldState: { error } }) => (
                 <DatePicker
                   format="dd-MM-yyyy"
-                  label="Data de nascimento"
+                  label="Data de nascimento*"
                   slotProps={{
                     textField: {
                       helperText: error?.message,
@@ -374,7 +374,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               )}
             />
 
-            <RHFSelect native name="gender" label="Género">
+            <RHFSelect native name="gender" label="Género*">
               {genders.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -385,7 +385,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
             <RHFSelect
               native
               name="kinshipDegree"
-              label="Grau de Parentesco"
+              label="Grau de Parentesco*"
               onChange={(e) => {
                 const { value } = e.target;
                 setValue('kinshipDegree', value);
@@ -400,11 +400,11 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               ))}
             </RHFSelect>
 
-            <RHFTextField name="streetAddress" label="Morada" />
+            <RHFTextField name="streetAddress" label="Morada*" />
 
             <RHFTextField
               name="zipCode"
-              label="Código Postal"
+              label="Código Postal*"
               onChange={(e) => {
                 const { value } = e.target;
 
@@ -439,9 +439,9 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               }}
             />
 
-            <RHFTextField name="city" label="Cidade" />
+            <RHFTextField name="city" label="Cidade*" />
 
-            <RHFSelect native name="country" label="País">
+            <RHFSelect native name="country" label="País*">
               <option value="" />
               {countries.map((country) => (
                 <option key={country.code} value={country.code}>
@@ -459,6 +459,9 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               minRows={isMdUp ? 3 : 5}
             />
           </Box>
+          <Typography sx={{ fontSize: '12px', color: '#91A0AD', marginTop: '20px' }}>
+            *Campo obrigatório
+          </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
             <LoadingButton
               sx={{
