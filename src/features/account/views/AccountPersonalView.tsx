@@ -245,6 +245,8 @@ export default function AccountPersonalView() {
                     return;
                   }
 
+                 
+
                   // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
                   if (value.length > 8) {
                     return;
