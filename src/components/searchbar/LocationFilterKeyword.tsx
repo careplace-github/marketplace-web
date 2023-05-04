@@ -10,8 +10,10 @@ import LoadingScreen from 'src/components/loading-screen';
 //
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
+import { google } from 'google-maps';
 
 // ----------------------------------------------------------------------
+
 type Location = {
   lat: string | null;
   lng: string | null;
@@ -25,11 +27,19 @@ type Props = {
   sx?: SxProps<Theme>;
 };
 
+type AutocompletePrediction = google.maps.places.AutocompletePrediction;
+
+type EnhancedAutocompletePrediction = AutocompletePrediction & {
+  id: string;
+};
+
 export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   const isLoaded = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
     libraries: ['places'],
   });
+
+  const [selectedOption, setSelectedOption] = useState(null);
 
   /**
    * @see https://www.npmjs.com/package/use-places-autocomplete
@@ -52,16 +62,12 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   });
 
   useEffect(() => {
-    if (isLoaded.isLoaded) {
-      onLoad && onLoad(false);
+    if (isLoaded.isLoaded && onLoad) {
+      onLoad(false);
     }
   }, [isLoaded.isLoaded]);
 
-  const handleLoad = (isLoading: boolean) => {
-    onLoad && onLoad(isLoading);
-  };
-
-  const handleSelect = (location: Location) => {};
+  const handleLoad = (isLoading: boolean) => onLoad && onLoad(isLoading);
 
   const getCoordinates = async (address: string) => {
     let location = {
@@ -89,14 +95,41 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
     return location;
   };
 
-  const searchNearby = {
+  const searchNearby: EnhancedAutocompletePrediction = {
     description: 'Pesquisar nas proximidades',
     id: 'search_nearby',
-    structured_formatting: { main_text: 'Pesquisar nas proximidades' },
+    matched_substrings: [],
+    place_id: 'search_nearby',
+    reference: 'search_nearby',
+
+    terms: [
+      {
+        offset: 0,
+        value: 'Pesquisar nas proximidades',
+      },
+    ],
+    types: ['geocode'],
+
+    structured_formatting: {
+      main_text_matched_substrings: [],
+      main_text: 'Pesquisar nas proximidades',
+      secondary_text: 'Pesquisar nas proximidades',
+    },
   };
 
   // Add the "Search nearby" suggestion to the beginning of the suggestions list.
-  const enhancedData = status === 'OK' && value !== '' ? [searchNearby, ...data] : [searchNearby];
+  const [enhancedData, setEnhancedData] = useState([searchNearby, ...data]);
+
+
+  console.log('enhancedData', enhancedData);
+
+  useEffect(() => {
+    if (status === 'OK' && value !== '') {
+      setEnhancedData([searchNearby, ...data]);
+    } else {
+      setEnhancedData([searchNearby]);
+    }
+  }, [status, value]);
 
   const getCurrentLocationCoordinates = async () => {
     const location = {
@@ -127,16 +160,16 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
 
     onSelect(location, option.description);
 
+    setSelectedOption(option);
+
     setValue(option.description, false);
 
     clearSuggestions();
   };
 
-  /**
-  *  useEffect(() => {
+  useEffect(() => {
     setValue(query || '', false);
   }, [query]);
-  */
 
   return (
     // If the Google Maps API is loaded, render the Autocomplete component.
@@ -144,25 +177,38 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
       <Autocomplete
         sx={{ width: 1 }}
         options={enhancedData}
-        value={value}
+        value={selectedOption}
+        loadingText="A pesquisar..."
+        noOptionsText="Sem resultados"
         getOptionLabel={(option) => {
-          return option.description
-            ? option.description
-            : option.structured_formatting?.main_text
-            ? option.structured_formatting.main_text
-            : option || '';
+          if (option.description) {
+            return option.description;
+          }
+          if (option.structured_formatting?.main_text) {
+            return option.structured_formatting.main_text;
+          }
+          return '';
         }}
-        renderOption={(props, option) => {
-          return (
-            // Only show the icon for the "Search nearby" suggestion.
-            (option.id === 'search_nearby' && (
-              <li
-                {...props}
-                onClick={() => {
-                  handleClick(option);
-                }}
-              >
-                <Iconify
+        renderOption={(props, option) =>
+
+          {
+
+         return (
+
+      
+
+          // Only show the icon for the "Search nearby" suggestion.
+          (option?.id === 'search_nearby' && (
+            <li
+              {...props}
+              onClick={() => {
+                handleClick(option);
+              }}
+              onKeyDown={() => {
+                handleClick(option);
+              }}
+            >
+             <Iconify
                   width={15}
                   icon="tabler:location-filled"
                   sx={{
@@ -170,25 +216,21 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
                     alignSelf: 'left',
                   }}
                 />
-                <Typography
+
+              <Typography
                   variant="body2"
                   sx={{
                     pl: 1.5,
                     color: 'text.disabled',
                   }}
                 >
-                  {option.description}
+                 Pesquisar nas proximidades
                 </Typography>
-              </li>
-            )) || (
-              // Show the default option as a regular Material-UI Autocomplete option.
-              <li
-                {...props}
-                onClick={() => {
-                  handleClick(option);
-                }}
-              >
-                <Typography
+            </li>
+          )) || (
+            // Render the default option
+            <li {...props} onClick={() => handleClick(option)}>
+               <Typography
                   variant="body2"
                   sx={{
                     color: 'text.disabled',
@@ -197,21 +239,25 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
                   {option.structured_formatting.main_text},{' '}
                   {option.structured_formatting.secondary_text}
                 </Typography>
-              </li>
-            )
-          );
+            </li>
+          )
+        );
+
+
         }}
         // When the user types an address in the search box
-        onInputChange={(_event, value) => {
-          // When the user selects a place, we can replace the keyword without request data from API
-          // by setting the second parameter to "false"
-          setValue(value);
+        onInputChange={(_event, newValue) => {
+          setValue(newValue, true);
         }}
         // When the user selects a place from the dropdown menu
-        onChange={(_event, value) => {
-          // When the user selects a place, we can replace the keyword without request data from API
-          // by setting the second parameter to "false"
-          setValue(value, false);
+        onChange={(_event, newValue) => {
+          if (newValue) {
+            handleClick(newValue);
+          }
+        }}
+        // When the user clicks outside of the search box
+        onBlur={() => {
+          clearSuggestions();
         }}
         renderInput={(params) => (
           <TextField

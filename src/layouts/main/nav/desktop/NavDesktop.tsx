@@ -12,7 +12,12 @@ import NavList from './NavList';
 
 // ----------------------------------------------------------------------
 
-export default function NavDesktop({ sx }: NavProps) {
+
+type NavDesktopProps = {
+  sx?: object;
+};
+
+export default function NavDesktop({ sx }: NavDesktopProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   return (
