@@ -8,7 +8,6 @@ import { localStorageAvailable, setItem, getItem } from 'src/utils';
 import { isValidToken, setSession } from '../utils';
 import { ActionMapType, AuthStateType, AuthUserType, JWTContextType } from '../types';
 
-
 enum Types {
   INITIAL = 'INITIAL',
 
@@ -240,28 +239,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       throw new Error('Invalid confirmation code');
     }
-
-    const accessToken = (
-      await axios.post('/auth/marketplace/login', {
-        email,
-        password,
-      })
-    ).data.accessToken;
-
-    setSession(accessToken);
-
-    const user = (await axios.get('/users/account')).data;
-
-    setItem('profile_picture', user.profile_picture);
-    setItem('name', user.name);
-
-    dispatch({
-      type: Types.CONFIRM_USER,
-      payload: {
-        isAuthenticated: true,
-        user,
-      },
-    });
   }, []);
 
   // FORGOT_PASSWORD
