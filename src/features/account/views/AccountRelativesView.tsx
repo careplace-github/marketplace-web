@@ -83,13 +83,7 @@ export default function AccountRelativesView() {
             'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
         }}
       >
-        <Stack
-          sx={{ mb: 3 }}
-          flexDirection="row"
-          justifyContent="space-between"
-          alignItems="center"
-          width="100%"
-        >
+        <Stack flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
           <Typography variant="h5">Familiares</Typography>
 
           {isMdUp && (
@@ -115,15 +109,17 @@ export default function AccountRelativesView() {
             </Stack>
           )}
         </Stack>
-        <Box sx={{ maxHeight: '700px' }}>
-          <RelativesList
-            userRelatives={userRelatives}
-            onEditClick={(relative) =>
-              setOpenAddRelativeModal({ open: true, action: 'edit', relativeSelected: relative })
-            }
-            onDeleteRelative={handleDeleteRelative}
-          />
-        </Box>
+        {userRelatives.length > 0 && (
+          <Box sx={{ maxHeight: '700px', mt: 3 }}>
+            <RelativesList
+              userRelatives={userRelatives}
+              onEditClick={(relative) =>
+                setOpenAddRelativeModal({ open: true, action: 'edit', relativeSelected: relative })
+              }
+              onDeleteRelative={handleDeleteRelative}
+            />
+          </Box>
+        )}
         {!isMdUp && (
           <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>
             <Stack spacing={3} sx={{ minWidth: 240, marginTop: '30px' }}>

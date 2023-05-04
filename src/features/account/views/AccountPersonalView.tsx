@@ -65,17 +65,19 @@ export default function AccountPersonalView() {
       }),
   });
 
+  console.log(user);
+
   const defaultValues = {
     firstName: user?.name ? user.name.split(' ')[0] : null,
     lastName: user?.name ? user.name.split(' ').pop() : null,
     emailAddress: user?.email ? user.email : null,
     phoneNumber: user?.phone ? user.phone : null,
-    birthday: user?.birthdate ? user.birthdate : null,
+    birthday: user?.birthdate ? user.birthdate : '',
     gender: user?.gender ? user.gender : null,
-    streetAddress: user?.address.street ? user.address.street : null,
-    zipCode: user?.address.postal_code ? user.address.postal_code : null,
-    city: user?.address.city ? user.address.city : null,
-    country: user?.address.country ? user.address.country : null,
+    streetAddress: user && user.address && user.address.street ? user.address.street : null,
+    zipCode: user && user.address && user.address.postal_code ? user.address.postal_code : null,
+    city: user && user.address && user.address.city ? user.address.city : null,
+    country: user && user.address && user.address.country ? user.address.country : null,
   };
 
   const methods = useForm<typeof defaultValues>({
@@ -249,8 +251,6 @@ export default function AccountPersonalView() {
                     setValue('zipCode', `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`);
                     return;
                   }
-
-                 
 
                   // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
                   if (value.length > 8) {
