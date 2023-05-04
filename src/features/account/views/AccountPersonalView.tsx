@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
@@ -37,7 +37,12 @@ export default function AccountPersonalView() {
     gender: Yup.string().required('O género é obrigatório.'),
     streetAddress: Yup.string().required('A morada is required.'),
     city: Yup.string().required('A cidade é obrigatória.'),
-    zipCode: Yup.string().required('O código postal é obrigatório.'),
+    zipCode: Yup.string()
+      .required('O código postal é obrigatório.')
+      .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
+        const showErrorMessage = value.includes('-') && value.length === 8;
+        return showErrorMessage;
+      }),
     phoneNumber: Yup.string()
       .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
         // If the value is equal to a country phone number, then it is empty

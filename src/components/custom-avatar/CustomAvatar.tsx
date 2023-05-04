@@ -19,8 +19,8 @@ const getColorByName = (name: string) => {
 
 // ----------------------------------------------------------------------
 
-const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps>(
-  ({ color, name = '', BadgeProps, children, sx, ...other }, ref) => {
+const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps & { type: 'normal' | 'custom' }>(
+  ({ type, color, name = '', BadgeProps, children, sx, ...other }, ref) => {
     const theme = useTheme();
 
     const charAtName = getCharAtName(name);
@@ -29,27 +29,40 @@ const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps>(
 
     const colr = color || colorByName;
 
-    const renderContent =
-      colr === 'default' ? (
-        <Avatar ref={ref} sx={sx} {...other}>
-          {name && charAtName}
-          {children}
-        </Avatar>
-      ) : (
-        <Avatar
-          ref={ref}
-          sx={{
-            color: theme.palette[colr]?.contrastText,
-            backgroundColor: theme.palette[colr]?.main,
-            fontWeight: theme.typography.fontWeightMedium,
-            ...sx,
-          }}
-          {...other}
-        >
-          {name && charAtName}
-          {children}
-        </Avatar>
-      );
+    const getRenderContent = () => {
+      if (type === 'normal') {
+        console.log('render normal avatar');
+        return <Avatar sx={sx} {...other} />;
+      }
+      if (type === 'custom' && colr === 'default') {
+        return (
+          <Avatar ref={ref} sx={sx} {...other}>
+            {name && charAtName}
+            {children}
+          </Avatar>
+        );
+      }
+      if (type === 'custom') {
+        return (
+          <Avatar
+            ref={ref}
+            sx={{
+              color: theme.palette[colr]?.contrastText,
+              backgroundColor: theme.palette[colr]?.main,
+              fontWeight: theme.typography.fontWeightMedium,
+              ...sx,
+            }}
+            {...other}
+          >
+            {name && charAtName}
+            {children}
+          </Avatar>
+        );
+      }
+      return null;
+    };
+
+    const renderContent = getRenderContent();
 
     return BadgeProps ? (
       <Badge
