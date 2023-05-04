@@ -10,15 +10,16 @@ import { NAV } from 'src/layouts';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import { Searchbar } from 'src/components/searchbar';
+import { useSnackbar } from 'src/components/snackbar';
 // paths
-import { PATHS } from "src/routes"
+import { PATHS } from 'src/routes';
 // auth
 import { useAuthContext } from 'src/contexts';
-//
-import { useSnackbar } from 'src/components/snackbar';
+// types
 import { NavProps } from '../types';
+//
 import NavList from './NavList';
-
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +51,7 @@ export default function NavMobile({ data }: NavProps) {
     try {
       logout();
       handleClose();
-      router.push(PATHS.home)
+      router.push(PATHS.home);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
@@ -59,13 +60,30 @@ export default function NavMobile({ data }: NavProps) {
 
   return (
     <>
-      {isAuthenticated ? <Avatar sx={{ width: "35px", height: "35px" }} src={user?.profile_picture} onClick={handleOpen} /> :
+      <Searchbar
+        sx={{
+          width: '100%',
+          mt: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      />
+
+      {isAuthenticated ? (
+        <Avatar
+          sx={{ width: '35px', height: '35px' }}
+          src={user?.profile_picture}
+          onClick={handleOpen}
+        />
+      ) : (
         <IconButton onClick={handleOpen} sx={{ ml: 1, color: 'inherit' }}>
           <Iconify icon="carbon:menu" />
-        </IconButton>}
+        </IconButton>
+      )}
 
       <Drawer
-        anchor='right'
+        anchor="right"
         open={open}
         onClose={handleClose}
         PaperProps={{
@@ -77,46 +95,79 @@ export default function NavMobile({ data }: NavProps) {
       >
         <Scrollbar>
           {!isAuthenticated && <Logo sx={{ mx: 2.5 }} />}
-          {isAuthenticated &&
+
+          {isAuthenticated && (
             <>
-              <Box sx={{ mt: "50px", display: "flex", flexDirection: "row", gap: "15px", pl: "16px", alignItems: "center", mb: "30px" }}>
+              <Box
+                sx={{
+                  mt: '50px',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  gap: '15px',
+                  pl: '16px',
+                  alignItems: 'center',
+                  mb: '30px',
+                }}
+              >
                 <Avatar src={user?.profile_picture} />
-                <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>{user?.name}</Typography>
+                <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>
+                  {user?.name}
+                </Typography>
               </Box>
               {/* <Divider sx={{ width: "calc(100% - 32px )", ml: "16px", mb: "12px" }} /> */}
-            </>}
+            </>
+          )}
 
           <List component="nav" disablePadding>
             {data.map((link) => {
-              if (!isAuthenticated && (
-                link.title === "Dados Pessoais" || link.title === "Pedidos" || link.title === "Familiares" || link.title === "Informações de Pagamento" || link.title === "Definições"
-              )) return null;
-              return (
-                <NavList key={link.title} item={link} />
+              if (
+                !isAuthenticated &&
+                (link.title === 'Dados Pessoais' ||
+                  link.title === 'Pedidos' ||
+                  link.title === 'Familiares' ||
+                  link.title === 'Informações de Pagamento' ||
+                  link.title === 'Definições')
               )
+                return null;
+              return <NavList key={link.title} item={link} />;
             })}
           </List>
 
           <Stack spacing={1.5} sx={{ p: 3 }}>
-            {isAuthenticated ?
-              <Box sx={{ width: "100%", mt: "20px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Typography onClick={handleLogout} variant="body2" sx={{ color: 'red' }} noWrap>Terminar Sessão</Typography>
-              </Box> :
-              <Button fullWidth variant="contained" color="inherit"
+            {isAuthenticated ? (
+              <Box
                 sx={{
-                  mt: "10px",
+                  width: '100%',
+                  mt: '20px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography onClick={handleLogout} variant="body2" sx={{ color: 'red' }} noWrap>
+                  Terminar Sessão
+                </Typography>
+              </Box>
+            ) : (
+              <Button
+                fullWidth
+                variant="contained"
+                color="inherit"
+                sx={{
+                  mt: '10px',
                   px: 4,
                   bgcolor: 'primary.main',
                   color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                   '&:hover': {
                     bgcolor: 'primary.dark',
-                    color:
-                      theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                   },
-                }} href={PATHS.auth.login} >
+                }}
+                href={PATHS.auth.login}
+              >
                 Entrar
               </Button>
-            }
+            )}
           </Stack>
         </Scrollbar>
       </Drawer>

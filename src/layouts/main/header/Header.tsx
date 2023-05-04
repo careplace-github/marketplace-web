@@ -1,3 +1,5 @@
+// react
+import { useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, Link, Stack, Button, AppBar, Toolbar, Container, Typography } from '@mui/material';
@@ -19,6 +21,7 @@ import AccountPopover from './AccountPopover';
 import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
 
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -27,6 +30,7 @@ type Props = {
 
 export default function Header({ headerOnDark }: Props) {
   const { user, isAuthenticated, isInitialized } = useAuthContext();
+
 
   const theme = useTheme();
 
@@ -66,7 +70,7 @@ export default function Header({ headerOnDark }: Props) {
             <Logo />
           </Box>
 
-          {isMdUp && <NavDesktop data={navConfig} />}
+          {isMdUp && <NavDesktop />}
 
           <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
             {!isAuthenticated && isMdUp && (
