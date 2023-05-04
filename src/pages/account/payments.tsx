@@ -8,10 +8,7 @@ import { AuthGuard } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 
-AccountPaymentPage.getLayout = (page: React.ReactElement) => (
-  <MainLayout>{page}</MainLayout>
-);
-
+AccountPaymentPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
 
 // ----------------------------------------------------------------------
 
@@ -22,10 +19,9 @@ export default function AccountPaymentPage() {
         <title>Conta: Pagamentos | Careplace</title>
       </Head>
 
-<AuthGuard>
-<AccountPaymentView />
-</AuthGuard>
-      
+      <AuthGuard>
+        <AccountPaymentView />
+      </AuthGuard>
     </>
   );
 }

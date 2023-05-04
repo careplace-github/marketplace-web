@@ -1,5 +1,6 @@
 // @mui
 import { BadgeProps, AvatarProps, AvatarGroupProps } from '@mui/material';
+import { Over_the_Rainbow } from 'next/font/google';
 
 // ----------------------------------------------------------------------
 
@@ -7,6 +8,7 @@ export interface CustomAvatarProps extends AvatarProps {
   color?: 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
   name?: string;
   BadgeProps?: BadgeProps;
+  
 }
 
 export interface CustomAvatarGroupProps extends AvatarGroupProps {
