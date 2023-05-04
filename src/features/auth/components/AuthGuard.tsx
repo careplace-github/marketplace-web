@@ -13,7 +13,7 @@ type AuthGuardProps = {
 };
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { isAuthenticated, isInitialized } = useAuthContext();
+  const { isAuthenticated, user, isInitialized } = useAuthContext();
 
   // Return loading screen if auth context is not initialized
   if (!isInitialized) {
@@ -21,7 +21,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
   }
 
   // Redirect to login page if user is not authenticated
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !user?.email) {
     const { pathname, push } = useRouter();
 
     // Redirect to login page

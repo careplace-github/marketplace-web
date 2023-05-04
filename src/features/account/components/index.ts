@@ -9,9 +9,8 @@ export { default as AccountNewCardModal } from './payments/AccountNewCardModal';
 export { default as AccountPaymentCard } from './payments/AccountPaymentCard';
 
 // Relatives
-export { default as EcommerceCartItem } from './relatives/EcommerceCartItem';
-export { default as EcommerceCartList } from './relatives/EcommerceCartList';
-export { default as EcommerceCartSummary } from './relatives/EcommerceCartSummary';
+export { default as RelativeItem } from './relatives/RelativeItem';
+export { default as RelativesList } from './relatives/RelativesList';
 
 // Account
 export { default as AccountLayout } from './AccountLayout';

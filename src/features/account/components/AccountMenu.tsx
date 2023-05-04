@@ -25,7 +25,7 @@ import {
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import useActiveLink from 'src/hooks/useActiveLink';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // config
 import { NAV } from 'src/layouts';
 // routes
