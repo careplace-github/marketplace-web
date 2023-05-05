@@ -170,7 +170,7 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
       onClear={() => console.log('clear')}
       loadingText="A pesquisar..."
       noOptionsText="Sem resultados"
-      value={value}
+      value={selectedOption}
       getOptionLabel={(option) => {
         if (option.description) {
           return option.description;
