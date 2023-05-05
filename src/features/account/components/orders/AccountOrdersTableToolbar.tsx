@@ -1,4 +1,3 @@
- 
 // @mui
 import { Tooltip, Typography, IconButton, Checkbox, Stack } from '@mui/material';
 // components
@@ -9,14 +8,9 @@ import Iconify from 'src/components/iconify';
 interface Props {
   rowCount: number;
   numSelected: number;
-  onSelectAllRows: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function AccountOrdersTableToolbar({
-  rowCount,
-  numSelected,
-  onSelectAllRows,
-}: Props) {
+export default function AccountOrdersTableToolbar({ rowCount, numSelected }: Props) {
   if (!numSelected) {
     return null;
   }
@@ -42,7 +36,6 @@ export default function AccountOrdersTableToolbar({
       <Checkbox
         indeterminate={numSelected > 0 && numSelected < rowCount}
         checked={rowCount > 0 && numSelected === rowCount}
-        onChange={onSelectAllRows}
         inputProps={{
           'aria-label': 'select all desserts',
         }}

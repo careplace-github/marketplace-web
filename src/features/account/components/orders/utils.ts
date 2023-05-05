@@ -1,6 +1,24 @@
 // ----------------------------------------------------------------------
 
 export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (orderBy === 'relative' || orderBy === 'services') {
+    if (b[orderBy].name < a[orderBy].name) {
+      return -1;
+    }
+    if (b[orderBy].name > a[orderBy].name) {
+      return 1;
+    }
+  }
+
+  if (orderBy === 'schedule_information') {
+    if (b[orderBy].recurrency < a[orderBy].recurrency) {
+      return -1;
+    }
+    if (b[orderBy].recurrency > a[orderBy].recurrency) {
+      return 1;
+    }
+  }
+
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -12,6 +30,9 @@ export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 // ----------------------------------------------------------------------
 
+/**
+ *
+ */
 export function getComparator<Key extends keyof any>(
   order: 'asc' | 'desc',
   orderBy: Key
@@ -23,6 +44,9 @@ export function getComparator<Key extends keyof any>(
 
 // ----------------------------------------------------------------------
 
+/**
+ * Sort array of objects by object key
+ */
 export function stableSort<T>(array: T[], comparator: (a: any, b: any) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
 

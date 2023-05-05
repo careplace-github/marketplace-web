@@ -5,14 +5,20 @@ import MainLayout from 'src/layouts/main';
 // features
 import  { GuestGuard } from 'src/features/auth';
 import { LandingView } from 'src/features/home';
+import { useEffect } from 'react';
+// next
+import { useRouter } from 'next/router';
+// routes
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
-TravelLandingPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
+LandingPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
 
 // ----------------------------------------------------------------------
 
-export default function TravelLandingPage() {
+export default function LandingPage() {
+  
   return (
     <>
       <Head>
