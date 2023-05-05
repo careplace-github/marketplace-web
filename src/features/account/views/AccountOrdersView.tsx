@@ -18,10 +18,13 @@ import {
   TablePagination,
   FormControlLabel,
 } from '@mui/material';
-
+// types
+import { IOrderProps } from 'src/types/order';
 // components
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+// lib
+import axios from 'src/lib/axios';
 //
 import {
   AccountLayout,
@@ -31,9 +34,7 @@ import {
   AccountOrdersTableHead,
   AccountOrdersTableToolbar,
 } from '../components';
-// lib
-import axios from 'src/lib/axios';
-import { IOrderProps } from 'src/types/order';
+
 
 // ----------------------------------------------------------------------
 
@@ -82,9 +83,8 @@ export default function AccountOrdersView() {
     const ordersFiltered = ordersFetched.filter((order: IOrderProps) => {
       if (newValue === 'all') {
         return order;
-      } else {
-        return order.status === newValue;
       }
+      return order.status === newValue;
     });
 
     setOrders(ordersFiltered);
@@ -148,8 +148,8 @@ export default function AccountOrdersView() {
           onChange={handleChangeTab}
           sx={{ mb: 5 }}
         >
-          {TABS.map((tab) => (
-            <Tab key={tab.value} value={tab.value} label={tab.label} />
+          {TABS.map((_tab) => (
+            <Tab key={_tab.value} value={_tab.value} label={_tab.label} />
           ))}
         </Tabs>
 
@@ -215,7 +215,7 @@ export default function AccountOrdersView() {
             count={orders.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
-            rowsPerPageOptions={[2, 5, 10, 25]}
+            rowsPerPageOptions={[5, 10, 25]}
             onRowsPerPageChange={handleChangeRowsPerPage}
             // Rows per page label
             labelRowsPerPage="Pedidos por página"
