@@ -18,8 +18,8 @@ import { PATHS } from 'src/routes';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 // components
 import Logo from 'src/components/logo';
-import { Searchbar } from 'src/components/searchbar';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import { Searchbar } from 'src/components/searchbar';
 import AccountPopover from './AccountPopover';
 //
 import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
@@ -46,8 +46,6 @@ export default function Header({ headerOnDark }: Props) {
   const isSmUp = useResponsive('up', 'sm');
 
   const isOffset = useOffSetTop();
-
-  
 
   const isLoaded = useJsApiLoader({
     id: 'google-map-script',
