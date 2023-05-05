@@ -43,7 +43,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
       }}
       onClick={() => {
         router.push({
-          pathname: `/companies/${company.slug}`,
+          pathname: `/companies/${company._id}`,
           query: { ...router.query },
         });
       }}

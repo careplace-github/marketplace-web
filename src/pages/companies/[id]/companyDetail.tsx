@@ -1,6 +1,6 @@
 // next
 import Head from 'next/head';
- 
+
 // layouts
 import MainLayout from 'src/layouts/main';
 // features
@@ -8,9 +8,7 @@ import { CompanyDetailView } from 'src/features/companies';
 
 // ----------------------------------------------------------------------
 
-CompanyDetailPage.getLayout = (page: React.ReactElement) => (
-  <MainLayout>{page}</MainLayout>
-);
+CompanyDetailPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
 
 // ----------------------------------------------------------------------
 

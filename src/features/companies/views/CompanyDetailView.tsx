@@ -22,10 +22,8 @@ import {
   CompanyDetailSummary,
   CompanyDetailReserveForm,
   SimilarCompaniesList,
-  CompanyDetailReviews
+  CompanyDetailReviews,
 } from '../components';
-
- 
 
 // ----------------------------------------------------------------------
 
@@ -50,11 +48,7 @@ export default function CompanyDetailView() {
     <>
       <Container sx={{ overflow: 'hidden' }}>
         <CustomBreadcrumbs
-          links={[
-            { name: 'Home', href: '/' },
-            { name: 'companys', href: "/" },
-            { name: "id" },
-          ]}
+          links={[{ name: 'Home', href: '/' }, { name: 'companys', href: '/' }, { name: 'id' }]}
           sx={{ mt: 3, mb: 5 }}
         />
 
@@ -109,8 +103,6 @@ export default function CompanyDetailView() {
       <CompanyDetailReviews />
 
       <SimilarCompaniesList companies={_companies.slice(-3)} />
-
-
     </>
   );
 }

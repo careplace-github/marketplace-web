@@ -30,6 +30,7 @@ export type ICompanyProps = {
     postal_code?: string;
     street?: string;
   };
+  createdAt?: string;
   business_profile: {
     about: string;
     address?: {
@@ -49,11 +50,11 @@ export type ICompanyProps = {
       linkedin?: string;
     };
     website?: string;
-    is_active: boolean;
-    rating?: { average?: number; count?: number };
-    service_area?: string[];
-    services?: string[];
   };
+  is_active: boolean;
+  rating: { average: number; count: number };
+  service_area?: string[];
+  services?: string[];
 };
 
 export type ICompanyFiltersProps = {
