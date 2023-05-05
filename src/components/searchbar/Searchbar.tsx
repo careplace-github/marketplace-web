@@ -12,7 +12,8 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-
+// hooks
+import useResponsive from 'src/hooks/useResponsive';
 // components
 import Iconify from 'src/components/iconify';
 // routes
@@ -22,7 +23,6 @@ import { ILocationFiltersProps } from './types';
 //
 import { StyledBar } from './styles';
 import { LocationFilterKeyword } from './LocationFilterKeyword';
-
 
 // ----------------------------------------------------------------------
 
@@ -47,8 +47,8 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   const router = useRouter();
 
   const [filters, setFilters] = useState<FiltersProps>({
-    lat: '',
-    lng: '',
+    lat: null,
+    lng: null,
     query: '',
   });
 
@@ -63,10 +63,10 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       }
     }
   }, [router.isReady]);
-
-
+  const isSmUp = useResponsive('up', 'sm');
 
   const handleSelect = (location: Location, filterQuery: string) => {
+    console.log('location:', location, 'query:', filterQuery);
     setFilters({
       lat: location.lat,
       lng: location.lng,
@@ -84,11 +84,20 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
     });
   };
 
+  useEffect(() => {
+    if (filters.lat && filters.lng) {
+      handleSearch();
+    }
+  }, [filters]);
+
   return (
     <Stack direction="row" alignItems="center">
       <StyledBar
         spacing={{ xs: 0, md: 0 }}
         sx={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          width: !isSmUp ? '100%' : '400px',
           height: 50,
           px: 2,
           justifyContent: 'space-between',
@@ -99,7 +108,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       >
         <LocationFilterKeyword
           onSelect={handleSelect}
-          
           query={filters.query}
           sx={{
             alignSelf: 'left',
@@ -125,7 +133,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
               height: 25,
             },
           }}
-          onClick={ handleSearch}
+          onClick={handleSearch}
         >
           <Iconify icon="carbon:search" width={20} />
         </Button>
