@@ -33,12 +33,9 @@ type EnhancedAutocompletePrediction = AutocompletePrediction & {
   id: string;
 };
 
-export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
-  const isLoaded = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-    libraries: ['places'],
-  });
+const googleLibraries = ['places'];
 
+export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   const [selectedOption, setSelectedOption] = useState(null);
 
   /**
@@ -60,14 +57,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
     // Cache the results for 24 hours.
     cache: 24 * 60 * 60,
   });
-
-  useEffect(() => {
-    if (isLoaded.isLoaded && onLoad) {
-      onLoad(false);
-    }
-  }, [isLoaded.isLoaded]);
-
-  const handleLoad = (isLoading: boolean) => onLoad && onLoad(isLoading);
 
   const getCoordinates = async (address: string) => {
     let location = {
@@ -120,7 +109,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   // Add the "Search nearby" suggestion to the beginning of the suggestions list.
   const [enhancedData, setEnhancedData] = useState([searchNearby, ...data]);
 
-
   console.log('enhancedData', enhancedData);
 
   useEffect(() => {
@@ -129,7 +117,7 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
     } else {
       setEnhancedData([searchNearby]);
     }
-  }, [status, value]);
+  }, [status, data]);
 
   const getCurrentLocationCoordinates = async () => {
     const location = {
@@ -158,6 +146,8 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   const handleClick = async (option: any) => {
     const location = await getCoordinates(option.description);
 
+    console.log('option:', option);
+
     onSelect(location, option.description);
 
     setSelectedOption(option);
@@ -173,30 +163,25 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
 
   return (
     // If the Google Maps API is loaded, render the Autocomplete component.
-    <>
-      <Autocomplete
-        sx={{ width: 1 }}
-        options={enhancedData}
-        value={selectedOption}
-        loadingText="A pesquisar..."
-        noOptionsText="Sem resultados"
-        getOptionLabel={(option) => {
-          if (option.description) {
-            return option.description;
-          }
-          if (option.structured_formatting?.main_text) {
-            return option.structured_formatting.main_text;
-          }
-          return '';
-        }}
-        renderOption={(props, option) =>
 
-          {
-
-         return (
-
-      
-
+    <Autocomplete
+      sx={{ width: '100%' }}
+      options={enhancedData}
+      onClear={() => console.log('clear')}
+      loadingText="A pesquisar..."
+      noOptionsText="Sem resultados"
+      value={value}
+      getOptionLabel={(option) => {
+        if (option.description) {
+          return option.description;
+        }
+        if (option.structured_formatting?.main_text) {
+          return option.structured_formatting.main_text;
+        }
+        return '';
+      }}
+      renderOption={(props, option) => {
+        return (
           // Only show the icon for the "Search nearby" suggestion.
           (option?.id === 'search_nearby' && (
             <li
@@ -208,90 +193,94 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
                 handleClick(option);
               }}
             >
-             <Iconify
-                  width={15}
-                  icon="tabler:location-filled"
-                  sx={{
-                    color: 'text.disabled',
-                    alignSelf: 'left',
-                  }}
-                />
+              <Iconify
+                width={15}
+                icon="tabler:location-filled"
+                sx={{
+                  color: 'text.disabled',
+                  alignSelf: 'left',
+                }}
+              />
 
               <Typography
-                  variant="body2"
-                  sx={{
-                    pl: 1.5,
-                    color: 'text.disabled',
-                  }}
-                >
-                 Pesquisar nas proximidades
-                </Typography>
+                variant="body2"
+                sx={{
+                  pl: 1.5,
+                  color: 'text.disabled',
+                }}
+              >
+                Pesquisar nas proximidades
+              </Typography>
             </li>
           )) || (
             // Render the default option
             <li {...props} onClick={() => handleClick(option)}>
-               <Typography
-                  variant="body2"
-                  sx={{
-                    color: 'text.disabled',
-                  }}
-                >
-                  {option.structured_formatting.main_text},{' '}
-                  {option.structured_formatting.secondary_text}
-                </Typography>
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.disabled',
+                }}
+              >
+                {option.structured_formatting.main_text},{' '}
+                {option.structured_formatting.secondary_text}
+              </Typography>
             </li>
           )
         );
-
-
-        }}
-        // When the user types an address in the search box
-        onInputChange={(_event, newValue) => {
-          setValue(newValue, true);
-        }}
-        // When the user selects a place from the dropdown menu
-        onChange={(_event, newValue) => {
-          if (newValue) {
-            handleClick(newValue);
-          }
-        }}
-        // When the user clicks outside of the search box
-        onBlur={() => {
-          clearSuggestions();
-        }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            hiddenLabel
-            variant="filled"
-            placeholder="Cidade, Rua, Código Postal..."
-            InputProps={{
-              ...params.InputProps,
-              autoComplete: 'search',
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Iconify
-                    width={20}
-                    icon="carbon:location"
-                    sx={{
-                      color: 'text.disabled',
-                      mr: 0.5,
-                      ml: -1.5,
-                      alignSelf: 'left',
-                    }}
-                  />
-                </InputAdornment>
-              ),
-              sx: {
-                pb: 1,
-                mr: 2,
-                '&:hover': { cursor: 'pointer' },
-                ...sx,
-              },
-            }}
-          />
-        )}
-      />
-    </>
+      }}
+      // When the user types an address in the search box
+      onInputChange={(_event, newValue) => {
+        console.log('input change:', newValue);
+        setValue(newValue, true);
+      }}
+      // When the user selects a place from the dropdown menu
+      // onChange={(_event, newValue) => {
+      //   console.log('change:', newValue);
+      //   if (newValue) {
+      //     handleClick(newValue);
+      //   }
+      // }}
+      // When the user clicks outside of the search box
+      onBlur={() => {
+        clearSuggestions();
+      }}
+      renderInput={(params) => (
+        <TextField
+          sx={{
+            width: '100%',
+            '& > div': { width: '100%' },
+          }}
+          {...params}
+          hiddenLabel
+          variant="filled"
+          placeholder="Cidade, Rua, Código Postal..."
+          InputProps={{
+            ...params.InputProps,
+            autoComplete: 'search',
+            startAdornment: (
+              <InputAdornment position="start">
+                <Iconify
+                  width={20}
+                  icon="carbon:location"
+                  sx={{
+                    color: 'text.disabled',
+                    mr: 0.5,
+                    ml: -1.5,
+                    alignSelf: 'left',
+                  }}
+                />
+              </InputAdornment>
+            ),
+            sx: {
+              pb: 1,
+              width: '100%',
+              mr: 2,
+              '&:hover': { cursor: 'pointer' },
+              ...sx,
+            },
+          }}
+        />
+      )}
+    />
   );
 }

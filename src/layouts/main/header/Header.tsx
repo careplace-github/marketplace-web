@@ -1,5 +1,5 @@
 // react
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, Link, Stack, Button, AppBar, Toolbar, Container, Typography } from '@mui/material';
@@ -14,13 +14,16 @@ import { useAuthContext } from 'src/contexts';
 import { HEADER } from 'src/layouts/config';
 // paths
 import { PATHS } from 'src/routes';
+// google maps api
+import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 // components
 import Logo from 'src/components/logo';
 import AccountPopover from './AccountPopover';
+import { Searchbar } from 'src/components/searchbar';
 //
 import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -28,97 +31,119 @@ type Props = {
   headerOnDark: boolean;
 };
 
+const googleLibraries = ['places'];
+
 export default function Header({ headerOnDark }: Props) {
   const { user, isAuthenticated, isInitialized } = useAuthContext();
-
 
   const theme = useTheme();
 
   const isMdUp = useResponsive('up', 'md');
+  const isSmUp = useResponsive('up', 'sm');
 
   const isOffset = useOffSetTop();
 
-  return isInitialized ? (
+  const isLoaded = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    libraries: googleLibraries,
+  });
+
+  return isInitialized && isLoaded.isLoaded ? (
     <AppBar color="transparent" sx={{ boxShadow: '0px 1px 20px rgba(0,0,0,0.07)' }}>
-      <Toolbar
-        disableGutters
-        sx={{
-          height: {
-            xs: HEADER.H_MOBILE,
-            md: HEADER.H_MAIN_DESKTOP,
-          },
-          color: 'text.primary',
-          backgroundColor: 'white',
-          transition: theme.transitions.create(['height', 'background-color'], {
-            easing: theme.transitions.easing.easeInOut,
-            duration: theme.transitions.duration.shorter,
-          }),
-          ...(headerOnDark && {
-            color: 'common.white',
-          }),
-        }}
-      >
-        <Container
-          sx={{ height: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+      <Stack direction="column" sx={{ width: '100%' }}>
+        <Toolbar
+          disableGutters
+          sx={{
+            height: {
+              xs: HEADER.H_MOBILE,
+              md: HEADER.H_MAIN_DESKTOP,
+            },
+            color: 'text.primary',
+            backgroundColor: 'white',
+            transition: theme.transitions.create(['height', 'background-color'], {
+              easing: theme.transitions.easing.easeInOut,
+              duration: theme.transitions.duration.shorter,
+            }),
+            ...(headerOnDark && {
+              color: 'common.white',
+            }),
+          }}
         >
-          <Box
+          <Container
             sx={{
-              lineHeight: 0,
-              position: 'relative',
+              height: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
           >
-            <Logo />
-          </Box>
+            <Box
+              sx={{
+                lineHeight: 0,
+                position: 'relative',
+              }}
+            >
+              <Logo />
+            </Box>
 
-          {isMdUp && <NavDesktop />}
+            {isMdUp && <NavDesktop />}
 
-          <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
-            {!isAuthenticated && isMdUp && (
-              <Link
-                href={PATHS.auth.register}
-                variant="subtitle1"
-                underline="none"
-                sx={{
-                  color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
-                  '&:hover': {
-                    color: theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
-                  },
-
-                  pr: 2,
-                }}
-              >
-                Registar
-              </Link>
-            )}
-
-            {isMdUp &&
-              (isAuthenticated ? (
-                <AccountPopover />
-              ) : (
-                <Button
-                  variant="contained"
-                  color="inherit"
-                  href={PATHS.auth.login}
-                  rel="noopener"
+            <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
+              {!isAuthenticated && isMdUp && (
+                <Link
+                  href={PATHS.auth.register}
+                  variant="subtitle1"
+                  underline="none"
                   sx={{
-                    px: 4,
-                    bgcolor: 'primary.main',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
                     '&:hover': {
-                      bgcolor: 'primary.dark',
-                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                      color: theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
                     },
+
+                    pr: 2,
                   }}
                 >
-                  Entrar
-                </Button>
-              ))}
-          </Stack>
+                  Registar
+                </Link>
+              )}
 
-          {!isMdUp && <NavMobile data={navConfigMobile} />}
-        </Container>
-      </Toolbar>
+              {isMdUp &&
+                (isAuthenticated ? (
+                  <AccountPopover />
+                ) : (
+                  <Button
+                    variant="contained"
+                    color="inherit"
+                    href={PATHS.auth.login}
+                    rel="noopener"
+                    sx={{
+                      px: 4,
+                      bgcolor: 'primary.main',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                        color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                      },
+                    }}
+                  >
+                    Entrar
+                  </Button>
+                ))}
+            </Stack>
+
+            {!isMdUp && <NavMobile data={navConfigMobile} />}
+          </Container>
+        </Toolbar>
+        {!isSmUp && (
+          <Box sx={{ width: '100%', p: '10px 16px', pb: '20px', backgroundColor: 'white' }}>
+            <Searchbar />
+          </Box>
+        )}
+      </Stack>
       <HeaderShadow />
     </AppBar>
-  ) : null;
+  ) : (
+    <LoadingScreen />
+  );
 }
