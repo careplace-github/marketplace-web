@@ -55,7 +55,7 @@ export default function ServicesList({ services }: Props) {
         }}
       >
         {filtered.map((service) => (
-          <ServiceItem key={service.id} service={service} />
+          <ServiceItem key={service._id} service={service} />
         ))}
       </Box>
 

@@ -123,8 +123,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
         <TableCell>
           {order.services.map((service: IServiceProps) => (
             <Label
-              color={'primary'}
-              // variant="filled"
+              color="primary"
               sx={{
                 mr: 1,
                 mb: 1,

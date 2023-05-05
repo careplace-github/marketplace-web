@@ -2,7 +2,7 @@ import { IOrderProps } from '../types/order';
 
 export const getRecurrencyText = (order: IOrderProps) => {
   let text = '';
-  let recurrency = order.schedule_information.recurrency;
+  const recurrency = order.schedule_information.recurrency;
 
   if(recurrency === 0) text = 'Pedido Único';
  else if (recurrency === 1) {
@@ -17,12 +17,12 @@ export const getRecurrencyText = (order: IOrderProps) => {
 
 export const getScheduleText = (order: IOrderProps) => {
   let text = '';
-  let schedule = order.schedule_information.schedule;
+  const schedule = order.schedule_information.schedule;
 
   schedule.forEach((item) => {
-    let week_day = item.week_day;
-    let start = item.start;
-    let end = item.end;
+    const week_day = item.week_day;
+    const start = item.start;
+    const end = item.end;
 
     if (week_day === 1) {
       text += 'Segundas-feiras: ';
