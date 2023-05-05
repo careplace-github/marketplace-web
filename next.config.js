@@ -12,9 +12,11 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/posts',
+        // Only use while home page is under construction
+        destination: '/companies',
         permanent: true,
       },
     ];
   },
+  
 };
