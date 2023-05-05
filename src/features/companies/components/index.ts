@@ -1,9 +1,9 @@
 // Detail
-export { default as CompanyDetailHeader } from './detail/CompanyDetailHeader';
-export { default as CompanyDetailSummary } from './detail/CompanyDetailSummary';
-export { default as CompanyDetailGallery } from './detail/CompanyDetailGallery';
-export { default as CompanyDetailReserveForm } from './detail/CompanyDetailReserveForm';
-export { default as CompanyDetailReviews } from './detail/CompanyDetailReviews';
+// export { default as CompanyDetailHeader } from './detail/CompanyDetailHeader';
+// export { default as CompanyDetailSummary } from './detail/CompanyDetailSummary';
+// export { default as CompanyDetailGallery } from './detail/CompanyDetailGallery';
+// export { default as CompanyDetailReserveForm } from './detail/CompanyDetailReserveForm';
+// export { default as CompanyDetailReviews } from './detail/CompanyDetailReviews';
 
 // Filters
 export { default as CompaniesFilters } from './filters/CompaniesFilters';
