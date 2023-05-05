@@ -3,9 +3,15 @@ import { ISocialLinks } from './utils';
 // ----------------------------------------------------------------------
 
 export type IServiceProps = {
-  id: string;
-  title: string;
+  _id: string;
+  name: string;
   description: string;
+  short_description: string;
+  image: string;
+
+
+
+  title: string;
   category: string;
   coverImg: string;
   heroImg: string;
