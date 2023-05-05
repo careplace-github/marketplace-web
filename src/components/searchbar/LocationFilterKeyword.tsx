@@ -33,8 +33,6 @@ type EnhancedAutocompletePrediction = AutocompletePrediction & {
   id: string;
 };
 
-const googleLibraries = ['places'];
-
 export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   const [selectedOption, setSelectedOption] = useState(null);
 
@@ -115,7 +113,7 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
     } else {
       setEnhancedData([searchNearby]);
     }
-  }, [status, data]);
+  }, [status, data, value]);
 
   const getCurrentLocationCoordinates = async () => {
     const location = {
