@@ -18,12 +18,12 @@ import { PATHS } from 'src/routes';
 import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 // components
 import Logo from 'src/components/logo';
-import AccountPopover from './AccountPopover';
 import { Searchbar } from 'src/components/searchbar';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import AccountPopover from './AccountPopover';
 //
 import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
-import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +31,11 @@ type Props = {
   headerOnDark: boolean;
 };
 
-const googleLibraries = ['places'];
+const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'visualization')[] = [
+  'places',
+];
+
+const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
 export default function Header({ headerOnDark }: Props) {
   const { user, isAuthenticated, isInitialized } = useAuthContext();
@@ -43,9 +47,11 @@ export default function Header({ headerOnDark }: Props) {
 
   const isOffset = useOffSetTop();
 
+  
+
   const isLoaded = useJsApiLoader({
     id: 'google-map-script',
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries: googleLibraries,
   });
 
