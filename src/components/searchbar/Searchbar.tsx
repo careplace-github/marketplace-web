@@ -66,7 +66,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   const isSmUp = useResponsive('up', 'sm');
 
   const handleSelect = (location: Location, filterQuery: string) => {
-    console.log('location:', location, 'query:', filterQuery);
     setFilters({
       lat: location.lat,
       lng: location.lng,
@@ -86,7 +85,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   useEffect(() => {
     if (filters.lat && filters.lng) {
-      handleSearch();
+      // handleSearch();
     }
   }, [filters]);
 

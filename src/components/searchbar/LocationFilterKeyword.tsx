@@ -109,8 +109,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   // Add the "Search nearby" suggestion to the beginning of the suggestions list.
   const [enhancedData, setEnhancedData] = useState([searchNearby, ...data]);
 
-  console.log('enhancedData', enhancedData);
-
   useEffect(() => {
     if (status === 'OK' && value !== '') {
       setEnhancedData([searchNearby, ...data]);
@@ -146,8 +144,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
   const handleClick = async (option: any) => {
     const location = await getCoordinates(option.description);
 
-    console.log('option:', option);
-
     onSelect(location, option.description);
 
     setSelectedOption(option);
@@ -167,7 +163,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
     <Autocomplete
       sx={{ width: '100%' }}
       options={enhancedData}
-      onClear={() => console.log('clear')}
       loadingText="A pesquisar..."
       noOptionsText="Sem resultados"
       value={selectedOption}
@@ -230,7 +225,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
       }}
       // When the user types an address in the search box
       onInputChange={(_event, newValue) => {
-        console.log('input change:', newValue);
         setValue(newValue, true);
       }}
       // When the user selects a place from the dropdown menu
