@@ -74,18 +74,26 @@ export default function CompanyListItem({ company, vertical }: Props) {
         </Label>
       )} */}
 
-      <Stack spacing={3} sx={{ p: 3, width: '100%', justifyContent: 'space-between' }}>
+      <Stack
+        spacing={3}
+        sx={{ p: 3, width: '100%', justifyContent: 'space-between', position: 'relative' }}
+      >
         <Stack
           spacing={{
             xs: 3,
             sm: vertical ? 3 : 1,
           }}
-          direction={isSmUp ? 'row-reverse' : 'column-reverse'}
+          direction={isMdUp ? 'row' : 'column-reverse'}
           alignItems="flex-start"
-          justifyContent="space-between"
+          justifyContent={isMdUp ? 'flex-start' : 'space-between'}
         >
-          <Stack direction="row" alignItems="center" justifyContent="flex-end">
-            <Typography variant="h4" sx={{ display: 'inline-flex', alignItems: 'flex-end', ml: 2}}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="flex-end"
+            sx={isMdUp ? { position: 'absolute', top: '20px', right: '24px' } : {}}
+          >
+            <Typography variant="h4" sx={{ display: 'inline-flex', alignItems: 'flex-end' }}>
               {/* {priceSale > 0 && (
                 <Box
                   component="span"
@@ -114,8 +122,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 color="text.secondary"
                 sx={{
                   ...(vertical && {
-                    display: { sm: 'none' },
-               
+                    display: { sm: 'none', mt: isMdUp ? 0 : '10px' },
                   }),
                 }}
               >
@@ -149,7 +156,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
             )}
           </Stack>
         </Stack>
-        {isSmUp && (
+        {isMdUp && (
           <Stack
             sx={{ mt: '8px' }}
             spacing={1.5}
