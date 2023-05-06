@@ -48,6 +48,10 @@
     "import/no-named-as-default-member": 0, // Remove
     "import/no-named-as-default": 0, // Remove
     "import/extensions": 0, // Remove
+    "jsx-a11y/no-noninteractive-element-interactions": 0, // Remove
+    "jsx-a11y/click-events-have-key-events": 0, // Remove
+    "arrow-body-style": 0, // Remove
+
 
     "react/jsx-no-constructed-context-values": 0,
 
