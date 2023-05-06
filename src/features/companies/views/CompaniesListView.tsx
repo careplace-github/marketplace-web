@@ -13,7 +13,7 @@ import { animateScroll } from 'react-scroll';
 import { ICompanyProps } from 'src/types/company';
 import CompaniesList from '../components/list/CompaniesList';
 import CompaniesFilters from '../components/filters/CompaniesFilters';
-
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 export default function CompaniesListView() {
@@ -21,18 +21,23 @@ export default function CompaniesListView() {
   const [companies, setCompanies] = useState<ICompanyProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchCompanies = async () => {
+      const currentQuery = router.query;
       const response = await axios.get('/companies/search', {
-        params: { documentsPerPage: 5 },
+        params: {
+          ...currentQuery,
+          documentsPerPage: 5,
+        },
       });
       setCompanies(response.data.data);
       setTotalPages(response.data.totalPages);
       setLoading(false);
     };
     fetchCompanies();
-  }, []);
+  }, [router.query]);
 
   const handleMobileOpen = () => {
     setMobileOpen(true);

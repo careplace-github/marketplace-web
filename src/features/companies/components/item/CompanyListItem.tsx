@@ -85,7 +85,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
           justifyContent="space-between"
         >
           <Stack direction="row" alignItems="center" justifyContent="flex-end">
-            <Typography variant="h4" sx={{ display: 'inline-flex', alignItems: 'flex-end' }}>
+            <Typography variant="h4" sx={{ display: 'inline-flex', alignItems: 'flex-end', ml: 2}}>
               {/* {priceSale > 0 && (
                 <Box
                   component="span"
@@ -115,6 +115,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 sx={{
                   ...(vertical && {
                     display: { sm: 'none' },
+               
                   }),
                 }}
               >
