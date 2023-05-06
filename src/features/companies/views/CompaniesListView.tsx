@@ -13,6 +13,7 @@ import Iconify from 'src/components/iconify';
 //
 import { animateScroll } from 'react-scroll';
 //
+import { useResponsive } from 'src/hooks';
 import { ICompanyProps } from 'src/types/company';
 import CompaniesList from '../components/list/CompaniesList';
 import CompaniesFilters from '../components/filters/CompaniesFilters';
@@ -24,6 +25,7 @@ export default function CompaniesListView() {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
   const router = useRouter();
+  const isMdUp = useResponsive('up', 'md');
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -80,6 +82,7 @@ export default function CompaniesListView() {
         alignItems="center"
         justifyContent="space-between"
         sx={{
+          marginTop: isMdUp ? '0px' : '70px',
           py: 5,
         }}
       >

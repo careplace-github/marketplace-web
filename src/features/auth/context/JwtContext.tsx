@@ -250,7 +250,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // RESET_PASSWORD
   const resetPassword = useCallback(async (email: string, code: string, newPassword: string) => {
-    const response = await axios.post('/auth/marketplace/verify/reset-password-code', {
+    const response = await axios.post('/auth/marketplace/verify/forgot-password-code', {
       email,
       code,
       newPassword,

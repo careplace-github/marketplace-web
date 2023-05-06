@@ -50,7 +50,9 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
 
   const CardSchema = Yup.object().shape({
     cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
-    cardNumber: Yup.string().required('Número do cartão é obrigatório.'),
+    cardNumber: Yup.string()
+      .required('Número do cartão é obrigatório.')
+      .test('cardNumber', 'Insira um número de cartão válido.', (value) => value.length === 19),
     cardExpirationDate: Yup.string().required('Data de validade é obrigatória.'),
     cardCVV: Yup.string().required('CVV é obrigatório.'),
   });
@@ -104,6 +106,7 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
       await axios.post('/payments/payment-methods', {
         payment_method_token: card_token.id,
       });
+      close();
     } catch (error) {
       console.error(error);
     }
