@@ -2,7 +2,7 @@
 import NextLink from 'next/link';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { AppBar, Toolbar, Link, Stack } from '@mui/material';
+import { AppBar, Toolbar, Link, Stack, Container } from '@mui/material';
 // config
 import { HEADER } from 'src/layouts';
 // utils
@@ -24,36 +24,40 @@ export default function Header({ isOffset }: Props) {
   return (
     <AppBar color="transparent" sx={{ boxShadow: 'none' }}>
       <Toolbar
+        disableGutters
         sx={{
-          justifyContent: 'space-between',
           height: {
             xs: HEADER.H_MOBILE,
             md: HEADER.H_MAIN_DESKTOP,
           },
+          color: 'text.primary',
+          justifyContent: 'space-between',
+          backgroundColor: 'white',
           transition: theme.transitions.create(['height', 'background-color'], {
             easing: theme.transitions.easing.easeInOut,
             duration: theme.transitions.duration.shorter,
           }),
-          ...(isOffset && {
-            ...bgBlur({ color: theme.palette.background.default }),
-            height: {
-              md: HEADER.H_MAIN_DESKTOP - 16,
-            },
-          }),
         }}
       >
-        <Logo />
+        <Container
+          sx={{
+            height: 1,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Logo />
 
-        <Stack spacing={1} direction="row" alignItems="center">
-         
-
-          <Link href="/" component={NextLink} variant="subtitle2" color="inherit">
-            Precisa de Ajuda?
-          </Link>
-        </Stack>
+          <Stack spacing={1} direction="row" alignItems="center">
+            <Link href="/" component={NextLink} variant="subtitle2" color="inherit">
+              Precisa de Ajuda?
+            </Link>
+          </Stack>
+        </Container>
       </Toolbar>
 
-      {isOffset && <HeaderShadow />}
+      <HeaderShadow />
     </AppBar>
   );
 }

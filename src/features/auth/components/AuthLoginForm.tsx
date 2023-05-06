@@ -96,7 +96,7 @@ export default function AuthLoginForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={2.5} alignItems="flex-end">
         {errorMessage && (
-          <Alert sx={{ width: '100%' }} severity="error">
+          <Alert sx={{ width: '100%', textAlign: 'left' }} severity="error">
             {errorMessage}
           </Alert>
         )}
