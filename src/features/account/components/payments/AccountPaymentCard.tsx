@@ -124,7 +124,7 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
       >
         <MenuItem
           onClick={() => {
-            handleClose();
+            handleDelete({}, 'backdropClick');
           }}
           sx={{ color: 'error.main' }}
         >

@@ -104,6 +104,7 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
       await axios.post('/payments/payment-methods', {
         payment_method_token: card_token.id,
       });
+      close();
     } catch (error) {
       console.error(error);
     }
