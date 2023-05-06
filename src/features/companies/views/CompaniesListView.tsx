@@ -82,7 +82,6 @@ export default function CompaniesListView() {
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          marginTop: isMdUp ? '0px' : '70px',
           py: 5,
         }}
       >

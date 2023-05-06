@@ -36,6 +36,7 @@ export default function Header({ isOffset }: Props) {
           }),
           ...(isOffset && {
             ...bgBlur({ color: theme.palette.background.default }),
+            bgColor: 'yellow',
             height: {
               md: HEADER.H_MAIN_DESKTOP - 16,
             },
@@ -46,7 +47,7 @@ export default function Header({ isOffset }: Props) {
 
         <Stack spacing={1} direction="row" alignItems="center">
           <Link href="/" component={NextLink} variant="subtitle2" color="inherit">
-            Precisa de Ajuda?
+            Precisa de Ajuda bro?
           </Link>
         </Stack>
       </Toolbar>

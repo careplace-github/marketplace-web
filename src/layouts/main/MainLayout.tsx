@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
 // config
 import { HEADER } from 'src/layouts';
+// hooks
+import { useResponsive } from 'src/hooks';
 //
 import Header from './header/Header';
 import Footer from './footer/Footer';
@@ -22,6 +24,7 @@ type Props = {
 
 export default function MainLayout({ children }: Props) {
   const { pathname } = useRouter();
+  const isMdUp = useResponsive('up', 'md');
 
   const actionPage = (arr: string[]) => arr.some((path) => pathname === path);
 
@@ -32,6 +35,7 @@ export default function MainLayout({ children }: Props) {
       <Box
         component="main"
         sx={{
+          mt: isMdUp ? 0 : '80px',
           flexGrow: 1,
         }}
       >
