@@ -87,10 +87,8 @@ export const navConfig = [
 ];
 
 export const navConfigMobile = [
-  {
-    title: 'Encontrar Cuidador', path: PATHS.companies.root, icon: "fa6-solid:user-nurse"
-  },
-  { title: 'Serviços', path: PATHS.services.root, icon: "material-symbols:medical-services-outline-rounded" },
+ 
+  // { title: 'Serviços', path: PATHS.services.root, icon: "material-symbols:medical-services-outline-rounded" },
   {
     title: 'Dados Pessoais',
     path: PATHS.account.personal,
@@ -117,9 +115,5 @@ export const navConfigMobile = [
     icon: "material-symbols:settings-outline-rounded"
   },
 
-  {
-    title: 'Produtos',
-    icon: "nimbus:ecosystem",
-    children: [navLinks[0], navLinks[1], navLinks[2]],
-  },
+  
 ];

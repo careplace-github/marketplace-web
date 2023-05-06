@@ -1,37 +1,57 @@
-
+// next
+import { useRouter } from 'next/router';
 // @mui
 import { Pagination, Stack } from '@mui/material';
+// hooks
+import { useState, useEffect } from 'react';
 // types
 import { ICompanyProps } from 'src/types/company';
-//
-import CompanyListItem from '../item/CompanyListItem';
-
+// components
 import CompanyListItemSkeleton from '../item/CompanyListItemSkeleton';
-
-
+import CompanyListItem from '../item/CompanyListItem';
 // ----------------------------------------------------------------------
 
 type Props = {
   companies: ICompanyProps[];
   loading?: boolean;
+  totalPages?: number;
+  onPageChange: Function;
 };
 
-export default function CompaniesList({ companies, loading }: Props) {
+export default function CompaniesList({ companies, loading, totalPages, onPageChange }: Props) {
+  const router = useRouter();
 
+  // Get page from query string
+  const [actualPage, setActualPage] = useState(
+    router.query.page ? parseInt(router.query.page as string, 10) : 1
+  );
+
+  useEffect(() => {
+    // CHeck if router is ready
+    if (!router.isReady) return;
+    setActualPage(router.query.page ? parseInt(router.query.page as string, 10) : 1);
+  }, [router.query.page]);
+
+  useEffect(() => {
+    console.log('companies:', companies);
+  }, [companies]);
   return (
     <>
       <Stack spacing={4}>
-        {(loading ? [...Array(9)] : companies).map((company, index) =>
-          company ? (
-            <CompanyListItem key={company.id} company={company} />
-          ) : (
-            <CompanyListItemSkeleton key={index} />
-          )
-        )}
+        {loading && [...Array(5)].map((company, index) => <CompanyListItemSkeleton key={index} />)}
+        {!loading &&
+          companies.map((company, index) => (
+            <CompanyListItem key={company._id} company={company} />
+          ))}
       </Stack>
 
       <Pagination
-        count={10}
+        onChange={(e, value) => {
+          setActualPage(value);
+          onPageChange(value);
+        }}
+        count={totalPages && totalPages}
+        page={actualPage}
         color="primary"
         size="large"
         sx={{

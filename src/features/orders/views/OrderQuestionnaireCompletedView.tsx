@@ -37,9 +37,9 @@ export default function OrderQuestionnaireCompletedView() {
       <Stack spacing={5}>
         <Typography variant="h2">Completed 🎉</Typography>
 
-        <OrderQuestionnaireCompletedInfo company={_mockCompany} />
+        {/* <OrderQuestionnaireCompletedInfo company={_mockCompany} />
 
-        <OrderQuestionnaireCompletedSummary />
+        <OrderQuestionnaireCompletedSummary /> */}
 
         <Stack spacing={2.5} direction={{ xs: 'column', md: 'row' }} justifyContent="center">
           <Button
