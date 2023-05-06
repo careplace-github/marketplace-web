@@ -64,7 +64,7 @@ export default function SimilarServicesList({ services }: Props) {
         }}
       >
         {services.map((service) => (
-          <ServiceItem key={service.id} service={service} />
+          <ServiceItem key={service._id} service={service} />
         ))}
       </Box>
 

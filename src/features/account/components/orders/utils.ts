@@ -1,6 +1,30 @@
 // ----------------------------------------------------------------------
 
-export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+type ComparatorObject = Record<string, { name: string | number; recurrency: string | number }>;
+
+export function descendingComparator<T extends ComparatorObject, Key extends keyof T>(
+  a: T,
+  b: T,
+  orderBy: Key
+) {
+  if (orderBy === 'relative' || orderBy === 'services') {
+    if (b[orderBy].name < a[orderBy].name) {
+      return -1;
+    }
+    if (b[orderBy].name > a[orderBy].name) {
+      return 1;
+    }
+  }
+
+  if (orderBy === 'schedule_information') {
+    if (b[orderBy].recurrency < a[orderBy].recurrency) {
+      return -1;
+    }
+    if (b[orderBy].recurrency > a[orderBy].recurrency) {
+      return 1;
+    }
+  }
+
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -12,17 +36,21 @@ export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 // ----------------------------------------------------------------------
 
-export function getComparator<Key extends keyof any>(
+export function getComparator<T extends ComparatorObject, Key extends keyof T>(
   order: 'asc' | 'desc',
   orderBy: Key
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+): (a: T, b: T) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
+
 // ----------------------------------------------------------------------
 
+/**
+ * Sort array of objects by object key
+ */
 export function stableSort<T>(array: T[], comparator: (a: any, b: any) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as const);
 

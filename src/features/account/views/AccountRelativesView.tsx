@@ -41,7 +41,7 @@ export default function AccountRelativesView() {
 
   const fetchUserRelatives = async () => {
     const response = await axios.get('users/relatives');
-    setUserRelatives(response.data);
+    setUserRelatives(response.data.data);
     setIsLoading(false);
   };
 

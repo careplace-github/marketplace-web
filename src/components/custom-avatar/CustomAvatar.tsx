@@ -31,7 +31,6 @@ const CustomAvatar = forwardRef<HTMLDivElement, CustomAvatarProps & { type: 'nor
 
     const getRenderContent = () => {
       if (type === 'normal') {
-        console.log('render normal avatar');
         return <Avatar sx={sx} {...other} />;
       }
       if (type === 'custom' && colr === 'default') {

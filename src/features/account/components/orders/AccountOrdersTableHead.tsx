@@ -1,4 +1,3 @@
-
 // @mui
 import { Box, TableRow, Checkbox, TableCell, TableHead, TableSortLabel } from '@mui/material';
 //
@@ -13,7 +12,6 @@ interface Prop {
   headCells: any[];
   numSelected: number;
   onSort: (id: string) => void;
-  onSelectAllRows: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export default function AccountOrdersTableHead({
@@ -23,19 +21,10 @@ export default function AccountOrdersTableHead({
   rowCount,
   headCells,
   numSelected,
-  onSelectAllRows,
 }: Prop) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllRows}
-          />
-        </TableCell>
-
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -48,6 +37,9 @@ export default function AccountOrdersTableHead({
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={() => onSort(headCell.id)}
+              sx={{
+                alignItems: 'center',
+              }}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
