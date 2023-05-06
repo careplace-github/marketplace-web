@@ -2,8 +2,9 @@
 import { Box, Stack, Button, Divider, Typography } from '@mui/material';
 import { useRef, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
-
-// _mock
+// hooks
+import { useResponsive } from 'src/hooks';
+// mock
 import _mock from 'src/_mock';
 // contexts
 import { useAuthContext } from 'src/contexts';
@@ -20,7 +21,7 @@ import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../compo
 
 export default function AccountPaymentView() {
   const { user } = useAuthContext();
-
+  const isMdUp = useResponsive('up', 'md');
   const theme = useTheme();
 
   const [openModal, setOpenModal] = useState(false);
@@ -52,6 +53,7 @@ export default function AccountPaymentView() {
               p: 3,
               bgcolor: 'white',
               borderRadius: '16px',
+
               boxShadow:
                 'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
             }}
@@ -60,54 +62,88 @@ export default function AccountPaymentView() {
               spacing={3}
               sx={{
                 width: '100%',
+                display: 'inline-flex',
+                justifyContent: 'center',
               }}
             >
               {' '}
               <Typography variant="h5">Informações de Pagamento</Typography>
             </Stack>
-
-            <Stack
-              spacing={3}
-              sx={{
-                width: '100%',
-                alignItems: 'flex-end',
-              }}
-            >
-              <Button
-                size="large"
-                color="inherit"
-                onClick={() => setOpenModal(true)}
+            {isMdUp && (
+              <Stack
+                spacing={3}
                 sx={{
-                  // Allign right
-
-                  width: 'fit-content',
-                  bgcolor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  },
+                  width: '100%',
+                  alignItems: 'flex-end',
                 }}
-                variant="contained"
-                startIcon={<Iconify icon="material-symbols:add" />}
               >
-                Adiconar Cartão
-              </Button>
-            </Stack>
+                <Button
+                  size="large"
+                  color="inherit"
+                  onClick={() => setOpenModal(true)}
+                  sx={{
+                    // Allign right
+
+                    width: 'fit-content',
+                    bgcolor: 'primary.main',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                  variant="contained"
+                  startIcon={<Iconify icon="material-symbols:add" />}
+                >
+                  Adiconar Cartão
+                </Button>
+              </Stack>
+            )}
 
             {CARDS.map((card: any) => (
               <AccountPaymentCard
                 key={card.id}
                 card={card}
-                handleDelete={() =>
+                handleDelete={() => {
+                  console.log(card);
                   axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
                     getCards().then((data) => {
                       setCARDS(data);
                     });
-                  })
-                }
+                  });
+                }}
               />
             ))}
+            {!isMdUp && (
+              <Stack
+                spacing={3}
+                sx={{
+                  width: '100%',
+                  alignItems: 'flex-end',
+                }}
+              >
+                <Button
+                  size="large"
+                  color="inherit"
+                  onClick={() => setOpenModal(true)}
+                  sx={{
+                    // Allign right
+
+                    width: '100%',
+                    bgcolor: 'primary.main',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                  variant="contained"
+                  startIcon={<Iconify icon="material-symbols:add" />}
+                >
+                  Adiconar Cartão
+                </Button>
+              </Stack>
+            )}
           </Box>
         </Stack>
 
