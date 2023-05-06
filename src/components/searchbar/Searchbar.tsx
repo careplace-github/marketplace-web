@@ -59,6 +59,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
           lat: router.query.lat as string,
           lng: router.query.lng as string,
           query: router.query.query as string,
+         
         });
       }
     }
@@ -79,6 +80,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       query: {
         ...query, // preserve existing query params
         ...filters,
+        page: 1,
       },
     });
   };

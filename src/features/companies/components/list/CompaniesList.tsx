@@ -1,3 +1,5 @@
+// next
+import { useRouter } from 'next/router';
 // @mui
 import { Pagination, Stack } from '@mui/material';
 // hooks
@@ -7,7 +9,6 @@ import { ICompanyProps } from 'src/types/company';
 // components
 import CompanyListItemSkeleton from '../item/CompanyListItemSkeleton';
 import CompanyListItem from '../item/CompanyListItem';
-import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -18,21 +19,18 @@ type Props = {
 };
 
 export default function CompaniesList({ companies, loading, totalPages, onPageChange }: Props) {
- 
   const router = useRouter();
 
-
-
   // Get page from query string
-  const [actualPage, setActualPage]  = useState(router.query.page ? parseInt(router.query.page as string) : 1);
+  const [actualPage, setActualPage] = useState(
+    router.query.page ? parseInt(router.query.page as string, 10) : 1
+  );
 
   useEffect(() => {
     // CHeck if router is ready
     if (!router.isReady) return;
-    setActualPage(router.query.page ? parseInt(router.query.page as string) : 1);
+    setActualPage(router.query.page ? parseInt(router.query.page as string, 10) : 1);
   }, [router.query.page]);
-
-
 
   useEffect(() => {
     console.log('companies:', companies);
