@@ -60,22 +60,16 @@ export default function NavMobile({ data }: NavProps) {
 
   return (
     <>
- 
-
-      {isAuthenticated && (
+      {isAuthenticated ? (
         <Avatar
           sx={{ width: '35px', height: '35px' }}
           src={user?.profile_picture}
           onClick={handleOpen}
         />
+      ) : (
+        <Iconify icon="material-symbols:menu-rounded" onClick={handleOpen} />
       )}
-      
-       
-      
 
-
-
-{isAuthenticated ? (
       <Drawer
         anchor="right"
         open={open}
@@ -88,7 +82,11 @@ export default function NavMobile({ data }: NavProps) {
         }}
       >
         <Scrollbar>
-          {!isAuthenticated && <Logo sx={{ mx: 2.5 }} />}
+          {!isAuthenticated && (
+            <Stack sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <Logo sx={{ mx: 2.5 }} />
+            </Stack>
+          )}
 
           {isAuthenticated && (
             <>
@@ -143,49 +141,45 @@ export default function NavMobile({ data }: NavProps) {
                 </Typography>
               </Box>
             ) : (
-              <Button
-                fullWidth
-                variant="contained"
-                color="inherit"
-                sx={{
-                  mt: '10px',
-                  px: 4,
-                  bgcolor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
+              <>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color="inherit"
+                  sx={{
+                    mt: '10px',
+                    px: 4,
+                    bgcolor: 'transparent',
+
+                    color: 'primary.main',
+                  }}
+                  href={PATHS.auth.register}
+                >
+                  Registar
+                </Button>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="inherit"
+                  sx={{
+                    mt: '10px',
+                    px: 4,
+                    bgcolor: 'primary.main',
                     color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  },
-                }}
-                href={PATHS.auth.login}
-              >
-                Entrar
-              </Button>
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                  href={PATHS.auth.login}
+                >
+                  Entrar
+                </Button>
+              </>
             )}
           </Stack>
         </Scrollbar>
       </Drawer>
-      ) : (
-        <Button
-          
-          variant="contained"
-          color="inherit"
-          sx={{
-          
-            px: 4,
-            bgcolor: 'primary.main',
-            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-            '&:hover': {
-              bgcolor: 'primary.dark',
-              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-            },
-          }}
-          href={PATHS.auth.login}
-        >
-          Entrar
-        </Button>
-      )}
-
     </>
   );
 }
