@@ -1,9 +1,43 @@
 // ----------------------------------------------------------------------
 export type IOrderProps = {
-  id: string;
-  item: string;
-  price: number;
+  _id: string;
+  company: string;
+  user: string;
+  relative: {
+    _id: string;
+    name: string;
+    birthdate: string;
+    profile_picture?: string;
+    medical_conditions: string;
+    gender: string;
+    kinship: string;
+  };
+  caregiver: {
+    // _id: string;
+    name: string;
+    gender?: string;
+    birthdate?: string;
+    profile_picture?: string;
+  },
+  services: [];
+  schedule_information: {
+    start_date: string;
+    end_date?: string;
+    recurrency: number;
+    schedule: [
+      {
+        week_day: number;
+        start: string;
+        end: string;
+      }
+    ];
+  };
   status: string;
-  orderId: string;
-  deliveryDate: Date | string | number;
+  address: {
+    street: string;
+    postal_code: string;
+    city: string;
+    state?: string;
+    country: string;
+  };
 };

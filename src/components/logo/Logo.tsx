@@ -78,7 +78,7 @@ function Logo({ single = false, sx }: LogoProps) {
   return (
     <Link
       component={NextLink}
-      href={ isAuthenticated ? PATHS.companies.root : PATHS.home }
+      href={ PATHS.home }
       color="inherit"
       aria-label="go to homepage"
       sx={{ lineHeight: 0 }}

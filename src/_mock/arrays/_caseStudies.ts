@@ -52,6 +52,11 @@ const CONTENT = `
 `;
 
 export const _caseStudies = [...Array(8)].map((_, index) => ({
+  _id: _mock.id(index),
+  name: 'Bank of America',
+  short_description: 'Praesent vestibulum dapibus nibh. Vestibulum fringilla pede sit amet augue.',
+  image: 'aaa',
+
   id: _mock.id(index),
   title: TITLE[index],
   description: 'Praesent vestibulum dapibus nibh. Vestibulum fringilla pede sit amet augue.',
