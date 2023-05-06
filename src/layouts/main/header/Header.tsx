@@ -139,7 +139,7 @@ export default function Header({ headerOnDark }: Props) {
             {!isMdUp && <NavMobile data={navConfigMobile} />}
           </Container>
         </Toolbar>
-        {!isSmUp && (
+        {!isMdUp && (
           <Box sx={{ width: '100%', p: '10px 16px', pb: '20px', backgroundColor: 'white' }}>
             <Searchbar />
           </Box>

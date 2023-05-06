@@ -63,7 +63,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       }
     }
   }, [router.isReady]);
-  const isSmUp = useResponsive('up', 'sm');
+  const isMdUp = useResponsive('up', 'md');
 
   const handleSelect = (location: Location, filterQuery: string) => {
     setFilters({
@@ -96,7 +96,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
         sx={{
           flexDirection: 'row',
           alignItems: 'center',
-          width: !isSmUp ? '100%' : '400px',
+          width: !isMdUp ? '100%' : '400px',
           height: 50,
           px: 2,
           justifyContent: 'space-between',
