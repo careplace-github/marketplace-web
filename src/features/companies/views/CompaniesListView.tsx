@@ -1,4 +1,7 @@
+// react
 import { useState, useEffect } from 'react';
+// next
+import { useRouter } from 'next/router';
 // @mui
 import { Container, Stack, Typography, Button, Box } from '@mui/material';
 // config
@@ -13,7 +16,6 @@ import { animateScroll } from 'react-scroll';
 import { ICompanyProps } from 'src/types/company';
 import CompaniesList from '../components/list/CompaniesList';
 import CompaniesFilters from '../components/filters/CompaniesFilters';
-import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 export default function CompaniesListView() {
@@ -25,7 +27,9 @@ export default function CompaniesListView() {
 
   useEffect(() => {
     const fetchCompanies = async () => {
+      if (!router.isReady) return;
       const currentQuery = router.query;
+
       const response = await axios.get('/companies/search', {
         params: {
           ...currentQuery,
@@ -37,7 +41,7 @@ export default function CompaniesListView() {
       setLoading(false);
     };
     fetchCompanies();
-  }, [router.query]);
+  }, [router.isReady, router.query]);
 
   const handleMobileOpen = () => {
     setMobileOpen(true);
@@ -55,15 +59,18 @@ export default function CompaniesListView() {
   };
 
   const handlePageChange = async (newPage) => {
+    if (!router.isReady) return;
+    const currentQuery = router.query;
     scrollToTop();
     setLoading(true);
-    // setCompanies([]<ICompanyProps>);
-    const response = await axios.get('/companies/search', {
-      params: { documentsPerPage: 5, page: newPage },
+
+    router.push({
+      pathname: '/companies',
+      query: {
+        ...currentQuery,
+        page: newPage,
+      },
     });
-    setCompanies(response.data.data);
-    setTotalPages(response.data.totalPages);
-    setLoading(false);
   };
 
   return (

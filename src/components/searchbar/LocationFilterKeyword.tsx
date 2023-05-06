@@ -225,13 +225,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
       onInputChange={(_event, newValue) => {
         setValue(newValue, true);
       }}
-      // When the user selects a place from the dropdown menu
-      // onChange={(_event, newValue) => {
-      //   console.log('change:', newValue);
-      //   if (newValue) {
-      //     handleClick(newValue);
-      //   }
-      // }}
       // When the user clicks outside of the search box
       onBlur={() => {
         clearSuggestions();
