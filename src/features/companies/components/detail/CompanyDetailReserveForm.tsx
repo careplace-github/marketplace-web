@@ -18,6 +18,7 @@ type Props = {
 };
 
 export default function CompanyDetailReserveForm({ company }: Props) {
+  return <></>;
   // const { push } = useRouter();
   // const [departureDay, setDepartureDay] = useState<Date | null>(null);
   // const [guests, setGuests] = useState({
