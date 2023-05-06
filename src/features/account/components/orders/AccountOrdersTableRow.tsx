@@ -91,7 +91,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
             alignItems="center"
             sx={{ width: '100%', flex: !isMdUp ? 1 : undefined }}
           >
-            <Stack sx={{ width: isMdUp ? '120px' : '60px', flex: !isMdUp ? 1 : undefined }}>
+            <Stack sx={{ width: isMdUp ? '90px' : '60px', flex: !isMdUp ? 1 : undefined }}>
               <Avatar
                 src={order.relative?.profile_picture}
                 sx={{
@@ -103,7 +103,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
               />
             </Stack>
 
-            <Stack sx={{ p: 2, width: '30%', flex: !isMdUp ? 2 : undefined }}>
+            <Stack sx={{ p: 2, width: '100%', flex: !isMdUp ? 2 : undefined }}>
               <Typography variant="subtitle2">{order.relative.name}</Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {getKinshipDegree(order.relative.kinship)}
@@ -141,7 +141,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
         </TableCell>
 
         <TableCell>
-          <Typography variant="body2" sx={{ color: 'text.secondary', mr: 10 }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary', width: '230px', mr: 10 }}>
             {getScheduleText(order)}
           </Typography>
         </TableCell>
