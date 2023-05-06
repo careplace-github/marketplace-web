@@ -8,16 +8,17 @@ import axios from 'src/lib/axios';
 // components
 import Iconify from 'src/components/iconify';
 //
+import { animateScroll } from 'react-scroll';
+//
+import { ICompanyProps } from 'src/types/company';
 import CompaniesList from '../components/list/CompaniesList';
 import CompaniesFilters from '../components/filters/CompaniesFilters';
-//
-import { animateScroll } from 'react-scroll';
 
 // ----------------------------------------------------------------------
 
 export default function CompaniesListView() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [companies, setCompanies] = useState();
+  const [companies, setCompanies] = useState<ICompanyProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
 
@@ -51,7 +52,7 @@ export default function CompaniesListView() {
   const handlePageChange = async (newPage) => {
     scrollToTop();
     setLoading(true);
-    setCompanies([]);
+    // setCompanies([]<ICompanyProps>);
     const response = await axios.get('/companies/search', {
       params: { documentsPerPage: 5, page: newPage },
     });

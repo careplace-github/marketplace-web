@@ -28,7 +28,9 @@ export default function CompaniesList({ companies, loading, totalPages, onPageCh
       <Stack spacing={4}>
         {loading && [...Array(5)].map((company, index) => <CompanyListItemSkeleton key={index} />)}
         {!loading &&
-          companies.map((company, index) => <CompanyListItem key={company} company={company} />)}
+          companies.map((company, index) => (
+            <CompanyListItem key={company._id} company={company} />
+          ))}
       </Stack>
 
       <Pagination
