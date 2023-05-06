@@ -91,7 +91,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
             direction="row"
             alignItems="center"
             justifyContent="flex-end"
-            sx={isMdUp ? { position: 'absolute', top: '20px', right: '24px' } : {}}
+            sx={isSmUp ? { position: 'absolute', top: '20px', right: '24px' } : {}}
           >
             <Typography variant="h4" sx={{ display: 'inline-flex', alignItems: 'flex-end' }}>
               {/* {priceSale > 0 && (
@@ -156,7 +156,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
             )}
           </Stack>
         </Stack>
-        {isMdUp && (
+        {isSmUp && (
           <Stack
             sx={{ mt: '8px' }}
             spacing={1.5}

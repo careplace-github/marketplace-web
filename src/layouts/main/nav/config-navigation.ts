@@ -1,12 +1,7 @@
 // routes
 import { PATHS } from 'src/routes/paths';
 
-
-
-
 // ----------------------------------------------------------------------
-
-
 
 export const footerLinks = [
   {
@@ -77,7 +72,8 @@ export const navLinks = [
 
 export const navConfig = [
   {
-    title: 'Encontrar Cuidador', path: PATHS.companies.root
+    title: 'Encontrar Cuidador',
+    path: PATHS.companies.root,
   },
   { title: 'Serviços', path: PATHS.services.root },
   {
@@ -87,33 +83,40 @@ export const navConfig = [
 ];
 
 export const navConfigMobile = [
- 
   // { title: 'Serviços', path: PATHS.services.root, icon: "material-symbols:medical-services-outline-rounded" },
   {
     title: 'Dados Pessoais',
     path: PATHS.account.personal,
-    icon: "material-symbols:account-circle"
+    icon: 'material-symbols:account-circle',
   },
   {
     title: 'Pedidos',
     path: PATHS.account.orders,
-    icon: "material-symbols:reorder-rounded"
+    icon: 'material-symbols:reorder-rounded',
   },
   {
     title: 'Familiares',
     path: PATHS.account.relatives,
-    icon: "material-symbols:family-restroom-rounded"
+    icon: 'material-symbols:family-restroom-rounded',
   },
   {
     title: 'Informações de Pagamento',
     path: PATHS.account.payments,
-    icon: "ic:round-payment"
+    icon: 'ic:round-payment',
   },
   {
     title: 'Definições',
     path: PATHS.account.settings,
-    icon: "material-symbols:settings-outline-rounded"
+    icon: 'material-symbols:settings-outline-rounded',
   },
-
-  
+  {
+    title: 'Encontrar Cuidador',
+    path: PATHS.companies.root,
+    icon: 'fa6-solid:user-nurse',
+  },
+  {
+    title: 'Serviços',
+    path: PATHS.services.root,
+    icon: 'material-symbols:medical-services-outline-rounded',
+  },
 ];
