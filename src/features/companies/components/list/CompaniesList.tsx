@@ -7,7 +7,7 @@ import { ICompanyProps } from 'src/types/company';
 // components
 import CompanyListItemSkeleton from '../item/CompanyListItemSkeleton';
 import CompanyListItem from '../item/CompanyListItem';
-
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -18,7 +18,21 @@ type Props = {
 };
 
 export default function CompaniesList({ companies, loading, totalPages, onPageChange }: Props) {
-  const [actualPage, setActualPage] = useState(1);
+ 
+  const router = useRouter();
+
+
+
+  // Get page from query string
+  const [actualPage, setActualPage]  = useState(router.query.page ? parseInt(router.query.page as string) : 1);
+
+  useEffect(() => {
+    // CHeck if router is ready
+    if (!router.isReady) return;
+    setActualPage(router.query.page ? parseInt(router.query.page as string) : 1);
+  }, [router.query.page]);
+
+
 
   useEffect(() => {
     console.log('companies:', companies);
