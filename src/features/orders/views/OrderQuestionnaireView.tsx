@@ -1,4 +1,3 @@
- 
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -6,19 +5,15 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // _mock
-import { _tours as _companies} from 'src/_mock';
+import { _tours as _companies } from 'src/_mock';
 // components
 import FormProvider from 'src/components/hook-form';
 //
-import {
-  OrderQuestionnaireSummary,
-  OrderQuestionnaireShippingForm,
-} from '../components';
+import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../components';
 
 // ----------------------------------------------------------------------
 
 export default function OrderQuestionnaireView() {
-
   const [sameBilling, setSameBilling] = useState(false);
 
   const [departureDay, setDepartureDay] = useState(null);
@@ -75,7 +70,7 @@ export default function OrderQuestionnaireView() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      
+
       console.log('DATA', data);
     } catch (error) {
       console.error(error);
@@ -124,8 +119,6 @@ export default function OrderQuestionnaireView() {
             <Stack>
               <StepLabel title="Informação do Pedido" step="1" />
 
-              
-
               <Divider sx={{ my: 5, borderStyle: 'dashed' }} />
 
               <StepLabel title="Informação de Faturação" step="2" />
@@ -138,7 +131,7 @@ export default function OrderQuestionnaireView() {
           </Grid>
 
           <Grid xs={12} md={5}>
-            <OrderQuestionnaireSummary
+            {/* <OrderQuestionnaireSummary
               guests={guests}
               company={_companies[0]}
               departureDay={departureDay}
@@ -146,7 +139,7 @@ export default function OrderQuestionnaireView() {
               onDecreaseGuests={handleDecreaseGuests}
               onIncrementGuests={handleIncrementGuests}
               onChangeDepartureDay={handleChangeDepartureDay}
-            />
+            /> */}
           </Grid>
         </Grid>
       </FormProvider>

@@ -22,10 +22,8 @@ import {
   CompanyDetailSummary,
   CompanyDetailReserveForm,
   SimilarCompaniesList,
-  CompanyDetailReviews
+  CompanyDetailReviews,
 } from '../components';
-
- 
 
 // ----------------------------------------------------------------------
 
@@ -50,11 +48,7 @@ export default function CompanyDetailView() {
     <>
       <Container sx={{ overflow: 'hidden' }}>
         <CustomBreadcrumbs
-          links={[
-            { name: 'Home', href: '/' },
-            { name: 'companys', href: "/" },
-            { name: "id" },
-          ]}
+          links={[{ name: 'Home', href: '/' }, { name: 'companys', href: '/' }, { name: 'id' }]}
           sx={{ mt: 3, mb: 5 }}
         />
 
@@ -62,15 +56,15 @@ export default function CompanyDetailView() {
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
-            <CompanyDetailReserveForm company={_mockCompany} />
+            {/* <CompanyDetailReserveForm company={_mockCompany} /> */}
           </Grid>
 
           <Grid xs={12} md={7} lg={8}>
-            <CompanyDetailHeader company={_mockCompany} />
+            {/* <CompanyDetailHeader company={_mockCompany} /> */}
 
             <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
 
-            <CompanyDetailSummary company={_mockCompany} />
+            {/* <CompanyDetailSummary company={_mockCompany} /> */}
 
             <Stack direction="row" flexWrap="wrap" sx={{ mt: 5 }}>
               <Typography variant="subtitle2" sx={{ mt: 0.75, mr: 1.5 }}>
@@ -108,9 +102,7 @@ export default function CompanyDetailView() {
 
       <CompanyDetailReviews />
 
-      <SimilarCompaniesList companies={_companies.slice(-3)} />
-
-
+      {/* <SimilarCompaniesList companies={_companies.slice(-3)} /> */}
     </>
   );
 }

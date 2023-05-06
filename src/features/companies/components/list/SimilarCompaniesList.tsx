@@ -1,4 +1,3 @@
-
 // next
 import NextLink from 'next/link';
 // @mui
@@ -65,7 +64,7 @@ export default function SimilarCompaniesList({ companies }: Props) {
           }}
         >
           {companies.map((company) => (
-            <CompanyListItem key={company.id} company={company} vertical />
+            <CompanyListItem key={company._id} company={company} vertical />
           ))}
         </Box>
 
