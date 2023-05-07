@@ -74,10 +74,12 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
     setValue,
     getValues,
     handleSubmit,
+    reset,
     formState: { isSubmitting, errors, isDirty },
   } = methods;
 
   const close = () => {
+    reset();
     onClose({}, 'backdropClick');
   };
 

@@ -16,7 +16,7 @@ export default function HeaderShadow({ sx, ...other }: BoxProps) {
         borderRadius: '50%',
         position: 'absolute',
         width: `calc(100% - 48px)`,
-        boxShadow: (theme) => theme.customShadows.z8,
+        boxShadow: '0px 1px 20px rgba(0,0,0,0.07)',
         ...sx,
       }}
       {...other}
