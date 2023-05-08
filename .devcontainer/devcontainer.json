@@ -1,5 +1,3 @@
-
-
 {
   "customizations": {
     "codespaces": {
@@ -10,11 +8,12 @@
             "issues": "write",
             "pull_requests": "write"
           },
-         "careplace/backend": {
-          "permissions": {
-            "contents": "write",
-            "issues": "write",
-            "pull_requests": "write"
+          "careplace/backend": {
+            "permissions": {
+              "contents": "write",
+              "issues": "write",
+              "pull_requests": "write"
+            }
           }
         }
       }
