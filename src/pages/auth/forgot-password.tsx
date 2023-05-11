@@ -7,11 +7,11 @@ import { ForgotPasswordView } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 
-ResetPasswordPage.getLayout = (page: React.ReactElement) => <CompactLayout>{page}</CompactLayout>;
+ForgotPasswordPage.getLayout = (page: React.ReactElement) => <CompactLayout>{page}</CompactLayout>;
 
 // ----------------------------------------------------------------------
 
-export default function ResetPasswordPage() {
+export default function ForgotPasswordPage() {
   return (
     <>
       <Head>
