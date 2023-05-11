@@ -12,10 +12,10 @@ import Iconify from 'src/components/iconify';
 // routes
 import { PATHS } from '../../../routes/paths';
 // components
-import { CustomAvatar } from '../../../components/custom-avatar';
-import { useSnackbar } from '../../../components/snackbar';
-import MenuPopover from '../../../components/menu-popover';
-import { IconButtonAnimate } from '../../../components/animate';
+import { CustomAvatar } from 'src/components/custom-avatar';
+import { useSnackbar } from 'src/components/snackbar';
+import MenuPopover from 'src/components/menu-popover';
+import { IconButtonAnimate } from 'src/components/animate';
 
 // ----------------------------------------------------------------------
 
