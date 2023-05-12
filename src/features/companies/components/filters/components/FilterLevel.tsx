@@ -1,4 +1,5 @@
- 
+// utils
+import Weekdays from 'src/data/Weekdays';
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -29,7 +30,7 @@ export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
           if (selected.length === 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                All levels
+                Todos os dias
               </Typography>
             );
           }
@@ -40,10 +41,10 @@ export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
           );
         }}
       >
-        {LEVELS.map((type) => (
-          <MenuItem key={type} value={type} sx={menuItemStyle}>
-            <Checkbox size="small" checked={filterLevel.includes(type)} />
-            {type}
+        {Weekdays.map((day) => (
+          <MenuItem key={day.value} value={day} sx={menuItemStyle}>
+            <Checkbox size="small" checked={filterLevel.includes(day.text)} />
+            {day.text}
           </MenuItem>
         ))}
       </Select>

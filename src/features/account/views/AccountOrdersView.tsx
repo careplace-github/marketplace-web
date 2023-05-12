@@ -35,7 +35,6 @@ import {
   AccountOrdersTableToolbar,
 } from '../components';
 
-
 // ----------------------------------------------------------------------
 
 const TABS = [

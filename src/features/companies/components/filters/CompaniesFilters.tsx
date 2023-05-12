@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+// next
 // @mui
 import {
   Stack,
@@ -7,7 +8,9 @@ import {
   TextField,
   InputAdornment,
   SelectChangeEvent,
+  Slider,
 } from '@mui/material';
+
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // config
@@ -17,79 +20,86 @@ import { ICountriesProps } from 'src/types/utils';
 import { ICompanyFiltersProps } from 'src/types/company';
 // components
 import Iconify from 'src/components/iconify';
+// next
+import { useRouter } from 'next/router';
 //
-import {
-  FilterFee,
-  FilterLevel,
-  FilterRating,
-  FilterLanguage,
-  FilterDuration,
-  FilterCategories,
-} from './components';
+import { FilterLevel, FilterLanguage } from './components';
 
 // ----------------------------------------------------------------------
 
 const defaultValues = {
-  filterDuration: [],
-  filterCategories: [],
-  filterRating: null,
-  filterFee: [],
   filterLevel: [],
   filterLanguage: [],
+};
+
+type ServiceProps = {
+  _id: string;
+  description: string;
+  image: string;
+  name: string;
+  short_description: string;
 };
 
 type Props = {
   mobileOpen: boolean;
   onMobileClose: VoidFunction;
+  services: Array<ServiceProps>;
 };
 
-export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
+export default function CompaniesFilters({ services, mobileOpen, onMobileClose }: Props) {
   const isMdUp = useResponsive('up', 'md');
-
   const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
+  const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
+  const { pathname, push, query } = useRouter();
+  const router = useRouter();
+  const [filterQuerys, setFilterQuerys] = useState<FiltersProps>({
+    lat: null,
+    lng: null,
+    query: '',
+  });
 
-  const handleChangeRating = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({
-      ...filters,
-      filterRating: (event.target as HTMLInputElement).value,
-    });
-  };
-
-  const handleChangeCategory = (keyword: string[]) => {
-    setFilters({
-      ...filters,
-      filterCategories: keyword,
-    });
-  };
+  useEffect(() => {
+    if (router.isReady) {
+      if (router.query) {
+        setFilterQuerys({
+          lat: router.query.lat as string,
+          lng: router.query.lng as string,
+          query: router.query.query as string,
+        });
+      }
+    }
+  }, [router.isReady]);
 
   const handleChangeLevel = (event: SelectChangeEvent<typeof filters.filterLevel>) => {
     const {
       target: { value },
     } = event;
-    setFilters({
-      ...filters,
-      filterLevel: typeof value === 'string' ? value.split(',') : value,
-    });
-  };
 
-  const handleChangeFee = (event: SelectChangeEvent<typeof filters.filterFee>) => {
-    const {
-      target: { value },
-    } = event;
-    setFilters({
-      ...filters,
-      filterFee: typeof value === 'string' ? value.split(',') : value,
-    });
-  };
+    let aux;
 
-  const handleChangeDuration = (event: SelectChangeEvent<typeof filters.filterDuration>) => {
-    const {
-      target: { value },
-    } = event;
+    const newItem = value[value.length - 1];
+    if (filters.filterLevel.includes(newItem.text)) {
+      aux = filters.filterLevel.filter((item) => item !== newItem.text);
+    } else {
+      aux = [...filters.filterLevel, newItem.text];
+    }
+
     setFilters({
       ...filters,
-      filterDuration: typeof value === 'string' ? value.split(',') : value,
+      filterLevel: aux,
     });
+
+    const currentQuery = router.query;
+    console.log('query:', currentQuery);
+    router.push({
+      pathname: '/companies',
+      query: {
+        ...currentQuery,
+        weekDay: newItem.value,
+      },
+    });
+
+    console.log(aux);
   };
 
   const handleChangeLanguage = (keyword: ICountriesProps[]) => {
@@ -98,6 +108,34 @@ export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
       filterLanguage: keyword,
     });
   };
+
+  useEffect(() => {
+    const delay = 700;
+
+    const timeoutId = setTimeout(() => {
+      console.log(sliderValue);
+    }, delay);
+
+    return () => clearTimeout(timeoutId);
+  }, [sliderValue]);
+
+  const handleSliderChange = (event, newValue) => {
+    setSliderValue(newValue);
+  };
+
+  function valuetext(value: number) {
+    return `${value}`;
+  }
+
+  const sliderMarks = [
+    { value: 0, label: '0€/h' },
+
+    { value: 50, label: '50€/h' },
+  ];
+
+  function valueLabelFormatPrice(value: number) {
+    return `${value}€/h`;
+  }
 
   const renderContent = (
     <Stack
@@ -108,49 +146,34 @@ export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
         width: { xs: 1, md: NAV.W_DRAWER },
       }}
     >
-      <TextField
-        fullWidth
-        hiddenLabel
-        placeholder="Search..."
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Iconify icon="carbon:search" width={24} sx={{ color: 'text.disabled' }} />
-            </InputAdornment>
-          ),
-        }}
-      />
+      {!isMdUp && (
+        <Stack direction="row" justifyContent="flex-end" sx={{ width: '100%' }}>
+          <Iconify icon="carbon:close" width="30px" height="30px" onClick={onMobileClose} />
+        </Stack>
+      )}
 
-      <Block title="Ratings">
-        <FilterRating filterRating={filters.filterRating} onChangeRating={handleChangeRating} />
-      </Block>
-
-      <Block title="Duration">
-        <FilterDuration
-          filterDuration={filters.filterDuration}
-          onChangeDuration={handleChangeDuration}
-        />
-      </Block>
-
-      <Block title="Category">
-        <FilterCategories
-          filterCategories={filters.filterCategories}
-          onChangeCategory={handleChangeCategory}
-        />
-      </Block>
-
-      <Block title="Level">
+      <Block title="Dias da semana">
         <FilterLevel filterLevel={filters.filterLevel} onChangeLevel={handleChangeLevel} />
       </Block>
 
-      <Block title="Fee">
-        <FilterFee filterFee={filters.filterFee} onChangeFee={handleChangeFee} />
-      </Block>
-
-      <Block title="Language">
+      <Block title="Serviços">
         <FilterLanguage
+          services={services}
           filterLanguage={filters.filterLanguage}
           onChangeLanguage={handleChangeLanguage}
+        />
+      </Block>
+
+      <Block title="Preço">
+        <Slider
+          getAriaLabel={() => 'Temperature range'}
+          value={sliderValue}
+          onChange={handleSliderChange}
+          valueLabelDisplay="auto"
+          getAriaValueText={valuetext}
+          valueLabelFormat={valueLabelFormatPrice}
+          max={50}
+          marks={sliderMarks}
         />
       </Block>
     </Stack>
@@ -162,15 +185,16 @@ export default function CompaniesFilters({ mobileOpen, onMobileClose }: Props) {
         renderContent
       ) : (
         <Drawer
-          anchor="right"
+          anchor="bottom"
           open={mobileOpen}
           onClose={onMobileClose}
           ModalProps={{ keepMounted: true }}
           PaperProps={{
             sx: {
-              pt: 5,
+              pt: '20px',
               px: 3,
-              width: NAV.W_DRAWER,
+              width: '100%',
+              maxHeight: '80%',
             },
           }}
         >
