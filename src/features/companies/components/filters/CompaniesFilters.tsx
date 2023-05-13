@@ -25,6 +25,7 @@ import { useRouter } from 'next/router';
 //
 import { FilterLevel, FilterLanguage } from './components';
 import Weekdays from 'src/data/Weekdays';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ export default function CompaniesFilters({
   const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
   const [weekDaysSelected, setWeekDaysSelected] = useState<number[]>([]);
   const [servicesSelected, setServicesSelected] = useState<number[]>([]);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
   const { pathname, push, query } = useRouter();
   const router = useRouter();
@@ -71,6 +72,8 @@ export default function CompaniesFilters({
   const setDefaultFilterValues = (queryValues) => {
     const labels = [];
     const days = [];
+    let minPrice = sliderValue[0];
+    let maxPrice = sliderValue[1];
     if (queryValues.services) {
       const idArray = queryValues.services.split(',');
       services.forEach((item) => {
@@ -81,20 +84,26 @@ export default function CompaniesFilters({
     }
     if (queryValues.weekDay) {
       const idArray = queryValues.weekDay.split(',');
-      console.log(idArray);
+
       Weekdays.forEach((item) => {
-        console.log(item);
         if (idArray.includes(`${item.value}`)) {
-          console.log('contains', item.value);
           days.push(item.text);
         }
       });
+    }
+    if (queryValues.minPrice) {
+      minPrice = queryValues.minPrice;
+    }
+    if (queryValues.maxPrice) {
+      maxPrice = queryValues.maxPrice;
     }
     setFilters({
       ...filters,
       filterLanguage: labels,
       filterLevel: days,
     });
+    setSliderValue([minPrice, maxPrice]);
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -105,6 +114,7 @@ export default function CompaniesFilters({
           lng: router.query.lng as string,
           query: router.query.query as string,
         });
+        setIsLoading(true);
         setDefaultFilterValues(router.query);
       }
     }
@@ -140,12 +150,12 @@ export default function CompaniesFilters({
       query: {
         ...currentQuery,
         weekDay: auxValues.join(','),
+        page: 1,
       },
     });
   };
 
   const handleChangeLanguage = (keyword: ICountriesProps[]) => {
-    console.log(keyword);
     const auxId = [];
     keyword.forEach((item) => auxId.push(item._id));
     setFilters({
@@ -159,6 +169,7 @@ export default function CompaniesFilters({
       query: {
         ...currentQuery,
         services: auxId.join(','),
+        page: 1,
       },
     });
   };
@@ -167,7 +178,17 @@ export default function CompaniesFilters({
     const delay = 700;
 
     const timeoutId = setTimeout(() => {
-      console.log(sliderValue);
+      const currentQuery = router.query;
+      whenLoading(true);
+      router.push({
+        pathname: '/companies',
+        query: {
+          ...currentQuery,
+          minPrice: sliderValue[0],
+          maxPrice: sliderValue[1],
+          page: 1,
+        },
+      });
     }, delay);
 
     return () => clearTimeout(timeoutId);
@@ -233,7 +254,9 @@ export default function CompaniesFilters({
     </Stack>
   );
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <>
       {isMdUp ? (
         renderContent
