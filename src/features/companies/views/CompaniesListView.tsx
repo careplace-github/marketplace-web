@@ -72,6 +72,25 @@ export default function CompaniesListView() {
     fetchCompanies();
   }, [router.isReady, router.query]);
 
+  const setDefaultFilterValues = (queryValues) => {
+    if (queryValues.sortBy) {
+      setSortBy(queryValues.sortBy);
+    }
+    if (queryValues.sortBy) {
+      setSortOrder(queryValues.sortOrder);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (router.query) {
+        setLoading(true);
+        setDefaultFilterValues(router.query);
+      }
+    }
+  }, [router.isReady]);
+
   const handleMobileOpen = () => {
     setMobileOpen(true);
   };
@@ -115,8 +134,9 @@ export default function CompaniesListView() {
       pathname: '/companies',
       query: {
         ...currentQuery,
-        sortBy: attribute === 'relevance' ? '' : attribute,
+        sortBy: attribute,
         sortOrder: sort,
+        page: 1,
       },
     });
   };
