@@ -134,11 +134,11 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         color: 'text.disabled',
                       }}
                     />
-                    <Typography sx={{ color: 'text.secondary' }}>Lisboa</Typography>
+                    <Typography>Lisboa</Typography>
                   </Stack>
                   <Stack spacing={0.5} direction="row" alignItems="center">
                     <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-                    <Box sx={{ typography: 'h6', color: 'text.secondary', fontSize: '1rem' }}>
+                    <Box sx={{ typography: 'h6', fontSize: '1rem' }}>
                       {Number.isInteger(company.rating.average)
                         ? `${company.rating.average}.0`
                         : company.rating.average}
@@ -161,7 +161,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         display: 'inline-flex',
                         fontWeight: 600,
                         alignItems: 'flex-end',
-                        color: 'text.secondary',
                         fontSize: '1rem',
                       }}
                     >
@@ -220,11 +219,11 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     color: 'text.disabled',
                   }}
                 />
-                <Typography sx={{ color: 'text.secondary' }}>Lisboa</Typography>
+                <Typography>Lisboa</Typography>
               </Stack>
               <Stack spacing={0.5} direction="row" alignItems="center">
                 <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-                <Box sx={{ typography: 'h6', color: 'text.secondary', fontSize: '1rem' }}>
+                <Box sx={{ typography: 'h6', fontSize: '1rem' }}>
                   {Number.isInteger(company.rating.average)
                     ? `${company.rating.average}.0`
                     : company.rating.average}
@@ -247,7 +246,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     display: 'inline-flex',
                     fontWeight: 600,
                     alignItems: 'flex-end',
-                    color: 'text.secondary',
                     fontSize: '1rem',
                   }}
                 >
