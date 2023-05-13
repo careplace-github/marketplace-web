@@ -38,7 +38,7 @@ export default function CompaniesListView() {
   const sortHead = [
     { id: 'relevance', label: 'Relevância', width: '100%', textAlign: 'center' },
     { id: 'rating', label: 'Avaliação', width: '100%', textAlign: 'center' },
-    { id: 'price', label: 'Preço', width: '100%', textAlign: 'center' },
+    { id: 'pricing', label: 'Preço', width: '100%', textAlign: 'center' },
   ];
 
   // get available services
