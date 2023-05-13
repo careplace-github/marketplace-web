@@ -8,8 +8,6 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 
 // ----------------------------------------------------------------------
 
-const LEVELS = ['Beginner', 'Intermediate', 'Expert'];
-
 // ----------------------------------------------------------------------
 
 type Props = {

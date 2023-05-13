@@ -29,7 +29,6 @@ type Props = {
 export default function CompanyListItem({ company, vertical }: Props) {
   const router = useRouter();
   const theme = useTheme();
-  console.log(company);
   const isMdUp = useResponsive('up', 'md');
   const isSmUp = useResponsive('up', 'sm');
 

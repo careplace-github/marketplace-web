@@ -24,6 +24,7 @@ import Iconify from 'src/components/iconify';
 import { useRouter } from 'next/router';
 //
 import { FilterLevel, FilterLanguage } from './components';
+import Weekdays from 'src/data/Weekdays';
 
 // ----------------------------------------------------------------------
 
@@ -44,11 +45,20 @@ type Props = {
   mobileOpen: boolean;
   onMobileClose: VoidFunction;
   services: Array<ServiceProps>;
+  whenLoading: Function;
 };
 
-export default function CompaniesFilters({ services, mobileOpen, onMobileClose }: Props) {
+export default function CompaniesFilters({
+  whenLoading,
+  services,
+  mobileOpen,
+  onMobileClose,
+}: Props) {
   const isMdUp = useResponsive('up', 'md');
   const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
+  const [weekDaysSelected, setWeekDaysSelected] = useState<number[]>([]);
+  const [servicesSelected, setServicesSelected] = useState<number[]>([]);
+
   const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
   const { pathname, push, query } = useRouter();
   const router = useRouter();
@@ -58,6 +68,35 @@ export default function CompaniesFilters({ services, mobileOpen, onMobileClose }
     query: '',
   });
 
+  const setDefaultFilterValues = (queryValues) => {
+    const labels = [];
+    const days = [];
+    if (queryValues.services) {
+      const idArray = queryValues.services.split(',');
+      services.forEach((item) => {
+        if (idArray.includes(item._id)) {
+          labels.push(item);
+        }
+      });
+    }
+    if (queryValues.weekDay) {
+      const idArray = queryValues.weekDay.split(',');
+      console.log(idArray);
+      Weekdays.forEach((item) => {
+        console.log(item);
+        if (idArray.includes(`${item.value}`)) {
+          console.log('contains', item.value);
+          days.push(item.text);
+        }
+      });
+    }
+    setFilters({
+      ...filters,
+      filterLanguage: labels,
+      filterLevel: days,
+    });
+  };
+
   useEffect(() => {
     if (router.isReady) {
       if (router.query) {
@@ -66,6 +105,7 @@ export default function CompaniesFilters({ services, mobileOpen, onMobileClose }
           lng: router.query.lng as string,
           query: router.query.query as string,
         });
+        setDefaultFilterValues(router.query);
       }
     }
   }, [router.isReady]);
@@ -75,37 +115,51 @@ export default function CompaniesFilters({ services, mobileOpen, onMobileClose }
       target: { value },
     } = event;
 
-    let aux;
+    let auxLabels;
+    let auxValues;
 
     const newItem = value[value.length - 1];
     if (filters.filterLevel.includes(newItem.text)) {
-      aux = filters.filterLevel.filter((item) => item !== newItem.text);
+      auxLabels = filters.filterLevel.filter((item) => item !== newItem.text);
+      auxValues = weekDaysSelected.filter((item) => item !== newItem.value);
     } else {
-      aux = [...filters.filterLevel, newItem.text];
+      auxLabels = [...filters.filterLevel, newItem.text];
+      auxValues = [...weekDaysSelected, newItem.value];
     }
 
     setFilters({
       ...filters,
-      filterLevel: aux,
+      filterLevel: auxLabels,
     });
+    setWeekDaysSelected(auxValues);
 
     const currentQuery = router.query;
-    console.log('query:', currentQuery);
+    whenLoading(true);
     router.push({
       pathname: '/companies',
       query: {
         ...currentQuery,
-        weekDay: newItem.value,
+        weekDay: auxValues.join(','),
       },
     });
-
-    console.log(aux);
   };
 
   const handleChangeLanguage = (keyword: ICountriesProps[]) => {
+    console.log(keyword);
+    const auxId = [];
+    keyword.forEach((item) => auxId.push(item._id));
     setFilters({
       ...filters,
       filterLanguage: keyword,
+    });
+    const currentQuery = router.query;
+    whenLoading(true);
+    router.push({
+      pathname: '/companies',
+      query: {
+        ...currentQuery,
+        services: auxId.join(','),
+      },
     });
   };
 
