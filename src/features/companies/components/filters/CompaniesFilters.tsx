@@ -195,6 +195,7 @@ export default function CompaniesFilters({
   }, [sliderValue]);
 
   const handleSliderChange = (event, newValue) => {
+    console.log(event);
     setSliderValue(newValue);
   };
 
@@ -203,9 +204,8 @@ export default function CompaniesFilters({
   }
 
   const sliderMarks = [
-    { value: 0, label: '0€/h' },
-
-    { value: 50, label: '50€/h' },
+    { value: 2, label: '0€/h' },
+    { value: 47, label: '50€/h' },
   ];
 
   function valueLabelFormatPrice(value: number) {
@@ -241,6 +241,14 @@ export default function CompaniesFilters({
 
       <Block title="Preço">
         <Slider
+          sx={{
+            '& .MuiSlider-markLabel': {
+              pointerEvents: 'none', // Disable pointer events on active (clicked) markers
+            },
+            '& .MuiSlider-mark': {
+              backgroundColor: 'transparent',
+            },
+          }}
           getAriaLabel={() => 'Temperature range'}
           value={sliderValue}
           onChange={handleSliderChange}
