@@ -22,6 +22,7 @@ export default function CompaniesFiltersHead({
   headCells,
   numSelected,
 }: Prop) {
+  console.log(orderBy);
   return (
     <TableHead
       sx={{
