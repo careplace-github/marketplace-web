@@ -150,6 +150,7 @@ export default function CompaniesListView() {
 
       <Stack direction={{ xs: 'column', md: 'row' }}>
         <CompaniesFilters
+          whenLoading={(isLoading) => setLoading(isLoading)}
           services={availableServices}
           mobileOpen={mobileOpen}
           onMobileClose={handleMobileClose}
