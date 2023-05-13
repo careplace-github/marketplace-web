@@ -126,7 +126,13 @@ export default function CompanyListItem({ company, vertical }: Props) {
                   flexWrap="wrap"
                   // divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
                 >
-                  <Stack direction="row" alignItems="center" justifyContent="flex-start" gap="5px">
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-start"
+                    gap="5px"
+                    sx={{ mt: '20px' }}
+                  >
                     <Iconify
                       width={20}
                       icon="carbon:location"
@@ -134,7 +140,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         color: 'text.disabled',
                       }}
                     />
-                    <Typography>Lisboa</Typography>
+                    <Typography>{company.addresses[0].city}</Typography>
                   </Stack>
                   <Stack spacing={0.5} direction="row" alignItems="center">
                     <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
@@ -164,7 +170,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         fontSize: '1rem',
                       }}
                     >
-                      {`Desde ${fCurrency(company.business_profile.average_hourly_rate)}€ / Hora`}
+                      {`Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -219,7 +225,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     color: 'text.disabled',
                   }}
                 />
-                <Typography>Lisboa</Typography>
+                <Typography>{company.addresses[0].city}</Typography>
               </Stack>
               <Stack spacing={0.5} direction="row" alignItems="center">
                 <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
@@ -249,7 +255,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     fontSize: '1rem',
                   }}
                 >
-                  {`Desde ${fCurrency(company.business_profile.average_hourly_rate)}€ / Hora`}
+                  {`Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
                 </Typography>
               </Stack>
             </Stack>
