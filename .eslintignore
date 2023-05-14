@@ -10,6 +10,6 @@ package-lock.json
 src/_mock
 /config
 /coverage
-cypress.config.ts
+./cypress.config.ts
 jest.config.ts
 
