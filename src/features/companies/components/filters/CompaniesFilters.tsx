@@ -17,7 +17,7 @@ import useResponsive from 'src/hooks/useResponsive';
 // config
 import { NAV } from 'src/layouts';
 // types
-import { ICountriesProps } from 'src/types/utils';
+import { ICountriesProps, ServiceProps, WeekdaysProps } from 'src/types/utils';
 import { ICompanyFiltersProps } from 'src/types/company';
 // components
 import Iconify from 'src/components/iconify';
@@ -35,12 +35,10 @@ const defaultValues = {
   filterLanguage: [],
 };
 
-type ServiceProps = {
-  _id: string;
-  description: string;
-  image: string;
-  name: string;
-  short_description: string;
+type FiltersProps = {
+  lat: string | null;
+  lng: string | null;
+  query: string | null;
 };
 
 type Props = {
@@ -71,8 +69,8 @@ export default function CompaniesFilters({
   });
 
   const setDefaultFilterValues = (queryValues) => {
-    const labels = [];
-    const days = [];
+    const labels: ServiceProps[] = [];
+    const days: WeekdaysProps[] = [];
     let minPrice = sliderValue[0];
     let maxPrice = sliderValue[1];
     if (queryValues.services) {
@@ -88,7 +86,7 @@ export default function CompaniesFilters({
 
       Weekdays.forEach((item) => {
         if (idArray.includes(`${item.value}`)) {
-          days.push(item.text);
+          days.push(item);
         }
       });
     }
@@ -121,29 +119,22 @@ export default function CompaniesFilters({
     }
   }, [router.isReady]);
 
-  const handleChangeLevel = (event: SelectChangeEvent<typeof filters.filterLevel>) => {
+  const handleChangeLevel = (event: SelectChangeEvent<WeekdaysProps[]>) => {
     const {
       target: { value },
     } = event;
 
-    let auxLabels;
-    let auxValues;
-
-    const newItem = value[value.length - 1];
-    if (filters.filterLevel.includes(newItem.text)) {
-      auxLabels = filters.filterLevel.filter((item) => item !== newItem.text);
-      auxValues = weekDaysSelected.filter((item) => item !== newItem.value);
-    } else {
-      auxLabels = [...filters.filterLevel, newItem.text];
-      auxValues = [...weekDaysSelected, newItem.value];
-    }
+    // let auxLabels;
+    console.log('value:', value);
+    const selectedItems = value as WeekdaysProps[];
 
     setFilters({
       ...filters,
-      filterLevel: auxLabels,
+      filterLevel: selectedItems,
     });
-    setWeekDaysSelected(auxValues);
 
+    const auxValues: number[] = [];
+    selectedItems.forEach((item) => auxValues.push(item.value));
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
@@ -156,8 +147,8 @@ export default function CompaniesFilters({
     });
   };
 
-  const handleChangeLanguage = (keyword: ICountriesProps[]) => {
-    const auxId = [];
+  const handleChangeLanguage = (keyword: ServiceProps[]) => {
+    const auxId: any[] = [];
     keyword.forEach((item) => auxId.push(item._id));
     setFilters({
       ...filters,
