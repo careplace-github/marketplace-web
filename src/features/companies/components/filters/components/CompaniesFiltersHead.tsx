@@ -1,6 +1,8 @@
 // @mui
 import { Box, TableRow, Checkbox, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import { useResponsive } from 'src/hooks';
 //
+import { useEffect } from 'react';
 import { visuallyHidden } from 'src/features/account/components';
 
 // ----------------------------------------------------------------------
@@ -22,7 +24,12 @@ export default function CompaniesFiltersHead({
   headCells,
   numSelected,
 }: Prop) {
-  console.log(orderBy);
+  const isSmUp = useResponsive('up', 'sm');
+
+  useEffect(() => {
+    console.log(isSmUp);
+  }, [isSmUp]);
+
   return (
     <TableHead
       sx={{
@@ -33,16 +40,24 @@ export default function CompaniesFiltersHead({
         mb: '20px',
       }}
     >
-      <TableRow sx={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+      <TableRow
+        sx={{
+          display: 'flex',
+          justifyContent: isSmUp ? 'space-between' : 'center',
+          width: '100%',
+          gap: isSmUp ? '0px' : '7%',
+        }}
+      >
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={headCell.align ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'normal' : 'normal'}
+            // padding={isSmUp ? 'normal' : null}
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{
+              padding: isSmUp ? '16px' : '16px 0px',
               backgroundColor: 'white',
-              width: headCell.width,
+              width: isSmUp ? headCell.width : 'auto',
               minWidth: headCell.minWidth,
               textAlign: headCell.textAlign,
             }}

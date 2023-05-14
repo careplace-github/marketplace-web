@@ -1,5 +1,6 @@
 // @mui
 import { Box, Autocomplete, Checkbox, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 // assets
 import { countries } from 'src/data';
 // types
@@ -21,6 +22,16 @@ type Props = {
 };
 
 export default function FilterLanguage({ services, filterLanguage, onChangeLanguage }: Props) {
+  const [selectedIds, setSelectedIds] = useState([]);
+
+  useEffect(() => {
+    const aux = [];
+    filterLanguage.forEach((item) => {
+      aux.push(item._id);
+    });
+    setSelectedIds(aux);
+  }, [filterLanguage]);
+
   return (
     <Autocomplete
       multiple
@@ -49,7 +60,12 @@ export default function FilterLanguage({ services, filterLanguage, onChangeLangu
       ChipProps={{ color: 'info', size: 'small' }}
       renderOption={(props, option, { selected }) => (
         <Box component="li" {...props} sx={{ p: '3px' }} key={option._id}>
-          <Checkbox key={option._id} size="small" disableRipple checked={selected} />
+          <Checkbox
+            key={option._id}
+            size="small"
+            disableRipple
+            checked={selectedIds.includes(option._id)}
+          />
           {option.name}
         </Box>
       )}

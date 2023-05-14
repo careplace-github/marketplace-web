@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 // @mui
 import { Container, Stack, Typography, Button, Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 // config
 import { NAV } from 'src/layouts/config';
 // axios
@@ -34,6 +35,7 @@ export default function CompaniesListView() {
   const [sortBy, setSortBy] = useState('relative');
   const router = useRouter();
   const isMdUp = useResponsive('up', 'md');
+  const theme = useTheme();
 
   const sortHead = [
     { id: 'relevance', label: 'Relevância', width: '100%', textAlign: 'center' },
@@ -75,9 +77,13 @@ export default function CompaniesListView() {
   const setDefaultFilterValues = (queryValues) => {
     if (queryValues.sortBy) {
       setSortBy(queryValues.sortBy);
+    } else {
+      setSortBy('relevance');
     }
-    if (queryValues.sortBy) {
+    if (queryValues.sortOrder) {
       setSortOrder(queryValues.sortOrder);
+    } else {
+      setSortOrder('asc');
     }
     setLoading(false);
   };
@@ -162,6 +168,13 @@ export default function CompaniesListView() {
           onClick={handleMobileOpen}
           sx={{
             display: { md: 'none' },
+            mt: '2px',
+            bgcolor: 'primary.main',
+            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            },
           }}
         >
           Filtros

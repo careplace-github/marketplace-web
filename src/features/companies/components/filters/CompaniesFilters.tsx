@@ -9,6 +9,7 @@ import {
   InputAdornment,
   SelectChangeEvent,
   Slider,
+  Box,
 } from '@mui/material';
 
 // hooks
@@ -204,8 +205,8 @@ export default function CompaniesFilters({
   }
 
   const sliderMarks = [
-    { value: 2, label: '0€/h' },
-    { value: 47, label: '50€/h' },
+    { value: 0, label: '0€/h' },
+    { value: 50, label: '50€/h' },
   ];
 
   function valueLabelFormatPrice(value: number) {
@@ -240,24 +241,26 @@ export default function CompaniesFilters({
       </Block>
 
       <Block title="Preço">
-        <Slider
-          sx={{
-            '& .MuiSlider-markLabel': {
-              pointerEvents: 'none', // Disable pointer events on active (clicked) markers
-            },
-            '& .MuiSlider-mark': {
-              backgroundColor: 'transparent',
-            },
-          }}
-          getAriaLabel={() => 'Temperature range'}
-          value={sliderValue}
-          onChange={handleSliderChange}
-          valueLabelDisplay="auto"
-          getAriaValueText={valuetext}
-          valueLabelFormat={valueLabelFormatPrice}
-          max={50}
-          marks={sliderMarks}
-        />
+        <Box sx={{ width: '100%', padding: isMdUp ? '0px 10px' : '0px 20px' }}>
+          <Slider
+            sx={{
+              '& .MuiSlider-markLabel': {
+                pointerEvents: 'none', // Disable pointer events on active (clicked) markers
+              },
+              '& .MuiSlider-mark': {
+                backgroundColor: 'transparent',
+              },
+            }}
+            getAriaLabel={() => 'Temperature range'}
+            value={sliderValue}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            getAriaValueText={valuetext}
+            valueLabelFormat={valueLabelFormatPrice}
+            max={50}
+            marks={sliderMarks}
+          />
+        </Box>
       </Block>
     </Stack>
   );
@@ -279,7 +282,7 @@ export default function CompaniesFilters({
               pt: '20px',
               px: 3,
               width: '100%',
-              maxHeight: '80%',
+              height: '80%',
             },
           }}
         >
