@@ -16,7 +16,7 @@
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
-    "plugin:@next/next/recommended",
+    "plugin:@next/next/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -35,7 +35,7 @@
       },
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"],
-        "moduleDirectory": ["node_modules", "src/"],
+        "moduleDirectory": ["node_modules", "src/"]
       }
     }
   },

@@ -18,6 +18,7 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+[![Deploy to Amazon ECS](https://github.com/careplace-github/marketplace-web/actions/workflows/aws-deploy-stag.yml/badge.svg)](https://github.com/careplace-github/marketplace-web/actions/workflows/aws-deploy-stag.yml)
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
