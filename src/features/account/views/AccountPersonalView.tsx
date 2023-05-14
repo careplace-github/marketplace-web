@@ -33,7 +33,7 @@ export default function AccountPersonalView() {
     firstName: Yup.string().required('O nome é obrigatório.'),
     lastName: Yup.string().required('O apelido é obrigatório.'),
     emailAddress: Yup.string().required('O email é obrigatório.'),
-    birthday: Yup.string().required('O aniversário é obrigatório.'),
+    birthdate: Yup.string().required('O aniversário é obrigatório.'),
     gender: Yup.string().required('O género é obrigatório.'),
     streetAddress: Yup.string().required('A morada is required.'),
     city: Yup.string().required('A cidade é obrigatória.'),
@@ -72,7 +72,7 @@ export default function AccountPersonalView() {
     lastName: user?.name ? user.name.split(' ').pop() : null,
     emailAddress: user?.email ? user.email : null,
     phoneNumber: user?.phone ? user.phone : null,
-    birthday: user?.birthdate ? user.birthdate : '',
+    birthdate: user?.birthdate ? user.birthdate : '',
     gender: user?.gender ? user.gender : null,
     streetAddress: user && user.address && user.address.street ? user.address.street : null,
     zipCode: user && user.address && user.address.postal_code ? user.address.postal_code : null,
@@ -101,7 +101,7 @@ export default function AccountPersonalView() {
         user.name = `${data.firstName} ${data.lastName}`;
         user.email = data.emailAddress;
         user.phone = data.phoneNumber;
-        user.birthdate = data.birthday;
+        user.birthdate = data.birthdate;
         user.gender = data.gender;
         user.address.street = data.streetAddress;
         user.address.postal_code = data.zipCode;
@@ -169,13 +169,14 @@ export default function AccountPersonalView() {
 
             <RHFTextField name="lastName" label="Apelido" />
 
-            <RHFTextField name="emailAddress" label="Email" />
+            <RHFTextField name="emailAddress" label="Email" disabled/>
 
             <RHFPhoneField
               name="phoneNumber"
               label="Telemóvel"
               defaultCountry="PT"
               forceCallingCode
+              disabled
               onChange={(value: string) => {
                 /**
                  * Portuguese Number Validation
@@ -202,7 +203,7 @@ export default function AccountPersonalView() {
             />
 
             <Controller
-              name="birthday"
+              name="birthdate"
               render={({ field, fieldState: { error } }) => (
                 <DatePicker
                   format="dd-MM-yyyy"
