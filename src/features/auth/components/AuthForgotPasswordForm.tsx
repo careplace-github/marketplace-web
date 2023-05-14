@@ -79,7 +79,7 @@ export default function AuthResetPasswordForm() {
           {errorMessage}
         </Alert>
       )}
-      <RHFTextField name="email" hiddenLabel placeholder="Email" />
+      <RHFTextField name="email" hiddenLabel placeholder="Email" disabled={email !== undefined} />
 
       <LoadingButton
         fullWidth
