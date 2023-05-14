@@ -4,28 +4,21 @@ import { useEffect, useState } from 'react';
 // assets
 import { countries } from 'src/data';
 // types
-import { ICountriesProps } from 'src/types/utils';
+import { ICountriesProps, ServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
-type ServiceProps = {
-  _id: string;
-  description: string;
-  image: string;
-  name: string;
-  short_description: string;
-};
 
 type Props = {
-  filterLanguage: ICountriesProps[];
-  onChangeLanguage: (keyword: ICountriesProps[]) => void;
+  filterLanguage: ServiceProps[];
+  onChangeLanguage: (keyword: ServiceProps[]) => void;
   services: Array<ServiceProps>;
 };
 
 export default function FilterLanguage({ services, filterLanguage, onChangeLanguage }: Props) {
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
-    const aux = [];
+    const aux: string[] = [];
     filterLanguage.forEach((item) => {
       aux.push(item._id);
     });
@@ -49,7 +42,7 @@ export default function FilterLanguage({ services, filterLanguage, onChangeLangu
           {...params}
           hiddenLabel
           variant="filled"
-          placeholder={filterLanguage.length > 0 ? null : 'Todos os serviços'}
+          placeholder={filterLanguage.length > 0 ? undefined : 'Todos os serviços'}
           InputProps={{
             ...params.InputProps,
             autoComplete: 'search',

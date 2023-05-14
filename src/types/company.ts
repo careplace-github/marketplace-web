@@ -1,5 +1,5 @@
 //
-import { ICountriesProps, ISocialLinks } from './utils';
+import { ICountriesProps, ISocialLinks, ServiceProps, WeekdaysProps } from './utils';
 
 // ----------------------------------------------------------------------
 
@@ -58,10 +58,6 @@ export type ICompanyProps = {
 };
 
 export type ICompanyFiltersProps = {
-  filterFee: string[];
-  filterLevel: string[];
-  filterDuration: string[];
-  filterCategories: string[];
-  filterRating: string | null;
-  filterLanguage: ICountriesProps[];
+  filterLevel: WeekdaysProps[];
+  filterLanguage: ServiceProps[];
 };

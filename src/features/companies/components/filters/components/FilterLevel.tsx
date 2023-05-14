@@ -1,5 +1,6 @@
 // utils
 import Weekdays from 'src/data/Weekdays';
+import { WeekdaysProps } from 'src/types/utils';
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -11,8 +12,8 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterLevel: string[];
-  onChangeLevel: (event: SelectChangeEvent<string[]>) => void;
+  filterLevel: WeekdaysProps[];
+  onChangeLevel: (event: SelectChangeEvent<WeekdaysProps[]>) => void;
 };
 
 export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
@@ -24,8 +25,10 @@ export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
         value={filterLevel}
         onChange={onChangeLevel}
         MenuProps={MenuProps}
-        renderValue={(selected) => {
-          if (selected.length === 0) {
+        renderValue={(items) => {
+          const selected: string[] = [];
+          items.forEach((item) => selected.push(item.text));
+          if (items.length === 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
                 Todos os dias
@@ -41,7 +44,7 @@ export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
       >
         {Weekdays.map((day) => (
           <MenuItem key={day.value} value={day} sx={menuItemStyle}>
-            <Checkbox size="small" checked={filterLevel.includes(day.text)} />
+            <Checkbox size="small" checked={filterLevel.includes(day)} />
             {day.text}
           </MenuItem>
         ))}
