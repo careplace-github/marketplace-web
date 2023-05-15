@@ -7,6 +7,7 @@ import { bgBlur } from 'src/utils/cssStyles';
 import Image from 'src/components/image';
 import { CustomAvatar } from 'src/components/custom-avatar';
 import Iconify from 'src/components/iconify/Iconify';
+import { useResponsive } from 'src/hooks';
 // @types
 import { ICompanyDetailsCover } from 'src/types/company';
 
@@ -44,6 +45,7 @@ const StyledInfo = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function CompanyProfileCover({ name, image, location }: ICompanyDetailsCover) {
+  const isMdUp = useResponsive('up', 'md');
   return (
     <StyledRoot>
       <StyledInfo>
@@ -71,7 +73,12 @@ export default function CompanyProfileCover({ name, image, location }: ICompanyD
         >
           <Typography variant="h4">{name}</Typography>
 
-          <Stack direction="row" alignItems="center" justifyContent="flex-start" gap="5px">
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent={isMdUp ? 'flex-start' : 'center'}
+            gap="5px"
+          >
             <Iconify
               width={20}
               icon="carbon:location"

@@ -92,11 +92,24 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 justifyContent="space-between"
                 sx={{ paddingBottom: '5px' }}
               >
-                <Link component={NextLink} href={`/companies/${company._id}`} color="inherit">
-                  <TextMaxLine variant="h6" line={1}>
-                    {company.business_profile.name}
-                  </TextMaxLine>
-                </Link>
+                <TextMaxLine
+                  variant="h6"
+                  line={1}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      textDecoration: 'underline',
+                    },
+                  }}
+                  onClick={() => {
+                    router.push({
+                      pathname: `/companies/${company._id}`,
+                      query: { ...router.query },
+                    });
+                  }}
+                >
+                  {company.business_profile.name}
+                </TextMaxLine>
               </Stack>
 
               <TextMaxLine
@@ -152,7 +165,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
 
                     {company.rating.count && (
                       <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                        ({fShortenNumber(company.rating.count)} reviews)
+                        ({fShortenNumber(company.rating.count)} avaliações)
                       </Link>
                     )}
                   </Stack>
@@ -236,7 +249,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
 
                 {company.rating.count && (
                   <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                    ({fShortenNumber(company.rating.count)} reviews)
+                    ({fShortenNumber(company.rating.count)} avaliações)
                   </Link>
                 )}
               </Stack>
