@@ -51,7 +51,7 @@ export default function AccountRelativesView() {
 
   const handleDeleteRelative = async (relativeToDelete) => {
     const response = await axios.delete(`/users/relatives/${relativeToDelete._id}`);
-    console.log(response);
+ 
     fetchUserRelatives();
   };
 
