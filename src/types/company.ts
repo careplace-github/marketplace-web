@@ -19,6 +19,12 @@ export type ICompanyResponsibleProps = {
   students?: number;
 };
 
+export type ICompanyDetailsCover = {
+  name: string;
+  image: string;
+  location: string;
+};
+
 type IAddressProps = {
   city: string;
   coordinates: number[];
