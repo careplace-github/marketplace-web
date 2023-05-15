@@ -1,4 +1,5 @@
- 
+// utils
+import Weekdays from 'src/data/Weekdays';
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -7,29 +8,35 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 
 // ----------------------------------------------------------------------
 
-const FEES = ['Free', 'Paid'];
-
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterFee: string[];
-  onChangeFee: (event: SelectChangeEvent<string[]>) => void;
+  filterWeekdays: number[];
+  onChangeLevel: (event: SelectChangeEvent<number[]>) => void;
 };
 
-export default function FilterFee({ filterFee, onChangeFee }: Props) {
+export default function FilterWeekdays({ filterWeekdays, onChangeLevel }: Props) {
   return (
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select
         multiple
         displayEmpty
-        value={filterFee}
-        onChange={onChangeFee}
+        value={filterWeekdays}
+        onChange={onChangeLevel}
         MenuProps={MenuProps}
-        renderValue={(selected) => {
-          if (selected.length === 0) {
+        renderValue={(items) => {
+          const selected: string[] = [];
+          items.forEach((id) => {
+            Weekdays.forEach((day) => {
+              if (day.value === id) {
+                selected.push(day.text);
+              }
+            });
+          });
+          if (items.length === 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                All Fee
+                Todos os dias
               </Typography>
             );
           }
@@ -40,10 +47,10 @@ export default function FilterFee({ filterFee, onChangeFee }: Props) {
           );
         }}
       >
-        {FEES.map((type) => (
-          <MenuItem key={type} value={type} sx={menuItemStyle}>
-            <Checkbox size="small" checked={filterFee.includes(type)} />
-            {type}
+        {Weekdays.map((day) => (
+          <MenuItem key={day.value} value={day.value} sx={menuItemStyle}>
+            <Checkbox size="small" checked={filterWeekdays.includes(day.value)} />
+            {day.text}
           </MenuItem>
         ))}
       </Select>

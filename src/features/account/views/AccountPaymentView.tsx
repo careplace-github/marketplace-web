@@ -37,7 +37,7 @@ export default function AccountPaymentView() {
     getCards().then((data) => {
       setCARDS(data);
 
-      console.log(data);
+     
     });
   }, []);
 
@@ -105,7 +105,7 @@ export default function AccountPaymentView() {
                 key={card.id}
                 card={card}
                 handleDelete={() => {
-                  console.log(card);
+                
                   axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
                     getCards().then((data) => {
                       setCARDS(data);
