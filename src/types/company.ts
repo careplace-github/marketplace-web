@@ -19,7 +19,7 @@ export type ICompanyResponsibleProps = {
   students?: number;
 };
 
-type AddressesProps = {
+type IAddressProps = {
   city: string;
   coordinates: number[];
   country: string;
