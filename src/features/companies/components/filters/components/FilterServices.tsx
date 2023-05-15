@@ -9,21 +9,21 @@ import { ICountriesProps, ServiceProps } from 'src/types/utils';
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterLanguage: ServiceProps[];
+  filterServices: ServiceProps[];
   onChangeLanguage: (keyword: ServiceProps[]) => void;
   services: Array<ServiceProps>;
 };
 
-export default function FilterLanguage({ services, filterLanguage, onChangeLanguage }: Props) {
+export default function FilterServices({ services, filterServices, onChangeLanguage }: Props) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
     const aux: string[] = [];
-    filterLanguage.forEach((item) => {
+    filterServices.forEach((item) => {
       aux.push(item._id);
     });
     setSelectedIds(aux);
-  }, [filterLanguage]);
+  }, [filterServices]);
 
   return (
     <Autocomplete
@@ -32,7 +32,7 @@ export default function FilterLanguage({ services, filterLanguage, onChangeLangu
       disableCloseOnSelect
       options={services}
       getOptionLabel={(option) => option.name}
-      value={filterLanguage}
+      value={filterServices}
       onChange={(event, value) => {
         onChangeLanguage(value);
       }}
@@ -41,7 +41,7 @@ export default function FilterLanguage({ services, filterLanguage, onChangeLangu
           {...params}
           hiddenLabel
           variant="filled"
-          placeholder={filterLanguage.length > 0 ? undefined : 'Todos os serviços'}
+          placeholder={filterServices.length > 0 ? undefined : 'Todos os serviços'}
           InputProps={{
             ...params.InputProps,
             autoComplete: 'search',
