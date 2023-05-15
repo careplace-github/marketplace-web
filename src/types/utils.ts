@@ -22,13 +22,6 @@ export type IServiceProps = {
   short_description: string;
 };
 
-export type ICountryProps = {
-  code: string;
-  label: string;
-  phone: string;
-  suggested?: boolean | undefined;
-};
-
 export type ISocialLinks = {
   facebook?: string;
   instagram?: string;

@@ -17,7 +17,7 @@ import useResponsive from 'src/hooks/useResponsive';
 // config
 import { NAV } from 'src/layouts';
 // types
-import { ICountriesProps, ServiceProps, WeekdaysProps } from 'src/types/utils';
+import { IServiceProps } from 'src/types/utils';
 import { ICompanyFiltersProps } from 'src/types/company';
 // components
 import Iconify from 'src/components/iconify';
@@ -44,7 +44,7 @@ type FiltersProps = {
 type Props = {
   mobileOpen: boolean;
   onMobileClose: VoidFunction;
-  services: Array<ServiceProps>;
+  services: Array<IServiceProps>;
   whenLoading: Function;
 };
 
@@ -69,7 +69,7 @@ export default function CompaniesFilters({
   });
 
   const setDefaultFilterValues = (queryValues) => {
-    const labels: ServiceProps[] = [];
+    const labels: IServiceProps[] = [];
     const days: number[] = [];
     let minPrice = sliderValue[0];
     let maxPrice = sliderValue[1];
@@ -141,7 +141,7 @@ export default function CompaniesFilters({
     });
   };
 
-  const handleChangeLanguage = (keyword: ServiceProps[]) => {
+  const handleChangeLanguage = (keyword: IServiceProps[]) => {
     const auxId: any[] = [];
     keyword.forEach((item) => auxId.push(item._id));
     setFilters({

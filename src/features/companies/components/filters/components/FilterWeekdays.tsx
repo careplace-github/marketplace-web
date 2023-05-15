@@ -1,6 +1,5 @@
 // utils
 import Weekdays from 'src/data/Weekdays';
-import { WeekdaysProps } from 'src/types/utils';
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
