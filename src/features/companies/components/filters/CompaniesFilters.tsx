@@ -26,13 +26,13 @@ import { useRouter } from 'next/router';
 //
 import Weekdays from 'src/data/Weekdays';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
-import { FilterLevel, FilterLanguage } from './components';
+import { FilterWeekdays, FilterServices } from './components';
 
 // ----------------------------------------------------------------------
 
 const defaultValues = {
-  filterLevel: [],
-  filterLanguage: [],
+  filterWeekdays: [],
+  filterServices: [],
 };
 
 type FiltersProps = {
@@ -98,8 +98,8 @@ export default function CompaniesFilters({
     }
     setFilters({
       ...filters,
-      filterLanguage: labels,
-      filterLevel: days,
+      filterServices: labels,
+      filterWeekdays: days,
     });
     setSliderValue([minPrice, maxPrice]);
     setIsLoading(false);
@@ -127,7 +127,7 @@ export default function CompaniesFilters({
     const newFilter = value as number[];
     setFilters({
       ...filters,
-      filterLevel: newFilter,
+      filterWeekdays: newFilter,
     });
     const currentQuery = router.query;
     whenLoading(true);
@@ -146,7 +146,7 @@ export default function CompaniesFilters({
     keyword.forEach((item) => auxId.push(item._id));
     setFilters({
       ...filters,
-      filterLanguage: keyword,
+      filterServices: keyword,
     });
     const currentQuery = router.query;
     whenLoading(true);
@@ -213,13 +213,13 @@ export default function CompaniesFilters({
       )}
 
       <Block title="Dias da semana">
-        <FilterLevel filterLevel={filters.filterLevel} onChangeLevel={handleChangeLevel} />
+        <FilterWeekdays filterWeekdays={filters.filterWeekdays} onChangeLevel={handleChangeLevel} />
       </Block>
 
       <Block title="Serviços">
-        <FilterLanguage
+        <FilterServices
           services={services}
-          filterLanguage={filters.filterLanguage}
+          filterServices={filters.filterServices}
           onChangeLanguage={handleChangeLanguage}
         />
       </Block>

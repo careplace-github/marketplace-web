@@ -62,6 +62,6 @@ export type ICompanyProps = {
 };
 
 export type ICompanyFiltersProps = {
-  filterLevel: number[];
-  filterLanguage: ServiceProps[];
+  filterWeekdays: number[];
+  filterServices: ServiceProps[];
 };
