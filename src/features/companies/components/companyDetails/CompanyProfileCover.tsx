@@ -48,7 +48,9 @@ export default function CompanyProfileCover({ name, image, location }: ICompanyD
   const isMdUp = useResponsive('up', 'md');
   return (
     <StyledRoot>
-      <StyledInfo>
+      <StyledInfo
+        sx={!isMdUp ? { top: '50%', transform: 'translateY(-50%)', mt: '0px' } : undefined}
+      >
         <Avatar
           src={image}
           alt={name}

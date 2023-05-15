@@ -1,4 +1,6 @@
+// hooks
 import { useState, useEffect } from 'react';
+import { useResponsive } from 'src/hooks';
 // axios
 import axios from 'src/lib/axios';
 // @mui
@@ -32,14 +34,30 @@ import {
   SimilarCompaniesList,
   CompanyDetailReviews,
 } from '../components';
+import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
 export default function CompanyDetailView() {
   const [loading, setLoading] = useState(true);
+  const [servicesLoading, setServicesLoading] = useState(true);
+  const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [companyServices, setCompanyServices] = useState<string[]>([]);
   const [companyInfo, setCompanyInfo] = useState();
   const router = useRouter();
+  const isSmUp = useResponsive('up', 'sm');
   const _mockCompany = _companies[0];
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      setServicesLoading(true);
+      const response = await axios.get('/services');
+      setAvailableServices(response.data.data);
+      setServicesLoading(false);
+    };
+
+    fetchServices();
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -55,7 +73,23 @@ export default function CompanyDetailView() {
     }
   }, [router.isReady]);
 
-  if (loading) {
+  useEffect(() => {
+    setServicesLoading(true);
+    if (availableServices.length > 0 && companyInfo && companyInfo.services) {
+      const aux = [];
+      availableServices.forEach((availableService) => {
+        companyInfo.services.forEach((item) => {
+          if (availableService._id === item) {
+            aux.push(availableService.name);
+          }
+        });
+      });
+      setCompanyServices(aux);
+    }
+    setServicesLoading(false);
+  }, [availableServices, companyInfo]);
+
+  if (loading || servicesLoading) {
     return <LoadingScreen />;
   }
 
@@ -75,18 +109,20 @@ export default function CompanyDetailView() {
       <Container sx={{ overflow: 'hidden' }}>
         <Stack
           direction="row"
-          sx={{ width: '100%', mt: 3, mb: 5 }}
+          sx={{ width: '100%', mt: 3, mb: isSmUp ? 5 : 3 }}
           alignItems="center"
           justifyContent="space-between"
         >
-          <CustomBreadcrumbs
-            sx={{ mb: 0 }}
-            links={[
-              { name: 'Home', href: '/' },
-              { name: 'Empresas SAD', href: '/' },
-              { name: companyInfo.business_profile.name },
-            ]}
-          />
+          {isSmUp && (
+            <CustomBreadcrumbs
+              sx={{ mb: 0 }}
+              links={[
+                { name: 'Home', href: '/' },
+                { name: 'Empresas SAD', href: '/' },
+                { name: companyInfo.business_profile.name },
+              ]}
+            />
+          )}
           <Stack
             direction="row"
             gap="3px"
@@ -100,7 +136,7 @@ export default function CompanyDetailView() {
         </Stack>
         <Card
           sx={{
-            mb: 3,
+            mb: isSmUp ? 8 : 2.8,
             height: 280,
             position: 'relative',
           }}
@@ -123,6 +159,7 @@ export default function CompanyDetailView() {
               extraServices={otherServices}
               description={companyInfo.business_profile.about}
               name={companyInfo.business_profile.name}
+              services={companyServices}
             />
 
             <Stack direction="row" flexWrap="wrap" sx={{ mt: 8 }}>

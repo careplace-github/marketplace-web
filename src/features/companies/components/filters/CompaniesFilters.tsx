@@ -56,8 +56,6 @@ export default function CompaniesFilters({
 }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
-  const [weekDaysSelected, setWeekDaysSelected] = useState<number[]>([]);
-  const [servicesSelected, setServicesSelected] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
   const { pathname, push, query } = useRouter();
