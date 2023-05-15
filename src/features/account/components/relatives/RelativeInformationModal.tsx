@@ -376,7 +376,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               onChange={(e) => {
                 const { value } = e.target;
                 setValue('kinshipDegree', value);
-                console.log(value);
+              
               }}
             >
               <option value="" />
@@ -395,10 +395,7 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               onChange={(e) => {
                 const { value } = e.target;
 
-                console.log(getValues('zipCode'));
-                console.log(value);
-                console.log(value.length);
-
+              
                 /**
                  * Only allow numbers and dashes
                  */

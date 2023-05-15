@@ -26,9 +26,6 @@ export default function CompaniesFiltersHead({
 }: Prop) {
   const isSmUp = useResponsive('up', 'sm');
 
-  useEffect(() => {
-    console.log(isSmUp);
-  }, [isSmUp]);
 
   return (
     <TableHead

@@ -181,7 +181,6 @@ export default function CompaniesFilters({
   }, [sliderValue]);
 
   const handleSliderChange = (event, newValue) => {
-    console.log(event);
     setSliderValue(newValue);
   };
 
