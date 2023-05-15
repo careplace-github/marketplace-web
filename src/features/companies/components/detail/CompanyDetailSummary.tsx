@@ -6,6 +6,7 @@ import { fDate } from 'src/utils/formatTime';
 import Iconify, { IconifyProps } from 'src/components/iconify';
 // types
 import { ICompanyProps } from 'src/types/company';
+// data
 
 // ----------------------------------------------------------------------
 
@@ -14,14 +15,59 @@ type Props = {
   extraServices: IExtraServices[];
   description: string;
   name: string;
+  services: string[];
 };
 
-export default function CompanyDetailSummary({ company, extraServices, description, name }: Props) {
+export default function CompanyDetailSummary({
+  services,
+  company,
+  extraServices,
+  description,
+  name,
+}: Props) {
   const { program, includes, highlights } = company;
 
   return (
     <Stack spacing={5}>
-      {/* -- Tour Overview -- */}
+      {/* -- About -- */}
+      <div>
+        <Typography variant="h5" paragraph>
+          Sobre a {name}
+        </Typography>
+        <Typography>{description}</Typography>
+      </div>
+
+      {/* -- Services -- */}
+      <div>
+        <Typography variant="h5" paragraph>
+          Serviços de Apoio Domiciliário
+        </Typography>
+        <Box
+          sx={{
+            rowGap: 2,
+            columnGap: 3,
+            display: 'grid',
+            gridTemplateColumns: {
+              xs: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+            },
+          }}
+        >
+          {services.map((serviceItem) => (
+            <Stack key={serviceItem} direction="row" alignItems="center">
+              <Iconify
+                icon="carbon:checkmark"
+                sx={{
+                  mr: 2,
+                  color: 'primary.main',
+                }}
+              />
+              {serviceItem}
+            </Stack>
+          ))}
+        </Box>
+      </div>
+      {/* -- Extra Services -- */}
       <div>
         <Typography variant="h5" sx={{ mb: 3 }}>
           Serviços Adicionais
@@ -40,53 +86,6 @@ export default function CompanyDetailSummary({ company, extraServices, descripti
           {extraServices.map((service) => {
             return <OverviewItem key={service.value} icon={service.icon} label={service.label} />;
           })}
-        </Box>
-      </div>
-      <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
-      {/* -- Tour Description -- */}
-      <div>
-        <Typography variant="h5" paragraph>
-          Sobre a {name}
-        </Typography>
-        <Typography>{description}</Typography>
-      </div>
-
-      {/* -- Tour Includes -- */}
-      <div>
-        <Typography variant="h5" paragraph>
-          Serviços de Apoio Domiciliário
-        </Typography>
-        <Box
-          sx={{
-            rowGap: 2,
-            columnGap: 3,
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-            },
-          }}
-        >
-          {includes.map((option) => (
-            <Stack
-              key={option.label}
-              direction="row"
-              alignItems="center"
-              sx={{
-                ...(!option.enabled && { color: 'text.disabled' }),
-              }}
-            >
-              <Iconify
-                icon="carbon:checkmark"
-                sx={{
-                  mr: 2,
-                  color: 'primary.main',
-                  ...(!option.enabled && { color: 'currentColor' }),
-                }}
-              />
-              {option.label}
-            </Stack>
-          ))}
         </Box>
       </div>
     </Stack>
