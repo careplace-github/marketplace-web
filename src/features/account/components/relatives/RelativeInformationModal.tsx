@@ -144,19 +144,12 @@ export default function RelativeInformationModal({ action, relative, open, onClo
     defaultValues,
   });
 
-  console.log(defaultValues);
   const {
     setValue,
     getValues,
     handleSubmit,
     formState: { isDirty, isValid },
   } = methods;
-
-  useEffect(() => {
-    console.log('Valid:', isValid);
-    console.log('dirty:', isDirty);
-    console.log('image:', imageChanged);
-  }, [isValid, isDirty, imageChanged]);
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -326,12 +319,6 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               defaultCountry="PT"
               forceCallingCode
               onChange={(value: string) => {
-                console.log(value);
-                console.log(value.length);
-
-                console.log(value[8]);
-                console.log(value[12]);
-
                 /**
                  * Portuguese Number Validation
                  */

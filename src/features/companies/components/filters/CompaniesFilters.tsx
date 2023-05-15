@@ -24,9 +24,9 @@ import Iconify from 'src/components/iconify';
 // next
 import { useRouter } from 'next/router';
 //
-import { FilterLevel, FilterLanguage } from './components';
 import Weekdays from 'src/data/Weekdays';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import { FilterLevel, FilterLanguage } from './components';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +70,7 @@ export default function CompaniesFilters({
 
   const setDefaultFilterValues = (queryValues) => {
     const labels: ServiceProps[] = [];
-    const days: WeekdaysProps[] = [];
+    const days: number[] = [];
     let minPrice = sliderValue[0];
     let maxPrice = sliderValue[1];
     if (queryValues.services) {
@@ -86,7 +86,7 @@ export default function CompaniesFilters({
 
       Weekdays.forEach((item) => {
         if (idArray.includes(`${item.value}`)) {
-          days.push(item);
+          days.push(item.value);
         }
       });
     }
@@ -119,29 +119,23 @@ export default function CompaniesFilters({
     }
   }, [router.isReady]);
 
-  const handleChangeLevel = (event: SelectChangeEvent<WeekdaysProps[]>) => {
+  const handleChangeLevel = (event: SelectChangeEvent<number[]>) => {
     const {
       target: { value },
     } = event;
 
-    // let auxLabels;
-    console.log('value:', value);
-    const selectedItems = value as WeekdaysProps[];
-
+    const newFilter = value as number[];
     setFilters({
       ...filters,
-      filterLevel: selectedItems,
+      filterLevel: newFilter,
     });
-
-    const auxValues: number[] = [];
-    selectedItems.forEach((item) => auxValues.push(item.value));
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
       pathname: '/companies',
       query: {
         ...currentQuery,
-        weekDay: auxValues.join(','),
+        weekDay: newFilter.join(','),
         page: 1,
       },
     });
@@ -246,8 +240,8 @@ export default function CompaniesFilters({
             value={sliderValue}
             onChange={handleSliderChange}
             valueLabelDisplay="auto"
-            getAriaValueText={valuetext}
-            valueLabelFormat={valueLabelFormatPrice}
+            getAriaValueText={(text) => valuetext(text)}
+            valueLabelFormat={(text) => valueLabelFormatPrice(text)}
             max={50}
             marks={sliderMarks}
           />

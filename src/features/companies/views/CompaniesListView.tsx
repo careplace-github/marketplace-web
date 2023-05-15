@@ -18,9 +18,9 @@ import { animateScroll } from 'react-scroll';
 import { useResponsive } from 'src/hooks';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { ICompanyProps } from 'src/types/company';
+import { ServiceProps } from 'src/types/utils';
 import CompaniesList from '../components/list/CompaniesList';
 import CompaniesFilters from '../components/filters/CompaniesFilters';
-
 import CompaniesFiltersHead from '../components/filters/components/CompaniesFiltersHead';
 // ----------------------------------------------------------------------
 
@@ -30,8 +30,8 @@ export default function CompaniesListView() {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
   const [servicesLoading, setServicesLoading] = useState(true);
-  const [availableServices, setAvailableServices] = useState();
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('dsc');
+  const [availableServices, setAvailableServices] = useState<ServiceProps[]>([]);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [sortBy, setSortBy] = useState('relative');
   const router = useRouter();
   const isMdUp = useResponsive('up', 'md');
@@ -49,7 +49,6 @@ export default function CompaniesListView() {
       setServicesLoading(true);
       const response = await axios.get('/services');
       setAvailableServices(response.data.data);
-      console.log('services:', response.data.data);
       setServicesLoading(false);
     };
 
@@ -204,8 +203,6 @@ export default function CompaniesListView() {
             orderBy={sortBy}
             onSort={handleSort}
             headCells={sortHead}
-            // rowCount={orders.length}
-            // numSelected={selected.length}
           />
           <CompaniesList
             onPageChange={handlePageChange}
