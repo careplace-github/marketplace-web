@@ -9,12 +9,12 @@ export type IOfficeMapProps = {
   phoneNumber: string;
 };
 
-export type WeekdaysProps = {
+export type IWeekDayProps = {
   value: number;
   text: string;
 };
 
-export type ServiceProps = {
+export type IServiceProps = {
   _id: string;
   description: string;
   image: string;
@@ -22,7 +22,7 @@ export type ServiceProps = {
   short_description: string;
 };
 
-export type ICountriesProps = {
+export type ICountryProps = {
   code: string;
   label: string;
   phone: string;
