@@ -19,6 +19,12 @@ export type ICompanyResponsibleProps = {
   students?: number;
 };
 
+export type IExtraServices = {
+  icon: string;
+  label: string;
+  value: string;
+};
+
 export type ICompanyDetailsCover = {
   name: string;
   image: string;

@@ -16,12 +16,13 @@ import {
 import { _socials, _courses as _companies } from 'src/_mock';
 // router
 import { useRouter } from 'next/router';
+// data
+import { otherServices } from 'src/data';
 // components
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CompanyProfileCover from '../components/companyDetails/CompanyProfileCover';
-
 //
 import {
   CompanyDetailHeader,
@@ -38,6 +39,7 @@ export default function CompanyDetailView() {
   const [loading, setLoading] = useState(true);
   const [companyInfo, setCompanyInfo] = useState();
   const router = useRouter();
+  const _mockCompany = _companies[0];
 
   useEffect(() => {
     if (router.isReady) {
@@ -58,11 +60,14 @@ export default function CompanyDetailView() {
   }
 
   const handleGoBackClick = () => {
-    const currentQuery = router.query;
-    router.push({
-      pathname: '/companies',
-      query: currentQuery,
-    });
+    if (router.isReady) {
+      const currentQuery = router.query;
+      delete currentQuery.id;
+      router.push({
+        pathname: '/companies',
+        query: currentQuery,
+      });
+    }
   };
 
   return (
@@ -109,19 +114,20 @@ export default function CompanyDetailView() {
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
-            {/* <CompanyDetailReserveForm company={_mockCompany} /> */}
+            <CompanyDetailReserveForm company={_mockCompany} />
           </Grid>
 
           <Grid xs={12} md={7} lg={8}>
-            {/* <CompanyDetailHeader company={_mockCompany} /> */}
+            <CompanyDetailSummary
+              company={_mockCompany}
+              extraServices={otherServices}
+              description={companyInfo.business_profile.about}
+              name={companyInfo.business_profile.name}
+            />
 
-            <Divider sx={{ borderStyle: 'dashed', my: 5 }} />
-
-            {/* <CompanyDetailSummary company={_mockCompany} /> */}
-
-            <Stack direction="row" flexWrap="wrap" sx={{ mt: 5 }}>
+            <Stack direction="row" flexWrap="wrap" sx={{ mt: 8 }}>
               <Typography variant="subtitle2" sx={{ mt: 0.75, mr: 1.5 }}>
-                Share:
+                Partilhar:
               </Typography>
 
               <Stack direction="row" alignItems="center" flexWrap="wrap">
