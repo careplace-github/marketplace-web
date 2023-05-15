@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+// axios
+import axios from 'src/lib/axios';
 // @mui
 import { alpha } from '@mui/material/styles';
 import {
@@ -7,14 +9,19 @@ import {
   Divider,
   Container,
   Typography,
+  Card,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 // _mock
 import { _socials, _courses as _companies } from 'src/_mock';
+// router
+import { useRouter } from 'next/router';
 // components
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CompanyProfileCover from '../components/companyDetails/CompanyProfileCover';
+
 //
 import {
   CompanyDetailHeader,
@@ -27,32 +34,78 @@ import {
 
 // ----------------------------------------------------------------------
 
-const _mockCompany = _companies[0];
-
 export default function CompanyDetailView() {
   const [loading, setLoading] = useState(true);
+  const [companyInfo, setCompanyInfo] = useState();
+  const router = useRouter();
 
   useEffect(() => {
-    const fakeLoading = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      setLoading(false);
-    };
-    fakeLoading();
-  }, []);
+    if (router.isReady) {
+      const companyId = router.asPath.split('/')[2].split('?')[0];
+      const fetchCompany = async () => {
+        const response = await axios.get(`/companies/${companyId}`);
+        setCompanyInfo(response.data);
+        console.log(response.data);
+        setLoading(false);
+      };
+
+      fetchCompany();
+    }
+  }, [router.isReady]);
 
   if (loading) {
     return <LoadingScreen />;
   }
 
+  const handleGoBackClick = () => {
+    const currentQuery = router.query;
+    router.push({
+      pathname: '/companies',
+      query: currentQuery,
+    });
+  };
+
   return (
     <>
       <Container sx={{ overflow: 'hidden' }}>
-        <CustomBreadcrumbs
-          links={[{ name: 'Home', href: '/' }, { name: 'companys', href: '/' }, { name: 'id' }]}
-          sx={{ mt: 3, mb: 5 }}
-        />
-
-        <CompanyDetailGallery images={_mockCompany.gallery} />
+        <Stack
+          direction="row"
+          sx={{ width: '100%', mt: 3, mb: 5 }}
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <CustomBreadcrumbs
+            sx={{ mb: 0 }}
+            links={[
+              { name: 'Home', href: '/' },
+              { name: 'Empresas SAD', href: '/' },
+              { name: companyInfo.business_profile.name },
+            ]}
+          />
+          <Stack
+            direction="row"
+            gap="3px"
+            alignItems="center"
+            sx={{ cursor: 'pointer' }}
+            onClick={handleGoBackClick}
+          >
+            <Iconify icon="material-symbols:arrow-back-rounded" color="#212B36" />
+            <Typography>Voltar</Typography>
+          </Stack>
+        </Stack>
+        <Card
+          sx={{
+            mb: 3,
+            height: 280,
+            position: 'relative',
+          }}
+        >
+          <CompanyProfileCover
+            name={companyInfo.business_profile.name}
+            image={companyInfo.business_profile.logo}
+            location={companyInfo.addresses[0].city}
+          />
+        </Card>
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>

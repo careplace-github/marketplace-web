@@ -92,7 +92,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 justifyContent="space-between"
                 sx={{ paddingBottom: '5px' }}
               >
-                <Link component={NextLink} href="/" color="inherit">
+                <Link component={NextLink} href={`/companies/${company._id}`} color="inherit">
                   <TextMaxLine variant="h6" line={1}>
                     {company.business_profile.name}
                   </TextMaxLine>
