@@ -1,4 +1,3 @@
- 
 // @mui
 import { Typography, Divider, Stack, IconButton, Link } from '@mui/material';
 // utils
@@ -9,7 +8,6 @@ import { _socials } from 'src/_mock';
 import Iconify from 'src/components/iconify';
 // types
 import { IServiceProps } from 'src/types/service';
- 
 
 // ----------------------------------------------------------------------
 

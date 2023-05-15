@@ -1,17 +1,15 @@
 // @mui
 import { Box, Autocomplete, Checkbox, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-// assets
-import { countries } from 'src/data';
 // types
-import { ICountriesProps, ServiceProps } from 'src/types/utils';
+import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterServices: ServiceProps[];
-  onChangeLanguage: (keyword: ServiceProps[]) => void;
-  services: Array<ServiceProps>;
+  filterServices: IServiceProps[];
+  onChangeLanguage: (keyword: IServiceProps[]) => void;
+  services: Array<IServiceProps>;
 };
 
 export default function FilterServices({ services, filterServices, onChangeLanguage }: Props) {

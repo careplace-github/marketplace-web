@@ -18,7 +18,7 @@ import { animateScroll } from 'react-scroll';
 import { useResponsive } from 'src/hooks';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { ICompanyProps } from 'src/types/company';
-import { ServiceProps } from 'src/types/utils';
+import { IServiceProps } from 'src/types/utils';
 import CompaniesList from '../components/list/CompaniesList';
 import CompaniesFilters from '../components/filters/CompaniesFilters';
 import CompaniesFiltersHead from '../components/filters/components/CompaniesFiltersHead';
@@ -30,7 +30,7 @@ export default function CompaniesListView() {
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState();
   const [servicesLoading, setServicesLoading] = useState(true);
-  const [availableServices, setAvailableServices] = useState<ServiceProps[]>([]);
+  const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const [sortBy, setSortBy] = useState('relative');
   const router = useRouter();

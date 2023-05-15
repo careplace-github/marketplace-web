@@ -1,5 +1,5 @@
 //
-import { ICountriesProps, ISocialLinks, ServiceProps, WeekdaysProps } from './utils';
+import { IServiceProps, ISocialLinks } from './utils';
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ type IAddressProps = {
 
 export type ICompanyProps = {
   _id: string;
-  addresses: AddressesProps[];
+  addresses: IAddressProps[];
   createdAt: string;
   business_profile: {
     about: string;
@@ -63,5 +63,5 @@ export type ICompanyProps = {
 
 export type ICompanyFiltersProps = {
   filterWeekdays: number[];
-  filterServices: ServiceProps[];
+  filterServices: IServiceProps[];
 };
