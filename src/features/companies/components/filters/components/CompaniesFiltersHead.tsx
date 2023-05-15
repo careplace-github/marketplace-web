@@ -10,9 +10,9 @@ import { visuallyHidden } from 'src/features/account/components';
 interface Prop {
   order: 'asc' | 'desc';
   orderBy: string;
-  rowCount: number;
+  rowCount?: number;
   headCells: any[];
-  numSelected: number;
+  numSelected?: number;
   onSort: (id: string) => void;
 }
 

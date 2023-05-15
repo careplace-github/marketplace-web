@@ -183,7 +183,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
                       query: { ...router.query },
                     });
                   }}
-                  rel="noopener"
                   sx={{
                     mt: '40px',
                     px: 4,
@@ -268,7 +267,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
                   query: { ...router.query },
                 });
               }}
-              rel="noopener"
               sx={{
                 px: 4,
                 bgcolor: 'primary.main',

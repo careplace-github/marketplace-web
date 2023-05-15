@@ -12,8 +12,8 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterLevel: WeekdaysProps[];
-  onChangeLevel: (event: SelectChangeEvent<WeekdaysProps[]>) => void;
+  filterLevel: number[];
+  onChangeLevel: (event: SelectChangeEvent<number[]>) => void;
 };
 
 export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
@@ -27,7 +27,13 @@ export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
         MenuProps={MenuProps}
         renderValue={(items) => {
           const selected: string[] = [];
-          items.forEach((item) => selected.push(item.text));
+          items.forEach((id) => {
+            Weekdays.forEach((day) => {
+              if (day.value === id) {
+                selected.push(day.text);
+              }
+            });
+          });
           if (items.length === 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
@@ -43,8 +49,8 @@ export default function FilterLevel({ filterLevel, onChangeLevel }: Props) {
         }}
       >
         {Weekdays.map((day) => (
-          <MenuItem key={day.value} value={day} sx={menuItemStyle}>
-            <Checkbox size="small" checked={filterLevel.includes(day)} />
+          <MenuItem key={day.value} value={day.value} sx={menuItemStyle}>
+            <Checkbox size="small" checked={filterLevel.includes(day.value)} />
             {day.text}
           </MenuItem>
         ))}

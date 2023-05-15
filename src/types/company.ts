@@ -19,31 +19,25 @@ export type ICompanyResponsibleProps = {
   students?: number;
 };
 
+type AddressesProps = {
+  city: string;
+  coordinates: number[];
+  country: string;
+  postal_code: string;
+  street: string;
+  _id: string;
+};
+
 export type ICompanyProps = {
   _id: string;
-  address?: {
-    city?: string;
-    coordinates: string[];
-    country?: string;
-    countryId?: string;
-    fullAddress?: string;
-    postal_code?: string;
-    street?: string;
-  };
-  createdAt?: string;
+  addresses: AddressesProps[];
+  createdAt: string;
   business_profile: {
     about: string;
-    address?: {
-      street?: string;
-      city?: string;
-      country?: string;
-      postal_code?: string;
-    };
-    average_hourly_rate: number;
     email: string;
     logo: string;
     name: string;
-    phone?: string;
+    phone: string;
     social_links?: {
       facebook?: string;
       instagram?: string;
@@ -51,13 +45,23 @@ export type ICompanyProps = {
     };
     website?: string;
   };
+  pricing: {
+    average_hourly_rate: number;
+    minimum_hourly_rate: number;
+  };
+  rating: {
+    average: number;
+    count: number;
+  };
   is_active: boolean;
-  rating: { average: number; count: number };
-  service_area?: string[];
-  services?: string[];
+  service_area: {
+    type: string;
+    coordinates: any[];
+  };
+  services: string[];
 };
 
 export type ICompanyFiltersProps = {
-  filterLevel: WeekdaysProps[];
+  filterLevel: number[];
   filterLanguage: ServiceProps[];
 };
