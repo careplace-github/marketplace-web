@@ -34,7 +34,6 @@ export default function FilterLanguage({ services, filterLanguage, onChangeLangu
       getOptionLabel={(option) => option.name}
       value={filterLanguage}
       onChange={(event, value) => {
-        console.log(value);
         onChangeLanguage(value);
       }}
       renderInput={(params) => (
