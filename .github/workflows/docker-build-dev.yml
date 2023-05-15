@@ -21,4 +21,4 @@ jobs:
         # We use the Staging Dockerfile to test the react build
         # Staging Dockerfile: npm run build -> npm start
         # Dev Dockerfile: npm dev
-        run: docker build . --file .docker/frontend/Dockerfile.stag --tag careplace-marketplace-frontend-build-dev-${GITHUB_REF##*/}:$(date +%s)
+        run: docker build . --file .docker/frontend/Dockerfile.dev --tag careplace-marketplace-frontend-build-dev-${GITHUB_REF##*/}:$(date +%s)

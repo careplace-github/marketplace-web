@@ -1,5 +1,5 @@
-version: "3"
-name: crm
+version: "1.0.0"
+name: marketplace-web
 services:
   frontend:
     stdin_open: true
@@ -7,9 +7,9 @@ services:
     build: 
       context: ../../
       dockerfile: ./.docker/frontend/Dockerfile.dev
-    image: careplace/crm-frontend-dev:latest  
+    image: careplace/marketplace-web-dev:latest  
     ports:
-      - "3001:3001"
+      - "3000:3000"
     container_name: frontend
     volumes:
       - ../../:/usr/src/app

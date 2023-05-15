@@ -1,29 +1,23 @@
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { DatePicker } from '@mui/x-date-pickers';
-import { Box, Avatar, Typography, Stack, InputAdornment, IconButton } from '@mui/material';
+import { Box, Typography, Stack, InputAdornment, IconButton } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-// assets
-import { countries, genders } from 'src/data';
 // contexts
 import { useAuthContext } from 'src/contexts';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // components
 import Iconify from 'src/components/iconify';
-import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
-import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
+import FormProvider, { RHFTextField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
 export default function AccountPersonalView() {
-  const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
-  const { user, updateUser } = useAuthContext();
   const theme = useTheme();
 
   const { changePassword } = useAuthContext();
@@ -110,6 +104,12 @@ export default function AccountPersonalView() {
           name="newPassword"
           label="Nova Password"
           type={showNewPassword ? 'text' : 'password'}
+          helperText={
+            <Stack component="span" direction="row" alignItems="center">
+              <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} /> A password tem de ter 6+
+              caracteres
+            </Stack>
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

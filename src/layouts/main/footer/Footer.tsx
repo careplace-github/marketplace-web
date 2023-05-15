@@ -63,8 +63,8 @@ export default function Footer() {
   const isAccount = startsWith(pathname, PATHS.account.root);
 
   const simpleFooter = (
-    <Container sx={{ py: 8, textAlign: 'center' }}>
-      <Logo single />
+    <Container sx={{ py: 3, textAlign: 'center', alignItems: 'center' }}>
+     
 
       <Typography variant="caption" component="div" sx={{ color: 'text.secondary' }}>
        Careplace © 2023. Todos os direitos reservados.

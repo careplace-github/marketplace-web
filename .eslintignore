@@ -1,5 +1,5 @@
 // .eslintignore
-/node_modules
+**/node_modules/*
 **/out/*
 **/.next/**
 **/_next/**
@@ -9,3 +9,7 @@ package-lock.json
 
 src/_mock
 /config
+/coverage
+./cypress.config.ts
+jest.config.ts
+
