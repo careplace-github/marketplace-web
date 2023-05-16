@@ -15,7 +15,7 @@ const otherServices = [
     value: 'online_medical_consultation',
   },
   {
-    icon: 'icon-park-outline:muscle',
+    icon: 'medical-icon:i-physical-therapy',
     label: 'Fisioterapia',
     value: 'physiotherapy',
   },

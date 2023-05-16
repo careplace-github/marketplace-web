@@ -1,115 +1,119 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
+import { useTheme } from '@mui/material/styles';
 import { alpha } from '@mui/material/styles';
 import { Typography, Stack, Box, Button, Divider, Card } from '@mui/material';
 // utils
 import { fCurrency } from 'src/utils/formatNumber';
 //
+import { FilterServices, FilterWeekdays } from '../filters/components';
 import { FilterTime, FilterGuests } from 'src/features/orders';
 // types
-import { ICompanyProps } from 'src/types/company';
+import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  company: ICompanyProps;
+  price: number;
+  services: IServiceProps[];
+  companyId: string;
 };
 
-export default function CompanyDetailReserveForm({ company }: Props) {
+export default function CompanyDetailReserveForm({ price, services, companyId }: Props) {
   const { push } = useRouter();
-  const [departureDay, setDepartureDay] = useState<Date | null>(null);
-  const [guests, setGuests] = useState({
-    adults: 0,
-    children: 0,
-  });
-  const { price, priceSale } = company;
-  const handleChangeDepartureDay = (newValue: Date | null) => {
-    setDepartureDay(newValue);
-  };
-  const handleIncrementGuests = (guest?: string) => {
-    if (guest === 'children') {
-      setGuests({ ...guests, children: guests.children + 1 });
-    } else {
-      setGuests({ ...guests, adults: guests.adults + 1 });
-    }
-  };
-  const handleDecreaseGuests = (guest?: string) => {
-    if (guest === 'children') {
-      setGuests({ ...guests, children: guests.children - 1 });
-    } else {
-      setGuests({ ...guests, adults: guests.adults - 1 });
-    }
-  };
+  const router = useRouter();
+  const theme = useTheme();
+  const [filterServices, setFilterServices] = useState([]);
+  const [filterWeekdays, setFilterWeekdays] = useState([]);
+
+  useEffect(() => {
+    const preSelectedServices = router.query.services;
+    const preSelectedWeekdays = router.query.weekDay;
+    console.log(preSelectedServices);
+    console.log(preSelectedWeekdays);
+  }, [router.isReady]);
+
   const handleClickReserve = () => {
     push('/');
   };
+
+  const handleChangeWeekdays = (event: SelectChangeEvent<number[]>) => {
+    const {
+      target: { value },
+    } = event;
+
+    const newFilter = value as number[];
+    setFilterWeekdays(newFilter);
+    const currentQuery = router.query;
+    router.push({
+      pathname: `/companies/${companyId}`,
+      query: {
+        ...currentQuery,
+        weekDay: newFilter.join(','),
+        page: 1,
+      },
+    });
+  };
+
+  const handleChangeServices = (keyword: IServiceProps[]) => {
+    const auxId: any[] = [];
+    keyword.forEach((item) => auxId.push(item._id));
+    setFilterServices(keyword);
+    const currentQuery = router.query;
+    router.push({
+      pathname: `/companies/${companyId}`,
+      query: {
+        ...currentQuery,
+        services: auxId.join(','),
+        page: 1,
+      },
+    });
+  };
+
   return (
     <Card>
       <Stack spacing={3} sx={{ p: 3 }}>
         <Stack spacing={1} direction="row" alignItems="center" sx={{ typography: 'h4' }}>
-          {priceSale > 0 && (
-            <Box sx={{ color: 'grey.500', textDecoration: 'line-through', mr: 1 }}>
-              {fCurrency(priceSale)}
-            </Box>
-          )}
-          {fCurrency(price)}
+          Desde {fCurrency(price)}€
           <Typography variant="body2" component="span" sx={{ color: 'text.disabled', ml: 1 }}>
-            /Tour
+            / Hora
           </Typography>
         </Stack>
-        <Stack spacing={1.5}>
-          <Box
-            sx={{
-              py: 0.5,
-              px: 1.5,
-              borderRadius: 1,
-              bgcolor: (theme) => alpha(theme.palette.grey[500], 0.08),
-            }}
-          >
-            <FilterTime
-              departureDay={departureDay}
-              onChangeDepartureDay={handleChangeDepartureDay}
+        <Stack spacing={3}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            Serviços
+            <FilterServices
+              services={services}
+              filterServices={filterServices}
+              onChangeLanguage={handleChangeServices}
             />
           </Box>
-          <Box
-            sx={{
-              py: 0.5,
-              px: 1.5,
-              borderRadius: 1,
-              bgcolor: (theme) => alpha(theme.palette.grey[500], 0.08),
-            }}
-          >
-            <FilterGuests
-              guests={guests}
-              onDecreaseGuests={handleDecreaseGuests}
-              onIncrementGuests={handleIncrementGuests}
-              sx={undefined}
-            />
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            Dias da semana
+            <FilterWeekdays filterWeekdays={filterWeekdays} onChangeLevel={handleChangeWeekdays} />
           </Box>
-        </Stack>
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-            Service charge
-          </Typography>
-          <Typography variant="body2">{fCurrency(priceSale)} || `-` </Typography>
-        </Stack>
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-            Discount
-          </Typography>
-          <Typography variant="body2"> - </Typography>
         </Stack>
       </Stack>
       <Divider sx={{ borderStyle: 'dashed' }} />
       <Stack spacing={3} sx={{ p: 3 }}>
-        <Stack spacing={1} direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant="h5">Total</Typography>
-          <Typography variant="h5">{fCurrency(priceSale)}</Typography>
-        </Stack>
-        <Button size="large" variant="contained" color="inherit" onClick={handleClickReserve}>
-          Reserve
+        <Button
+          size="large"
+          variant="contained"
+          color="inherit"
+          onClick={handleClickReserve}
+          sx={{
+            px: 4,
+            bgcolor: 'primary.main',
+            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            '&:hover': {
+              bgcolor: 'primary.dark',
+              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            },
+          }}
+        >
+          Continuar
         </Button>
       </Stack>
     </Card>

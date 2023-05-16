@@ -150,7 +150,11 @@ export default function CompanyDetailView() {
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
-            <CompanyDetailReserveForm company={_mockCompany} />
+            <CompanyDetailReserveForm
+              services={availableServices}
+              price={companyInfo.pricing.minimum_hourly_rate}
+              companyId={companyInfo._id}
+            />
           </Grid>
 
           <Grid xs={12} md={7} lg={8}>
@@ -162,7 +166,7 @@ export default function CompanyDetailView() {
               services={companyServices}
             />
 
-            <Stack direction="row" flexWrap="wrap" sx={{ mt: 8 }}>
+            <Stack direction="row" flexWrap="wrap" sx={{ mt: 12 }}>
               <Typography variant="subtitle2" sx={{ mt: 0.75, mr: 1.5 }}>
                 Partilhar:
               </Typography>
