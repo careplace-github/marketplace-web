@@ -117,7 +117,7 @@ export default function CompaniesFilters({
     }
   }, [router.isReady]);
 
-  const handleChangeLevel = (event: SelectChangeEvent<number[]>) => {
+  const handleChangeWeekdays = (event: SelectChangeEvent<number[]>) => {
     const {
       target: { value },
     } = event;
@@ -139,7 +139,7 @@ export default function CompaniesFilters({
     });
   };
 
-  const handleChangeLanguage = (keyword: IServiceProps[]) => {
+  const handleChangeServices = (keyword: IServiceProps[]) => {
     const auxId: any[] = [];
     keyword.forEach((item) => auxId.push(item._id));
     setFilters({
@@ -211,14 +211,17 @@ export default function CompaniesFilters({
       )}
 
       <Block title="Dias da semana">
-        <FilterWeekdays filterWeekdays={filters.filterWeekdays} onChangeLevel={handleChangeLevel} />
+        <FilterWeekdays
+          filterWeekdays={filters.filterWeekdays}
+          onChangeLevel={handleChangeWeekdays}
+        />
       </Block>
 
       <Block title="Serviços">
         <FilterServices
           services={services}
           filterServices={filters.filterServices}
-          onChangeLanguage={handleChangeLanguage}
+          onChangeLanguage={handleChangeServices}
         />
       </Block>
 

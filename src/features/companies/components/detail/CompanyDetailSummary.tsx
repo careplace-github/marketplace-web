@@ -28,7 +28,7 @@ export default function CompanyDetailSummary({
   const { program, includes, highlights } = company;
 
   return (
-    <Stack spacing={5}>
+    <Stack spacing={7}>
       {/* -- About -- */}
       <div>
         <Typography variant="h5" paragraph>
