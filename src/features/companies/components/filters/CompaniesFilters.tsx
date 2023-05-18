@@ -89,10 +89,10 @@ export default function CompaniesFilters({
       });
     }
     if (queryValues.minPrice) {
-      minPrice = queryValues.minPrice;
+      minPrice = queryValues.minPrice ? queryValues.minPrice : 0;
     }
     if (queryValues.maxPrice) {
-      maxPrice = queryValues.maxPrice;
+      maxPrice = queryValues.maxPrice ? queryValues.maxPrice : 50;
     }
     setFilters({
       ...filters,
