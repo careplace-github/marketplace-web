@@ -25,6 +25,9 @@ import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CompanyProfileCover from '../components/companyDetails/CompanyProfileCover';
+// type props
+import { IServiceProps } from 'src/types/utils';
+import { ICompanyProps } from 'src/types/company';
 //
 import {
   CompanyDetailHeader,
@@ -34,16 +37,26 @@ import {
   SimilarCompaniesList,
   CompanyDetailReviews,
 } from '../components';
-import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
+type IFilterQueryProps = {
+  weekdays: string | undefined;
+  services: string | undefined;
+};
+
 export default function CompanyDetailView() {
-  const [loading, setLoading] = useState(true);
-  const [servicesLoading, setServicesLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [companiesLoading, setCompaniesLoading] = useState<boolean>(true);
+  const [servicesLoading, setServicesLoading] = useState<boolean>(true);
+  const [filterQueries, setFilterQueries] = useState<IFilterQueryProps>({
+    weekdays: undefined,
+    services: undefined,
+  });
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [companyServices, setCompanyServices] = useState<string[]>([]);
   const [companyInfo, setCompanyInfo] = useState();
+  const [similarCompanies, setSimilarCompanies] = useState<ICompanyProps[]>([]);
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const _mockCompany = _companies[0];
@@ -60,7 +73,38 @@ export default function CompanyDetailView() {
   }, []);
 
   useEffect(() => {
+    setCompaniesLoading(true);
+    function getRandomNumber(max) {
+      return Math.floor(Math.random() * max + 1);
+    }
+
+    const fetchCompanies = async () => {
+      const companyId = router.asPath.split('/')[2].split('?')[0];
+      const response = await axios.get('/companies/search');
+      const allCompanies = response.data.data;
+
+      const randomIndex: number[] = [];
+      for (let i = 0; i < allCompanies.length - 1; i++) {
+        let randomNumber = getRandomNumber(allCompanies.length - 1);
+        while (companyId === allCompanies[randomNumber] || randomIndex.includes(randomNumber)) {
+          randomNumber = getRandomNumber(allCompanies.length - 1);
+        }
+        randomIndex.push(randomNumber);
+      }
+
+      setSimilarCompanies([
+        allCompanies[randomIndex[0]],
+        allCompanies[randomIndex[1]],
+        allCompanies[randomIndex[2]],
+      ]);
+      setCompaniesLoading(false);
+    };
+    fetchCompanies();
+  }, [router.asPath, router.isReady]);
+
+  useEffect(() => {
     if (router.isReady) {
+      setLoading(true);
       const companyId = router.asPath.split('/')[2].split('?')[0];
       const fetchCompany = async () => {
         const response = await axios.get(`/companies/${companyId}`);
@@ -71,7 +115,7 @@ export default function CompanyDetailView() {
 
       fetchCompany();
     }
-  }, [router.isReady]);
+  }, [router.asPath, router.isReady]);
 
   useEffect(() => {
     setServicesLoading(true);
@@ -89,7 +133,7 @@ export default function CompanyDetailView() {
     setServicesLoading(false);
   }, [availableServices, companyInfo]);
 
-  if (loading || servicesLoading) {
+  if (loading || servicesLoading || companiesLoading) {
     return <LoadingScreen />;
   }
 
@@ -99,7 +143,11 @@ export default function CompanyDetailView() {
       delete currentQuery.id;
       router.push({
         pathname: '/companies',
-        query: currentQuery,
+        query: {
+          ...currentQuery,
+          weekDay: filterQueries.weekdays,
+          services: filterQueries.services,
+        },
       });
     }
   };
@@ -151,6 +199,9 @@ export default function CompanyDetailView() {
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
             <CompanyDetailReserveForm
+              onReserveFiltersChange={(weekdaysQuery, servicesQuery) =>
+                setFilterQueries({ weekdays: weekdaysQuery, services: servicesQuery })
+              }
               services={availableServices}
               price={companyInfo.pricing.minimum_hourly_rate}
               companyId={companyInfo._id}
@@ -202,7 +253,7 @@ export default function CompanyDetailView() {
 
       <CompanyDetailReviews />
 
-      {/* <SimilarCompaniesList companies={_companies.slice(-3)} /> */}
+      <SimilarCompaniesList companies={similarCompanies} />
     </>
   );
 }

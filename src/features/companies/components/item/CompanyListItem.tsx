@@ -36,13 +36,11 @@ export default function CompanyListItem({ company, vertical }: Props) {
     <Card
       sx={{
         minHeight: '250px',
-        display: { sm: 'flex' },
+        display: !vertical ? { sm: 'flex' } : undefined,
+
         '&:hover': {
           boxShadow: (itemTheme) => itemTheme.customShadows.z24,
         },
-        ...(vertical && {
-          flexDirection: 'column',
-        }),
       }}
     >
       <Box sx={{ flexShrink: { sm: 0 } }}>
@@ -52,7 +50,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
             '& > span > img': {
               objectFit: 'contain',
             },
-            height: isSmUp ? 1 : 240,
+            height: isSmUp && !vertical ? 1 : 240,
             width: { sm: 240 },
             ...(vertical && {
               width: { sm: 1 },
@@ -76,10 +74,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
         sx={{ p: 3, width: '100%', justifyContent: 'space-between', position: 'relative' }}
       >
         <Stack
-          spacing={{
-            xs: 3,
-            sm: vertical ? 3 : 1,
-          }}
           direction={isMdUp ? 'row' : 'column-reverse'}
           alignItems="flex-start"
           justifyContent={isMdUp ? 'flex-start' : 'space-between'}
@@ -112,19 +106,11 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 </TextMaxLine>
               </Stack>
 
-              <TextMaxLine
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  ...(vertical && {
-                    display: { sm: 'none', mt: isMdUp ? 0 : '10px' },
-                  }),
-                }}
-              >
+              <TextMaxLine variant="body2" color="text.secondary">
                 {company.business_profile.about}
               </TextMaxLine>
             </Stack>
-            {!isSmUp && (
+            {(!isSmUp || vertical) && (
               <Stack
                 direction="column"
                 alignItems="flex-start"
@@ -191,6 +177,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                   variant="contained"
                   color="inherit"
                   onClick={() => {
+                    console.log('clicked ver mais');
                     router.push({
                       pathname: `/companies/${company._id}`,
                       query: { ...router.query },
@@ -214,7 +201,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
             )}
           </Stack>
         </Stack>
-        {isSmUp && (
+        {isSmUp && !vertical && (
           <Stack
             direction="row"
             alignItems="flex-end"
@@ -275,6 +262,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
               variant="contained"
               color="inherit"
               onClick={() => {
+                console.log('clicked ver mais');
                 router.push({
                   pathname: `/companies/${company._id}`,
                   query: { ...router.query },
