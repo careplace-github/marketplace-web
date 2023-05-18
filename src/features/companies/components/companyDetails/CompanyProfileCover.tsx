@@ -54,7 +54,6 @@ export default function CompanyProfileCover({ name, image, location }: ICompanyD
         <Avatar
           src={image}
           alt={name}
-          name={name}
           sx={{
             mx: 'auto',
             borderWidth: 2,
