@@ -3,15 +3,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { alpha } from '@mui/material/styles';
 import { Typography, Stack, Box, Button, Divider, Card } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material';
 // utils
 import { fCurrency } from 'src/utils/formatNumber';
-//
-import { FilterServices, FilterWeekdays } from '../filters/components';
-import { FilterTime, FilterGuests } from 'src/features/orders';
+
 // types
 import { IServiceProps } from 'src/types/utils';
+//
+import { FilterServices, FilterWeekdays } from '../filters/components';
 
 // ----------------------------------------------------------------------
 
@@ -35,26 +35,35 @@ export default function CompanyDetailReserveForm({
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
 
   useEffect(() => {
-    const preSelectedServices = router.query.services?.split(',');
-    const preSelectedWeekdays = router.query.weekDay?.split(',');
+    const weekdayQueryAux = router.query.services as string;
+    const serviceQueryAux = router.query.weekDay as string;
+    const preSelectedServices = weekdayQueryAux?.split(',');
+    const preSelectedWeekdays = serviceQueryAux?.split(',');
     if (preSelectedWeekdays && services.length > 0) {
       const weekdaysSelected: number[] = [];
       preSelectedWeekdays.forEach((item) => {
-        weekdaysSelected.push(parseInt(item));
+        if (item) {
+          weekdaysSelected.push(parseInt(item, 10));
+        }
       });
-      setFilterWeekdays(weekdaysSelected);
+      console.log('weekdays selected:', weekdaysSelected);
+      if (weekdaysSelected.length > 0) {
+        setFilterWeekdays(weekdaysSelected);
+      }
     }
     if (preSelectedServices && services.length > 0) {
-      const servicesSelected = [];
+      const servicesSelected: IServiceProps[] = [];
       console.log(services);
-      services.forEach((service) => {
+      services.forEach((service: IServiceProps) => {
         preSelectedServices.forEach((preSelected) => {
           if (service._id === preSelected) {
             servicesSelected.push(service);
           }
         });
       });
-      setFilterServices(servicesSelected);
+      if (servicesSelected.length > 0) {
+        setFilterServices(servicesSelected);
+      }
     }
   }, [router.isReady, services]);
 
@@ -62,7 +71,7 @@ export default function CompanyDetailReserveForm({
     // const currentQuery = router.query;
     const servicesIds: number[] = [];
     filterServices.forEach((service) => {
-      servicesIds.push(service._id);
+      servicesIds.push(parseInt(service._id, 10));
     });
 
     router.push({
@@ -83,7 +92,7 @@ export default function CompanyDetailReserveForm({
     setFilterWeekdays(newFilter);
     const ids: string[] = [];
     filterServices.forEach((item) => ids.push(item._id));
-    onReserveFiltersChange(value.join(','), ids.join(','));
+    onReserveFiltersChange(newFilter.join(','), ids.join(','));
   };
 
   const handleChangeServices = (keyword: IServiceProps[]) => {

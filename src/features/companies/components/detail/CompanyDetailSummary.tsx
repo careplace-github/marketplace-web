@@ -6,12 +6,12 @@ import { fDate } from 'src/utils/formatTime';
 import Iconify, { IconifyProps } from 'src/components/iconify';
 // types
 import { ICompanyProps } from 'src/types/company';
+import { IExtraServices } from 'src/types/company';
 // data
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  company: ICompanyProps;
   extraServices: IExtraServices[];
   description: string;
   name: string;
@@ -20,13 +20,10 @@ type Props = {
 
 export default function CompanyDetailSummary({
   services,
-  company,
   extraServices,
   description,
   name,
 }: Props) {
-  const { program, includes, highlights } = company;
-
   return (
     <Stack spacing={7}>
       {/* -- About -- */}
@@ -93,11 +90,10 @@ export default function CompanyDetailSummary({
 }
 // ----------------------------------------------------------------------
 type OverviewItemProp = {
-  text: string;
   label: string;
   icon: IconifyProps;
 };
-function OverviewItem({ icon, label, text = '-' }: OverviewItemProp) {
+function OverviewItem({ icon, label }: OverviewItemProp) {
   return (
     <Stack spacing={1.5} direction="row" alignItems="flex-start">
       <Iconify icon={icon} width={24} color="text.secondary" />

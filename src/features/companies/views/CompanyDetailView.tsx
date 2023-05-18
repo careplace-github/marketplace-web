@@ -20,18 +20,17 @@ import { _socials, _courses as _companies } from 'src/_mock';
 import { useRouter } from 'next/router';
 // data
 import { otherServices } from 'src/data';
+// type props
+import { IServiceProps } from 'src/types/utils';
+import { ICompanyProps } from 'src/types/company';
 // components
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 import CompanyProfileCover from '../components/companyDetails/CompanyProfileCover';
-// type props
-import { IServiceProps } from 'src/types/utils';
-import { ICompanyProps } from 'src/types/company';
+
 //
 import {
-  CompanyDetailHeader,
-  CompanyDetailGallery,
   CompanyDetailSummary,
   CompanyDetailReserveForm,
   SimilarCompaniesList,
@@ -55,11 +54,11 @@ export default function CompanyDetailView() {
   });
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [companyServices, setCompanyServices] = useState<string[]>([]);
-  const [companyInfo, setCompanyInfo] = useState();
+  const [companyAvailableServices, setCompanyAvailableServices] = useState<IServiceProps[]>([]);
+  const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [similarCompanies, setSimilarCompanies] = useState<ICompanyProps[]>([]);
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
-  const _mockCompany = _companies[0];
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -84,10 +83,17 @@ export default function CompanyDetailView() {
       const allCompanies = response.data.data;
 
       const randomIndex: number[] = [];
+      // eslint-disable-next-line no-plusplus
       for (let i = 0; i < allCompanies.length - 1; i++) {
         let randomNumber = getRandomNumber(allCompanies.length - 1);
-        while (companyId === allCompanies[randomNumber] || randomIndex.includes(randomNumber)) {
+        let maxTries = 0;
+        while (
+          (companyId === allCompanies[randomNumber]._id || randomIndex.includes(randomNumber)) &&
+          maxTries < 100
+        ) {
           randomNumber = getRandomNumber(allCompanies.length - 1);
+          // eslint-disable-next-line no-plusplus
+          maxTries++;
         }
         randomIndex.push(randomNumber);
       }
@@ -109,7 +115,6 @@ export default function CompanyDetailView() {
       const fetchCompany = async () => {
         const response = await axios.get(`/companies/${companyId}`);
         setCompanyInfo(response.data);
-        console.log(response.data);
         setLoading(false);
       };
 
@@ -120,7 +125,7 @@ export default function CompanyDetailView() {
   useEffect(() => {
     setServicesLoading(true);
     if (availableServices.length > 0 && companyInfo && companyInfo.services) {
-      const aux = [];
+      const aux: string[] = [];
       availableServices.forEach((availableService) => {
         companyInfo.services.forEach((item) => {
           if (availableService._id === item) {
@@ -129,6 +134,16 @@ export default function CompanyDetailView() {
         });
       });
       setCompanyServices(aux);
+      // get all services that the company can do to list them in the dropdown
+      const allCompanyAvailableServices: IServiceProps[] = [];
+      availableServices.forEach((item) => {
+        companyInfo.services.forEach((service) => {
+          if (item._id === service) {
+            allCompanyAvailableServices.push(item);
+          }
+        });
+      });
+      setCompanyAvailableServices(allCompanyAvailableServices);
     }
     setServicesLoading(false);
   }, [availableServices, companyInfo]);
@@ -152,7 +167,7 @@ export default function CompanyDetailView() {
     }
   };
 
-  return (
+  return companyInfo ? (
     <>
       <Container sx={{ overflow: 'hidden' }}>
         <Stack
@@ -202,7 +217,7 @@ export default function CompanyDetailView() {
               onReserveFiltersChange={(weekdaysQuery, servicesQuery) =>
                 setFilterQueries({ weekdays: weekdaysQuery, services: servicesQuery })
               }
-              services={availableServices}
+              services={companyAvailableServices}
               price={companyInfo.pricing.minimum_hourly_rate}
               companyId={companyInfo._id}
             />
@@ -210,7 +225,6 @@ export default function CompanyDetailView() {
 
           <Grid xs={12} md={7} lg={8}>
             <CompanyDetailSummary
-              company={_mockCompany}
               extraServices={otherServices}
               description={companyInfo.business_profile.about}
               name={companyInfo.business_profile.name}
@@ -255,5 +269,7 @@ export default function CompanyDetailView() {
 
       <SimilarCompaniesList companies={similarCompanies} />
     </>
+  ) : (
+    <LoadingScreen />
   );
 }
