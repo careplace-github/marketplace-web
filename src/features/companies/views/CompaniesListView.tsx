@@ -11,6 +11,7 @@ import { NAV } from 'src/layouts/config';
 import axios from 'src/lib/axios';
 // components
 import Iconify from 'src/components/iconify';
+import EmptyState from 'src/components/EmptyState/EmptyState';
 
 //
 import { animateScroll } from 'react-scroll';
@@ -204,12 +205,19 @@ export default function CompaniesListView() {
             onSort={handleSort}
             headCells={sortHead}
           />
-          <CompaniesList
-            onPageChange={handlePageChange}
-            totalPages={totalPages}
-            companies={companies}
-            loading={loading}
-          />
+          {companies.length > 0 ? (
+            <CompaniesList
+              onPageChange={handlePageChange}
+              totalPages={totalPages}
+              companies={companies}
+              loading={loading}
+            />
+          ) : (
+            <EmptyState
+              title="Sem resultados"
+              description="Por favor altere os filtros de pesquisa ou tente mais tarde"
+            />
+          )}
         </Box>
       </Stack>
     </Container>
