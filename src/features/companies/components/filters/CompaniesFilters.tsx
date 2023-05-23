@@ -213,7 +213,7 @@ export default function CompaniesFilters({
       <Block title="Dias da semana">
         <FilterWeekdays
           filterWeekdays={filters.filterWeekdays}
-          onChangeLevel={handleChangeWeekdays}
+          onChangeWeekdays={handleChangeWeekdays}
         />
       </Block>
 
@@ -221,7 +221,7 @@ export default function CompaniesFilters({
         <FilterServices
           services={services}
           filterServices={filters.filterServices}
-          onChangeLanguage={handleChangeServices}
+          onChangeServices={handleChangeServices}
         />
       </Block>
 

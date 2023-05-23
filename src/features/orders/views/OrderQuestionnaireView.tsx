@@ -1,22 +1,49 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+// router
+import { useRouter } from 'next/router';
 // @mui
 import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // _mock
 import { _tours as _companies } from 'src/_mock';
+// axios
+import axios from 'src/lib/axios';
+// types
+import { ICompanyProps } from 'src/types/company';
+// utils
+import { getAvailableServices } from 'src/utils/getAvailableServices';
 // components
 import FormProvider from 'src/components/hook-form';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
 import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../components';
+import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
 export default function OrderQuestionnaireView() {
   const [sameBilling, setSameBilling] = useState(false);
-
   const [departureDay, setDepartureDay] = useState(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
+  const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.isReady) {
+      const fetchCompany = async (companyId) => {
+        const response = await axios.get(`/companies/${companyId}`);
+        setCompanyInfo(response.data);
+        const available = await getAvailableServices(response.data.services);
+        setAvailableServices(available);
+        setLoading(false);
+      };
+
+      fetchCompany(router.query.id);
+    }
+  }, [router.isReady]);
 
   const [guests, setGuests] = useState({
     adults: 2,
@@ -99,7 +126,7 @@ export default function OrderQuestionnaireView() {
     setSameBilling(event.target.checked);
   };
 
-  return (
+  return !loading ? (
     <Container
       sx={{
         overflow: 'hidden',
@@ -115,13 +142,8 @@ export default function OrderQuestionnaireView() {
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
-              <StepLabel title="Informação do Pedido" step="1" />
-
-              <Divider sx={{ my: 5, borderStyle: 'dashed' }} />
-
-              <StepLabel title="Informação de Faturação" step="2" />
-
               <OrderQuestionnaireShippingForm
+                services={availableServices}
                 sameBilling={sameBilling}
                 onChangeSameBilling={handleChangeSameBilling}
               />
@@ -129,49 +151,20 @@ export default function OrderQuestionnaireView() {
           </Grid>
 
           <Grid xs={12} md={5}>
-            {/* <OrderQuestionnaireSummary
+            <OrderQuestionnaireSummary
               guests={guests}
-              company={_companies[0]}
+              company={companyInfo}
               departureDay={departureDay}
               isSubmitting={isSubmitting}
               onDecreaseGuests={handleDecreaseGuests}
               onIncrementGuests={handleIncrementGuests}
               onChangeDepartureDay={handleChangeDepartureDay}
-            /> */}
+            />
           </Grid>
         </Grid>
       </FormProvider>
     </Container>
-  );
-}
-
-// ----------------------------------------------------------------------
-type StepLabelProps = {
-  step: string;
-  title: string;
-};
-
-function StepLabel({ step, title }: StepLabelProps) {
-  return (
-    <Stack direction="row" alignItems="center" sx={{ mb: 3, typography: 'h5' }}>
-      <Box
-        sx={{
-          mr: 1.5,
-          width: 28,
-          height: 28,
-          flexShrink: 0,
-          display: 'flex',
-          typography: 'h6',
-          borderRadius: '50%',
-          alignItems: 'center',
-          bgcolor: 'primary.main',
-          justifyContent: 'center',
-          color: 'primary.contrastText',
-        }}
-      >
-        {step}
-      </Box>
-      {title}
-    </Stack>
+  ) : (
+    <LoadingScreen />
   );
 }
