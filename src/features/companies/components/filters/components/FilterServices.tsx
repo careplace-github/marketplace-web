@@ -28,6 +28,11 @@ export default function FilterServices({ services, filterServices, onChangeLangu
       multiple
       limitTags={1}
       disableCloseOnSelect
+      sx={{
+        '& .MuiButtonBase-root-MuiChip-root': {
+          backgroundColor: 'yellow',
+        },
+      }}
       options={services}
       getOptionLabel={(option) => option.name}
       value={filterServices}
@@ -47,7 +52,7 @@ export default function FilterServices({ services, filterServices, onChangeLangu
           }}
         />
       )}
-      ChipProps={{ color: 'info', size: 'small' }}
+      ChipProps={{ color: 'info', size: 'small', sx: { backgroundColor: 'primary.main' } }}
       renderOption={(props, option, { selected }) => (
         <Box component="li" {...props} sx={{ p: '3px' }} key={option._id}>
           <Checkbox
