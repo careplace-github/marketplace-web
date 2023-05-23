@@ -2,10 +2,10 @@
 import { Box, Pagination } from '@mui/material';
 // types
 import { IReviewItemProp } from 'src/types/review';
+// hooks
+import { useResponsive } from 'src/hooks';
 //
 import ReviewItem from '../item/ReviewItem';
-
-
 
 // ----------------------------------------------------------------------
 
@@ -14,11 +14,11 @@ type Props = {
 };
 
 export default function ReviewList({ reviews }: Props) {
+  const isSmUp = useResponsive('up', 'sm');
   return (
     <>
       {reviews.map((review) => {
-        const { id, name, rating, helpful, message, postedAt, avatarUrl } =
-          review;
+        const { id, name, rating, helpful, message, postedAt, avatarUrl } = review;
 
         return (
           <Box key={id}>
@@ -30,8 +30,6 @@ export default function ReviewList({ reviews }: Props) {
               rating={rating}
               helpful={helpful}
             />
-
-
           </Box>
         );
       })}
@@ -39,12 +37,12 @@ export default function ReviewList({ reviews }: Props) {
       <Pagination
         count={10}
         color="primary"
-        size="large"
+        size={isSmUp ? 'large' : 'small'}
         sx={{
           mt: 5,
           mb: 10,
           '& .MuiPagination-ul': {
-            justifyContent: 'center',
+            justifyContent: isSmUp ? 'center' : 'space-between',
           },
         }}
       />

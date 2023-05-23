@@ -15,6 +15,7 @@ import { useResponsive } from 'src/hooks';
 // components
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import Iconify from 'src/components/iconify';
+import EmptyState from 'src/components/empty-state/EmptyState';
 // Types
 import { IRelativeProps } from 'src/types/relative';
 //
@@ -51,7 +52,7 @@ export default function AccountRelativesView() {
 
   const handleDeleteRelative = async (relativeToDelete) => {
     const response = await axios.delete(`/users/relatives/${relativeToDelete._id}`);
- 
+
     fetchUserRelatives();
   };
 
@@ -109,7 +110,7 @@ export default function AccountRelativesView() {
             </Stack>
           )}
         </Stack>
-        {userRelatives.length > 0 && (
+        {userRelatives.length > 0 ? (
           <Box sx={{ maxHeight: '700px', mt: 3 }}>
             <RelativesList
               userRelatives={userRelatives}
@@ -119,6 +120,12 @@ export default function AccountRelativesView() {
               onDeleteRelative={handleDeleteRelative}
             />
           </Box>
+        ) : (
+          <EmptyState
+            icon="bi:person-x-fill"
+            title="Não tem nenhum familiar associado"
+            description="Todos os familiares que adicionar vão ser apresentados nesta página"
+          />
         )}
         {!isMdUp && (
           <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>

@@ -1,4 +1,3 @@
- 
 import { useState } from 'react';
 // @mui
 import { Box, Rating, Button, Stack, Avatar, Divider, Typography, TextField } from '@mui/material';
@@ -6,7 +5,6 @@ import { Box, Rating, Button, Stack, Avatar, Divider, Typography, TextField } fr
 import { fDate } from 'src/utils/formatTime';
 // types
 import { IReviewItemProp } from 'src/types/review';
- 
 
 // ----------------------------------------------------------------------
 
@@ -89,38 +87,6 @@ export default function ReviewItem({
             {tagUser && <strong>{`@${tagUser} `}</strong>}
             {message}
           </Typography>
-
-          {!hasReply && (
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ mt: 2 }}>
-              <Button
-                size="small"
-                color={isHelpful ? 'primary' : 'inherit'}
-                onClick={handleToggleHelpful}
-              >
-                Helpful {getHelpful(helpful, isHelpful)}
-              </Button>
-
-              <Box sx={{ width: 4, height: 4, bgcolor: 'text.disabled', borderRadius: '50%' }} />
-
-              <Button
-                size="small"
-                color={openReply ? 'primary' : 'inherit'}
-                onClick={handleOpenReply}
-              >
-                Reply
-              </Button>
-            </Stack>
-          )}
-
-          {!hasReply && openReply && (
-            <TextField
-              fullWidth
-              hiddenLabel
-              placeholder="Write comment..."
-              InputProps={{ sx: { height: 48 } }}
-              sx={{ mt: 3 }}
-            />
-          )}
         </Stack>
       </Stack>
 
