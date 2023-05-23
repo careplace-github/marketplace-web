@@ -1,4 +1,6 @@
 import React from 'react';
+// hooks
+import { useResponsive } from 'src/hooks';
 // components
 import { Typography, Stack } from '@mui/material';
 import Iconify from '../iconify/Iconify';
@@ -18,21 +20,28 @@ function EmptyState({
   containerWidth = '100%',
   containerHeight = '100%',
 }: IEmptyStateProps) {
+  const isSmUp = useResponsive('up', 'sm');
+
   return (
     <Stack
       direction="column"
       alignItems="center"
       justifyContent="center"
       gap="5px"
-      sx={{ width: containerWidth, height: containerHeight, minHeight: '300px' }}
+      sx={{
+        width: containerWidth,
+        height: containerHeight,
+        minHeight: '300px',
+        mt: '-20px',
+        gridColumnStart: 1,
+        gridColumnEnd: 3,
+      }}
     >
       <Iconify icon={icon} width={60} height={60} />
-      <Typography variant="h6" sx={{ mt: '20px' }}>
+      <Typography variant="h6" sx={{ mt: isSmUp ? '20px' : '0px' }}>
         {title}
       </Typography>
-      <Typography variant="body" sx={{ maxWidth: '80%' }}>
-        {description}
-      </Typography>
+      <Typography sx={{ maxWidth: '90%', textAlign: 'center' }}>{description}</Typography>
     </Stack>
   );
 }
