@@ -11,7 +11,7 @@ import { NAV } from 'src/layouts/config';
 import axios from 'src/lib/axios';
 // components
 import Iconify from 'src/components/iconify';
-import EmptyState from 'src/components/EmptyState/EmptyState';
+import EmptyState from 'src/components/empty-state/EmptyState';
 
 //
 import { animateScroll } from 'react-scroll';
@@ -214,6 +214,7 @@ export default function CompaniesListView() {
             />
           ) : (
             <EmptyState
+              icon="clarity:building-line"
               title="Sem resultados"
               description="Por favor altere os filtros de pesquisa ou tente mais tarde"
             />

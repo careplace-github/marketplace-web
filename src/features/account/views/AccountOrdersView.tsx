@@ -23,6 +23,7 @@ import { IOrderProps } from 'src/types/order';
 // components
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import EmptyState from 'src/components/empty-state/EmptyState';
 // lib
 import axios from 'src/lib/axios';
 //
@@ -152,60 +153,68 @@ export default function AccountOrdersView() {
           ))}
         </Tabs>
 
-        <TableContainer
-          sx={{
-            overflow: 'unset',
-            '& .MuiTableCell-head': {
-              color: 'text.primary',
-            },
-            '& .MuiTableCell-root': {
-              bgcolor: 'background.default',
-              borderBottomColor: (theme) => theme.palette.divider,
-            },
-          }}
-        >
-          <AccountOrdersTableToolbar rowCount={orders.length} numSelected={selected.length} />
+        {orders.length > 0 ? (
+          <TableContainer
+            sx={{
+              overflow: 'unset',
+              '& .MuiTableCell-head': {
+                color: 'text.primary',
+              },
+              '& .MuiTableCell-root': {
+                bgcolor: 'background.default',
+                borderBottomColor: (theme) => theme.palette.divider,
+              },
+            }}
+          >
+            <AccountOrdersTableToolbar rowCount={orders.length} numSelected={selected.length} />
 
-          <Scrollbar>
-            <Table
-              sx={{
-                minWidth: 720,
-              }}
-              size={dense ? 'small' : 'medium'}
-            >
-              <AccountOrdersTableHead
-                order={sortOrder}
-                orderBy={sortBy}
-                onSort={handleSort}
-                headCells={TABLE_HEAD}
-                rowCount={orders.length}
-                numSelected={selected.length}
-              />
+            <Scrollbar>
+              <Table
+                sx={{
+                  minWidth: 720,
+                }}
+                size={dense ? 'small' : 'medium'}
+              >
+                <AccountOrdersTableHead
+                  order={sortOrder}
+                  orderBy={sortBy}
+                  onSort={handleSort}
+                  headCells={TABLE_HEAD}
+                  rowCount={orders.length}
+                  numSelected={selected.length}
+                />
 
-              <TableBody>
-                {stableSort(orders, getComparator(sortOrder, sortBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((order: IOrderProps) => (
-                    <AccountOrdersTableRow
-                      key={order._id}
-                      row={order}
-                      selected={selected.includes(order._id)}
-                    />
-                  ))}
+                <TableBody>
+                  {stableSort(orders, getComparator(sortOrder, sortBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((order: IOrderProps) => (
+                      <AccountOrdersTableRow
+                        key={order._id}
+                        row={order}
+                        selected={selected.includes(order._id)}
+                      />
+                    ))}
 
-                {emptyRows > 0 && (
-                  <TableRow
-                    sx={{
-                      height: (dense ? 36 : 57) * emptyRows,
-                    }}
-                  >
-                    <TableCell colSpan={9} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </Scrollbar>
-        </TableContainer>
+                  {emptyRows > 0 && (
+                    <TableRow
+                      sx={{
+                        height: (dense ? 36 : 57) * emptyRows,
+                      }}
+                    >
+                      <TableCell colSpan={9} />
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </Scrollbar>
+          </TableContainer>
+        ) : (
+          <EmptyState
+            icon="fluent-mdl2:reservation-orders"
+            title="Não tem nenhum pedido"
+            description="Todos os pedidos que realizar serão apresentados nesta página"
+          />
+        )}
 
         <Box sx={{ position: 'relative.name' }}>
           <TablePagination
