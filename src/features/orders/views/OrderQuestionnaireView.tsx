@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
 // router
 import { useRouter } from 'next/router';
 // @mui
@@ -12,6 +13,8 @@ import { _tours as _companies } from 'src/_mock';
 import axios from 'src/lib/axios';
 // types
 import { ICompanyProps } from 'src/types/company';
+import { IServiceProps } from 'src/types/utils';
+import { IRelativeProps } from 'src/types/relative';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 // components
@@ -19,7 +22,6 @@ import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
 import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../components';
-import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
@@ -27,9 +29,22 @@ export default function OrderQuestionnaireView() {
   const [sameBilling, setSameBilling] = useState(false);
   const [departureDay, setDepartureDay] = useState(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
+  const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const router = useRouter();
+
+  const fetchUserRelatives = async () => {
+    const response = await axios.get('users/relatives');
+    setUserRelatives(response.data.data);
+    setRelativesLoading(false);
+    console.log(response.data.data);
+  };
+
+  useEffect(() => {
+    fetchUserRelatives();
+  }, []);
 
   useEffect(() => {
     if (router.isReady) {
@@ -126,7 +141,7 @@ export default function OrderQuestionnaireView() {
     setSameBilling(event.target.checked);
   };
 
-  return !loading ? (
+  return !loading && !relativesLoading ? (
     <Container
       sx={{
         overflow: 'hidden',
@@ -143,6 +158,7 @@ export default function OrderQuestionnaireView() {
           <Grid xs={12} md={7}>
             <Stack>
               <OrderQuestionnaireShippingForm
+                relatives={userRelatives}
                 services={availableServices}
                 sameBilling={sameBilling}
                 onChangeSameBilling={handleChangeSameBilling}
@@ -151,15 +167,7 @@ export default function OrderQuestionnaireView() {
           </Grid>
 
           <Grid xs={12} md={5}>
-            <OrderQuestionnaireSummary
-              guests={guests}
-              company={companyInfo}
-              departureDay={departureDay}
-              isSubmitting={isSubmitting}
-              onDecreaseGuests={handleDecreaseGuests}
-              onIncrementGuests={handleIncrementGuests}
-              onChangeDepartureDay={handleChangeDepartureDay}
-            />
+            <OrderQuestionnaireSummary company={companyInfo} isSubmitting={isSubmitting} />
           </Grid>
         </Grid>
       </FormProvider>

@@ -20,7 +20,7 @@ export default function FilterRecurrency({ filterRecurrency, onChangeRecurrency 
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select
         displayEmpty
-        value={filterRecurrency}
+        value={filterRecurrency || ''}
         onChange={onChangeRecurrency}
         MenuProps={MenuProps}
         renderValue={(value) => {
