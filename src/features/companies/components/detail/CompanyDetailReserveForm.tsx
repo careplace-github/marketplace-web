@@ -69,9 +69,9 @@ export default function CompanyDetailReserveForm({
 
   const handleClickContinue = () => {
     // const currentQuery = router.query;
-    const servicesIds: number[] = [];
+    const servicesIds: string[] = [];
     filterServices.forEach((service) => {
-      servicesIds.push(parseInt(service._id, 10));
+      servicesIds.push(service._id);
     });
 
     router.push({
