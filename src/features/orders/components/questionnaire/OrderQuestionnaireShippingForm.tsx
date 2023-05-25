@@ -45,8 +45,8 @@ import { IRelativeProps } from 'src/types/relative';
 type Props = {
   services: IServiceProps[];
   relatives: IRelativeProps[];
-  sameBilling: boolean;
-  onChangeSameBilling: (event: React.ChangeEvent<HTMLInputElement>) => void;
+
+  onValidChange: Function;
 };
 
 type IScheduleProps = {
@@ -57,9 +57,9 @@ type IScheduleProps = {
 };
 
 export default function OrderQuestionnaireShippingForm({
-  sameBilling,
   relatives,
-  onChangeSameBilling,
+
+  onValidChange,
   services,
 }: Props) {
   const router = useRouter();
@@ -111,10 +111,66 @@ export default function OrderQuestionnaireShippingForm({
       valid: undefined,
     },
   ]);
-  const [startDate, setStartDate] = useState<Date>();
+  const [startDate, setStartDate] = useState<Date>(new Date());
   const handleChangeServices = (keyword: IServiceProps[]) => {
     setFilterServices(keyword);
   };
+
+  useEffect(() => {
+    let isScheduleValid = true;
+    schedule.forEach((item) => {
+      if (item.valid === false) {
+        isScheduleValid = false;
+      }
+    });
+    const isInvalid =
+      !filterRecurrency ||
+      filterServices.length === 0 ||
+      filterWeekdays.length === 0 ||
+      startDate.getTime() < new Date().getTime() ||
+      !isScheduleValid ||
+      !selectedRelative;
+    console.log(isInvalid);
+
+    if (isInvalid) {
+      onValidChange(false);
+      return;
+    }
+    // const requestBody = {
+    //   company: { type: Schema.ObjectId, ref: 'Company', required: true },
+
+    //   // The customer is the user that is paying for the order
+    //   user: { type: Schema.ObjectId, ref: 'marketplace_users', required: true },
+
+    //   // The client is the user that is receiving the service (home care support).
+    //   relative: { type: Schema.ObjectId, ref: 'Relative', required: true },
+
+    //   services: [{ type: Schema.ObjectId, ref: 'Service', required: true }],
+
+    //   // Json with all the information about the order schedule
+    //   schedule_information: {
+    //     start_date: startDate,
+
+    //     // 0 -> Every 0 weeks -> Not recurrent, one time only order.
+    //     // 1 -> Every 1 week -> Weekly
+    //     // 2 -> Every 2 weeks -> Biweekly
+    //     // 4 -> Every 4 weeks -> Monthly
+    //     recurrency: recurrency,
+    //     schedule: [
+    //       {
+    //         week_day: {
+    //           type: Number,
+    //           required: true,
+    //           enum: [1, 2, 3, 4, 5, 6, 7],
+    //         },
+    //         start: { type: Date, required: true },
+    //         end: { type: Date, required: true },
+    //       },
+    //     ],
+    //   },
+    // };
+    onValidChange(true);
+  }, [filterRecurrency, filterServices, filterWeekdays, startDate, schedule, selectedRelative]);
 
   useEffect(() => {
     // show pre selected values for weekdays and services
@@ -244,7 +300,7 @@ export default function OrderQuestionnaireShippingForm({
                 }}
                 onChange={(newDate) => setStartDate(newDate)}
                 format="dd-MM-yyyy"
-                value={new Date()}
+                value={startDate}
                 minDate={new Date()}
               />
             </Box>
@@ -279,9 +335,9 @@ export default function OrderQuestionnaireShippingForm({
                           ...prevState,
                           start: startHour,
                           valid:
-                            startHour && prevState.end
-                              ? startHour.getTime() < prevState.end.getTime()
-                              : undefined,
+                            startHour &&
+                            prevState.end &&
+                            startHour.getTime() < prevState.end.getTime(),
                         };
                         const newSchedule = schedule;
                         newSchedule[weekdayItem.value - 1] = newItem;
@@ -318,9 +374,9 @@ export default function OrderQuestionnaireShippingForm({
                           ...prevState,
                           end: endHour,
                           valid:
-                            endHour && prevState.start
-                              ? endHour.getTime() > prevState.start.getTime()
-                              : undefined,
+                            endHour &&
+                            prevState.start &&
+                            endHour.getTime() > prevState.start.getTime(),
                         };
                         const newSchedule = schedule;
                         newSchedule[weekdayItem.value - 1] = newItem;
@@ -351,13 +407,7 @@ export default function OrderQuestionnaireShippingForm({
           relatives={relatives}
         />
 
-        <Collapse
-          in={!!selectedRelative}
-          unmountOnExit
-          sx={{
-            ...(!sameBilling && { mt: 3 }),
-          }}
-        >
+        <Collapse in={!!selectedRelative} unmountOnExit>
           <Stack spacing={2.5}>
             <Stack
               sx={{ mt: '24px' }}

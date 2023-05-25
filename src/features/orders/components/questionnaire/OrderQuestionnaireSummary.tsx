@@ -17,6 +17,7 @@ import { FilterGuests, FilterTime } from '../filters/components';
 
 type Props = {
   company: ICompanyProps;
+  disabled: boolean;
   guests: {
     adults: number;
     children: number;
@@ -30,6 +31,7 @@ type Props = {
 
 export default function OrderQuestionnaireSummary({
   company,
+  disabled,
   guests,
   departureDay,
   isSubmitting,
@@ -140,6 +142,7 @@ export default function OrderQuestionnaireSummary({
       <Stack spacing={3} sx={{ p: 3 }}>
         <LoadingButton
           type="submit"
+          disabled={disabled}
           size="large"
           variant="contained"
           color="inherit"
