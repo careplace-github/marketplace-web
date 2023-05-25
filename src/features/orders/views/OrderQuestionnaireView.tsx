@@ -26,8 +26,7 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../co
 // ----------------------------------------------------------------------
 
 export default function OrderQuestionnaireView() {
-  const [sameBilling, setSameBilling] = useState(false);
-  const [departureDay, setDepartureDay] = useState(null);
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
@@ -117,30 +116,6 @@ export default function OrderQuestionnaireView() {
     }
   };
 
-  const handleChangeDepartureDay = (newValue) => {
-    setDepartureDay(newValue);
-  };
-
-  const handleIncrementGuests = (guest) => {
-    if (guest === 'children') {
-      setGuests({ ...guests, children: guests.children + 1 });
-    } else {
-      setGuests({ ...guests, adults: guests.adults + 1 });
-    }
-  };
-
-  const handleDecreaseGuests = (guest) => {
-    if (guest === 'children') {
-      setGuests({ ...guests, children: guests.children - 1 });
-    } else {
-      setGuests({ ...guests, adults: guests.adults - 1 });
-    }
-  };
-
-  const handleChangeSameBilling = (event) => {
-    setSameBilling(event.target.checked);
-  };
-
   return !loading && !relativesLoading ? (
     <Container
       sx={{
@@ -160,14 +135,17 @@ export default function OrderQuestionnaireView() {
               <OrderQuestionnaireShippingForm
                 relatives={userRelatives}
                 services={availableServices}
-                sameBilling={sameBilling}
-                onChangeSameBilling={handleChangeSameBilling}
+                onValidChange={(valid) => setIsFormValid(valid)}
               />
             </Stack>
           </Grid>
 
           <Grid xs={12} md={5}>
-            <OrderQuestionnaireSummary company={companyInfo} isSubmitting={isSubmitting} />
+            <OrderQuestionnaireSummary
+              disabled={!isFormValid}
+              company={companyInfo}
+              isSubmitting={isSubmitting}
+            />
           </Grid>
         </Grid>
       </FormProvider>
