@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // This configuration properties are taken from the official Jest documentation which is available at https://jestjs.io/docs/en/configuration.html 
 module.exports = {
 	// It indicates that each one imported modules in the tests must be mocked automatically

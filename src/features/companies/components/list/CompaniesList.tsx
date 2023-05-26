@@ -32,9 +32,6 @@ export default function CompaniesList({ companies, loading, totalPages, onPageCh
     setActualPage(router.query.page ? parseInt(router.query.page as string, 10) : 1);
   }, [router.query.page]);
 
-  useEffect(() => {
-    console.log('companies:', companies);
-  }, [companies]);
   return (
     <>
       <Stack spacing={4}>

@@ -1,5 +1,4 @@
 // Detail
-export { default as CompanyDetailHeader } from './detail/CompanyDetailHeader';
 export { default as CompanyDetailSummary } from './detail/CompanyDetailSummary';
 export { default as CompanyDetailGallery } from './detail/CompanyDetailGallery';
 export { default as CompanyDetailReserveForm } from './detail/CompanyDetailReserveForm';

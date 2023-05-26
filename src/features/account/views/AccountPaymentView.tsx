@@ -13,6 +13,7 @@ import axios from 'src/lib/axios';
 // routes
 import { PATHS } from 'src/routes/paths';
 // components
+import EmptyState from 'src/components/empty-state/EmptyState';
 import Iconify from 'src/components/iconify';
 //
 import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../components';
@@ -36,8 +37,6 @@ export default function AccountPaymentView() {
   useEffect(() => {
     getCards().then((data) => {
       setCARDS(data);
-
-      console.log(data);
     });
   }, []);
 
@@ -66,7 +65,6 @@ export default function AccountPaymentView() {
                 justifyContent: 'center',
               }}
             >
-              {' '}
               <Typography variant="h5">Informações de Pagamento</Typography>
             </Stack>
             {isMdUp && (
@@ -100,20 +98,28 @@ export default function AccountPaymentView() {
               </Stack>
             )}
 
-            {CARDS.map((card: any) => (
-              <AccountPaymentCard
-                key={card.id}
-                card={card}
-                handleDelete={() => {
-                  console.log(card);
-                  axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
-                    getCards().then((data) => {
-                      setCARDS(data);
+            {CARDS.length > 0 ? (
+              CARDS.map((card: any) => (
+                <AccountPaymentCard
+                  key={card.id}
+                  card={card}
+                  handleDelete={() => {
+                    axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
+                      getCards().then((data) => {
+                        setCARDS(data);
+                      });
                     });
-                  });
-                }}
+                  }}
+                />
+              ))
+            ) : (
+              <EmptyState
+                icon="uil:atm-card"
+                title="Sem cartões adicionados"
+                description="Neste momento não tem nenhum método de pagamento associado."
               />
-            ))}
+            )}
+
             {!isMdUp && (
               <Stack
                 spacing={3}
