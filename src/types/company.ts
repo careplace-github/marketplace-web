@@ -1,5 +1,5 @@
 //
-import { ICountriesProps, ISocialLinks } from './utils';
+import { IServiceProps, ISocialLinks } from './utils';
 
 // ----------------------------------------------------------------------
 
@@ -19,31 +19,37 @@ export type ICompanyResponsibleProps = {
   students?: number;
 };
 
+export type IExtraServices = {
+  icon: string;
+  label: string;
+  value: string;
+};
+
+export type ICompanyDetailsCover = {
+  name: string;
+  image: string;
+  location: string;
+};
+
+type IAddressProps = {
+  city: string;
+  coordinates: number[];
+  country: string;
+  postal_code: string;
+  street: string;
+  _id: string;
+};
+
 export type ICompanyProps = {
   _id: string;
-  address?: {
-    city?: string;
-    coordinates: string[];
-    country?: string;
-    countryId?: string;
-    fullAddress?: string;
-    postal_code?: string;
-    street?: string;
-  };
-  createdAt?: string;
+  addresses: IAddressProps[];
+  createdAt: string;
   business_profile: {
     about: string;
-    address?: {
-      street?: string;
-      city?: string;
-      country?: string;
-      postal_code?: string;
-    };
-    average_hourly_rate: number;
     email: string;
     logo: string;
     name: string;
-    phone?: string;
+    phone: string;
     social_links?: {
       facebook?: string;
       instagram?: string;
@@ -51,17 +57,23 @@ export type ICompanyProps = {
     };
     website?: string;
   };
+  pricing: {
+    average_hourly_rate: number;
+    minimum_hourly_rate: number;
+  };
+  rating: {
+    average: number;
+    count: number;
+  };
   is_active: boolean;
-  rating: { average: number; count: number };
-  service_area?: string[];
-  services?: string[];
+  service_area: {
+    type: string;
+    coordinates: any[];
+  };
+  services: string[];
 };
 
 export type ICompanyFiltersProps = {
-  filterFee: string[];
-  filterLevel: string[];
-  filterDuration: string[];
-  filterCategories: string[];
-  filterRating: string | null;
-  filterLanguage: ICountriesProps[];
+  filterWeekdays: number[];
+  filterServices: IServiceProps[];
 };

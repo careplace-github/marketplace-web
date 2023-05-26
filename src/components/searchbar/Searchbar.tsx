@@ -44,6 +44,7 @@ type Location = {
 
 export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   const { pathname, push, query } = useRouter();
+
   const router = useRouter();
 
   const [filters, setFilters] = useState<FiltersProps>({
@@ -59,7 +60,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
           lat: router.query.lat as string,
           lng: router.query.lng as string,
           query: router.query.query as string,
-         
         });
       }
     }

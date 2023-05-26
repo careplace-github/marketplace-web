@@ -4,42 +4,50 @@ import NextLink from 'next/link';
 // @mui
 import { Button, Typography } from '@mui/material';
 // components
-import Image from 'src/components/image';
 import { MotionContainer, varBounce } from 'src/components/animate';
+// assets
+import { PageNotFoundIllustration } from 'src/assets/illustrations';
+// routes
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
 export default function Error404View() {
   return (
-    <MotionContainer>
-      <m.div variants={varBounce().in}>
-        <Typography variant="h3" paragraph>
-          Page Not Found!
+    <>
+      <MotionContainer>
+        <m.div variants={varBounce().in}>
+          <Typography variant="h3" paragraph>
+            404 - Página Não Encontrada
+          </Typography>
+        </m.div>
+
+        <m.div variants={varBounce().in}>
+          <Typography sx={{ color: 'text.secondary' }}>
+            Pedimos desculpa mas não conseguimos encontrar a página que procura. Talvez tenha
+            introduzido o URL incorreto?
+          </Typography>
+        </m.div>
+
+        <m.div variants={varBounce().in}>
+          <PageNotFoundIllustration
+            sx={{
+              height: 260,
+              my: { xs: 5, sm: 10 },
+            }}
+          />
+        </m.div>
+
+        <Typography sx={{ color: 'text.secondary', mb: 10 }}>
+          <br />
+          Se achar que isto é um erro por favor contacte-nos através do email{' '}
+          <a href="mailto:suporte@careplace.pt"> suporte@careplace.pt </a>
         </Typography>
-      </m.div>
 
-      <m.div variants={varBounce().in}>
-        <Typography sx={{ color: 'text.secondary' }}>
-          Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be
-          sure to check your spelling.
-        </Typography>
-      </m.div>
-
-      <m.div variants={varBounce().in}>
-        <Image
-          alt="404"
-          src="/assets/illustrations/illustration_404.svg"
-          sx={{
-            mx: 'auto',
-            maxWidth: 320,
-            my: { xs: 5, sm: 8 },
-          }}
-        />
-      </m.div>
-
-      <Button component={NextLink} href="/" size="large" color="inherit" variant="contained">
-        Go to Home
-      </Button>
-    </MotionContainer>
+        <Button component={NextLink} href={PATHS.companies.root} size="large" variant="contained">
+          Início
+        </Button>
+      </MotionContainer>
+    </>
   );
 }
