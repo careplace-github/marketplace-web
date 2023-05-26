@@ -23,7 +23,7 @@ import { MyAppProps } from './_app';
 
 const Favicon = () => (
   <>
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon-180x180.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
   </>
@@ -32,11 +32,22 @@ const Favicon = () => (
 const Meta = () => (
   <>
     {/* PWA primary color */}
-    <meta name="theme-color" content={palette('light').primary.main} />
-    <meta
-      name="description"
-      content="Careplace Description"
-    />
+
+    {/* Chrome, Firefox OS and Opera */}
+    <meta name="theme-color" content="#ffffff" />
+    {/* Windows Phone */}
+    <meta name="msapplication-navbutton-color" content="#ffffff" />
+    {/* iOS Safari */}
+    <meta name="apple-mobile-web-app-status-bar-style" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Careplace" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Careplace" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+
+
+    <meta name="title" content="Careplace" />
+    <meta name="description" content="Careplace Description" />
     <meta name="keywords" content="react,material,kit,application,landing & corporate,template" />
     <meta name="author" content="Careplace Kit" />
   </>

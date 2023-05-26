@@ -2,9 +2,12 @@
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
-import { Divider, Stack, Card, Typography, Box, Link, Avatar } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Divider, Stack, Card, Typography, Box, Link, Avatar, Button } from '@mui/material';
 // utils
 import { fCurrency, fShortenNumber } from 'src/utils/formatNumber';
+// paths
+import { PATHS } from 'src/routes';
 // components
 import Image from 'src/components/image';
 import Label from 'src/components/label';
@@ -25,7 +28,7 @@ type Props = {
 
 export default function CompanyListItem({ company, vertical }: Props) {
   const router = useRouter();
-  console.log(company);
+  const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
   const isSmUp = useResponsive('up', 'sm');
 
@@ -33,19 +36,11 @@ export default function CompanyListItem({ company, vertical }: Props) {
     <Card
       sx={{
         minHeight: '250px',
-        display: { sm: 'flex' },
+        display: !vertical ? { sm: 'flex' } : undefined,
+
         '&:hover': {
-          boxShadow: (theme) => theme.customShadows.z24,
+          boxShadow: (itemTheme) => itemTheme.customShadows.z24,
         },
-        ...(vertical && {
-          flexDirection: 'column',
-        }),
-      }}
-      onClick={() => {
-        router.push({
-          pathname: `/companies/${company._id}`,
-          query: { ...router.query },
-        });
       }}
     >
       <Box sx={{ flexShrink: { sm: 0 } }}>
@@ -55,7 +50,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
             '& > span > img': {
               objectFit: 'contain',
             },
-            height: isSmUp ? 1 : 240,
+            height: isSmUp && !vertical ? 1 : 240,
             width: { sm: 240 },
             ...(vertical && {
               width: { sm: 1 },
@@ -79,106 +74,212 @@ export default function CompanyListItem({ company, vertical }: Props) {
         sx={{ p: 3, width: '100%', justifyContent: 'space-between', position: 'relative' }}
       >
         <Stack
-          spacing={{
-            xs: 3,
-            sm: vertical ? 3 : 1,
-          }}
           direction={isMdUp ? 'row' : 'column-reverse'}
           alignItems="flex-start"
           justifyContent={isMdUp ? 'flex-start' : 'space-between'}
         >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-end"
-            sx={isSmUp ? { position: 'absolute', top: '20px', right: '24px' } : {}}
-          >
-            <Typography variant="h4" sx={{ display: 'inline-flex', alignItems: 'flex-end' }}>
-              {/* {priceSale > 0 && (
-                <Box
-                  component="span"
-                  sx={{ mr: 0.5, color: 'text.disabled', textDecoration: 'line-through' }}
-                >
-                  {fCurrency(priceSale)}
-                </Box>
-              )} */}
-              {`${fCurrency(company.business_profile.average_hourly_rate)} €/`}
-              <Typography sx={{ fontWeight: 600, fontSize: '0.9rem', mb: isSmUp ? '4px' : '2px' }}>
-                hora
-              </Typography>
-            </Typography>
-          </Stack>
-
-          <Stack>
+          <Stack sx={{ width: '100%' }}>
             <Stack spacing={1}>
-              <Link component={NextLink} href="/" color="inherit">
-                <TextMaxLine variant="h6" line={1}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={{ paddingBottom: '5px' }}
+              >
+                <TextMaxLine
+                  variant="h6"
+                  line={1}
+                  sx={{
+                    cursor: 'pointer',
+                    '&:hover': {
+                      textDecoration: 'underline',
+                    },
+                  }}
+                  onClick={() => {
+                    router.push({
+                      pathname: `/companies/${company._id}`,
+                      query: { ...router.query },
+                    });
+                  }}
+                >
                   {company.business_profile.name}
                 </TextMaxLine>
-              </Link>
+              </Stack>
 
-              <TextMaxLine
-                variant="body2"
-                color="text.secondary"
-                sx={{
-                  ...(vertical && {
-                    display: { sm: 'none', mt: isMdUp ? 0 : '10px' },
-                  }),
-                }}
-              >
+              <TextMaxLine variant="body2" color="text.secondary">
                 {company.business_profile.about}
               </TextMaxLine>
             </Stack>
-            {!isSmUp && (
+            {(!isSmUp || vertical) && (
               <Stack
-                sx={{ mt: '8px' }}
-                spacing={1.5}
-                direction="row"
-                alignItems="center"
-                flexWrap="wrap"
-                divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
+                direction="column"
+                alignItems="flex-start"
+                justifyContent="space-between"
+                sx={{ width: '100%' }}
               >
-                <Stack spacing={0.5} direction="row" alignItems="center">
-                  <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-                  <Box sx={{ typography: 'h6' }}>
-                    {Number.isInteger(company.rating.average)
-                      ? `${company.rating.average}.0`
-                      : company.rating.average}
-                  </Box>
+                <Stack
+                  sx={{ mt: '8px' }}
+                  spacing={1.5}
+                  direction="column"
+                  alignItems="flex-start"
+                  flexWrap="wrap"
+                  // divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
+                >
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-start"
+                    gap="5px"
+                    sx={{ mt: '20px' }}
+                  >
+                    <Iconify
+                      width={20}
+                      icon="carbon:location"
+                      sx={{
+                        color: 'text.disabled',
+                      }}
+                    />
+                    <Typography>{company.addresses[0].city}</Typography>
+                  </Stack>
+                  <Stack spacing={0.5} direction="row" alignItems="center">
+                    <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
+                    <Box sx={{ typography: 'h6', fontSize: '1rem' }}>
+                      {Number.isInteger(company.rating.average)
+                        ? `${company.rating.average}.0`
+                        : company.rating.average}
+                    </Box>
 
-                  {company.rating.count && (
-                    <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                      ({fShortenNumber(company.rating.count)} reviews)
-                    </Link>
-                  )}
+                    {company.rating.count && (
+                      <Link variant="body2" sx={{ color: 'text.secondary' }}>
+                        ({fShortenNumber(company.rating.count)} avaliações)
+                      </Link>
+                    )}
+                  </Stack>
+                  <Stack
+                    direction="row"
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                    // sx={isSmUp ? { position: 'absolute', top: '20px', right: '24px' } : {}}
+                  >
+                    <Typography
+                      sx={{
+                        display: 'inline-flex',
+                        fontWeight: 600,
+                        alignItems: 'flex-end',
+                        fontSize: '1rem',
+                      }}
+                    >
+                      {`Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
+                    </Typography>
+                  </Stack>
                 </Stack>
+                <Button
+                  variant="contained"
+                  color="inherit"
+                  onClick={() => {
+                    console.log('clicked ver mais');
+                    router.push({
+                      pathname: `/companies/${company._id}`,
+                      query: { ...router.query },
+                    });
+                  }}
+                  sx={{
+                    mt: '40px',
+                    px: 4,
+                    bgcolor: 'primary.main',
+                    width: '100%',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                >
+                  Ver mais
+                </Button>
               </Stack>
             )}
           </Stack>
         </Stack>
-        {isSmUp && (
+        {isSmUp && !vertical && (
           <Stack
-            sx={{ mt: '8px' }}
-            spacing={1.5}
             direction="row"
-            alignItems="center"
-            flexWrap="wrap"
-            divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
+            alignItems="flex-end"
+            justifyContent="space-between"
+            sx={{ width: '100%' }}
           >
-            <Stack spacing={0.5} direction="row" alignItems="center">
-              <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-              <Box sx={{ typography: 'h6' }}>
-                {Number.isInteger(company.rating.average)
-                  ? `${company.rating.average}.0`
-                  : company.rating.average}
-              </Box>
+            <Stack
+              sx={{ mt: '8px' }}
+              spacing={1.5}
+              direction="column"
+              alignItems="flex-start"
+              flexWrap="wrap"
+              // divider={<Divider orientation="vertical" sx={{ height: 20, my: 'auto' }} />}
+            >
+              <Stack direction="row" alignItems="center" justifyContent="flex-start" gap="5px">
+                <Iconify
+                  width={20}
+                  icon="carbon:location"
+                  sx={{
+                    color: 'text.disabled',
+                  }}
+                />
+                <Typography>{company.addresses[0].city}</Typography>
+              </Stack>
+              <Stack spacing={0.5} direction="row" alignItems="center">
+                <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
+                <Box sx={{ typography: 'h6', fontSize: '1rem' }}>
+                  {Number.isInteger(company.rating.average)
+                    ? `${company.rating.average}.0`
+                    : company.rating.average}
+                </Box>
 
-              {company.rating.count && (
-                <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                  ({fShortenNumber(company.rating.count)} reviews)
-                </Link>
-              )}
+                {company.rating.count && (
+                  <Link variant="body2" sx={{ color: 'text.secondary' }}>
+                    ({fShortenNumber(company.rating.count)} avaliações)
+                  </Link>
+                )}
+              </Stack>
+              <Stack
+                direction="row"
+                alignItems="flex-end"
+                justifyContent="flex-end"
+                // sx={isSmUp ? { position: 'absolute', top: '20px', right: '24px' } : {}}
+              >
+                <Typography
+                  sx={{
+                    display: 'inline-flex',
+                    fontWeight: 600,
+                    alignItems: 'flex-end',
+                    fontSize: '1rem',
+                  }}
+                >
+                  {`Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
+                </Typography>
+              </Stack>
             </Stack>
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => {
+                console.log('clicked ver mais');
+                router.push({
+                  pathname: `/companies/${company._id}`,
+                  query: { ...router.query },
+                });
+              }}
+              sx={{
+                px: 4,
+                bgcolor: 'primary.main',
+                color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                },
+              }}
+            >
+              Ver mais
+            </Button>
           </Stack>
         )}
       </Stack>

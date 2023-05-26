@@ -1,13 +1,11 @@
 // @mui
 import { Stack, Select, MenuItem, Typography, FormControl, SelectChangeEvent } from '@mui/material';
- 
 
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'latest', label: 'Latest' },
-  { value: 'oldest', label: 'Oldest' },
-  { value: 'popular', label: 'Popular' },
+  { value: 'latest', label: 'Mais recentes' },
+  { value: 'oldest', label: 'Mais antigas' },
 ];
 
 const inputStyle = {
@@ -41,7 +39,7 @@ export default function ReviewToolbar({ sort, onChangeSort }: Props) {
       sx={{ mb: 5 }}
     >
       <Typography variant="h4" sx={{ width: 1 }}>
-       Reviews
+        Avaliações
       </Typography>
 
       <Stack direction="row" spacing={2} flexShrink={0} alignItems="center">
@@ -54,8 +52,6 @@ export default function ReviewToolbar({ sort, onChangeSort }: Props) {
             ))}
           </Select>
         </FormControl>
-
-        
       </Stack>
     </Stack>
   );
