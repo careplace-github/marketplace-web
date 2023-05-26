@@ -14,7 +14,7 @@ export type ILocationFiltersProps = {
   filterKeyword: string | null;
   filterCategories: string | null;
   filterType: string[];
-  filterLevel: string[];
+  filterWeekdays: string[];
   filterBenefits: string[];
   filterSalary: number[];
 };

@@ -47,9 +47,7 @@ export default function SimilarCompaniesList({ companies }: Props) {
             mb: { xs: 8, md: 10 },
           }}
         >
-          <Typography variant="h3">Similar companies</Typography>
-
-          {isMdUp && viewAllBtn}
+          <Typography variant="h3">Mais Empresas</Typography>
         </Stack>
 
         <Box
@@ -67,12 +65,6 @@ export default function SimilarCompaniesList({ companies }: Props) {
             <CompanyListItem key={company._id} company={company} vertical />
           ))}
         </Box>
-
-        {!isMdUp && (
-          <Stack alignItems="center" sx={{ mt: 8 }}>
-            {viewAllBtn}
-          </Stack>
-        )}
       </Container>
     </Box>
   );
