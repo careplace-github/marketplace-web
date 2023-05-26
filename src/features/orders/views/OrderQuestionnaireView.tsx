@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-
+import { useAuthContext } from 'src/contexts';
 // router
 import { useRouter } from 'next/router';
 // @mui
@@ -15,6 +15,7 @@ import axios from 'src/lib/axios';
 import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
 import { IRelativeProps } from 'src/types/relative';
+import { IScheduleProps } from 'src/types/order';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 // components
@@ -25,6 +26,54 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../co
 
 // ----------------------------------------------------------------------
 
+// ----------------------------------------------------------------------
+
+// const requestBody = {
+//   company: { type: Schema.ObjectId, ref: 'Company', required: true },
+
+//   // The customer is the user that is paying for the order
+//   user: { type: Schema.ObjectId, ref: 'marketplace_users', required: true },
+
+//   // The client is the user that is receiving the service (home care support).
+//   relative: { type: Schema.ObjectId, ref: 'Relative', required: true },
+
+//   services: [{ type: Schema.ObjectId, ref: 'Service', required: true }],
+
+//   // Json with all the information about the order schedule
+//   schedule_information: {
+//     start_date: startDate,
+
+//     // 0 -> Every 0 weeks -> Not recurrent, one time only order.
+//     // 1 -> Every 1 week -> Weekly
+//     // 2 -> Every 2 weeks -> Biweekly
+//     // 4 -> Every 4 weeks -> Monthly
+//     recurrency: recurrency,
+//     schedule: [
+//       {
+//         week_day: {
+//           type: Number,
+//           required: true,
+//           enum: [1, 2, 3, 4, 5, 6, 7],
+//         },
+//         start: { type: Date, required: true },
+//         end: { type: Date, required: true },
+//       },
+//     ],
+//   },
+// };
+
+type OrderRequestProps = {
+  companyId: string;
+  userId: string;
+  relative: string;
+  services: string[];
+  scheduleInfo: {
+    startDate: Date;
+    recurrency: number;
+    schedule: IScheduleProps[];
+  };
+};
+
 export default function OrderQuestionnaireView() {
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,7 +81,10 @@ export default function OrderQuestionnaireView() {
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [formData, setFormData] = useState<OrderRequestProps>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const router = useRouter();
+  const { user } = useAuthContext();
 
   const fetchUserRelatives = async () => {
     const response = await axios.get('users/relatives');
@@ -101,20 +153,40 @@ export default function OrderQuestionnaireView() {
     defaultValues,
   });
 
-  const {
-    reset,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { reset } = methods;
 
   const onSubmit = async (data) => {
+    setIsSubmitting(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
     } catch (error) {
       console.error(error);
     }
+    setIsSubmitting(false);
   };
+
+  const handleValidChange = (valid, data) => {
+    if (valid) {
+      const dataToSubmit: OrderRequestProps = {
+        company: companyInfo._id,
+        user: user._id,
+        relative: data.relativeSelected,
+        services: data.servicesSelected,
+        scheduleInfo: {
+          startDate: data.startDateSelected,
+          recurrency: data.recurrency,
+          schedule: data.schedule,
+        },
+      };
+      setFormData(dataToSubmit);
+    }
+    setIsFormValid(valid);
+  };
+
+  useEffect(() => {
+    console.log('data to submit:', formData);
+  }, [formData]);
 
   return !loading && !relativesLoading ? (
     <Container
@@ -128,24 +200,29 @@ export default function OrderQuestionnaireView() {
         Orçamento
       </Typography>
 
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider methods={methods} onSubmit={() => {}}>
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
-              <OrderQuestionnaireShippingForm
-                relatives={userRelatives}
-                services={availableServices}
-                onValidChange={(valid) => setIsFormValid(valid)}
-              />
+              {userRelatives && (
+                <OrderQuestionnaireShippingForm
+                  relatives={userRelatives}
+                  services={availableServices}
+                  onValidChange={handleValidChange}
+                />
+              )}
             </Stack>
           </Grid>
 
           <Grid xs={12} md={5}>
-            <OrderQuestionnaireSummary
-              disabled={!isFormValid}
-              company={companyInfo}
-              isSubmitting={isSubmitting}
-            />
+            {companyInfo && (
+              <OrderQuestionnaireSummary
+                handleSubmit={onSubmit}
+                disabled={!isFormValid}
+                company={companyInfo}
+                isSubmitting={isSubmitting}
+              />
+            )}
           </Grid>
         </Grid>
       </FormProvider>

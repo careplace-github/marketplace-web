@@ -11,7 +11,7 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterRecurrency: number;
+  filterRecurrency: number | undefined;
   onChangeRecurrency: (event: SelectChangeEvent<number>) => void;
 };
 
@@ -20,7 +20,7 @@ export default function FilterRecurrency({ filterRecurrency, onChangeRecurrency 
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select
         displayEmpty
-        value={filterRecurrency || ''}
+        value={filterRecurrency || filterRecurrency === 0 ? filterRecurrency : ''}
         onChange={onChangeRecurrency}
         MenuProps={MenuProps}
         renderValue={(value) => {

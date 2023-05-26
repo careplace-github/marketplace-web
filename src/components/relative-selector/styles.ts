@@ -11,6 +11,11 @@ export const inputStyle = {
 export const menuItemStyle = {
   p: 2,
   gap: '10px',
+  cursor: 'pointer',
+  '&:hover': {
+    backgroundColor: 'rgba(145, 158, 171, 0.08)',
+    borderRadius: '8px',
+  },
 };
 
 export const MenuProps = {

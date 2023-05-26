@@ -1,7 +1,9 @@
 // hooks
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
+import { IScheduleProps } from 'src/types/order';
 // @mui
+import { SelectChangeEvent } from '@mui/material';
 import {
   Stack,
   Box,
@@ -12,11 +14,13 @@ import {
   TextField,
   Button,
 } from '@mui/material';
+import { useTheme } from '@emotion/react';
+// components
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-// components
 import { RHFTextField } from 'src/components/hook-form';
 import RelativeSelector from 'src/components/relative-selector/RelativeSelector';
+import Iconify from 'src/components/iconify/Iconify';
 import {
   FilterServices,
   FilterWeekdays,
@@ -28,37 +32,48 @@ import { IRelativeProps } from 'src/types/relative';
 
 // ----------------------------------------------------------------------
 
-// "schedule_information": {
-//   "start_date": "2023-01-05T00:00:00.000Z",
-//   "recurrency": 0,
-//   "schedule": [
-//     {
-//       "week_day": 1,
-//       "start": "08:00",
-//       "end": "11:00",
-//       "_id": "6407b425a86c23453036d6a6"
-//     }
-//   ],
-//   "end_date": null
-// },
+// const requestBody = {
+//   company: { type: Schema.ObjectId, ref: 'Company', required: true },
+
+//   // The customer is the user that is paying for the order
+//   user: { type: Schema.ObjectId, ref: 'marketplace_users', required: true },
+
+//   // The client is the user that is receiving the service (home care support).
+//   relative: { type: Schema.ObjectId, ref: 'Relative', required: true },
+
+//   services: [{ type: Schema.ObjectId, ref: 'Service', required: true }],
+
+//   // Json with all the information about the order schedule
+//   schedule_information: {
+//     start_date: startDate,
+
+//     // 0 -> Every 0 weeks -> Not recurrent, one time only order.
+//     // 1 -> Every 1 week -> Weekly
+//     // 2 -> Every 2 weeks -> Biweekly
+//     // 4 -> Every 4 weeks -> Monthly
+//     recurrency: recurrency,
+//     schedule: [
+//       {
+//         week_day: {
+//           type: Number,
+//           required: true,
+//           enum: [1, 2, 3, 4, 5, 6, 7],
+//         },
+//         start: { type: Date, required: true },
+//         end: { type: Date, required: true },
+//       },
+//     ],
+//   },
+// };
 
 type Props = {
   services: IServiceProps[];
   relatives: IRelativeProps[];
-
   onValidChange: Function;
-};
-
-type IScheduleProps = {
-  weekDay: number;
-  start: date | undefined;
-  end: date | undefined;
-  valid: boolean | undefined;
 };
 
 export default function OrderQuestionnaireShippingForm({
   relatives,
-
   onValidChange,
   services,
 }: Props) {
@@ -70,48 +85,48 @@ export default function OrderQuestionnaireShippingForm({
   const [schedule, setSchedule] = useState<IScheduleProps[]>([
     {
       weekday: 1,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
     {
       weekday: 2,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
     {
       weekday: 3,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
     {
       weekday: 4,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
     {
       weekday: 5,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
     {
       weekday: 6,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
     {
       weekday: 7,
-      start: undefined,
-      end: undefined,
-      valid: undefined,
+      start: null,
+      end: null,
+      valid: null,
     },
   ]);
-  const [startDate, setStartDate] = useState<Date>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
   const handleChangeServices = (keyword: IServiceProps[]) => {
     setFilterServices(keyword);
   };
@@ -123,76 +138,71 @@ export default function OrderQuestionnaireShippingForm({
         isScheduleValid = false;
       }
     });
+    const auxDate = new Date();
+    const dateDay = auxDate.getDate();
+    const dateMonth = auxDate.getMonth() + 1;
+    const dateYear = auxDate.getFullYear();
+    const today = new Date(`${dateYear}-${dateMonth}-${dateDay}`);
     const isInvalid =
-      !filterRecurrency ||
+      !(filterRecurrency || filterRecurrency === 0) ||
       filterServices.length === 0 ||
       filterWeekdays.length === 0 ||
-      startDate.getTime() < new Date().getTime() ||
+      (startDate && startDate.getTime() < today.getTime()) ||
       !isScheduleValid ||
       !selectedRelative;
-    console.log(isInvalid);
-
     if (isInvalid) {
-      onValidChange(false);
+      onValidChange(false, null);
       return;
     }
-    // const requestBody = {
-    //   company: { type: Schema.ObjectId, ref: 'Company', required: true },
 
-    //   // The customer is the user that is paying for the order
-    //   user: { type: Schema.ObjectId, ref: 'marketplace_users', required: true },
-
-    //   // The client is the user that is receiving the service (home care support).
-    //   relative: { type: Schema.ObjectId, ref: 'Relative', required: true },
-
-    //   services: [{ type: Schema.ObjectId, ref: 'Service', required: true }],
-
-    //   // Json with all the information about the order schedule
-    //   schedule_information: {
-    //     start_date: startDate,
-
-    //     // 0 -> Every 0 weeks -> Not recurrent, one time only order.
-    //     // 1 -> Every 1 week -> Weekly
-    //     // 2 -> Every 2 weeks -> Biweekly
-    //     // 4 -> Every 4 weeks -> Monthly
-    //     recurrency: recurrency,
-    //     schedule: [
-    //       {
-    //         week_day: {
-    //           type: Number,
-    //           required: true,
-    //           enum: [1, 2, 3, 4, 5, 6, 7],
-    //         },
-    //         start: { type: Date, required: true },
-    //         end: { type: Date, required: true },
-    //       },
-    //     ],
-    //   },
-    // };
-    onValidChange(true);
+    const servicesIds: string[] = [];
+    filterServices.forEach((item) => {
+      servicesIds.push(item._id);
+    });
+    const scheduleToSend: IScheduleProps[] = [];
+    schedule.forEach((item) => {
+      if (item.valid) {
+        scheduleToSend.push({
+          weekDay: item.weekday,
+          start: item.start,
+          end: item.end,
+        });
+      }
+    });
+    const data = {
+      relativeSelected: selectedRelative._id,
+      servicesSelected: servicesIds,
+      startDateSelected: startDate,
+      recurrency: filterRecurrency,
+      schedule: scheduleToSend,
+    };
+    onValidChange(true, data);
   }, [filterRecurrency, filterServices, filterWeekdays, startDate, schedule, selectedRelative]);
 
   useEffect(() => {
     // show pre selected values for weekdays and services
     if (router.isReady) {
       const query = router.query;
-      const weekdaysPreSelected = [];
-
-      if (query.weekDay) {
-        query.weekDay.split(',').forEach((item) => {
+      const weekdaysPreSelected: number[] = [];
+      const weekdays = query.weekDay as string;
+      if (weekdays) {
+        weekdays.split(',').forEach((item) => {
           weekdaysPreSelected.push(parseInt(item, 10));
         });
       }
 
-      const servicesPreSelected = [];
+      const servicesPreSelected: IServiceProps[] = [];
+      const queryServices = query?.services as string;
 
-      services.forEach((service) => {
-        query.services.split(',').forEach((id) => {
-          if (service._id === id) {
-            servicesPreSelected.push(service);
-          }
+      if (queryServices) {
+        services.forEach((service) => {
+          queryServices.split(',').forEach((id) => {
+            if (service._id === id) {
+              servicesPreSelected.push(service);
+            }
+          });
         });
-      });
+      }
 
       if (weekdaysPreSelected.length > 0) {
         setFilterWeekdays(weekdaysPreSelected);
@@ -205,7 +215,7 @@ export default function OrderQuestionnaireShippingForm({
 
   const removeFromSchedule = (weekdayId) => {
     const prevState = schedule[weekdayId - 1];
-    const newItem = { ...prevState, start: undefined, end: undefined, valid: undefined };
+    const newItem = { ...prevState, start: null, end: null, valid: null };
     const newSchedule = schedule;
     newSchedule[weekdayId - 1] = newItem;
     setSchedule([...newSchedule]);
@@ -223,12 +233,17 @@ export default function OrderQuestionnaireShippingForm({
     setFilterWeekdays(newFilter);
   };
 
-  const handleChangeRelativeSelected = (event: SelectChangeEvent<IRelativeProps>) => {
+  const handleChangeRelativeSelected: (
+    event: SelectChangeEvent<string>,
+    child: ReactNode
+  ) => void = (event: SelectChangeEvent<string>) => {
     const {
       target: { value },
     } = event;
-    const newRelative = value as IRelativeProps;
-    setSelectedRelative(newRelative);
+    const newRelative = value as string;
+    console.log(newRelative);
+    console.log(JSON.parse(newRelative));
+    setSelectedRelative(JSON.parse(newRelative));
   };
 
   const handleChangeRecurrency = (event: SelectChangeEvent<number>) => {
@@ -306,104 +321,103 @@ export default function OrderQuestionnaireShippingForm({
             </Box>
           </Stack>
           {filterWeekdays.length > 0 &&
-            filterWeekdays.map((item) => {
-              let weekdayItem;
-              Weekdays.forEach((weekday) => {
-                if (weekday.value === item) {
-                  weekdayItem = weekday;
-                }
-              });
-              return (
-                <Box
-                  key={item}
-                  sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}
-                >
-                  <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>
-                    {weekdayItem.text}
-                  </Typography>
-
-                  <Stack gap="10px" direction="row">
-                    <TimePicker
-                      ampm={false}
-                      seconds={false}
-                      sx={{ flex: 1 }}
-                      minTime={new Date(0, 0, 0, 9, 0)}
-                      maxTime={new Date(0, 0, 0, 18, 0)}
-                      onChange={(startHour) => {
-                        const prevState = schedule[weekdayItem.value - 1];
-                        const newItem = {
-                          ...prevState,
-                          start: startHour,
-                          valid:
-                            startHour &&
-                            prevState.end &&
-                            startHour.getTime() < prevState.end.getTime(),
-                        };
-                        const newSchedule = schedule;
-                        newSchedule[weekdayItem.value - 1] = newItem;
-                        setSchedule([...newSchedule]);
-                      }}
-                      slotProps={{
-                        textField: {
-                          hiddenLabel: true,
-                        },
-                      }}
-                    />
+            filterWeekdays
+              .sort((a, b) => a - b)
+              .map((item) => {
+                let weekdayItem;
+                Weekdays.forEach((weekday) => {
+                  if (weekday.value === item) {
+                    weekdayItem = weekday;
+                  }
+                });
+                return (
+                  <Box
+                    key={item}
+                    sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}
+                  >
                     <Typography
                       variant="overline"
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        color: 'text.secondary',
-                      }}
+                      sx={{ color: 'text.secondary', display: 'block' }}
                     >
-                      -
+                      {weekdayItem.text}
                     </Typography>
-                    <TimePicker
-                      minTime={new Date(0, 0, 0, 9, 0)}
-                      maxTime={new Date(0, 0, 0, 18, 0)}
-                      skipDisabled
-                      ampm={false}
-                      seconds={false}
-                      sx={{ flex: 1 }}
-                      onChange={(endHour) => {
-                        const prevState = schedule[weekdayItem.value - 1];
 
-                        const newItem = {
-                          ...prevState,
-                          end: endHour,
-                          valid:
-                            endHour &&
-                            prevState.start &&
-                            endHour.getTime() > prevState.start.getTime(),
-                        };
-                        const newSchedule = schedule;
-                        newSchedule[weekdayItem.value - 1] = newItem;
-                        setSchedule([...newSchedule]);
-                      }}
-                      slotProps={{
-                        textField: {
-                          hiddenLabel: true,
-                        },
-                      }}
-                    />
-                  </Stack>
-                  {schedule[weekdayItem.value - 1].valid === false && (
-                    <Box sx={{ color: 'red', fontSize: '12px' }}>Este horário não é válido</Box>
-                  )}
-                </Box>
-              );
-            })}
+                    <Stack gap="10px" direction="row">
+                      <TimePicker
+                        ampm={false}
+                        sx={{ flex: 1 }}
+                        onChange={(value) => {
+                          const startHour = value as Date;
+                          const prevState = schedule[weekdayItem.value - 1];
+                          const newItem = {
+                            ...prevState,
+                            start: startHour,
+                            valid:
+                              startHour &&
+                              prevState.end &&
+                              startHour.getTime() < prevState.end.getTime(),
+                          };
+                          const newSchedule = schedule;
+                          newSchedule[weekdayItem.value - 1] = newItem;
+                          setSchedule([...newSchedule]);
+                        }}
+                        slotProps={{
+                          textField: {
+                            hiddenLabel: true,
+                          },
+                        }}
+                      />
+                      <Typography
+                        variant="overline"
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          color: 'text.secondary',
+                        }}
+                      >
+                        -
+                      </Typography>
+                      <TimePicker
+                        skipDisabled
+                        ampm={false}
+                        sx={{ flex: 1 }}
+                        onChange={(value) => {
+                          const prevState = schedule[weekdayItem.value - 1];
+                          const endHour = value as Date;
+                          const newItem = {
+                            ...prevState,
+                            end: endHour,
+                            valid:
+                              endHour &&
+                              prevState.start &&
+                              endHour.getTime() > prevState.start.getTime(),
+                          };
+                          const newSchedule = schedule;
+                          newSchedule[weekdayItem.value - 1] = newItem;
+                          setSchedule([...newSchedule]);
+                        }}
+                        slotProps={{
+                          textField: {
+                            hiddenLabel: true,
+                          },
+                        }}
+                      />
+                    </Stack>
+                    {schedule[weekdayItem.value - 1].valid === false && (
+                      <Box sx={{ color: 'red', fontSize: '12px' }}>Este horário não é válido</Box>
+                    )}
+                  </Box>
+                );
+              })}
         </Stack>
       </div>
 
       <StepLabel title="Escolha o Familiar" step="2" />
-
       <div>
         <RelativeSelector
           onChangeRelative={handleChangeRelativeSelected}
-          relativeSelected={selectedRelative}
+          relativeSelected={JSON.stringify(selectedRelative)}
           relatives={relatives}
         />
 
@@ -468,6 +482,7 @@ export default function OrderQuestionnaireShippingForm({
               <TextField
                 value={selectedRelative?.medical_conditions}
                 multiline
+                minRows={4}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -490,6 +505,7 @@ type StepLabelProps = {
 };
 
 function StepLabel({ step, title }: StepLabelProps) {
+  const theme = useTheme();
   return (
     <Stack direction="row" alignItems="center" sx={{ mb: 3, typography: 'h5' }}>
       <Box

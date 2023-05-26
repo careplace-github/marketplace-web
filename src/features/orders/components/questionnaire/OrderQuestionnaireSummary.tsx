@@ -3,7 +3,7 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Stack, Divider, Typography, Avatar, Box, Link } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
-import { useTheme } from '@emotion/react';
+import { useTheme } from '@mui/material/styles';
 // types
 import { ICompanyProps } from 'src/types/company';
 // components
@@ -18,28 +18,18 @@ import { FilterGuests, FilterTime } from '../filters/components';
 type Props = {
   company: ICompanyProps;
   disabled: boolean;
-  guests: {
-    adults: number;
-    children: number;
-  };
   isSubmitting: boolean;
-  departureDay: Date | null;
-  onDecreaseGuests: (guest?: string) => void;
-  onIncrementGuests: (guest?: string) => void;
-  onChangeDepartureDay: (newValue: Date | null) => void;
+  handleSubmit: Function;
 };
 
 export default function OrderQuestionnaireSummary({
+  handleSubmit,
   company,
   disabled,
-  guests,
-  departureDay,
   isSubmitting,
-  onDecreaseGuests,
-  onIncrementGuests,
-  onChangeDepartureDay,
 }: Props) {
   const theme = useTheme();
+  const { palette } = theme;
   const isSmUp = useResponsive('up', 'sm');
   const isMdUp = useResponsive('up', 'md');
   return (
@@ -146,14 +136,15 @@ export default function OrderQuestionnaireSummary({
           size="large"
           variant="contained"
           color="inherit"
+          onClick={handleSubmit}
           loading={isSubmitting}
           sx={{
             px: 4,
             bgcolor: 'primary.main',
-            color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+            color: palette.mode === 'light' ? 'common.white' : 'grey.800',
             '&:hover': {
               bgcolor: 'primary.dark',
-              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+              color: palette.mode === 'light' ? 'common.white' : 'grey.800',
             },
           }}
         >

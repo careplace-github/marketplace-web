@@ -1,7 +1,7 @@
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography, Avatar, Stack } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ReactNode } from 'react';
 // types
 import { IRelativeProps } from 'src/types/relative';
 import { inputStyle, menuItemStyle, MenuProps } from './styles';
@@ -9,8 +9,8 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  relativeSelected: IRelativeProps;
-  onChangeRelative: (keyword: IRelativeProps) => void;
+  relativeSelected: string;
+  onChangeRelative: (event: SelectChangeEvent<string>, child: ReactNode) => void;
   relatives: Array<IRelativeProps>;
 };
 
@@ -30,11 +30,13 @@ export default function RelativeSelector({ relatives, relativeSelected, onChange
               </Typography>
             );
           }
+          console.log(value);
+          const selected = JSON.parse(value);
           return (
             <Stack gap="10px" direction="row" alignItems="center" justifyContent="flex-start">
-              <Avatar src={value.profile_picture} />
+              <Avatar src={selected.profile_picture} />
               <Typography variant="subtitle2" component="span">
-                {value.name}
+                {selected.name}
               </Typography>
             </Stack>
           );
@@ -42,7 +44,7 @@ export default function RelativeSelector({ relatives, relativeSelected, onChange
       >
         {relatives.length > 0 ? (
           relatives.map((item) => (
-            <MenuItem key={item._id} value={item} sx={menuItemStyle}>
+            <MenuItem key={item._id} value={JSON.stringify(item)} sx={menuItemStyle}>
               <Avatar src={item.profile_picture} />
               {item.name}
             </MenuItem>
