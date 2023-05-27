@@ -6,6 +6,7 @@ import useResponsive from 'src/hooks/useResponsive';
 import { useTheme } from '@mui/material/styles';
 // types
 import { ICompanyProps } from 'src/types/company';
+import { MouseEventHandler } from 'react';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
@@ -19,7 +20,7 @@ type Props = {
   company: ICompanyProps;
   disabled: boolean;
   isSubmitting: boolean;
-  handleSubmit: Function;
+  handleSubmit: MouseEventHandler<HTMLButtonElement>;
 };
 
 export default function OrderQuestionnaireSummary({

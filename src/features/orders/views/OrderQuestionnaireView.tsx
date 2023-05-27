@@ -27,49 +27,13 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../co
 
 // ----------------------------------------------------------------------
 
-// ----------------------------------------------------------------------
-
-// const requestBody = {
-//   company: { type: Schema.ObjectId, ref: 'Company', required: true },
-
-//   // The customer is the user that is paying for the order
-//   user: { type: Schema.ObjectId, ref: 'marketplace_users', required: true },
-
-//   // The client is the user that is receiving the service (home care support).
-//   relative: { type: Schema.ObjectId, ref: 'Relative', required: true },
-
-//   services: [{ type: Schema.ObjectId, ref: 'Service', required: true }],
-
-//   // Json with all the information about the order schedule
-//   schedule_information: {
-//     start_date: startDate,
-
-//     // 0 -> Every 0 weeks -> Not recurrent, one time only order.
-//     // 1 -> Every 1 week -> Weekly
-//     // 2 -> Every 2 weeks -> Biweekly
-//     // 4 -> Every 4 weeks -> Monthly
-//     recurrency: recurrency,
-//     schedule: [
-//       {
-//         week_day: {
-//           type: Number,
-//           required: true,
-//           enum: [1, 2, 3, 4, 5, 6, 7],
-//         },
-//         start: { type: Date, required: true },
-//         end: { type: Date, required: true },
-//       },
-//     ],
-//   },
-// };
-
 type OrderRequestProps = {
-  companyId: string;
-  userId: string;
+  company: string;
+  user: string;
   relative: string;
   services: string[];
-  scheduleInfo: {
-    startDate: Date;
+  schedule_information: {
+    start_date: Date;
     recurrency: number;
     schedule: IScheduleProps[];
   };
@@ -157,19 +121,21 @@ export default function OrderQuestionnaireView() {
   const { reset } = methods;
 
   const onSubmit = async (data) => {
-    setIsSubmitting(true);
-    try {
-      await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
-      reset();
-      router.push(PATHS.orders.questionnaireCompleted('test'));
-    } catch (error) {
-      console.error(error);
+    if (companyInfo) {
+      setIsSubmitting(true);
+      try {
+        await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
+        reset();
+        router.push(PATHS.orders.questionnaireCompleted('test'));
+      } catch (error) {
+        console.error(error);
+      }
+      setIsSubmitting(false);
     }
-    setIsSubmitting(false);
   };
 
   const handleValidChange = (valid, data) => {
-    if (valid) {
+    if (valid && companyInfo && user) {
       const dataToSubmit: OrderRequestProps = {
         company: companyInfo._id,
         user: user._id,
