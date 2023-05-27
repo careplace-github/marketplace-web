@@ -5,6 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from 'src/contexts';
 // router
 import { useRouter } from 'next/router';
+import { PATHS } from 'src/routes';
 // @mui
 import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // _mock
@@ -158,8 +159,9 @@ export default function OrderQuestionnaireView() {
   const onSubmit = async (data) => {
     setIsSubmitting(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
       reset();
+      router.push(PATHS.orders.questionnaireCompleted('test'));
     } catch (error) {
       console.error(error);
     }
@@ -173,8 +175,8 @@ export default function OrderQuestionnaireView() {
         user: user._id,
         relative: data.relativeSelected,
         services: data.servicesSelected,
-        scheduleInfo: {
-          startDate: data.startDateSelected,
+        schedule_information: {
+          start_date: data.startDateSelected,
           recurrency: data.recurrency,
           schedule: data.schedule,
         },

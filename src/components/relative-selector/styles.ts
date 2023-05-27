@@ -11,6 +11,11 @@ export const inputStyle = {
 export const menuItemStyle = {
   p: 2,
   gap: '10px',
+};
+
+export const menuEmptyItemStyle = {
+  p: 2,
+  fontSize: '14px',
   cursor: 'pointer',
   '&:hover': {
     backgroundColor: 'rgba(145, 158, 171, 0.08)',
