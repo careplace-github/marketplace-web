@@ -132,12 +132,16 @@ export default function OrderQuestionnaireShippingForm({
   };
 
   useEffect(() => {
-    let isScheduleValid = true;
+    let counter: number = 0;
     schedule.forEach((item) => {
-      if (item.valid === false) {
-        isScheduleValid = false;
+      if (item.valid === true) {
+        counter += 1;
       }
     });
+    const isScheduleValid = filterWeekdays.length === counter && counter !== 0;
+    console.log('counter:', counter);
+    console.log('number of days selected:', filterWeekdays.length);
+    console.log('valid schedule:', isScheduleValid);
     const auxDate = new Date();
     const dateDay = auxDate.getDate();
     const dateMonth = auxDate.getMonth() + 1;
@@ -163,7 +167,7 @@ export default function OrderQuestionnaireShippingForm({
     schedule.forEach((item) => {
       if (item.valid) {
         scheduleToSend.push({
-          weekDay: item.weekday,
+          week_day: item.weekday,
           start: item.start,
           end: item.end,
         });
