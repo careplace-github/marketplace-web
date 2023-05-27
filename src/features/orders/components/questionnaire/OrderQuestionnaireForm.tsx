@@ -38,11 +38,7 @@ type Props = {
   onValidChange: Function;
 };
 
-export default function OrderQuestionnaireShippingForm({
-  relatives,
-  onValidChange,
-  services,
-}: Props) {
+export default function OrderQuestionnaireForm({ relatives, onValidChange, services }: Props) {
   const router = useRouter();
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
@@ -266,7 +262,7 @@ export default function OrderQuestionnaireShippingForm({
           <Stack spacing={{ xs: 2.5, md: 2 }} direction={{ xs: 'column', md: 'row' }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
               <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>
-                Recurrência
+                Recorrência
               </Typography>
               <FilterRecurrency
                 filterRecurrency={filterRecurrency}
