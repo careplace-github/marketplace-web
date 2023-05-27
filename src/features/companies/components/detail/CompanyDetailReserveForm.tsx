@@ -69,9 +69,9 @@ export default function CompanyDetailReserveForm({
 
   const handleClickContinue = () => {
     // const currentQuery = router.query;
-    const servicesIds: number[] = [];
+    const servicesIds: string[] = [];
     filterServices.forEach((service) => {
-      servicesIds.push(parseInt(service._id, 10));
+      servicesIds.push(service._id);
     });
 
     router.push({
@@ -79,6 +79,7 @@ export default function CompanyDetailReserveForm({
       query: {
         weekDay: filterWeekdays.join(','),
         services: servicesIds.join(','),
+        id: companyId,
       },
     });
   };
@@ -117,12 +118,15 @@ export default function CompanyDetailReserveForm({
             <FilterServices
               services={services}
               filterServices={filterServices}
-              onChangeLanguage={handleChangeServices}
+              onChangeServices={handleChangeServices}
             />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             Dias da semana
-            <FilterWeekdays filterWeekdays={filterWeekdays} onChangeLevel={handleChangeWeekdays} />
+            <FilterWeekdays
+              filterWeekdays={filterWeekdays}
+              onChangeWeekdays={handleChangeWeekdays}
+            />
           </Box>
         </Stack>
       </Stack>

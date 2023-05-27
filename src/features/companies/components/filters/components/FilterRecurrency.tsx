@@ -1,5 +1,5 @@
 // utils
-import Weekdays from 'src/data/Weekdays';
+import { recurrency } from 'src/data';
 // @mui
 import { MenuItem, Checkbox, FormControl, Typography } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -11,46 +11,41 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 // ----------------------------------------------------------------------
 
 type Props = {
-  filterWeekdays: number[];
-  onChangeWeekdays: (event: SelectChangeEvent<number[]>) => void;
+  filterRecurrency: number | undefined;
+  onChangeRecurrency: (event: SelectChangeEvent<number>) => void;
 };
 
-export default function FilterWeekdays({ filterWeekdays, onChangeWeekdays }: Props) {
+export default function FilterRecurrency({ filterRecurrency, onChangeRecurrency }: Props) {
   return (
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select
-        multiple
         displayEmpty
-        value={filterWeekdays}
-        onChange={onChangeWeekdays}
+        value={filterRecurrency || filterRecurrency === 0 ? filterRecurrency : ''}
+        onChange={onChangeRecurrency}
         MenuProps={MenuProps}
-        renderValue={(items) => {
-          const selected: string[] = [];
-          items.forEach((id) => {
-            Weekdays.forEach((day) => {
-              if (day.value === id) {
-                selected.push(day.text);
-              }
-            });
-          });
-          if (items.length === 0) {
+        renderValue={(value) => {
+          if (!value && value !== 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                Todos os dias
+                Escolha a recorrência
               </Typography>
             );
           }
+          let recurrencyText;
+          recurrency.forEach((item) => {
+            if (item.value === value) recurrencyText = item.text;
+          });
           return (
             <Typography variant="subtitle2" component="span">
-              {selected.join(', ')}
+              {recurrencyText}
             </Typography>
           );
         }}
       >
-        {Weekdays.map((day) => (
-          <MenuItem key={day.value} value={day.value} sx={menuItemStyle}>
-            <Checkbox size="small" checked={filterWeekdays.includes(day.value)} />
-            {day.text}
+        {recurrency.map((item) => (
+          <MenuItem key={item.value} value={item.value} sx={menuItemStyle}>
+            <Checkbox size="small" checked={filterRecurrency === item.value} />
+            {item.text}
           </MenuItem>
         ))}
       </Select>
