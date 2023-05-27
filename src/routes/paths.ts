@@ -34,7 +34,7 @@ export const PATHS = {
   orders: {
     view: (id: string) => `/order/${id}`,
     questionnaire: (query: string) => `/orders/questionnaire/${query}`,
-    questionnaireCompleted: (query: string) => `/order/questionnaire/${query}/completed`,
+    questionnaireCompleted: (query: string) => `/orders/questionnaire/completed`,
   },
 
   // Payments
