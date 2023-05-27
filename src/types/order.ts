@@ -18,7 +18,7 @@ export type IOrderProps = {
     gender?: string;
     birthdate?: string;
     profile_picture?: string;
-  },
+  };
   services: [];
   schedule_information: {
     start_date: string;
@@ -40,4 +40,11 @@ export type IOrderProps = {
     state?: string;
     country: string;
   };
+};
+
+export type IScheduleProps = {
+  week_day: number;
+  start: Date | null;
+  end: Date | null;
+  valid?: boolean | null;
 };

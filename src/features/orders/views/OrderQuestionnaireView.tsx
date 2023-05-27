@@ -1,22 +1,80 @@
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useAuthContext } from 'src/contexts';
+// router
+import { useRouter } from 'next/router';
+import { PATHS } from 'src/routes';
 // @mui
 import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // _mock
 import { _tours as _companies } from 'src/_mock';
+// axios
+import axios from 'src/lib/axios';
+// types
+import { ICompanyProps } from 'src/types/company';
+import { IServiceProps } from 'src/types/utils';
+import { IRelativeProps } from 'src/types/relative';
+import { IScheduleProps } from 'src/types/order';
+// utils
+import { getAvailableServices } from 'src/utils/getAvailableServices';
 // components
 import FormProvider from 'src/components/hook-form';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
-import { OrderQuestionnaireSummary, OrderQuestionnaireShippingForm } from '../components';
+import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components';
 
 // ----------------------------------------------------------------------
 
-export default function OrderQuestionnaireView() {
-  const [sameBilling, setSameBilling] = useState(false);
+type OrderRequestProps = {
+  company: string;
+  user: string;
+  relative: string;
+  services: string[];
+  schedule_information: {
+    start_date: Date;
+    recurrency: number;
+    schedule: IScheduleProps[];
+  };
+};
 
-  const [departureDay, setDepartureDay] = useState(null);
+export default function OrderQuestionnaireView() {
+  const [isFormValid, setIsFormValid] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
+  const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
+  const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
+  const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [formData, setFormData] = useState<OrderRequestProps>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const router = useRouter();
+  const { user } = useAuthContext();
+
+  const fetchUserRelatives = async () => {
+    const response = await axios.get('users/relatives');
+    setUserRelatives(response.data.data);
+    setRelativesLoading(false);
+    console.log(response.data.data);
+  };
+
+  useEffect(() => {
+    fetchUserRelatives();
+  }, []);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const fetchCompany = async (companyId) => {
+        const response = await axios.get(`/companies/${companyId}`);
+        setCompanyInfo(response.data);
+        const available = await getAvailableServices(response.data.services);
+        setAvailableServices(available);
+        setLoading(false);
+      };
+
+      fetchCompany(router.query.id);
+    }
+  }, [router.isReady]);
 
   const [guests, setGuests] = useState({
     adults: 2,
@@ -60,46 +118,45 @@ export default function OrderQuestionnaireView() {
     defaultValues,
   });
 
-  const {
-    reset,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  const { reset } = methods;
 
   const onSubmit = async (data) => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-    } catch (error) {
-      console.error(error);
+    if (companyInfo) {
+      setIsSubmitting(true);
+      try {
+        await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
+        reset();
+        router.push(PATHS.orders.questionnaireCompleted('test'));
+      } catch (error) {
+        console.error(error);
+      }
+      setIsSubmitting(false);
     }
   };
 
-  const handleChangeDepartureDay = (newValue) => {
-    setDepartureDay(newValue);
-  };
-
-  const handleIncrementGuests = (guest) => {
-    if (guest === 'children') {
-      setGuests({ ...guests, children: guests.children + 1 });
-    } else {
-      setGuests({ ...guests, adults: guests.adults + 1 });
+  const handleValidChange = (valid, data) => {
+    if (valid && companyInfo && user) {
+      const dataToSubmit: OrderRequestProps = {
+        company: companyInfo._id,
+        user: user._id,
+        relative: data.relativeSelected,
+        services: data.servicesSelected,
+        schedule_information: {
+          start_date: data.startDateSelected,
+          recurrency: data.recurrency,
+          schedule: data.schedule,
+        },
+      };
+      setFormData(dataToSubmit);
     }
+    setIsFormValid(valid);
   };
 
-  const handleDecreaseGuests = (guest) => {
-    if (guest === 'children') {
-      setGuests({ ...guests, children: guests.children - 1 });
-    } else {
-      setGuests({ ...guests, adults: guests.adults - 1 });
-    }
-  };
+  useEffect(() => {
+    console.log('data to submit:', formData);
+  }, [formData]);
 
-  const handleChangeSameBilling = (event) => {
-    setSameBilling(event.target.checked);
-  };
-
-  return (
+  return !loading && !relativesLoading ? (
     <Container
       sx={{
         overflow: 'hidden',
@@ -111,67 +168,34 @@ export default function OrderQuestionnaireView() {
         Orçamento
       </Typography>
 
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider methods={methods} onSubmit={() => {}}>
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
-              <StepLabel title="Informação do Pedido" step="1" />
-
-              <Divider sx={{ my: 5, borderStyle: 'dashed' }} />
-
-              <StepLabel title="Informação de Faturação" step="2" />
-
-              <OrderQuestionnaireShippingForm
-                sameBilling={sameBilling}
-                onChangeSameBilling={handleChangeSameBilling}
-              />
+              {userRelatives && (
+                <OrderQuestionnaireForm
+                  relatives={userRelatives}
+                  services={availableServices}
+                  onValidChange={handleValidChange}
+                />
+              )}
             </Stack>
           </Grid>
 
           <Grid xs={12} md={5}>
-            {/* <OrderQuestionnaireSummary
-              guests={guests}
-              company={_companies[0]}
-              departureDay={departureDay}
-              isSubmitting={isSubmitting}
-              onDecreaseGuests={handleDecreaseGuests}
-              onIncrementGuests={handleIncrementGuests}
-              onChangeDepartureDay={handleChangeDepartureDay}
-            /> */}
+            {companyInfo && (
+              <OrderQuestionnaireSummary
+                handleSubmit={onSubmit}
+                disabled={!isFormValid}
+                company={companyInfo}
+                isSubmitting={isSubmitting}
+              />
+            )}
           </Grid>
         </Grid>
       </FormProvider>
     </Container>
-  );
-}
-
-// ----------------------------------------------------------------------
-type StepLabelProps = {
-  step: string;
-  title: string;
-};
-
-function StepLabel({ step, title }: StepLabelProps) {
-  return (
-    <Stack direction="row" alignItems="center" sx={{ mb: 3, typography: 'h5' }}>
-      <Box
-        sx={{
-          mr: 1.5,
-          width: 28,
-          height: 28,
-          flexShrink: 0,
-          display: 'flex',
-          typography: 'h6',
-          borderRadius: '50%',
-          alignItems: 'center',
-          bgcolor: 'primary.main',
-          justifyContent: 'center',
-          color: 'primary.contrastText',
-        }}
-      >
-        {step}
-      </Box>
-      {title}
-    </Stack>
+  ) : (
+    <LoadingScreen />
   );
 }
