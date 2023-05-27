@@ -4,41 +4,44 @@ import NextLink from 'next/link';
 // @mui
 import { Button, Typography } from '@mui/material';
 // components
-import Image from 'src/components/image';
 import { MotionContainer, varBounce } from 'src/components/animate';
+// assets
+import { SeverErrorIllustration } from 'src/assets/illustrations';
+// routes
+import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
 export default function Error500View() {
   return (
-    <MotionContainer>
-      <m.div variants={varBounce().in}>
-        <Typography variant="h3" paragraph>
-          500 Internal Server Error
+    <>
+      <MotionContainer>
+        <m.div variants={varBounce().in}>
+          <Typography variant="h3" paragraph>
+            500 - Erro de Servidor
+          </Typography>
+        </m.div>
+
+        <m.div variants={varBounce().in}>
+          <Typography sx={{ color: 'text.secondary' }}>
+            Ocorreu um erro inesperado. Por favor tente novamente mais tarde.
+          </Typography>
+        </m.div>
+
+        <m.div variants={varBounce().in}>
+          <SeverErrorIllustration sx={{ height: 260, my: { xs: 5, sm: 10 } }} />
+        </m.div>
+
+        <Typography sx={{ color: 'text.secondary', mb: 10 }}>
+          <br />
+          Se precisar de ajuda por favor contacte-nos através do email{' '}
+          <a href="mailto:suporte@careplace.pt"> suporte@careplace.pt </a>
         </Typography>
-      </m.div>
 
-      <m.div variants={varBounce().in}>
-        <Typography sx={{ color: 'text.secondary' }}>
-          There was an error, please try again later.
-        </Typography>
-      </m.div>
-
-      <m.div variants={varBounce().in}>
-        <Image
-          alt="500"
-          src="/assets/illustrations/illustration_500.svg"
-          sx={{
-            mx: 'auto',
-            maxWidth: 320,
-            my: { xs: 5, sm: 8 },
-          }}
-        />
-      </m.div>
-
-      <Button component={NextLink} href="/" size="large" color="inherit" variant="contained">
-        Go to Home
-      </Button>
-    </MotionContainer>
+        <Button component={NextLink} href={PATHS.companies.root} size="large" variant="contained">
+          Início
+        </Button>
+      </MotionContainer>
+    </>
   );
 }
