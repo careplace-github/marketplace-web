@@ -36,6 +36,7 @@ type Props = {
 
 const statusOptions = [
   { label: 'Novo', value: 'new' },
+  { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Ativo', value: 'active' },
   { label: 'Pagamento Pendente', value: 'payment_pending' },
   { label: 'Concluído', value: 'completed' },
@@ -150,6 +151,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
           <Label
             color={
               (order.status === 'new' && 'info') ||
+              (order.status === 'accepted' && 'info') ||
               (order.status === 'active' && 'success') ||
               (order.status === 'payment_pending' && 'warning') ||
               (order.status === 'cancelled' && 'error') ||

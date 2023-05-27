@@ -40,6 +40,7 @@ import {
 
 const TABS = [
   { label: 'Todos', value: 'all' },
+  { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Novos', value: 'new' },
   { label: 'Ativos', value: 'active' },
   { label: 'Pagamentos Pendentes', value: 'payment_pending' },
@@ -168,7 +169,7 @@ export default function AccountOrdersView() {
           >
             <AccountOrdersTableToolbar rowCount={orders.length} numSelected={selected.length} />
 
-            <Scrollbar>
+            <Scrollbar sx={{ maxHeight: '520px' }}>
               <Table
                 sx={{
                   minWidth: 720,

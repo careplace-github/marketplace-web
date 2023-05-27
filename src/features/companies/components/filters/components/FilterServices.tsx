@@ -8,11 +8,11 @@ import { IServiceProps } from 'src/types/utils';
 
 type Props = {
   filterServices: IServiceProps[];
-  onChangeLanguage: (keyword: IServiceProps[]) => void;
+  onChangeServices: (keyword: IServiceProps[]) => void;
   services: Array<IServiceProps>;
 };
 
-export default function FilterServices({ services, filterServices, onChangeLanguage }: Props) {
+export default function FilterServices({ services, filterServices, onChangeServices }: Props) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function FilterServices({ services, filterServices, onChangeLangu
       getOptionLabel={(option) => option.name}
       value={filterServices}
       onChange={(event, value) => {
-        onChangeLanguage(value);
+        onChangeServices(value);
       }}
       renderInput={(params) => (
         <TextField
