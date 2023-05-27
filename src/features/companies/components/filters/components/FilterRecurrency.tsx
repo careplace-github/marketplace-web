@@ -27,7 +27,7 @@ export default function FilterRecurrency({ filterRecurrency, onChangeRecurrency 
           if (!value && value !== 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                Escolha a recurrência
+                Escolha a recorrência
               </Typography>
             );
           }
