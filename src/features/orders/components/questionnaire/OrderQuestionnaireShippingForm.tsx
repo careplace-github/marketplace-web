@@ -32,40 +32,6 @@ import { IRelativeProps } from 'src/types/relative';
 
 // ----------------------------------------------------------------------
 
-// const requestBody = {
-//   company: { type: Schema.ObjectId, ref: 'Company', required: true },
-
-//   // The customer is the user that is paying for the order
-//   user: { type: Schema.ObjectId, ref: 'marketplace_users', required: true },
-
-//   // The client is the user that is receiving the service (home care support).
-//   relative: { type: Schema.ObjectId, ref: 'Relative', required: true },
-
-//   services: [{ type: Schema.ObjectId, ref: 'Service', required: true }],
-
-//   // Json with all the information about the order schedule
-//   schedule_information: {
-//     start_date: startDate,
-
-//     // 0 -> Every 0 weeks -> Not recurrent, one time only order.
-//     // 1 -> Every 1 week -> Weekly
-//     // 2 -> Every 2 weeks -> Biweekly
-//     // 4 -> Every 4 weeks -> Monthly
-//     recurrency: recurrency,
-//     schedule: [
-//       {
-//         week_day: {
-//           type: Number,
-//           required: true,
-//           enum: [1, 2, 3, 4, 5, 6, 7],
-//         },
-//         start: { type: Date, required: true },
-//         end: { type: Date, required: true },
-//       },
-//     ],
-//   },
-// };
-
 type Props = {
   services: IServiceProps[];
   relatives: IRelativeProps[];
@@ -84,43 +50,43 @@ export default function OrderQuestionnaireShippingForm({
   const [selectedRelative, setSelectedRelative] = useState<IRelativeProps>();
   const [schedule, setSchedule] = useState<IScheduleProps[]>([
     {
-      weekday: 1,
+      week_day: 1,
       start: null,
       end: null,
       valid: null,
     },
     {
-      weekday: 2,
+      week_day: 2,
       start: null,
       end: null,
       valid: null,
     },
     {
-      weekday: 3,
+      week_day: 3,
       start: null,
       end: null,
       valid: null,
     },
     {
-      weekday: 4,
+      week_day: 4,
       start: null,
       end: null,
       valid: null,
     },
     {
-      weekday: 5,
+      week_day: 5,
       start: null,
       end: null,
       valid: null,
     },
     {
-      weekday: 6,
+      week_day: 6,
       start: null,
       end: null,
       valid: null,
     },
     {
-      weekday: 7,
+      week_day: 7,
       start: null,
       end: null,
       valid: null,
@@ -167,7 +133,7 @@ export default function OrderQuestionnaireShippingForm({
     schedule.forEach((item) => {
       if (item.valid) {
         scheduleToSend.push({
-          week_day: item.weekday,
+          week_day: item.week_day,
           start: item.start,
           end: item.end,
         });
@@ -262,7 +228,7 @@ export default function OrderQuestionnaireShippingForm({
     let weekdayItem;
 
     schedule.forEach((item) => {
-      if (item.weekday === weekdayId) {
+      if (item.week_day === weekdayId) {
         weekdayItem = item;
       }
     });

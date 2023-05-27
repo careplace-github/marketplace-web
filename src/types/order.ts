@@ -43,7 +43,7 @@ export type IOrderProps = {
 };
 
 export type IScheduleProps = {
-  weekday: number;
+  week_day: number;
   start: Date | null;
   end: Date | null;
   valid?: boolean | null;
