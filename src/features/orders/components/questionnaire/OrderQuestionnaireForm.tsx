@@ -237,9 +237,17 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
       <StepLabel title="Informação do Pedido" step="1" />
       <div>
         <Stack spacing={2.5} sx={{ mb: '24px' }}>
-          <Stack spacing={{ xs: 2.5, md: 2 }} direction={{ xs: 'column', md: 'row' }}>
+          <Stack gap="16px" direction={{ xs: 'column', md: 'row' }}>
             {/* <RHFTextField name="billingAddress.firstName" label="First Name" /> */}
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                flex: 1,
+                width: { md: 'calc(50% - 8px)', xs: '100%' },
+              }}
+            >
               <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>
                 Serviços
               </Typography>
@@ -249,7 +257,15 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                 onChangeServices={handleChangeServices}
               />
             </Box>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+                flex: 1,
+                width: { md: 'calc(50% - 8px)', xs: '100%' },
+              }}
+            >
               <Typography variant="overline" sx={{ color: 'text.secondary', display: 'block' }}>
                 Dias da semana
               </Typography>
