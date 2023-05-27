@@ -40,6 +40,7 @@ import {
 
 const TABS = [
   { label: 'Todos', value: 'all' },
+  { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Novos', value: 'new' },
   { label: 'Ativos', value: 'active' },
   { label: 'Pagamentos Pendentes', value: 'payment_pending' },
