@@ -168,7 +168,7 @@ export default function AccountOrdersView() {
           >
             <AccountOrdersTableToolbar rowCount={orders.length} numSelected={selected.length} />
 
-            <Scrollbar>
+            <Scrollbar sx={{ maxHeight: '520px' }}>
               <Table
                 sx={{
                   minWidth: 720,
