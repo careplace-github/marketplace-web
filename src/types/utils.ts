@@ -16,10 +16,12 @@ export type IWeekDayProps = {
 
 export type IServiceProps = {
   _id: string;
+  type: 'normal' | 'special';
   description: string;
   image: string;
   name: string;
   short_description: string;
+  icon?: string;
 };
 
 export type ISocialLinks = {
