@@ -124,9 +124,9 @@ export default function OrderQuestionnaireView() {
     if (companyInfo) {
       setIsSubmitting(true);
       try {
-        await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
+        const response = await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
         reset();
-        router.push(PATHS.orders.questionnaireCompleted('test'));
+        router.push(PATHS.orders.questionnaireCompleted(response.data._id));
       } catch (error) {
         console.error(error);
       }

@@ -42,6 +42,17 @@ export type IOrderProps = {
   };
 };
 
+export type IScheduleInformationResponseProps = {
+  start_date: Date | null;
+  schedule: [
+    {
+      week_day: number;
+      start: string;
+      end: string;
+    }
+  ];
+};
+
 export type IScheduleProps = {
   week_day: number;
   start: Date | null;
