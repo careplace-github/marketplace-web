@@ -6,13 +6,13 @@ import { fDate } from 'src/utils/formatTime';
 import Iconify, { IconifyProps } from 'src/components/iconify';
 // types
 import { ICompanyProps } from 'src/types/company';
-import { IExtraServices } from 'src/types/company';
+import { IServiceProps } from 'src/types/utils';
 // data
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  extraServices: IExtraServices[];
+  extraServices: IServiceProps[];
   description: string;
   name: string;
   services: string[];
@@ -81,7 +81,13 @@ export default function CompanyDetailSummary({
           }}
         >
           {extraServices.map((service) => {
-            return <OverviewItem key={service.value} icon={service.icon} label={service.label} />;
+            return (
+              <OverviewItem
+                key={service._id}
+                icon={service.icon ? service.icon : ''}
+                label={service.name}
+              />
+            );
           })}
         </Box>
       </div>
