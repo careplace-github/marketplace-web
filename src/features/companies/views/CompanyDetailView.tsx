@@ -43,7 +43,6 @@ type IFilterQueryProps = {
   weekdays: string | undefined;
   services: string | undefined;
 };
-
 export default function CompanyDetailView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [companiesLoading, setCompaniesLoading] = useState<boolean>(true);
@@ -54,6 +53,7 @@ export default function CompanyDetailView() {
   });
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [companyServices, setCompanyServices] = useState<string[]>([]);
+  const [companySpecialServices, setCompanySpecialServices] = useState<IServiceProps[]>([]);
   const [companyAvailableServices, setCompanyAvailableServices] = useState<IServiceProps[]>([]);
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [similarCompanies, setSimilarCompanies] = useState<ICompanyProps[]>([]);
@@ -65,6 +65,7 @@ export default function CompanyDetailView() {
       setServicesLoading(true);
       const response = await axios.get('/services');
       setAvailableServices(response.data.data);
+      console.log('all services:', response.data);
       setServicesLoading(false);
     };
 
@@ -81,7 +82,6 @@ export default function CompanyDetailView() {
       const companyId = router.asPath.split('/')[2].split('?')[0];
       const response = await axios.get('/companies/search');
       const allCompanies = response.data.data;
-
       const randomIndex: number[] = [];
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < allCompanies.length - 1; i++) {
@@ -126,14 +126,19 @@ export default function CompanyDetailView() {
     setServicesLoading(true);
     if (availableServices.length > 0 && companyInfo && companyInfo.services) {
       const aux: string[] = [];
+      const auxSpecials: IServiceProps[] = [];
       availableServices.forEach((availableService) => {
         companyInfo.services.forEach((item) => {
-          if (availableService._id === item) {
+          if (availableService._id === item && availableService.type === 'normal') {
             aux.push(availableService.name);
+          } else if (availableService._id === item && availableService.type === 'special') {
+            console.log('IS SPECIAL');
+            auxSpecials.push(availableService);
           }
         });
       });
       setCompanyServices(aux);
+      setCompanySpecialServices(auxSpecials);
       // get all services that the company can do to list them in the dropdown
       const allCompanyAvailableServices: IServiceProps[] = [];
       availableServices.forEach((item) => {
@@ -143,6 +148,7 @@ export default function CompanyDetailView() {
           }
         });
       });
+      console.log(allCompanyAvailableServices);
       setCompanyAvailableServices(allCompanyAvailableServices);
     }
     setServicesLoading(false);
@@ -151,6 +157,8 @@ export default function CompanyDetailView() {
   if (loading || servicesLoading || companiesLoading) {
     return <LoadingScreen />;
   }
+
+  console.log('services: ', companyServices);
 
   const handleGoBackClick = () => {
     if (router.isReady) {
@@ -225,7 +233,7 @@ export default function CompanyDetailView() {
 
           <Grid xs={12} md={7} lg={8}>
             <CompanyDetailSummary
-              extraServices={otherServices}
+              extraServices={companySpecialServices}
               description={companyInfo.business_profile.about}
               name={companyInfo.business_profile.name}
               services={companyServices}

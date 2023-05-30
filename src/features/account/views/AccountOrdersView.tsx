@@ -91,6 +91,16 @@ export default function AccountOrdersView() {
     setOrders(ordersFiltered);
   };
 
+  const handleSort = (attribute: string) => {
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+
+    if (attribute === 'relative.name') {
+      setSortBy('relative.name');
+    }
+
+    setSortBy(attribute);
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -101,19 +111,9 @@ export default function AccountOrdersView() {
         console.error(error);
       }
     };
-
     fetchOrders();
+    handleSort(sortBy);
   }, []);
-
-  const handleSort = (attribute: string) => {
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-
-    if (attribute === 'relative.name') {
-      setSortBy('relative.name');
-    }
-
-    setSortBy(attribute);
-  };
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
