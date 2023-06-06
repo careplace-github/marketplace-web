@@ -13,12 +13,18 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 type Props = {
   filterRecurrency: number | undefined;
   onChangeRecurrency: (event: SelectChangeEvent<number>) => void;
+  readOnly?: boolean;
 };
 
-export default function FilterRecurrency({ filterRecurrency, onChangeRecurrency }: Props) {
+export default function FilterRecurrency({
+  readOnly = false,
+  filterRecurrency,
+  onChangeRecurrency,
+}: Props) {
   return (
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select
+        readOnly={!!readOnly}
         displayEmpty
         value={filterRecurrency || filterRecurrency === 0 ? filterRecurrency : ''}
         onChange={onChangeRecurrency}
