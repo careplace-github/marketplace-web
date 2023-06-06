@@ -16,6 +16,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
 // components
+import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { RHFTextField } from 'src/components/hook-form';
@@ -395,12 +396,13 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
         </Stack>
       </div>
 
-      <StepLabel title="Escolha o Familiar" step="2" />
+      <StepLabel title={checkoutVersion ? 'Familiar' : 'Escolha o Familiar'} step="2" />
       <div>
-        <RelativeSelector
-          onChangeRelative={handleChangeRelativeSelected}
-          relativeSelected={JSON.stringify(selectedRelative)}
-          relatives={relatives}
+        <AvatarDropdown
+          onChange={handleChangeRelativeSelected}
+          selected={JSON.stringify(selectedRelative)}
+          options={relatives}
+          selectText="Escolha um familiar"
         />
 
         <Collapse in={!!selectedRelative} unmountOnExit>

@@ -23,8 +23,6 @@ import { OrderQuestionnaireCompletedSummary } from '../components';
 
 // ----------------------------------------------------------------------
 
-const _mockCompany = _companies[1];
-
 export default function OrderQuestionnaireCompletedView() {
   const isMdUp = useResponsive('up', 'md');
   const router = useRouter();

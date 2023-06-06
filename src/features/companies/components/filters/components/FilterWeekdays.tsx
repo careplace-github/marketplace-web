@@ -13,12 +13,18 @@ import { inputStyle, menuItemStyle, MenuProps } from './styles';
 type Props = {
   filterWeekdays: number[];
   onChangeWeekdays: (event: SelectChangeEvent<number[]>) => void;
+  readOnly?: boolean;
 };
 
-export default function FilterWeekdays({ filterWeekdays, onChangeWeekdays }: Props) {
+export default function FilterWeekdays({
+  readOnly = false,
+  filterWeekdays,
+  onChangeWeekdays,
+}: Props) {
   return (
     <FormControl fullWidth variant="filled" sx={inputStyle}>
       <Select
+        readOnly={!!readOnly}
         multiple
         displayEmpty
         value={filterWeekdays}
