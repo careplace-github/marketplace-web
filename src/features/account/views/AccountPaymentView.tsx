@@ -1,17 +1,11 @@
 // @mui
-import { Box, Stack, Button, Divider, Typography } from '@mui/material';
-import { useRef, useEffect, useState } from 'react';
+import { Box, Stack, Button, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 // hooks
 import { useResponsive } from 'src/hooks';
-// mock
-import _mock from 'src/_mock';
-// contexts
-import { useAuthContext } from 'src/contexts';
 // lib
 import axios from 'src/lib/axios';
-// routes
-import { PATHS } from 'src/routes/paths';
 // components
 import EmptyState from 'src/components/empty-state/EmptyState';
 import Iconify from 'src/components/iconify';
@@ -21,7 +15,6 @@ import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../compo
 // ----------------------------------------------------------------------
 
 export default function AccountPaymentView() {
-  const { user } = useAuthContext();
   const isMdUp = useResponsive('up', 'md');
   const theme = useTheme();
 

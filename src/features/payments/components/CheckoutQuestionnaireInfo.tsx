@@ -3,15 +3,12 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { IScheduleProps } from 'src/types/order';
 // react
-import { useForm } from 'react-hook-form';
+
 // lib
 import axios from 'src/lib/axios';
-// yup
-import * as Yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
+
 // @mui
 import { SelectChangeEvent } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 import {
   Stack,
   Box,
@@ -28,7 +25,6 @@ import { useTheme } from '@mui/material/styles';
 // contexts
 import { useAuthContext } from 'src/contexts';
 // components
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
 import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -41,6 +37,7 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
+import AddNewCardForm from './AddNewCardForm';
 import CheckoutPaymentMethod from './CheckoutPaymentMethod';
 
 // ----------------------------------------------------------------------
@@ -57,24 +54,6 @@ type Props = {
   schedule: IScheduleProps[];
   startDate: Date | null;
 };
-
-const PAYMENT_OPTIONS = [
-  {
-    label: 'Paypal',
-    value: 'paypal',
-    description: '**** **** **** 1234',
-  },
-  {
-    label: 'MasterCard',
-    value: 'mastercard',
-    description: '**** **** **** 3456',
-  },
-  {
-    label: 'Visa',
-    value: 'visa',
-    description: '**** **** **** 6789',
-  },
-];
 
 export default function CheckoutQuestionnaireInfo({
   relatives,
@@ -102,87 +81,25 @@ export default function CheckoutQuestionnaireInfo({
   }
 
   useEffect(() => {
-    getCards().then((data) => {
-      const auxCards = [];
-      data.forEach((card) => {
-        const label = card.card.brand.toUpperCase();
-        const value = card.card.brand;
-        const description = `**** **** **** ${card.card.last4}`;
-        auxCards.push({ label: label, value: value, description: description });
-      });
-      setCARDS(auxCards);
-      console.log(data);
-    });
+    getCards()
+      .then((data) => {
+        const auxCards = [];
+        data.forEach((card) => {
+          auxCards.push({
+            label: card.card.brand.toUpperCase(),
+            value: card.card.brand,
+            description: `**** **** **** ${card.card.last4}`,
+          });
+        });
+        setCARDS(auxCards);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
-  const { user } = useAuthContext();
-  const { pathname, push } = useRouter();
-
-  const CardSchema = Yup.object().shape({
-    cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
-    cardNumber: Yup.string()
-      .required('Número do cartão é obrigatório.')
-      .test('cardNumber', 'Insira um número de cartão válido.', (value) => value.length === 19),
-    cardExpirationDate: Yup.string().required('Data de validade é obrigatória.'),
-    cardCVV: Yup.string().required('CVV é obrigatório.'),
-  });
-
-  const defaultValues = {
-    cardHolder: user?.name || undefined,
-    cardNumber: undefined,
-    cardExpirationDate: undefined,
-    cardCVV: undefined,
-  };
-
-  const methods = useForm<FormValuesProps>({
-    mode: 'onChange',
-    resolver: yupResolver(CardSchema),
-    defaultValues,
-  });
-
-  const {
-    setValue,
-    getValues,
-    handleSubmit,
-    reset,
-    formState: { isSubmitting, errors, isDirty },
-  } = methods;
-
-  const close = () => {
-    reset();
+  const handleAddCard = () => {
     openAddCardForm(false);
     getCards();
-  };
-
-  const onSubmit = async (data: FormValuesProps) => {
-    try {
-      const cardData = {
-        card: {
-          number: data.cardNumber,
-          // first 2 digits of the expiration month
-          exp_month: data.cardExpirationDate.substring(0, 2),
-          exp_year: data.cardExpirationDate.substring(3, 5),
-          cvc: data.cardCVV,
-        },
-        billing_details: {
-          name: data.cardHolder,
-        },
-      };
-
-      const card_token = (
-        await axios.post('/payments/tokens/card', {
-          card: cardData.card,
-          billing_details: cardData.billing_details,
-        })
-      ).data;
-
-      await axios.post('/payments/payment-methods', {
-        payment_method_token: card_token.id,
-      });
-      close();
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
@@ -425,154 +342,19 @@ export default function CheckoutQuestionnaireInfo({
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CheckoutPaymentMethod options={CARDS} />
         <Divider sx={{ mt: '20px', mb: '20px' }} />
-        <Stack width="100%" alignItems="flex-start" justifyContent="flex-start">
+        <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
           <Button
-            size="large"
-            variant="contained"
-            color="inherit"
-            onClick={() => setOpenAddCardForm((prev) => !prev)}
+            variant="text"
             sx={{
-              width: !isMdUp ? '100%' : 'contain',
-              px: 4,
-              bgcolor: openAddCardForm ? 'red' : 'primary.main',
-              color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-              '&:hover': {
-                bgcolor: openAddCardForm ? 'red' : 'primary.dark',
-                color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-              },
+              color: openAddCardForm ? 'red' : 'primary.main',
             }}
+            onClick={() => setOpenAddCardForm((prev) => !prev)}
           >
             {!openAddCardForm ? 'Adicionar Cartão' : 'Cancelar'}
           </Button>
         </Stack>
         <Collapse in={openAddCardForm} unmountOnExit>
-          <Box
-            sx={{
-              outline: 'none',
-              width: '100%',
-              height: 'auto',
-              bgcolor: 'white',
-              display: 'flex',
-              flexDirection: 'column',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              mt: '20px',
-              gap: '10px',
-              '& > form': {
-                width: '100%',
-              },
-            }}
-          >
-            <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-              <Stack direction="column" spacing={2} sx={{ pb: 2 }}>
-                <RHFTextField
-                  name="cardHolder"
-                  label="Nome do Titular"
-                  placeholder="Nome"
-                  InputLabelProps={{ shrink: true }}
-                />
-
-                <RHFTextField
-                  name="cardNumber"
-                  label="Número do Cartão"
-                  placeholder="XXXX XXXX XXXX XXXX"
-                  InputLabelProps={{ shrink: true }}
-                  // Max 19 characters
-                  inputProps={{ maxLength: 19 }}
-                  onChange={(e) => {
-                    // Only allow 0-9
-                    // After typing 4 characters, add a space
-
-                    const { value } = e.target;
-                    const onlyNums = value.replace(/[^0-9]/g, '');
-                    const cardNumber = onlyNums
-                      .split('')
-                      .reduce((acc, curr, i) => acc + curr + (i % 4 === 3 ? ' ' : ''), '')
-                      .trim();
-
-                    setValue('cardNumber', cardNumber);
-                  }}
-                />
-              </Stack>
-              <Stack direction="row" spacing={2}>
-                <RHFTextField
-                  name="cardExpirationDate"
-                  fullWidth
-                  label="Validade"
-                  placeholder="MM/YY"
-                  InputLabelProps={{ shrink: true }}
-                  onChange={(e) => {
-                    // Only allow 0-9
-                    // After typing 2 characters, add a slash
-
-                    const { value } = e.target;
-                    const onlyNums = value.replace(/[^0-9]/g, '');
-                    const month = onlyNums.slice(0, 2);
-                    const year = onlyNums.slice(2, 4);
-
-                    if (onlyNums.length <= 2) {
-                      setValue('cardExpirationDate', month);
-
-                      // convert onlyNums to a number
-                      // if it's greater than 12, set the value to 12
-                      // otherwise, set the value to the onlyNums
-
-                      if (Number(onlyNums) > 12) {
-                        setValue('cardExpirationDate', '12');
-                      }
-                    } else {
-                      setValue('cardExpirationDate', `${month}/${year}`);
-                    }
-                  }}
-                />
-                <RHFTextField
-                  name="cardCVV"
-                  fullWidth
-                  label="CVV/CVC"
-                  placeholder="***"
-                  InputLabelProps={{ shrink: true }}
-                  inputProps={{ maxLength: 3 }}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    const onlyNums = value.replace(/[^0-9]/g, '');
-                    setValue('cardCVV', onlyNums);
-                  }}
-                />
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                sx={{ typography: 'caption', color: 'text.disabled', mt: 2 }}
-              >
-                <Iconify icon="carbon:locked" sx={{ mr: 0.5 }} />
-                Transações seguras com encriptação SSL
-              </Stack>
-
-              <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
-                <LoadingButton
-                  type="submit"
-                  variant="contained"
-                  loading={isSubmitting}
-                  sx={{
-                    width: '100%',
-                    pt: 1.5,
-                    pb: 1.5,
-                    mt: 2,
-                    alignSelf: 'center',
-                    bgcolor: 'primary.main',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                    '&:hover': {
-                      bgcolor: 'primary.dark',
-                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                    },
-                  }}
-                >
-                  Guardar
-                </LoadingButton>
-              </Stack>
-            </FormProvider>
-          </Box>
+          <AddNewCardForm onAddCard={handleAddCard} />
         </Collapse>
       </Box>
     </Stack>
@@ -590,7 +372,6 @@ type StepLabelProps = {
 };
 
 function StepLabel({ step, title, onOpenClick, droppable, opened }: StepLabelProps) {
-  const theme = useTheme();
   return (
     <Stack direction="row" alignItems="center" justifyContent="space-between">
       <Stack direction="row" alignItems="center" sx={{ typography: 'h5' }}>
@@ -613,7 +394,6 @@ function StepLabel({ step, title, onOpenClick, droppable, opened }: StepLabelPro
         </Box>
         {title}
       </Stack>
-
       {droppable && (
         <Box
           sx={{
