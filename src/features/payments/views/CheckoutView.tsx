@@ -5,9 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from 'src/contexts';
 // router
 import { useRouter } from 'next/router';
-import { PATHS } from 'src/routes';
 // @mui
-import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import { Stack, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // types
@@ -21,7 +20,7 @@ import { getAvailableServices } from 'src/utils/getAvailableServices';
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
-import { OrderQuestionnaireForm, OrderQuestionnaireSummary } from 'src/features/orders/components';
+import CheckoutSummary from '../components/CheckoutSummary';
 import CheckoutQuestionnaireInfo from '../components/CheckoutQuestionnaireInfo';
 
 // ----------------------------------------------------------------------
@@ -41,6 +40,7 @@ type OrderRequestProps = {
 export default function CheckoutView() {
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedCard, setSelectedCard] = useState<boolean>();
   const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
@@ -102,16 +102,16 @@ export default function CheckoutView() {
     }
   }, [router.isReady]);
 
-  useEffect(() => {
-    console.log('loading:', loading);
-    console.log('relatives Loading:', relativesLoading);
-  }, [loading, relativesLoading]);
-
-  const TravelCheckoutSchema = Yup.object().shape({
+  const CheckoutSchema = Yup.object().shape({
     billingAddress: Yup.object().shape({
       firstName: Yup.string().required('First name is required'),
       lastName: Yup.string().required('Last name is required'),
       fullAddress: Yup.string().required('Full address is required'),
+    }),
+    paymentMethods: Yup.object().shape({
+      card: Yup.object().shape({
+        cardNumber: Yup.string().test((number) => !!number),
+      }),
     }),
   });
 
@@ -129,7 +129,7 @@ export default function CheckoutView() {
       fullAddress2: '',
     },
     paymentMethods: {
-      methods: 'paypal',
+      methods: '',
       card: {
         cardNumber: '',
         cardHolder: '',
@@ -137,28 +137,24 @@ export default function CheckoutView() {
         ccv: '',
       },
     },
+    paymentMethodSelect: {
+      label: '',
+      value: '',
+      description: '',
+    },
   };
 
   const methods = useForm({
-    resolver: yupResolver(TravelCheckoutSchema),
+    resolver: yupResolver(CheckoutSchema),
     defaultValues,
   });
 
-  const { reset } = methods;
+  const { reset, getValues } = methods;
 
-  const onSubmit = async (data) => {
-    if (companyInfo) {
-      setIsSubmitting(true);
-      try {
-        const response = await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
-        reset();
-        router.push(PATHS.orders.questionnaireCompleted(response.data._id));
-      } catch (error) {
-        console.error(error);
-      }
-      setIsSubmitting(false);
-    }
-  };
+  // useEffect(() => {
+  //   console.log('values:', getValues());
+  //   console.log('disable pay button:', !getValues().paymentMethods.card.cardNumber);
+  // }, []);
 
   return !loading && !relativesLoading ? (
     <Container
@@ -172,7 +168,11 @@ export default function CheckoutView() {
         Checkout
       </Typography>
 
-      <FormProvider methods={methods} onSubmit={() => {}}>
+      <FormProvider
+        key="checkout_view_form"
+        methods={methods}
+        onSubmit={() => router.push('/merda')}
+      >
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
@@ -194,10 +194,12 @@ export default function CheckoutView() {
           </Grid>
 
           <Grid xs={12} md={5}>
+            <button onClick={() => console.log(getValues())}>Click</button>
             {companyInfo && (
-              <OrderQuestionnaireSummary
-                // handleSubmit={onSubmit}
-                disabled={!isFormValid}
+              <CheckoutSummary
+                // handleSubmit={() => console.log('hello')}
+                disabled={!!selectedCard}
+                subtotal={orderInfo.order_total}
                 company={companyInfo}
                 isSubmitting={isSubmitting}
               />
