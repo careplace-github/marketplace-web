@@ -53,6 +53,14 @@ type Props = {
   selectedRecurrency: number;
   schedule: IScheduleProps[];
   startDate: Date | null;
+  onPaymentMethodSelect: Function;
+};
+
+type PaymentMethodProps = {
+  label: string;
+  value: string;
+  brand: string;
+  description: string;
 };
 
 export default function CheckoutQuestionnaireInfo({
@@ -66,6 +74,7 @@ export default function CheckoutQuestionnaireInfo({
   schedule,
   startDate,
   selectedServices,
+  onPaymentMethodSelect,
 }: Props) {
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
   const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(false);
@@ -73,7 +82,7 @@ export default function CheckoutQuestionnaireInfo({
   const theme = useTheme();
   const { palette } = theme;
   const isMdUp = useResponsive('up', 'md');
-  const [CARDS, setCARDS] = useState([]);
+  const [CARDS, setCARDS] = useState<PaymentMethodProps[]>([]);
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
@@ -83,11 +92,12 @@ export default function CheckoutQuestionnaireInfo({
   useEffect(() => {
     getCards()
       .then((data) => {
-        const auxCards = [];
+        const auxCards: PaymentMethodProps[] = [];
         data.forEach((card) => {
           auxCards.push({
             label: card.card.brand.toUpperCase(),
-            value: card.card.brand,
+            value: JSON.stringify(card),
+            brand: card.card.brand,
             description: `**** **** **** ${card.card.last4}`,
           });
         });
@@ -97,9 +107,23 @@ export default function CheckoutQuestionnaireInfo({
       .catch((error) => console.log(error));
   }, []);
 
-  const handleAddCard = () => {
-    openAddCardForm(false);
-    getCards();
+  const handleAddCard = async () => {
+    setOpenAddCardForm(false);
+    getCards()
+      .then((data) => {
+        const auxCards: PaymentMethodProps[] = [];
+        data.forEach((card) => {
+          auxCards.push({
+            label: card.card.brand.toUpperCase(),
+            value: JSON.stringify(card),
+            brand: card.card.brand,
+            description: `**** **** **** ${card.card.last4}`,
+          });
+        });
+        setCARDS(auxCards);
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -175,7 +199,6 @@ export default function CheckoutQuestionnaireInfo({
                       hiddenLabel: true,
                     },
                   }}
-                  onChange={(newDate) => setStartDate(newDate)}
                   format="dd-MM-yyyy"
                   value={startDate}
                   minDate={new Date()}
@@ -184,7 +207,7 @@ export default function CheckoutQuestionnaireInfo({
             </Stack>
             {schedule.length > 0 &&
               schedule
-                .sort((a, b) => a - b)
+                .sort((a: IScheduleProps, b: IScheduleProps) => a - b)
                 .map((item) => {
                   let weekdayItem;
                   Weekdays.forEach((weekday) => {
@@ -240,9 +263,6 @@ export default function CheckoutQuestionnaireInfo({
                           }}
                         />
                       </Stack>
-                      {schedule[weekdayItem.value - 1].valid === false && (
-                        <Box sx={{ color: 'red', fontSize: '12px' }}>Este horário não é válido</Box>
-                      )}
                     </Box>
                   );
                 })}
@@ -340,7 +360,7 @@ export default function CheckoutQuestionnaireInfo({
       </Collapse>
       <StepLabel title="Método de Pagamento" step="3" />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-        <CheckoutPaymentMethod options={CARDS} />
+        <CheckoutPaymentMethod options={CARDS} onPaymentMethodSelect={onPaymentMethodSelect} />
         <Divider sx={{ mt: '20px', mb: '20px' }} />
         <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
           <Button
@@ -354,7 +374,7 @@ export default function CheckoutQuestionnaireInfo({
           </Button>
         </Stack>
         <Collapse in={openAddCardForm} unmountOnExit>
-          <AddNewCardForm onAddCard={handleAddCard} />
+          <AddNewCardForm onAddCard={() => handleAddCard()} />
         </Collapse>
       </Box>
     </Stack>

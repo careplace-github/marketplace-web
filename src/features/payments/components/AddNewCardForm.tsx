@@ -1,5 +1,5 @@
 // React
-import React from 'react';
+import React, { useEffect } from 'react';
 // Form
 import { useForm } from 'react-hook-form';
 // components
@@ -16,7 +16,18 @@ import { useAuthContext } from 'src/contexts';
 // axios
 import axios from 'src/lib/axios';
 
-function AddNewCardForm(onAddCard: Function) {
+type Props = {
+  onAddCard: () => void;
+};
+
+type FormValuesProps = {
+  cardHolder: string;
+  cardNumber: string;
+  cardExpirationDate: string;
+  cardCVV: string;
+};
+
+function AddNewCardForm({ onAddCard }: Props) {
   const theme = useTheme();
   const { user } = useAuthContext();
   const CardSchema = Yup.object().shape({
@@ -28,9 +39,36 @@ function AddNewCardForm(onAddCard: Function) {
     cardCVV: Yup.string().required('CVV é obrigatório.'),
   });
 
-  const onSubmit = async (data: FormValuesProps) => {
+  const defaultValues = {
+    cardHolder: user?.name || undefined,
+    cardNumber: undefined,
+    cardExpirationDate: undefined,
+    cardCVV: undefined,
+  };
+
+  const methods = useForm<FormValuesProps>({
+    mode: 'onChange',
+    resolver: yupResolver(CardSchema),
+    defaultValues,
+  });
+
+  const {
+    setValue,
+    reset,
+    getValues,
+    formState: { isSubmitting, errors, isDirty, isValid },
+  } = methods;
+
+  useEffect(() => {
+    console.log('errors:', errors);
+    console.log('is dirty:', isDirty);
+    console.log('is valid:', isValid);
+  }, [errors, isDirty, isValid]);
+
+  const handleSaveNewCard = async () => {
     try {
       console.log('started on submit');
+      const data = getValues();
       const cardData = {
         card: {
           number: data.cardNumber,
@@ -62,25 +100,6 @@ function AddNewCardForm(onAddCard: Function) {
     }
   };
 
-  const defaultValues = {
-    cardHolder: user?.name || undefined,
-    cardNumber: undefined,
-    cardExpirationDate: undefined,
-    cardCVV: undefined,
-  };
-
-  const methods = useForm<FormValuesProps>({
-    mode: 'onChange',
-    resolver: yupResolver(CardSchema),
-    defaultValues,
-  });
-
-  const {
-    setValue,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
-
   return (
     <Box
       sx={{
@@ -100,7 +119,13 @@ function AddNewCardForm(onAddCard: Function) {
         },
       }}
     >
-      <FormProvider key="Add_new_card_form" methods={methods} onSubmit={handleSubmit(onSubmit)}>
+      <FormProvider
+        key="checkout_add_new_card"
+        methods={methods}
+        onSubmit={() => {
+          console.log('hello');
+        }}
+      >
         <Stack direction="column" spacing={2} sx={{ pb: 2 }}>
           <RHFTextField
             name="cardHolder"
@@ -187,9 +212,10 @@ function AddNewCardForm(onAddCard: Function) {
 
         <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
           <LoadingButton
-            type="submit"
             variant="contained"
+            onClick={handleSaveNewCard}
             loading={isSubmitting}
+            disabled={!isValid}
             sx={{
               width: '100%',
               pt: 1.5,
