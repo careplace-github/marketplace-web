@@ -14,13 +14,15 @@ type OptionProps = {
   label: string;
   value: string;
   description: string;
+  brand: string;
 };
 
 type Props = {
   options: OptionProps[];
+  onPaymentMethodSelect: Function;
 };
 
-export default function CheckoutPaymentMethod({ options }: Props) {
+export default function CheckoutPaymentMethod({ options, onPaymentMethodSelect }: Props) {
   const { control } = useFormContext();
 
   return options.length > 0 ? (
@@ -39,6 +41,7 @@ export default function CheckoutPaymentMethod({ options }: Props) {
               <OptionItem
                 key={option.value}
                 option={option}
+                onPaymentMethodSelect={onPaymentMethodSelect}
                 selected={field.value === option.value}
               />
             ))}
@@ -60,13 +63,19 @@ export default function CheckoutPaymentMethod({ options }: Props) {
 type OptionItemProps = {
   option: OptionProps;
   selected: boolean;
+  onPaymentMethodSelect: Function;
 };
 
-function OptionItem({ option, selected }: OptionItemProps) {
-  const { value, label, description } = option;
+function OptionItem({ option, selected, onPaymentMethodSelect }: OptionItemProps) {
+  const { value, label, description, brand } = option;
 
   const renderLabel = (
-    <Stack flexGrow={1} spacing={0.5} sx={{ width: 1 }}>
+    <Stack
+      flexGrow={1}
+      spacing={0.5}
+      sx={{ width: 1 }}
+      onClick={() => onPaymentMethodSelect(JSON.parse(value))}
+    >
       <Stack direction="row" alignItems="center">
         <Box component="span" sx={{ typography: 'subtitle1', flexGrow: 1 }}>
           {label}
@@ -74,8 +83,8 @@ function OptionItem({ option, selected }: OptionItemProps) {
 
         <Iconify
           icon={
-            (value === 'visa' && 'logos:visa') ||
-            (value === 'mastercard' && 'logos:mastercard') ||
+            (brand === 'visa' && 'logos:visa') ||
+            (brand === 'mastercard' && 'logos:mastercard') ||
             'logos:paypal'
           }
           width={24}

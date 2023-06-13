@@ -3,25 +3,12 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { IScheduleProps } from 'src/types/order';
 // @mui
-import { SelectChangeEvent } from '@mui/material';
-import {
-  Stack,
-  Box,
-  Switch,
-  Collapse,
-  Typography,
-  FormControlLabel,
-  TextField,
-  Button,
-} from '@mui/material';
+import { Stack, Box, Collapse, Typography, TextField, SelectChangeEvent } from '@mui/material';
 import { useTheme } from '@emotion/react';
 // components
 import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { RHFTextField } from 'src/components/hook-form';
-import RelativeSelector from 'src/components/relative-selector/RelativeSelector';
-import Iconify from 'src/components/iconify/Iconify';
 import {
   FilterServices,
   FilterWeekdays,
@@ -102,9 +89,6 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
       }
     });
     const isScheduleValid = filterWeekdays.length === counter && counter !== 0;
-    console.log('counter:', counter);
-    console.log('number of days selected:', filterWeekdays.length);
-    console.log('valid schedule:', isScheduleValid);
     const auxDate = new Date();
     const dateDay = auxDate.getDate();
     const dateMonth = auxDate.getMonth() + 1;
@@ -396,7 +380,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
         </Stack>
       </div>
 
-      <StepLabel title={checkoutVersion ? 'Familiar' : 'Escolha o Familiar'} step="2" />
+      <StepLabel title="Escolha o Familiar" step="2" />
       <div>
         <AvatarDropdown
           onChange={handleChangeRelativeSelected}

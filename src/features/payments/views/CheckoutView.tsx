@@ -40,12 +40,12 @@ type OrderRequestProps = {
 export default function CheckoutView() {
   const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedCard, setSelectedCard] = useState<boolean>();
   const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [formData, setFormData] = useState<OrderRequestProps>();
+  const [selectedCard, setSelectedCard] = useState();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [orderInfo, setOrderInfo] = useState();
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
@@ -151,10 +151,9 @@ export default function CheckoutView() {
 
   const { reset, getValues } = methods;
 
-  // useEffect(() => {
-  //   console.log('values:', getValues());
-  //   console.log('disable pay button:', !getValues().paymentMethods.card.cardNumber);
-  // }, []);
+  const onCheckoutSubmit = () => {
+    console.log('Submit card:', selectedCard);
+  };
 
   return !loading && !relativesLoading ? (
     <Container
@@ -171,13 +170,18 @@ export default function CheckoutView() {
       <FormProvider
         key="checkout_view_form"
         methods={methods}
-        onSubmit={() => router.push('/merda')}
+        onSubmit={() => {
+          // submit when "confirmar pagamento" button is clicked
+          console.log('values:', getValues());
+          // router.push('/merda');
+        }}
       >
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
               {userRelatives && (
                 <CheckoutQuestionnaireInfo
+                  onPaymentMethodSelect={(card) => setSelectedCard(card)}
                   relatives={userRelatives}
                   selectedRelative={orderInfo.relative}
                   checkoutVersion
@@ -194,11 +198,10 @@ export default function CheckoutView() {
           </Grid>
 
           <Grid xs={12} md={5}>
-            <button onClick={() => console.log(getValues())}>Click</button>
             {companyInfo && (
               <CheckoutSummary
-                // handleSubmit={() => console.log('hello')}
-                disabled={!!selectedCard}
+                handleSubmit={onCheckoutSubmit}
+                disabled={!selectedCard}
                 subtotal={orderInfo.order_total}
                 company={companyInfo}
                 isSubmitting={isSubmitting}

@@ -56,6 +56,7 @@ export default function CheckoutSummary({
     setDiscountCode('');
     setDiscount(10);
   };
+
   return (
     <Card>
       <Box
@@ -107,7 +108,6 @@ export default function CheckoutSummary({
             />
             <Typography sx={{ opacity: 0.72 }}>{company.addresses[0].city}</Typography>
           </Stack>
-          {/* <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} /> */}
         </Stack>
       </Box>
       <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
@@ -159,7 +159,6 @@ export default function CheckoutSummary({
 
       <Stack spacing={3} sx={{ p: 3, pt: 0 }}>
         <LoadingButton
-          type="submit"
           disabled={disabled}
           size="large"
           variant="contained"
