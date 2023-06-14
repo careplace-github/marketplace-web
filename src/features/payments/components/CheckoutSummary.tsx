@@ -10,22 +10,19 @@ import {
   InputAdornment,
   Box,
   Link,
+  StackProps,
 } from '@mui/material';
 // utils
 import { fCurrency, fPercent } from 'src/utils/formatNumber';
 // hooks
-import { useState } from 'react';
-import useResponsive from 'src/hooks/useResponsive';
+import { useState, MouseEventHandler } from 'react';
 import { useTheme } from '@mui/material/styles';
 // types
 import { ICompanyProps } from 'src/types/company';
-import { MouseEventHandler } from 'react';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
-//
-import { FilterGuests, FilterTime } from '../filters/components';
 
 // ----------------------------------------------------------------------
 
@@ -48,8 +45,6 @@ export default function CheckoutSummary({
   const { palette } = theme;
   const [discount, setDiscount] = useState<number>();
   const [discountCode, setDiscountCode] = useState<string>('');
-  const isSmUp = useResponsive('up', 'sm');
-  const isMdUp = useResponsive('up', 'md');
 
   const handleSubmitDiscount = async () => {
     // TODO: check discount code that was submitted

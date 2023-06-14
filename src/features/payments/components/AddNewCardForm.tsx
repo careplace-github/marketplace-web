@@ -1,5 +1,5 @@
 // React
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // Form
 import { useForm } from 'react-hook-form';
 // components
@@ -29,6 +29,7 @@ type FormValuesProps = {
 
 function AddNewCardForm({ onAddCard }: Props) {
   const theme = useTheme();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { user } = useAuthContext();
   const CardSchema = Yup.object().shape({
     cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
@@ -56,7 +57,7 @@ function AddNewCardForm({ onAddCard }: Props) {
     setValue,
     reset,
     getValues,
-    formState: { isSubmitting, errors, isDirty, isValid },
+    formState: { errors, isDirty, isValid },
   } = methods;
 
   useEffect(() => {
@@ -67,7 +68,7 @@ function AddNewCardForm({ onAddCard }: Props) {
 
   const handleSaveNewCard = async () => {
     try {
-      console.log('started on submit');
+      setIsSubmitting(true);
       const data = getValues();
       const cardData = {
         card: {
@@ -92,12 +93,10 @@ function AddNewCardForm({ onAddCard }: Props) {
       await axios.post('/payments/payment-methods', {
         payment_method_token: card_token.id,
       });
+      setIsSubmitting(false);
       reset();
       onAddCard();
-      console.log('finished submit');
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (
