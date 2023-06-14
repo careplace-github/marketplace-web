@@ -1,6 +1,5 @@
 // hooks
-import { useState, useEffect, ReactNode } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useEffect, MouseEventHandler } from 'react';
 import { IScheduleProps } from 'src/types/order';
 // react
 
@@ -8,22 +7,16 @@ import { IScheduleProps } from 'src/types/order';
 import axios from 'src/lib/axios';
 
 // @mui
-import { SelectChangeEvent } from '@mui/material';
 import {
   Stack,
   Box,
-  Switch,
   Collapse,
   Typography,
-  FormControlLabel,
   Divider,
   TextField,
   Button,
+  SelectChangeEvent,
 } from '@mui/material';
-import { useResponsive } from 'src/hooks';
-import { useTheme } from '@mui/material/styles';
-// contexts
-import { useAuthContext } from 'src/contexts';
 // components
 import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -79,9 +72,6 @@ export default function CheckoutQuestionnaireInfo({
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
   const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(false);
   const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(false);
-  const theme = useTheme();
-  const { palette } = theme;
-  const isMdUp = useResponsive('up', 'md');
   const [CARDS, setCARDS] = useState<PaymentMethodProps[]>([]);
 
   async function getCards() {
@@ -207,7 +197,7 @@ export default function CheckoutQuestionnaireInfo({
             </Stack>
             {schedule.length > 0 &&
               schedule
-                .sort((a: IScheduleProps, b: IScheduleProps) => a - b)
+                .sort((a, b) => a.week_day - b.week_day)
                 .map((item) => {
                   let weekdayItem;
                   Weekdays.forEach((weekday) => {
@@ -217,7 +207,7 @@ export default function CheckoutQuestionnaireInfo({
                   });
                   return (
                     <Box
-                      key={item}
+                      key={JSON.stringify(item)}
                       sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}
                     >
                       <Typography
@@ -232,7 +222,7 @@ export default function CheckoutQuestionnaireInfo({
                           readOnly={checkoutVersion}
                           ampm={false}
                           sx={{ flex: 1 }}
-                          value={new Date(item.start)}
+                          value={item.start ? new Date(item.start) : new Date()}
                           slotProps={{
                             textField: {
                               hiddenLabel: true,
@@ -255,7 +245,7 @@ export default function CheckoutQuestionnaireInfo({
                           skipDisabled
                           ampm={false}
                           sx={{ flex: 1 }}
-                          value={new Date(item.end)}
+                          value={item.end ? new Date(item.end) : new Date()}
                           slotProps={{
                             textField: {
                               hiddenLabel: true,
@@ -386,7 +376,7 @@ export default function CheckoutQuestionnaireInfo({
 type StepLabelProps = {
   step: string;
   title: string;
-  onOpenClick?: Function;
+  onOpenClick?: MouseEventHandler<HTMLDivElement>;
   droppable?: boolean;
   opened?: boolean;
 };

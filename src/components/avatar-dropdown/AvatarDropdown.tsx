@@ -42,7 +42,6 @@ export function AvatarDropdown({
           }
 
           const _selected = JSON.parse(value);
-          console.log(_selected);
           return (
             <Stack gap="10px" direction="row" alignItems="center" justifyContent="flex-start">
               <Avatar src={_selected.profile_picture} />

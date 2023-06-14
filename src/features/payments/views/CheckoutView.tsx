@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuthContext } from 'src/contexts';
 // router
 import { useRouter } from 'next/router';
 // @mui
@@ -13,7 +12,6 @@ import axios from 'src/lib/axios';
 import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
 import { IRelativeProps } from 'src/types/relative';
-import { IScheduleProps } from 'src/types/order';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 // components
@@ -25,32 +23,17 @@ import CheckoutQuestionnaireInfo from '../components/CheckoutQuestionnaireInfo';
 
 // ----------------------------------------------------------------------
 
-type OrderRequestProps = {
-  company: string;
-  user: string;
-  relative: string;
-  services: string[];
-  schedule_information: {
-    start_date: Date;
-    recurrency: number;
-    schedule: IScheduleProps[];
-  };
-};
-
 export default function CheckoutView() {
-  const [isFormValid, setIsFormValid] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
   const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
-  const [formData, setFormData] = useState<OrderRequestProps>();
   const [selectedCard, setSelectedCard] = useState();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [orderInfo, setOrderInfo] = useState();
+  const [orderInfo, setOrderInfo] = useState<any>();
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
   const router = useRouter();
-  const { user } = useAuthContext();
 
   const fetchUserRelatives = async () => {
     try {
@@ -149,7 +132,7 @@ export default function CheckoutView() {
     defaultValues,
   });
 
-  const { reset, getValues } = methods;
+  const { getValues } = methods;
 
   const onCheckoutSubmit = () => {
     console.log('Submit card:', selectedCard);
@@ -183,15 +166,15 @@ export default function CheckoutView() {
                 <CheckoutQuestionnaireInfo
                   onPaymentMethodSelect={(card) => setSelectedCard(card)}
                   relatives={userRelatives}
-                  selectedRelative={orderInfo.relative}
+                  selectedRelative={orderInfo?.relative}
                   checkoutVersion
                   services={availableServices}
                   onValidChange={() => {}}
                   selectedWeekdays={selectedWeekdays}
-                  selectedServices={orderInfo.services}
-                  selectedRecurrency={orderInfo.schedule_information.recurrency}
-                  schedule={orderInfo.schedule_information.schedule}
-                  startDate={new Date(orderInfo.schedule_information.start_date)}
+                  selectedServices={orderInfo?.services}
+                  selectedRecurrency={orderInfo?.schedule_information?.recurrency}
+                  schedule={orderInfo?.schedule_information?.schedule}
+                  startDate={new Date(orderInfo?.schedule_information?.start_date)}
                 />
               )}
             </Stack>
@@ -202,7 +185,7 @@ export default function CheckoutView() {
               <CheckoutSummary
                 handleSubmit={onCheckoutSubmit}
                 disabled={!selectedCard}
-                subtotal={orderInfo.order_total}
+                subtotal={orderInfo?.order_total}
                 company={companyInfo}
                 isSubmitting={isSubmitting}
               />
