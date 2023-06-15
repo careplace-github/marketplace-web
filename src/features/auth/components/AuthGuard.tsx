@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // components
@@ -22,7 +22,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   // Redirect to login page if user is not authenticated
   if (!isAuthenticated && !user?.email) {
-    const { pathname, push } = useRouter();
+    const { push } = useRouter();
 
     // Redirect to login page
     useEffect(() => {
