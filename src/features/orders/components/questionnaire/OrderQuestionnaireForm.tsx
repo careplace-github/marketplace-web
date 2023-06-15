@@ -3,7 +3,15 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { IScheduleProps } from 'src/types/order';
 // @mui
-import { Stack, Box, Collapse, Typography, TextField, SelectChangeEvent } from '@mui/material';
+import {
+  Stack,
+  Box,
+  Collapse,
+  Typography,
+  TextField,
+  SelectChangeEvent,
+  Checkbox,
+} from '@mui/material';
 import { useTheme } from '@emotion/react';
 // components
 import AvatarDropdown from 'src/components/avatar-dropdown';
@@ -37,42 +45,49 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
       week_day: 1,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
     {
       week_day: 2,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
     {
       week_day: 3,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
     {
       week_day: 4,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
     {
       week_day: 5,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
     {
       week_day: 6,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
     {
       week_day: 7,
       start: null,
       end: null,
+      nightService: false,
       valid: null,
     },
   ]);
@@ -205,17 +220,20 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
     setFilterRecurrency(newFilter);
   };
 
-  const getMinDate = (weekdayId) => {
-    let weekdayItem;
+  function addOneDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() + 1);
+    return newDate;
+  }
+  function removeOneDay(date: Date): Date {
+    const newDate = new Date(date);
+    newDate.setDate(newDate.getDate() - 1);
+    return newDate;
+  }
 
-    schedule.forEach((item) => {
-      if (item.week_day === weekdayId) {
-        weekdayItem = item;
-      }
-    });
-
-    return weekdayItem.start ? weekdayItem.start : undefined;
-  };
+  useEffect(() => {
+    console.log(schedule);
+  }, [schedule]);
 
   return (
     <Stack spacing={5}>
@@ -320,9 +338,10 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                             ...prevState,
                             start: startHour,
                             valid:
-                              startHour &&
-                              prevState.end &&
-                              startHour.getTime() < prevState.end.getTime(),
+                              prevState.nightService === true ||
+                              (endHour &&
+                                prevState.start &&
+                                endHour.getTime() > prevState.start.getTime()),
                           };
                           const newSchedule = schedule;
                           newSchedule[weekdayItem.value - 1] = newItem;
@@ -351,14 +370,18 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                         sx={{ flex: 1 }}
                         onChange={(value) => {
                           const prevState = schedule[weekdayItem.value - 1];
-                          const endHour = value as Date;
+
+                          const endHour = prevState.nightService
+                            ? addOneDay(value as Date)
+                            : (value as Date);
                           const newItem = {
                             ...prevState,
                             end: endHour,
                             valid:
-                              endHour &&
-                              prevState.start &&
-                              endHour.getTime() > prevState.start.getTime(),
+                              prevState.nightService === true ||
+                              (endHour &&
+                                prevState.start &&
+                                endHour.getTime() > prevState.start.getTime()),
                           };
                           const newSchedule = schedule;
                           newSchedule[weekdayItem.value - 1] = newItem;
@@ -374,6 +397,41 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                     {schedule[weekdayItem.value - 1].valid === false && (
                       <Box sx={{ color: 'red', fontSize: '12px' }}>Este horário não é válido</Box>
                     )}
+                    <Stack direction="row" alignItems="center" justifyContent="flex-start">
+                      <Checkbox
+                        checked={schedule[weekdayItem.value - 1].nightService}
+                        label="Cuidado noturno"
+                        size="small"
+                        sx={{
+                          width: '30px',
+                          ml: '-7px',
+                          color: 'text.secondary',
+                        }}
+                        onClick={() => {
+                          const newSchedule = schedule;
+                          const prevSchedule = newSchedule[weekdayItem.value - 1];
+                          const isNightService = !prevSchedule.nightService;
+                          const newEndTime = isNightService
+                            ? addOneDay(prevSchedule.end as Date)
+                            : removeOneDay(prevSchedule.end as Date);
+
+                          newSchedule[weekdayItem.value - 1] = {
+                            ...newSchedule[weekdayItem.value - 1],
+                            nightService: isNightService,
+                            end: newEndTime,
+                            valid: isNightService
+                              ? true
+                              : newEndTime &&
+                                prevSchedule.start &&
+                                newEndTime.getTime() > prevSchedule.start.getTime(),
+                          };
+                          setSchedule([...newSchedule]);
+                        }}
+                      />
+                      <Typography sx={{ fontSize: '14px', color: 'text.secondary' }}>
+                        Cuidado Noturno
+                      </Typography>
+                    </Stack>
                   </Box>
                 );
               })}
