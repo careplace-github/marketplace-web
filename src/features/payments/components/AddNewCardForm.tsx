@@ -96,7 +96,9 @@ function AddNewCardForm({ onAddCard }: Props) {
       setIsSubmitting(false);
       reset();
       onAddCard();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
