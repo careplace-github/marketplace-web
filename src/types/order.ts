@@ -57,5 +57,6 @@ export type IScheduleProps = {
   week_day: number;
   start: Date | null;
   end: Date | null;
+  nightService?: boolean;
   valid?: boolean | null;
 };
