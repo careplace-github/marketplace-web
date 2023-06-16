@@ -6,17 +6,14 @@ import { Box, Button, Typography, Stack, Container } from '@mui/material';
 // components
 import Iconify from 'src/components/iconify';
 import { MotionContainer, varBounce } from 'src/components/animate';
- 
-//
 
+//
 
 // ----------------------------------------------------------------------
 
 export default function CheckoutSuccessView() {
   return (
     <>
-     
-
       <Container
         component={MotionContainer}
         sx={{
@@ -26,14 +23,14 @@ export default function CheckoutSuccessView() {
         }}
       >
         <m.div variants={varBounce().in}>
-          <Box sx={{ fontSize: 128 }}>🎉</Box>
+          <Iconify icon="bxs:check-circle" sx={{ color: 'green' }} width="130px" height="130px" />
         </m.div>
 
         <Stack spacing={1} sx={{ my: 5 }}>
-          <Typography variant="h3">Your payment is complete!</Typography>
+          <Typography variant="h3">O seu pagamento foi efetuado com sucesso!</Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            You will be receiving a confirmation email with order details.
+            Irá receber um email de confirmação com todos os detalhes do pedido
           </Typography>
         </Stack>
 
@@ -45,7 +42,7 @@ export default function CheckoutSuccessView() {
           variant="contained"
           startIcon={<Iconify icon="carbon:chevron-left" />}
         >
-          Continue Shopping
+          Voltar
         </Button>
       </Container>
     </>
