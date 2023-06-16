@@ -1,22 +1,12 @@
-// react
-import { useState, useEffect } from 'react';
 // next
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 // @mui
-import { Link, Typography, Stack } from '@mui/material';
-import { Box } from '@mui/system';
+import { Link, Typography } from '@mui/material';
 // routes
 import { PATHS } from 'src/routes/paths';
-// contexts
-import { useAuthContext } from 'src/contexts';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
-//
-import useCountdown from 'src/hooks/useCountdown';
 // hooks
 import { AuthVerifyCodeForm } from '../components';
 
