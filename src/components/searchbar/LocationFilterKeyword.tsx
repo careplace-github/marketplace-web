@@ -40,7 +40,6 @@ export function LocationFilterKeyword({ onSelect, onLoad, query, sx }: Props) {
    * @see https://www.npmjs.com/package/use-places-autocomplete
    */
   const {
-    ready,
     value,
     suggestions: { status, data },
     setValue,

@@ -2,6 +2,7 @@
 import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { IScheduleProps } from 'src/types/order';
+import { useResponsive } from 'src/hooks';
 // @mui
 import {
   Stack,
@@ -14,6 +15,7 @@ import {
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
 // components
+import { Tooltip } from 'src/components/tooltip/Tooltip';
 import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -25,6 +27,7 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
+import Iconify from 'src/components/iconify/Iconify';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +39,7 @@ type Props = {
 
 export default function OrderQuestionnaireForm({ relatives, onValidChange, services }: Props) {
   const router = useRouter();
+  const isSmUp = useResponsive('up', 'sm');
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
   const [filterRecurrency, setFilterRecurrency] = useState<number>();
@@ -320,13 +324,23 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                     key={item}
                     sx={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}
                   >
-                    <Typography
-                      variant="overline"
-                      sx={{ color: 'text.secondary', display: 'block' }}
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      justifyContent="flex-start"
+                      gap="5px"
                     >
-                      {weekdayItem.text}
-                    </Typography>
-
+                      <Typography
+                        variant="overline"
+                        sx={{ color: 'text.secondary', display: 'block' }}
+                      >
+                        {weekdayItem.text}
+                      </Typography>
+                      <Tooltip
+                        placement={isSmUp ? 'right' : 'top'}
+                        text='Caso pretenda que o serviço seja prestado num hórario noturno, por favor selecione a opção "Cuidado Notruno"'
+                      />
+                    </Stack>
                     <Stack gap="10px" direction="row">
                       <TimePicker
                         ampm={false}
@@ -339,9 +353,9 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                             start: startHour,
                             valid:
                               prevState.nightService === true ||
-                              (endHour &&
-                                prevState.start &&
-                                endHour.getTime() > prevState.start.getTime()),
+                              (prevState.end &&
+                                startHour &&
+                                prevState.end.getTime() > startHour.getTime()),
                           };
                           const newSchedule = schedule;
                           newSchedule[weekdayItem.value - 1] = newItem;
@@ -400,7 +414,6 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                     <Stack direction="row" alignItems="center" justifyContent="flex-start">
                       <Checkbox
                         checked={schedule[weekdayItem.value - 1].nightService}
-                        label="Cuidado noturno"
                         size="small"
                         sx={{
                           width: '30px',
