@@ -41,7 +41,7 @@ export function Tooltip({
       }}
     >
       <Iconify
-        sx={{ color: iconColor || 'primary.main', mb: '2px' }}
+        sx={{ color: iconColor ?? 'text.secondary' }}
         icon={icon}
         width="15px"
         height="15px"
