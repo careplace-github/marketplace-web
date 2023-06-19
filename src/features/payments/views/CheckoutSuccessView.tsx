@@ -23,7 +23,7 @@ export default function CheckoutSuccessView() {
         }}
       >
         <m.div variants={varBounce().in}>
-          <Iconify icon="bxs:check-circle" sx={{ color: 'green' }} width="130px" height="130px" />
+          <Iconify icon="bxs:check-circle" sx={{ color: 'green' }} width="100px" height="100px" />
         </m.div>
 
         <Stack spacing={1} sx={{ my: 5 }}>
