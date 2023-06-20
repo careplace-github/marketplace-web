@@ -8,7 +8,11 @@ import { ReviewList, ReviewToolbar, ReviewSummary } from 'src/features/reviews';
 
 // ----------------------------------------------------------------------
 
-export default function CompanyDetailReviews() {
+type Props = {
+  rating: any;
+};
+
+export default function CompanyDetailReviews({ rating }: Props) {
   const [sort, setSort] = useState('latest');
 
   const handleChangeSort = (event: SelectChangeEvent) => {
@@ -16,22 +20,24 @@ export default function CompanyDetailReviews() {
   };
 
   return (
-    <>
-      <Container sx={{ overflow: 'hidden' }}>
+    <Container sx={{ overflow: 'hidden' }}>
+      <Grid xs={12} md={7} lg={8}>
+        <ReviewToolbar sort={sort} onChangeSort={handleChangeSort} />
+      </Grid>
+
+      <Grid container spacing={8} direction="row-reverse">
+        <Grid xs={12} md={5} lg={4}>
+          <ReviewSummary
+            ratingsNumber={rating.average}
+            reviewsNumber={rating.count}
+            countStars={rating.count_stars}
+          />
+        </Grid>
+
         <Grid xs={12} md={7} lg={8}>
-          <ReviewToolbar sort={sort} onChangeSort={handleChangeSort} />
+          <ReviewList reviews={[]} />
         </Grid>
-
-        <Grid container spacing={8} direction="row-reverse">
-          <Grid xs={12} md={5} lg={4}>
-            <ReviewSummary ratingsNumber={4.1} reviewsNumber={123456} />
-          </Grid>
-
-          <Grid xs={12} md={7} lg={8}>
-            <ReviewList reviews={_reviews} />
-          </Grid>
-        </Grid>
-      </Container>
-    </>
+      </Grid>
+    </Container>
   );
 }
