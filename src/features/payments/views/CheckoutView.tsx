@@ -150,15 +150,7 @@ export default function CheckoutView() {
         Checkout
       </Typography>
 
-      <FormProvider
-        key="checkout_view_form"
-        methods={methods}
-        onSubmit={() => {
-          // submit when "confirmar pagamento" button is clicked
-          console.log('values:', getValues());
-          // router.push('/merda');
-        }}
-      >
+      <FormProvider key="checkout_view_form" methods={methods}>
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>

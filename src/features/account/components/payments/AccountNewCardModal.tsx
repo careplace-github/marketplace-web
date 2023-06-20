@@ -28,19 +28,19 @@ import { PATHS } from 'src/routes/paths';
 type NewCardModalProps = {
   open: boolean;
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+  onAddCard: Function;
 };
 
 type FormValuesProps = {
   open: boolean;
   onClose: VoidFunction;
-
   cardHolder: string;
   cardNumber: string;
   cardExpirationDate: string;
   cardCVV: string;
 };
 
-export default function AccountNewCardModal({ open, onClose }: NewCardModalProps) {
+export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCardModalProps) {
   const theme = useTheme();
 
   const { user } = useAuthContext();
@@ -108,8 +108,10 @@ export default function AccountNewCardModal({ open, onClose }: NewCardModalProps
       await axios.post('/payments/payment-methods', {
         payment_method_token: card_token.id,
       });
+      onAddCard('success');
       close();
     } catch (error) {
+      onAddCard('error');
       console.error(error);
     }
   };

@@ -1,12 +1,6 @@
-// next
-import NextLink from 'next/link';
-// auth
-import { useAuthContext } from 'src/contexts';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Typography, Button, Stack } from '@mui/material';
-// _mock
-import { _products } from 'src/_mock';
+import { Box, Typography, Button, Stack, Snackbar, Alert } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // hooks
@@ -18,6 +12,7 @@ import Iconify from 'src/components/iconify';
 import EmptyState from 'src/components/empty-state/EmptyState';
 // Types
 import { IRelativeProps } from 'src/types/relative';
+import { ISnackbarProps } from 'src/types/snackbar';
 //
 import { AccountLayout, RelativesList } from '../components';
 import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
@@ -33,6 +28,11 @@ type RelativeModalProps = {
 export default function AccountRelativesView() {
   const [userRelatives, setUserRelatives] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: undefined,
+    message: undefined,
+  });
   const [openAddRelativeModal, setOpenAddRelativeModal] = useState<RelativeModalProps>({
     open: false,
     action: 'add',
@@ -51,107 +51,167 @@ export default function AccountRelativesView() {
   }, []);
 
   const handleDeleteRelative = async (relativeToDelete: IRelativeProps) => {
-    const response = await axios.delete(`/users/relatives/${relativeToDelete._id}`);
-
-    fetchUserRelatives();
+    try {
+      const response = await axios.delete(`/users/relatives/${relativeToDelete._id}`);
+      setShowSnackbar({
+        show: true,
+        severity: 'success',
+        message: 'Familiar eliminado com sucesso.',
+      });
+      fetchUserRelatives();
+    } catch (error) {
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente novamente',
+      });
+    }
   };
 
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <AccountLayout>
-      {openAddRelativeModal.open && (
-        <RelativeInformationModal
-          open={openAddRelativeModal.open}
-          onClose={() => {
-            setOpenAddRelativeModal({ open: false, action: 'add' });
-            fetchUserRelatives();
-          }}
-          action={openAddRelativeModal.action}
-          relative={
-            openAddRelativeModal.action === 'edit' && openAddRelativeModal.relativeSelected
-              ? openAddRelativeModal.relativeSelected
-              : undefined
-          }
-        />
-      )}
-      <Box
-        sx={{
-          p: 3,
-          bgcolor: 'white',
-          borderRadius: '16px',
-          boxShadow:
-            'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
-        }}
+    <>
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: undefined,
+            message: undefined,
+          })
+        }
       >
-        <Stack flexDirection="row" justifyContent="space-between" alignItems="center" width="100%">
-          <Typography variant="h5">Familiares</Typography>
-
-          {isMdUp && (
-            <Stack spacing={3} sx={{ width: 'fit-content' }}>
-              <Button
-                onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
-                size="large"
-                color="inherit"
-                sx={{
-                  px: 4,
-                  bgcolor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  },
-                }}
-                variant="contained"
-                startIcon={<Iconify icon="material-symbols:add" />}
-              >
-                Adiconar Familiar
-              </Button>
-            </Stack>
-          )}
-        </Stack>
-        {userRelatives.length > 0 ? (
-          <Box sx={{ maxHeight: '700px', mt: 3 }}>
-            <RelativesList
-              userRelatives={userRelatives}
-              onEditClick={(relative) =>
-                setOpenAddRelativeModal({ open: true, action: 'edit', relativeSelected: relative })
-              }
-              onDeleteRelative={handleDeleteRelative}
-            />
-          </Box>
-        ) : (
-          <EmptyState
-            icon="bi:person-x-fill"
-            title="Não tem nenhum familiar associado"
-            description="Todos os familiares que adicionar vão ser apresentados nesta página"
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: undefined,
+              message: undefined,
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
+      <AccountLayout>
+        {openAddRelativeModal.open && (
+          <RelativeInformationModal
+            onActionMade={(action: 'edit' | 'add', result: 'success' | 'error') => {
+              const snackbarMessage =
+                action === 'edit'
+                  ? 'Familiar foi atualizado com sucesso.'
+                  : 'O seu Familiar foi adicionado com sucesso.';
+              setShowSnackbar({
+                show: true,
+                severity: result,
+                message: result === 'error' ? 'Algo correu mal, tente novamente.' : snackbarMessage,
+              });
+            }}
+            open={openAddRelativeModal.open}
+            onClose={() => {
+              setOpenAddRelativeModal({ open: false, action: 'add' });
+              fetchUserRelatives();
+            }}
+            action={openAddRelativeModal.action}
+            relative={
+              openAddRelativeModal.action === 'edit' && openAddRelativeModal.relativeSelected
+                ? openAddRelativeModal.relativeSelected
+                : undefined
+            }
           />
         )}
-        {!isMdUp && (
-          <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>
-            <Stack spacing={3} sx={{ minWidth: 240, marginTop: '30px' }}>
-              <Button
-                onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
-                size="large"
-                color="inherit"
-                sx={{
-                  px: 4,
-                  bgcolor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  '&:hover': {
-                    bgcolor: 'primary.dark',
+        <Box
+          sx={{
+            p: 3,
+            bgcolor: 'white',
+            borderRadius: '16px',
+            boxShadow:
+              'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
+          }}
+        >
+          <Stack
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+          >
+            <Typography variant="h5">Familiares</Typography>
+
+            {isMdUp && (
+              <Stack spacing={3} sx={{ width: 'fit-content' }}>
+                <Button
+                  onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
+                  size="large"
+                  color="inherit"
+                  sx={{
+                    px: 4,
+                    bgcolor: 'primary.main',
                     color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                  },
-                }}
-                variant="contained"
-                startIcon={<Iconify icon="material-symbols:add" />}
-              >
-                Adiconar Familiar
-              </Button>
-            </Stack>
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                  variant="contained"
+                  startIcon={<Iconify icon="material-symbols:add" />}
+                >
+                  Adiconar Familiar
+                </Button>
+              </Stack>
+            )}
           </Stack>
-        )}
-      </Box>
-    </AccountLayout>
+          {userRelatives.length > 0 ? (
+            <Box sx={{ maxHeight: '700px', mt: 3 }}>
+              <RelativesList
+                userRelatives={userRelatives}
+                onEditClick={(relative) =>
+                  setOpenAddRelativeModal({
+                    open: true,
+                    action: 'edit',
+                    relativeSelected: relative,
+                  })
+                }
+                onDeleteRelative={handleDeleteRelative}
+              />
+            </Box>
+          ) : (
+            <EmptyState
+              icon="bi:person-x-fill"
+              title="Não tem nenhum familiar associado"
+              description="Todos os familiares que adicionar vão ser apresentados nesta página"
+            />
+          )}
+          {!isMdUp && (
+            <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>
+              <Stack spacing={3} sx={{ minWidth: 240, marginTop: '30px' }}>
+                <Button
+                  onClick={() => setOpenAddRelativeModal({ open: true, action: 'add' })}
+                  size="large"
+                  color="inherit"
+                  sx={{
+                    px: 4,
+                    bgcolor: 'primary.main',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    '&:hover': {
+                      bgcolor: 'primary.dark',
+                      color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    },
+                  }}
+                  variant="contained"
+                  startIcon={<Iconify icon="material-symbols:add" />}
+                >
+                  Adiconar Familiar
+                </Button>
+              </Stack>
+            </Stack>
+          )}
+        </Box>
+      </AccountLayout>
+    </>
   );
 }
