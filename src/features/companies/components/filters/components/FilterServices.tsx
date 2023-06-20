@@ -10,9 +10,15 @@ type Props = {
   filterServices: IServiceProps[];
   onChangeServices: (keyword: IServiceProps[]) => void;
   services: Array<IServiceProps>;
+  readOnly?: boolean;
 };
 
-export default function FilterServices({ services, filterServices, onChangeServices }: Props) {
+export default function FilterServices({
+  services,
+  filterServices,
+  onChangeServices,
+  readOnly = false,
+}: Props) {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   useEffect(() => {
@@ -25,6 +31,7 @@ export default function FilterServices({ services, filterServices, onChangeServi
 
   return (
     <Autocomplete
+      readOnly={!!readOnly}
       multiple
       limitTags={1}
       disableCloseOnSelect
@@ -48,6 +55,7 @@ export default function FilterServices({ services, filterServices, onChangeServi
           InputProps={{
             ...params.InputProps,
             autoComplete: 'search',
+            readOnly: !!readOnly,
             sx: { pb: 1 },
           }}
         />
