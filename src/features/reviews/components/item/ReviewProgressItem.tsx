@@ -1,4 +1,3 @@
- 
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Radio, Typography, LinearProgress, FormControlLabel } from '@mui/material';
@@ -6,13 +5,12 @@ import { Box, Stack, Radio, Typography, LinearProgress, FormControlLabel } from 
 import { fShortenNumber } from 'src/utils/formatNumber';
 // components
 import Iconify from 'src/components/iconify';
- 
 
 // ----------------------------------------------------------------------
 
 type Props = {
   rating: {
-    value: string;
+    value: number;
     number: number;
   };
   index: number;
@@ -30,7 +28,7 @@ export default function ReviewProgressItem({ rating, totals, index }: Props) {
         <Stack alignItems="center" direction="row">
           <Stack direction="row" alignItems="center">
             <Box sx={{ width: 12, typography: 'subtitle1', textAlign: 'center', mr: 0.5 }}>
-              {5 - index}
+              {value}
             </Box>
             <Iconify width={16} icon="carbon:star" />
           </Stack>
@@ -38,7 +36,7 @@ export default function ReviewProgressItem({ rating, totals, index }: Props) {
           <LinearProgress
             color="inherit"
             variant="determinate"
-            value={(number / totals) * 100}
+            value={number ? (number / totals) * 100 : 0}
             sx={{
               mx: 2,
               width: 1,
@@ -54,13 +52,14 @@ export default function ReviewProgressItem({ rating, totals, index }: Props) {
               color: 'text.disabled',
             }}
           >
-            {fShortenNumber(number)}
+            {fShortenNumber(number) || 0}
           </Typography>
         </Stack>
       }
       sx={{
         mx: 0,
-        '&:hover': { opacity: 0.48 },
+        // '&:hover': { opacity: 0.48 },
+        cursor: 'default',
         '& .MuiFormControlLabel-label': {
           width: 1,
         },

@@ -7,16 +7,18 @@ import { useAuthContext } from 'src/contexts';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { Box, Avatar, Typography, Stack } from '@mui/material';
+import { Box, Avatar, Typography, Stack, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // assets
 import { countries, genders } from 'src/data';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+// types
+import { ISnackbarProps } from 'src/types/snackbar';
 // components
 import Iconify from 'src/components/iconify';
 import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
-import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
 import UploadPictureModal from '../components/UploadPictureModal';
 //
 import { AccountLayout } from '../components';
@@ -27,21 +29,29 @@ export default function AccountPersonalView() {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
   const { user, updateUser } = useAuthContext();
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
   const theme = useTheme();
 
   const AccountPersonalSchema = Yup.object().shape({
     firstName: Yup.string().required('O nome é obrigatório.'),
     lastName: Yup.string().required('O apelido é obrigatório.'),
     emailAddress: Yup.string().required('O email é obrigatório.'),
-    birthdate: Yup.string().required('O aniversário é obrigatório.'),
-    gender: Yup.string().required('O género é obrigatório.'),
-    streetAddress: Yup.string().required('A morada is required.'),
-    city: Yup.string().required('A cidade é obrigatória.'),
+    birthdate: Yup.string().nullable(),
+    gender: Yup.string().nullable(),
+    streetAddress: Yup.string().nullable(),
+    city: Yup.string().nullable(),
     zipCode: Yup.string()
-      .required('O código postal é obrigatório.')
+      .nullable()
       .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
-        const showErrorMessage = value.includes('-') && value.length === 8;
-        return showErrorMessage;
+        if (value) {
+          const showErrorMessage = value.includes('-') && value.length === 8;
+          return showErrorMessage;
+        }
+        return true;
       }),
     phoneNumber: Yup.string()
       .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
@@ -108,196 +118,237 @@ export default function AccountPersonalView() {
         user.address.city = data.city;
         user.address.country = data.country;
         updateUser(user);
+        setShowSnackbar({
+          show: true,
+          severity: 'success',
+          message: 'Os seus dados foram atualizados com sucesso.',
+        });
         reset(data);
       }
     } catch (error) {
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente novamente.',
+      });
       console.error(error);
     }
   };
 
   return (
-    <AccountLayout>
-      <Box
-        sx={{
-          p: 3,
-          bgcolor: 'white',
-          borderRadius: '16px',
-          boxShadow:
-            'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
-        }}
+    <>
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: 'success',
+            message: '',
+          })
+        }
       >
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h5" sx={{ mb: 3 }}>
-            Dados Pessoais
-          </Typography>
-          {!isMdUp && (
-            <Box
-              sx={{
-                width: '100%',
-                pb: '40px',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '15px',
-              }}
-            >
-              <UploadPictureModal open={openModal} onClose={() => setOpenModal(false)} />
-              <Avatar
-                onClick={() => setOpenModal(true)}
-                src={user?.profile_picture}
-                sx={{ width: '150px', height: '150px' }}
-              />
-              <Stack
-                direction="row"
-                alignItems="center"
-                onClick={() => setOpenModal(true)}
-                sx={{ typography: 'caption', cursor: 'pointer', '&:hover': { opacity: 0.72 } }}
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
+      <AccountLayout>
+        <Box
+          sx={{
+            p: 3,
+            bgcolor: 'white',
+            borderRadius: '16px',
+            boxShadow:
+              'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
+          }}
+        >
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <Typography variant="h5" sx={{ mb: 3 }}>
+              Dados Pessoais
+            </Typography>
+            {!isMdUp && (
+              <Box
+                sx={{
+                  width: '100%',
+                  pb: '40px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '15px',
+                }}
               >
-                <Iconify icon="carbon:edit" sx={{ mr: 1 }} />
-                Alterar imagem
-              </Stack>
-            </Box>
-          )}
-          <Box
-            rowGap={2.5}
-            columnGap={2}
-            display="grid"
-            gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
-          >
-            <RHFTextField name="firstName" label="Nome" />
-
-            <RHFTextField name="lastName" label="Apelido" />
-
-            <RHFTextField name="emailAddress" label="Email" disabled/>
-
-            <RHFPhoneField
-              name="phoneNumber"
-              label="Telemóvel"
-              defaultCountry="PT"
-              forceCallingCode
-              disabled
-              onChange={(value: string) => {
-                /**
-                 * Portuguese Number Validation
-                 */
-
-                // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
-                if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
-                  // (eg: +351 9123456780 -> +351 912 345 678)
-                  const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
-                    11,
-                    14
-                  )}`;
-                  setValue('phoneNumber', newValue);
-                  return;
-                }
-
-                // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
-                if (value.length > 16) {
-                  return;
-                }
-
-                setValue('phoneNumber', value);
-              }}
-            />
-
-            <Controller
-              name="birthdate"
-              render={({ field, fieldState: { error } }) => (
-                <DatePicker
-                  format="dd-MM-yyyy"
-                  label="Data de nascimento"
-                  slotProps={{
-                    textField: {
-                      helperText: error?.message,
-                      error: !!error?.message,
-                    },
-                  }}
-                  {...field}
-                  value={new Date(field.value)}
+                <UploadPictureModal open={openModal} onClose={() => setOpenModal(false)} />
+                <Avatar
+                  onClick={() => setOpenModal(true)}
+                  src={user?.profile_picture}
+                  sx={{ width: '150px', height: '150px' }}
                 />
-              )}
-            />
-
-            <RHFSelect native name="gender" label="Género">
-              {genders.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </RHFSelect>
-
-            <RHFTextField name="streetAddress" label="Morada" />
-
-            <RHFTextField
-              name="zipCode"
-              label="Código Postal"
-              onChange={(e) => {
-                const { value } = e.target;
-
-                /**
-                 * Only allow numbers and dashes
-                 */
-                if (!/^[0-9-]*$/.test(value)) {
-                  return;
-                }
-
-                /**
-                 * Portugal Zip Code Validation
-                 */
-                if (getValues('country') === 'PT' || getValues('country') === '') {
-                  // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
-                  if (value.length === 5 && value[4] !== '-') {
-                    setValue('zipCode', `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`);
-                    return;
-                  }
-
-                  // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
-                  if (value.length > 8) {
-                    return;
-                  }
-                }
-
-                setValue('zipCode', value);
-              }}
-            />
-
-            <RHFTextField name="city" label="Cidade" />
-
-            <RHFSelect native name="country" label="País">
-              <option value="" />
-              {countries.map((country) => (
-                <option key={country.code} value={country.code}>
-                  {country.label}
-                </option>
-              ))}
-            </RHFSelect>
-          </Box>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
-            <LoadingButton
-              sx={{
-                width: isMdUp ? 'auto' : '100%',
-                mt: isMdUp ? '20px' : '40px',
-                backgroundColor: 'primary.main',
-                color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                '&:hover': {
-                  backgroundColor: 'primary.dark',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                },
-              }}
-              color="inherit"
-              disabled={!isDirty}
-              size="large"
-              type="submit"
-              variant="contained"
-              loading={isSubmitting}
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  onClick={() => setOpenModal(true)}
+                  sx={{ typography: 'caption', cursor: 'pointer', '&:hover': { opacity: 0.72 } }}
+                >
+                  <Iconify icon="carbon:edit" sx={{ mr: 1 }} />
+                  Alterar imagem
+                </Stack>
+              </Box>
+            )}
+            <Box
+              rowGap={2.5}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             >
-              Guardar
-            </LoadingButton>
-          </Box>
-        </FormProvider>
-      </Box>
-    </AccountLayout>
+              <RHFTextField name="firstName" label="Nome" />
+
+              <RHFTextField name="lastName" label="Apelido" />
+
+              <RHFTextField name="emailAddress" label="Email" disabled />
+
+              <RHFPhoneField
+                name="phoneNumber"
+                label="Telemóvel"
+                defaultCountry="PT"
+                forceCallingCode
+                disabled
+                onChange={(value: string) => {
+                  /**
+                   * Portuguese Number Validation
+                   */
+
+                  // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
+                  if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
+                    // (eg: +351 9123456780 -> +351 912 345 678)
+                    const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
+                      11,
+                      14
+                    )}`;
+                    setValue('phoneNumber', newValue);
+                    return;
+                  }
+
+                  // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
+                  if (value.length > 16) {
+                    return;
+                  }
+
+                  setValue('phoneNumber', value);
+                }}
+              />
+
+              <Controller
+                name="birthdate"
+                render={({ field, fieldState: { error } }) => (
+                  <DatePicker
+                    format="dd-MM-yyyy"
+                    label="Data de nascimento"
+                    slotProps={{
+                      textField: {
+                        helperText: error?.message,
+                        error: !!error?.message,
+                      },
+                    }}
+                    {...field}
+                    value={new Date(field.value)}
+                  />
+                )}
+              />
+
+              <RHFSelect native name="gender" label="Género">
+                {genders.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+
+              <RHFTextField name="streetAddress" label="Morada" />
+
+              <RHFTextField
+                name="zipCode"
+                label="Código Postal"
+                onChange={(e) => {
+                  const { value } = e.target;
+
+                  /**
+                   * Only allow numbers and dashes
+                   */
+                  if (!/^[0-9-]*$/.test(value)) {
+                    return;
+                  }
+
+                  /**
+                   * Portugal Zip Code Validation
+                   */
+                  if (getValues('country') === 'PT' || getValues('country') === '') {
+                    // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+                    if (value.length === 5 && value[4] !== '-') {
+                      setValue(
+                        'zipCode',
+                        `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`
+                      );
+                      return;
+                    }
+
+                    // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                    if (value.length > 8) {
+                      return;
+                    }
+                  }
+
+                  setValue('zipCode', value);
+                }}
+              />
+
+              <RHFTextField name="city" label="Cidade" />
+
+              <RHFSelect native name="country" label="País">
+                <option value="" />
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {country.label}
+                  </option>
+                ))}
+              </RHFSelect>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+              <LoadingButton
+                sx={{
+                  width: isMdUp ? 'auto' : '100%',
+                  mt: isMdUp ? '20px' : '40px',
+                  backgroundColor: 'primary.main',
+                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  '&:hover': {
+                    backgroundColor: 'primary.dark',
+                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  },
+                }}
+                color="inherit"
+                disabled={!isDirty}
+                size="large"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
+                Guardar
+              </LoadingButton>
+            </Box>
+          </FormProvider>
+        </Box>
+      </AccountLayout>
+    </>
   );
 }
