@@ -95,9 +95,10 @@ function AddNewCardForm({ onAddCard }: Props) {
       });
       setIsSubmitting(false);
       reset();
-      onAddCard();
+      onAddCard('success');
     } catch (error) {
-      console.log(error)
+      onAddCard('error');
+      console.log(error);
     }
   };
 
