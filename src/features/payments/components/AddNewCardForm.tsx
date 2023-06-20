@@ -17,7 +17,7 @@ import { useAuthContext } from 'src/contexts';
 import axios from 'src/lib/axios';
 
 type Props = {
-  onAddCard: () => void;
+  onAddCard: (result: 'success' | 'error') => void;
 };
 
 type FormValuesProps = {

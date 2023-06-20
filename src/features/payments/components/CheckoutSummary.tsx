@@ -51,8 +51,8 @@ export default function CheckoutSummary({
   const [discountCode, setDiscountCode] = useState<string>('');
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
-    severity: undefined,
-    message: undefined,
+    severity: 'success',
+    message: '',
   });
 
   const handleSubmitDiscount = async () => {
@@ -83,8 +83,8 @@ export default function CheckoutSummary({
         onClose={() =>
           setShowSnackbar({
             show: false,
-            severity: undefined,
-            message: undefined,
+            severity: 'success',
+            message: '',
           })
         }
       >
@@ -92,8 +92,8 @@ export default function CheckoutSummary({
           onClose={() =>
             setShowSnackbar({
               show: false,
-              severity: undefined,
-              message: undefined,
+              severity: 'success',
+              message: '',
             })
           }
           severity={showSnackbar.severity}
