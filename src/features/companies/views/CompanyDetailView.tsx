@@ -114,6 +114,7 @@ export default function CompanyDetailView() {
       const companyId = router.asPath.split('/')[2].split('?')[0];
       const fetchCompany = async () => {
         const response = await axios.get(`/companies/${companyId}`);
+        console.log('company info:', response.data);
         setCompanyInfo(response.data);
         setLoading(false);
       };
@@ -273,7 +274,7 @@ export default function CompanyDetailView() {
 
       <Divider sx={{ my: 10 }} />
 
-      <CompanyDetailReviews />
+      <CompanyDetailReviews rating={companyInfo.rating} />
 
       <SimilarCompaniesList companies={similarCompanies} />
     </>
