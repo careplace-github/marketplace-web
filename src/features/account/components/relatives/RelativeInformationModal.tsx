@@ -30,6 +30,7 @@ type Props = {
   action: 'add' | 'edit';
   relative?: IRelativeProps;
   open: boolean;
+  onActionMade: Function;
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
 };
 
@@ -48,7 +49,13 @@ type FormProps = {
   medicalConditions: string;
 };
 
-export default function RelativeInformationModal({ action, relative, open, onClose }: Props) {
+export default function RelativeInformationModal({
+  action,
+  relative,
+  open,
+  onClose,
+  onActionMade,
+}: Props) {
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
   const [fileData, setFileData] = useState<FormData>();
@@ -201,8 +208,10 @@ export default function RelativeInformationModal({ action, relative, open, onClo
           };
 
           await axios.put(`/users/relatives/${relative._id}`, updateRelative);
+          onActionMade(action, 'success');
         } catch (error) {
           setIsSubmiting(false);
+          onActionMade(action, 'error');
           return null;
         }
       }
@@ -231,8 +240,10 @@ export default function RelativeInformationModal({ action, relative, open, onClo
         };
 
         await axios.post(`/users/relatives/`, createRelative);
+        onActionMade(action, 'success');
       } catch (error) {
         setIsSubmiting(false);
+        onActionMade(action, 'error');
         return null;
       }
     }
@@ -376,7 +387,6 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               onChange={(e) => {
                 const { value } = e.target;
                 setValue('kinshipDegree', value);
-              
               }}
             >
               <option value="" />
@@ -395,7 +405,6 @@ export default function RelativeInformationModal({ action, relative, open, onClo
               onChange={(e) => {
                 const { value } = e.target;
 
-              
                 /**
                  * Only allow numbers and dashes
                  */

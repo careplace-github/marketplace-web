@@ -19,7 +19,6 @@ import { PATHS } from 'src/routes/paths';
 
 type Props = {
   handleDelete: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
-
   card: {
     id: string;
     billing_details: any;

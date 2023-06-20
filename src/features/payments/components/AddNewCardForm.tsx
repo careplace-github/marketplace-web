@@ -17,7 +17,7 @@ import { useAuthContext } from 'src/contexts';
 import axios from 'src/lib/axios';
 
 type Props = {
-  onAddCard: () => void;
+  onAddCard: (result: 'success' | 'error') => void;
 };
 
 type FormValuesProps = {
@@ -95,9 +95,10 @@ function AddNewCardForm({ onAddCard }: Props) {
       });
       setIsSubmitting(false);
       reset();
-      onAddCard();
+      onAddCard('success');
     } catch (error) {
-      console.log(error)
+      onAddCard('error');
+      console.log(error);
     }
   };
 
