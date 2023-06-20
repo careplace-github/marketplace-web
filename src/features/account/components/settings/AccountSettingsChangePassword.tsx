@@ -25,8 +25,8 @@ export default function AccountPersonalView() {
   const theme = useTheme();
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
-    severity: undefined,
-    message: undefined,
+    severity: 'success',
+    message: '',
   });
 
   const { changePassword } = useAuthContext();
@@ -101,8 +101,8 @@ export default function AccountPersonalView() {
         onClose={() =>
           setShowSnackbar({
             show: false,
-            severity: undefined,
-            message: undefined,
+            severity: 'success',
+            message: '',
           })
         }
       >
@@ -110,8 +110,8 @@ export default function AccountPersonalView() {
           onClose={() =>
             setShowSnackbar({
               show: false,
-              severity: undefined,
-              message: undefined,
+              severity: 'success',
+              message: '',
             })
           }
           severity={showSnackbar.severity}

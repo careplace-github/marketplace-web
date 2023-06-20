@@ -30,8 +30,8 @@ export default function AccountRelativesView() {
   const [isLoading, setIsLoading] = useState(true);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
-    severity: undefined,
-    message: undefined,
+    severity: 'success',
+    message: '',
   });
   const [openAddRelativeModal, setOpenAddRelativeModal] = useState<RelativeModalProps>({
     open: false,
@@ -79,8 +79,8 @@ export default function AccountRelativesView() {
         onClose={() =>
           setShowSnackbar({
             show: false,
-            severity: undefined,
-            message: undefined,
+            severity: 'success',
+            message: '',
           })
         }
       >
@@ -88,8 +88,8 @@ export default function AccountRelativesView() {
           onClose={() =>
             setShowSnackbar({
               show: false,
-              severity: undefined,
-              message: undefined,
+              severity: 'success',
+              message: '',
             })
           }
           severity={showSnackbar.severity}

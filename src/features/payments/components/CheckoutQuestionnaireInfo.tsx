@@ -78,8 +78,8 @@ export default function CheckoutQuestionnaireInfo({
   const [CARDS, setCARDS] = useState<PaymentMethodProps[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
-    severity: undefined,
-    message: undefined,
+    severity: 'success',
+    message: '',
   });
 
   async function getCards() {
@@ -141,8 +141,8 @@ export default function CheckoutQuestionnaireInfo({
         onClose={() =>
           setShowSnackbar({
             show: false,
-            severity: undefined,
-            message: undefined,
+            severity: 'success',
+            message: '',
           })
         }
       >
@@ -150,8 +150,8 @@ export default function CheckoutQuestionnaireInfo({
           onClose={() =>
             setShowSnackbar({
               show: false,
-              severity: undefined,
-              message: undefined,
+              severity: 'success',
+              message: '',
             })
           }
           severity={showSnackbar.severity}

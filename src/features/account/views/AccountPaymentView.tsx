@@ -23,8 +23,8 @@ export default function AccountPaymentView() {
   const [openModal, setOpenModal] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
-    severity: undefined,
-    message: undefined,
+    severity: 'success',
+    message: '',
   });
 
   async function getCards() {
@@ -49,8 +49,8 @@ export default function AccountPaymentView() {
         onClose={() =>
           setShowSnackbar({
             show: false,
-            severity: undefined,
-            message: undefined,
+            severity: 'success',
+            message: '',
           })
         }
       >
@@ -58,8 +58,8 @@ export default function AccountPaymentView() {
           onClose={() =>
             setShowSnackbar({
               show: false,
-              severity: undefined,
-              message: undefined,
+              severity: 'success',
+              message: '',
             })
           }
           severity={showSnackbar.severity}
@@ -187,7 +187,7 @@ export default function AccountPaymentView() {
 
           <Stack spacing={3}>
             <AccountNewCardModal
-              onAddCard={(result: 'sucess' | 'error') =>
+              onAddCard={(result: 'success' | 'error') =>
                 setShowSnackbar({
                   show: true,
                   severity: result,
