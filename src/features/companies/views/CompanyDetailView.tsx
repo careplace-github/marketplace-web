@@ -275,7 +275,7 @@ export default function CompanyDetailView() {
       <Divider sx={{ my: 10 }} />
 
       <CompanyDetailReviews rating={companyInfo.rating} />
-
+      <Divider sx={{ mt: 10 }} />
       <SimilarCompaniesList companies={similarCompanies} />
     </>
   ) : (
