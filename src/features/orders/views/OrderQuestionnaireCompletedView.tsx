@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
-import { Container, Typography, Stack, Button, Card } from '@mui/material';
+import { Container, Typography, Stack, Button, Card, Avatar, Box } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // axios
@@ -79,6 +79,25 @@ export default function OrderQuestionnaireCompletedView() {
 
       <Stack spacing={5}>
         <Typography variant="h2">Pedido Efetuado!</Typography>
+        {!isMdUp && (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Avatar
+              src={data?.company.business_profile.logo}
+              sx={{ width: '160px', height: '160px' }}
+            />
+            <Typography variant="h3" sx={{ fontSize: '26px', fontWeight: '600' }}>
+              {data?.company.business_profile.name}
+            </Typography>
+          </Box>
+        )}
         <OrderQuestionnaireCompletedSummary
           relative={data.relative}
           services={data.services}
