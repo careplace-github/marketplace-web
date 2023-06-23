@@ -54,24 +54,23 @@ export default function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
 
       <AuthProvider>
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <SettingsProvider>
-          <ThemeProvider>
-            <ThemeSettings>
-              <MotionLazyContainer>
-                <ProgressBar />
-                {getLayout(<Component {...pageProps} />)}
-              </MotionLazyContainer>
-            </ThemeSettings>
-          </ThemeProvider>
-        </SettingsProvider>
-      </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <SettingsProvider>
+            <ThemeProvider>
+              <ThemeSettings>
+                <MotionLazyContainer>
+                  <ProgressBar />
+                  {getLayout(<Component {...pageProps} />)}
+                </MotionLazyContainer>
+              </ThemeSettings>
+            </ThemeProvider>
+          </SettingsProvider>
+        </LocalizationProvider>
       </AuthProvider>
-      
     </CacheProvider>
   );
 }
