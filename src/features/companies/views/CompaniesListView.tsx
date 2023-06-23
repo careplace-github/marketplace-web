@@ -58,6 +58,7 @@ export default function CompaniesListView() {
 
   useEffect(() => {
     const fetchCompanies = async () => {
+      setLoading(true);
       if (!router.isReady) return;
       const currentQuery = router.query;
 
