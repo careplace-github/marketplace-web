@@ -120,7 +120,6 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
     <Modal open={open} onClose={onClose}>
       <Box
         sx={{
-          pt: 20,
           mx: 'auto',
           outline: 'none',
           width: '500px',
@@ -137,6 +136,7 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
           alignItems: 'center',
           justifyContent: 'flex-start',
           padding: '50px',
+          pt: isMdUp ? '50px' : '75px',
           gap: '10px',
           ...(!isMdUp && {
             height: '100vh',
@@ -146,22 +146,27 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
         }}
       >
         <Iconify
-          icon="mingcute:close-fill"
-          color="#919EAB"
-          onClick={() => {
-            close();
-          }}
+          width={30}
+          height={30}
+          icon="material-symbols:close-rounded"
           sx={{
-            mr: 0.5,
-            alignSelf: 'flex-end',
-            mt: -3,
-            mb: 1,
+            position: 'absolute',
+            top: isMdUp ? '50px' : '72px',
+            right: isMdUp ? '50px' : '45px',
+            cursor: 'pointer',
             '&:hover': {
               cursor: 'pointer',
               color: theme.palette.mode === 'light' ? 'grey.400' : 'white',
             },
           }}
+          onClick={() => {
+            close();
+          }}
         />
+
+        <Typography variant="h5" sx={{ mb: 3, width: '100%', alignText: 'left' }}>
+          Adicionar Cartão
+        </Typography>
 
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack direction="column" spacing={2} sx={{ pb: 2 }}>
