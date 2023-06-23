@@ -31,7 +31,6 @@ import { footerLinks, navConfig } from '../nav/config-navigation';
 import ListDesktop from './ListDesktop';
 import ListMobile from './ListMobile';
 
-
 // ----------------------------------------------------------------------
 
 const StyledAppStoreButton = styled(Button)(({ theme }) => ({
@@ -64,15 +63,13 @@ export default function Footer() {
 
   const simpleFooter = (
     <Container sx={{ py: 3, textAlign: 'center', alignItems: 'center' }}>
-     
-
       <Typography variant="caption" component="div" sx={{ color: 'text.secondary' }}>
-       Careplace © 2023. Todos os direitos reservados.
+        Careplace © 2023. Todos os direitos reservados.
       </Typography>
     </Container>
   );
 
- const mainFooter = (
+  const mainFooter = (
     <>
       <Divider />
 
@@ -85,7 +82,7 @@ export default function Footer() {
         <Grid container spacing={3} justifyContent={{ md: 'space-between' }}>
           <Grid xs={12} md={4}>
             <Stack spacing={{ xs: 3, md: 5 }}>
-              <Stack alignItems="flex-start" spacing={0}  sx={{ mt: -8, mb: -4 }}>
+              <Stack alignItems="flex-start" spacing={0}>
                 <Logo />
               </Stack>
 
