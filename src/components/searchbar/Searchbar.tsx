@@ -213,6 +213,15 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       }
     }
   }, [router.isReady]);
+  useEffect(() => {
+    console.log('router path', router.asPath);
+    const pathWithoutQueries = router.asPath.split('?')[0];
+    if (pathWithoutQueries !== '/companies') {
+      setValue('');
+      setSelectedOption(null);
+    }
+  }, [router.asPath]);
+
   const isMdUp = useResponsive('up', 'md');
 
   const handleSearch = () => {

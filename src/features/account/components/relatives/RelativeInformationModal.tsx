@@ -261,6 +261,8 @@ export default function RelativeInformationModal({
           minWidth: isMdUp ? '800px' : undefined,
           maxHeight: isMdUp ? '90vh' : '100vh',
           p: isMdUp ? '50px' : '20px',
+          pt: isMdUp ? '50px' : '75px',
+          pb: isMdUp ? '50px' : '75px',
           backgroundColor: 'white',
           borderRadius: isMdUp ? '16px' : '0',
           position: 'absolute',
@@ -280,7 +282,7 @@ export default function RelativeInformationModal({
           icon="material-symbols:close-rounded"
           sx={{
             position: 'absolute',
-            top: isMdUp ? '50px' : '20px',
+            top: isMdUp ? '50px' : '72px',
             right: isMdUp ? '50px' : '20px',
             cursor: 'pointer',
             '&:hover': {

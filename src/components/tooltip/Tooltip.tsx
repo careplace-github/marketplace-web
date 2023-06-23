@@ -1,3 +1,6 @@
+// react
+import { useState, useEffect, useRef } from 'react';
+// components
 import { Tooltip as MuiTooltip } from '@mui/material';
 import Iconify from '../iconify/Iconify';
 
@@ -16,8 +19,7 @@ type TooltipProps = {
     | 'right-start'
     | 'right'
     | 'top-end'
-    | 'top-start'
-    | undefined;
+    | 'top-start';
   iconColor?: string;
   tooltipWidth?: string;
 };
@@ -29,8 +31,28 @@ export function Tooltip({
   icon = 'foundation:info',
   placement = 'top',
 }: TooltipProps) {
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const tooltipRef = useRef<HTMLDivElement | null>();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
+        setOpenTooltip(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
     <MuiTooltip
+      open={openTooltip}
+      onClick={() => setOpenTooltip(true)}
+      ref={tooltipRef}
       arrow
       title={text}
       placement={placement}
