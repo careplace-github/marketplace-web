@@ -83,7 +83,9 @@ export default function NavMobile({ data }: NavProps) {
       >
         <Scrollbar>
           {!isAuthenticated && (
-            <Stack sx={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <Stack
+              sx={{ width: '100%', alignItems: 'center', justifyContent: 'center', mt: 5, pb: 5 }}
+            >
               <Logo sx={{ mx: 2.5 }} />
             </Stack>
           )}
