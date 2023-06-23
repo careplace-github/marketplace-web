@@ -312,6 +312,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
           '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
             borderColor: 'text.disabled',
           },
+          touchAction: 'manipulation',
           '& .MuiOutlinedInput-root': {
             '&.Mui-focused fieldset': {
               borderColor: 'text.disabled',
