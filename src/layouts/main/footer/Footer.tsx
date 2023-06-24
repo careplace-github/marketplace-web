@@ -5,6 +5,7 @@ import { alpha, styled } from '@mui/material/styles';
 import Masonry from '@mui/lab/Masonry';
 import {
   Link,
+  Box,
   Stack,
   Button,
   Divider,
@@ -56,7 +57,7 @@ export default function Footer() {
 
   const desktopList = footerLinks.sort((listA, listB) => Number(listA.order) - Number(listB.order));
 
-  const renderLists = isMdUp ? desktopList : mobileList;
+  const renderLists = desktopList;
 
   // Check if pathname begins with /account
   const isAccount = startsWith(pathname, PATHS.account.root);
@@ -115,13 +116,19 @@ export default function Footer() {
           </Grid>
 
           <Grid xs={12} md={6}>
-            {isMdUp ? (
-              <Masonry columns={3} spacing={2} defaultColumns={3} defaultSpacing={2}>
-                {renderLists.map((list) => (
-                  <ListDesktop key={list.subheader} list={list} />
-                ))}
+            <Masonry
+              columns={3}
+              spacing={2}
+              defaultColumns={3}
+              defaultSpacing={2}
+              sx={{ mt: isMdUp ? 0 : 2 }}
+            >
+              {renderLists.map((list) => (
+                <ListDesktop key={list.subheader} list={list} />
+              ))}
+              <Box>
                 <Typography variant="subtitle2">Redes Sociais</Typography>
-                <Stack direction="row" alignItems="center">
+                <Stack direction="row" alignItems="flex-start" sx={{ ml: '-10px' }}>
                   {socials.map((social) => (
                     <IconButton
                       key={social.value}
@@ -133,14 +140,8 @@ export default function Footer() {
                     </IconButton>
                   ))}
                 </Stack>
-              </Masonry>
-            ) : (
-              <Stack spacing={1.5}>
-                {renderLists.map((list) => (
-                  <ListMobile key={list.subheader} list={list} />
-                ))}
-              </Stack>
-            )}
+              </Box>
+            </Masonry>
           </Grid>
         </Grid>
       </Container>
