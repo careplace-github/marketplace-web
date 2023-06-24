@@ -1,39 +1,98 @@
- 
 // next
 import NextLink from 'next/link';
 // @mui
-import { Stack, Typography, Link } from '@mui/material';
+import { Stack, Box, Typography, Link, Checkbox } from '@mui/material';
 // components
 import Image from 'src/components/image';
 import TextMaxLine from 'src/components/text-max-line';
+import Iconify from 'src/components/iconify/Iconify';
 // types
 import { IServiceProps } from 'src/types/service';
- 
 
 // ----------------------------------------------------------------------
 
 type Props = {
   service: IServiceProps;
+  selected: boolean;
+  onItemSelect: Function;
 };
 
-export default function ServiceItem({ service }: Props) {
-  const { title, coverImg, category } = service;
+export default function ServiceItem({ service, selected, onItemSelect }: Props) {
+  // const { title, coverImg, category } = service;
+  const { name, image, type, short_description } = service;
+
+  function mapServiceType(serviceType: string) {
+    if (serviceType === 'normal') return 'Apoio Domociliário';
+    if (serviceType === 'special') return 'Adicional';
+    return '';
+  }
 
   return (
-    <div>
-      <Image src={coverImg} alt={title} ratio="1/1" sx={{ borderRadius: 2 }} />
+    <Box
+      onClick={() => onItemSelect(!selected)}
+      sx={{
+        position: 'relative',
+        cursor: 'pointer',
+        // height: '250px',
+        bgcolor: 'white',
+        borderRadius: '16px',
+        boxShadow: ' rgba(0, 0, 0, 0.35) 0px 5px 15px',
+        overflow: 'hidden',
+      }}
+    >
+      {/* <Checkbox
+        checked={selected}
+        onChange={() => onItemSelect(!selected)}
+        sx={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          zIndex: 9,
+          width: '25px',
+          height: '25px',
+        }}
+      /> */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          zIndex: 9,
+          borderRadius: '8px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          border: '1px solid',
+          borderColor: 'primary.main',
+          cursor: 'pointer',
+          width: '25px',
+          height: '25px',
+          backgroundColor: 'white',
+        }}
+      >
+        {' '}
+        <Iconify icon="iconamoon:check-bold" sx={{ color: selected ? 'primary.main' : 'white' }} />
+      </Box>
+      <Image src={image} alt={name} ratio="1/1" />
+      <Box sx={{ p: 3, width: '100%' }}>
+        <Stack
+          direction="row"
+          alignItems="flex-start"
+          justifyContent="flex-start"
+          width="100%"
+          gap="10px"
+          height="60px"
+        >
+          <Stack width="100%">
+            <TextMaxLine sx={{ fontSize: '14px', fontWeight: 500 }}>{name}</TextMaxLine>
 
-      <Stack spacing={1} sx={{ pt: 2.5, px: 2.5 }}>
-        <Typography variant="overline" sx={{ color: 'text.disabled' }}>
-          {category}
-        </Typography>
-
-        <Link component={NextLink} href="/" color="inherit">
-          <TextMaxLine variant="h5" line={1}>
-            {title}
-          </TextMaxLine>
-        </Link>
-      </Stack>
-    </div>
+            <Typography sx={{ color: 'text.disabled', fontSize: '12px' }}>
+              {mapServiceType(type)}
+            </Typography>
+          </Stack>
+        </Stack>
+        <Typography sx={{ fontSize: '14px', mt: 3 }}>{short_description}</Typography>
+      </Box>
+    </Box>
   );
 }
