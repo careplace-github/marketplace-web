@@ -1,34 +1,62 @@
+// react
+import { useState, useEffect, useRef } from 'react';
+// components
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 // @mui
 import { Container, Typography, Stack } from '@mui/material';
 // _mock
 import { _caseStudies as _services } from 'src/_mock';
+// types
+import { IServiceProps } from 'src/types/utils';
+// axios
+import axios from 'src/lib/axios';
 //
 import { ServicesList } from '../components';
- 
 
 // ----------------------------------------------------------------------
 
 export default function ServicesListView() {
-  return (
-    <>
-      <Container>
-        <Stack
-          spacing={3}
-          sx={{
-            py: 5,
-            textAlign: { xs: 'center', md: 'left' },
-          }}
-        >
-          <Typography variant="h2">Our Case Studies</Typography>
+  const [servicesLoading, setServicesLoading] = useState<boolean>(true);
+  const [availableServices, setAvailableServices] = useState<IServiceProps[]>();
+  const topRef = useRef();
+  useEffect(() => {
+    setServicesLoading(true);
+    const fetchServices = async () => {
+      const response = await axios.get('/services', { params: { documentsPerPage: 6, page: 1 } });
+      console.log(response.data);
+      const normalServices: IServiceProps[] = [];
+      response.data.data.forEach((service) => {
+        if (service.type === 'normal') {
+          normalServices.push(service);
+        }
+      });
+      setAvailableServices(response.data.data);
+      setServicesLoading(false);
+    };
 
-          <Typography sx={{ color: 'text.secondary' }}>
-            Nullam tincidunt adipiscing enim.
-            <br /> Mauris sollicitudin fermentum libero.
-          </Typography>
-        </Stack>
+    fetchServices();
+  }, []);
 
-        <ServicesList services={_services} />
-      </Container>
-    </>
+  return servicesLoading ? (
+    <LoadingScreen />
+  ) : (
+    <Container>
+      <Stack
+        spacing={3}
+        sx={{
+          py: 5,
+          textAlign: { xs: 'center', md: 'left' },
+        }}
+      >
+        <Typography id="services_title" variant="h2">
+          Serviços
+        </Typography>
+        <Typography sx={{ color: 'text.secondary' }}>
+          Conheça todos os serviços de geriatria disponíveis na Careplace.
+        </Typography>
+      </Stack>
+
+      <ServicesList services={availableServices} />
+    </Container>
   );
 }
