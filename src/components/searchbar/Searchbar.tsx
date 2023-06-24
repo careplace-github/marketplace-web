@@ -98,6 +98,9 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
     if (address === 'Pesquisar nas proximidades') {
       const nearbyLocation = await getCurrentLocationCoordinates();
+      if (nearbyLocation === 'error') {
+        return 'error';
+      }
       location = {
         lat: nearbyLocation.lat,
         lng: nearbyLocation.lng,
@@ -174,8 +177,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
           message:
             'Não foi possível aceder à sua localização. Para aceder a esta funcionalidade altere as permissões do seu browser',
         });
-        setValue('');
-        setSelectedOption(null);
+        return 'error';
       }
     } else {
       setShowSnackbar({
@@ -184,6 +186,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
         message:
           'Não foi possível aceder à sua localização. Para aceder a esta funcionalidade altere as permissões do seu browser',
       });
+      return 'error';
     }
 
     return location;
@@ -199,11 +202,14 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   const handleClick = async (option: any) => {
     const location = await getCoordinates(option.description);
-    setSelectedOption(option);
-    setValue(option.description);
-    clearSuggestions();
-    setOpenOptions(false);
-    handleSelect(location, option.description);
+
+    if (location != 'error') {
+      setSelectedOption(option);
+      setValue(option.description);
+      clearSuggestions();
+      setOpenOptions(false);
+      handleSelect(location, option.description);
+    }
   };
 
   useEffect(() => {
@@ -277,7 +283,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
     <Box ref={searchbarRef} sx={{ width: !isMdUp ? '100%' : '400px', position: 'relative' }}>
       <Snackbar
         open={showSnackbar.show}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         onClose={() =>
           setShowSnackbar({
