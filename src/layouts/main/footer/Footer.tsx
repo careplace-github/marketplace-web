@@ -170,7 +170,7 @@ export default function Footer() {
             <Link
               variant="caption"
               sx={{ color: 'text.secondary' }}
-              href="https://www.careplace.pt/privacy-policy"
+              href={PATHS.privacyPolicy}
               target="_blank"
             >
               Política de Privacidade
@@ -179,7 +179,7 @@ export default function Footer() {
             <Link
               variant="caption"
               sx={{ color: 'text.secondary' }}
-              href="https://www.careplace.pt/terms-and-conditions"
+              href={PATHS.termsAndConditions}
               target="_blank"
             >
               Termos e Condições
