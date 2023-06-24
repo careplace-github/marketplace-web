@@ -11,6 +11,8 @@ import {
   Divider,
   Container,
   Typography,
+  Snackbar,
+  Alert,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 // google api
@@ -23,7 +25,9 @@ import Iconify from 'src/components/iconify';
 // routes
 import { PATHS } from 'src/routes/paths';
 // types
+import { ISnackbarProps } from 'src/types/snackbar';
 import { ILocationFiltersProps } from './types';
+
 //
 import { StyledBar } from './styles';
 import { LocationFilterKeyword } from './LocationFilterKeyword';
@@ -63,6 +67,11 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
     lat: null,
     lng: null,
     query: '',
+  });
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
   });
 
   const {
@@ -146,19 +155,35 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       lng: '',
     };
     if (navigator.geolocation) {
-      await new Promise<void>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            location.lat = position.coords.latitude.toString();
-            location.lng = position.coords.longitude.toString();
+      try {
+        await new Promise<void>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              location.lat = position.coords.latitude.toString();
+              location.lng = position.coords.longitude.toString();
 
-            resolve();
-          },
-          () => reject(new Error('Error: The Geolocation service failed.'))
-        );
-      });
+              resolve();
+            },
+            () => reject(new Error('Error: The Geolocation service failed.'))
+          );
+        });
+      } catch (error) {
+        setShowSnackbar({
+          show: true,
+          severity: 'info',
+          message:
+            'Não foi possível aceder à sua localização. Para aceder a esta funcionalidade altere as permissões do seu browser',
+        });
+        setValue('');
+        setSelectedOption(null);
+      }
     } else {
-      console.log('Geolocation is not supported by this browser.');
+      setShowSnackbar({
+        show: true,
+        severity: 'info',
+        message:
+          'Não foi possível aceder à sua localização. Para aceder a esta funcionalidade altere as permissões do seu browser',
+      });
     }
 
     return location;
@@ -174,7 +199,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   const handleClick = async (option: any) => {
     const location = await getCoordinates(option.description);
-    console.log('Handle click');
     setSelectedOption(option);
     setValue(option.description);
     clearSuggestions();
@@ -251,6 +275,32 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   return (
     <Box ref={searchbarRef} sx={{ width: !isMdUp ? '100%' : '400px', position: 'relative' }}>
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: 'success',
+            message: '',
+          })
+        }
+      >
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
       <TextField
         autoComplete="off"
         placeholder="Cidade, Rua, Código Postal..."

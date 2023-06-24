@@ -9,22 +9,17 @@ export const footerLinks = [
     type: 'Main',
     subheader: 'Careplace',
     items: [
-      { title: 'Entrar', path: '/' },
-      { title: 'Registar', path: '/' },
-      { title: 'Suporte', path: '/' },
-      { title: 'Equipa', path: '/' },
-      { title: 'Perguntas Frequentes', path: '/' },
+      { title: 'Entrar', path: PATHS.auth.login },
+      { title: 'Registar', path: PATHS.auth.register },
     ],
   },
   {
     order: '2',
     type: 'Main',
-    subheader: 'Para Quem',
+    subheader: 'Encontrar',
     items: [
-      { title: 'Cuidadores', path: PATHS.caregivers },
-      { title: 'Empresas SAD', path: PATHS.healthUnits },
-      { title: 'Lares', path: PATHS.healthUnits },
-      { title: 'Residências Sénior', path: PATHS.healthUnits },
+      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Serviços', path: PATHS.services.root },
     ],
   },
 ];
@@ -50,7 +45,7 @@ export const navLinks = [
     subheader: 'Careplace Sales',
     cover: '/assets/images/menu/careplace_sales.png',
     items: [
-      { title: 'Funcionamento', path: PATHS.comingsoon },
+      { title: 'Funcionamento', path: PATHS.comingsoon as string },
       { title: 'Preçário', path: PATHS.comingsoon },
       { title: 'Empresas SAD', path: PATHS.comingsoon },
       { title: 'Lares', path: PATHS.comingsoon },

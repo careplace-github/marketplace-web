@@ -337,7 +337,8 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                         {weekdayItem.text}
                       </Typography>
                       <Tooltip
-                        placement={isSmUp ? 'right' : 'top'}
+                        tooltipWidth={!isSmUp ? '200px' : undefined}
+                        placement="right"
                         text='Caso pretenda que o serviço seja prestado num hórario noturno, por favor selecione a opção "Cuidado Notruno"'
                       />
                     </Stack>
