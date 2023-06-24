@@ -21,6 +21,7 @@ type TooltipProps = {
     | 'top-end'
     | 'top-start';
   iconColor?: string;
+  padding?: string;
   tooltipWidth?: string;
 };
 
@@ -29,6 +30,7 @@ export function Tooltip({
   tooltipWidth = '250px',
   text,
   icon = 'foundation:info',
+  padding = '10px 15px',
   placement = 'top',
 }: TooltipProps) {
   const [openTooltip, setOpenTooltip] = useState(false);
@@ -58,7 +60,7 @@ export function Tooltip({
       placement={placement}
       componentsProps={{
         tooltip: {
-          sx: { width: tooltipWidth },
+          sx: { width: tooltipWidth, fontSize: '12px', p: padding },
         },
       }}
     >

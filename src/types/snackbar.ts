@@ -1,5 +1,5 @@
 export type ISnackbarProps = {
   show: boolean;
-  severity: 'success' | 'error';
+  severity: 'success' | 'error' | 'info';
   message: string;
 };
