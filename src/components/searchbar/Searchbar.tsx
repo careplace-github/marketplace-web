@@ -17,9 +17,9 @@ import {
 } from '@mui/material';
 // google api
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { google } from 'google-maps';
-// hooks
 import useResponsive from 'src/hooks/useResponsive';
+import { google } from 'google-maps';
+
 // components
 import Iconify from 'src/components/iconify';
 // routes
@@ -58,6 +58,7 @@ type Location = {
 
 export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   const { pathname, push, query } = useRouter();
+  const isSmUp = useResponsive('up', 'sm');
   const searchbarRef = useRef<HTMLDivElement | null>();
   const router = useRouter();
   const [searchInputValue, setSearchInputValue] = useState<string>('');
@@ -347,7 +348,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
                 }}
                 onClick={handleSearch}
               >
-                <Iconify icon="carbon:search" width={20} />
+                <Iconify icon="carbon:search" width={isSmUp ? 20 : 15} />
               </Button>
             </Stack>
           ),
