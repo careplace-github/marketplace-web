@@ -1,12 +1,16 @@
- 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
-import { Pagination, Tabs, Tab, Box } from '@mui/material';
+import { Pagination, Tabs, Tab, Box, Stack, Button } from '@mui/material';
 // types
-import { IServiceProps } from 'src/types/service';
+import { IServiceProps } from 'src/types/utils';
 //
+import { PATHS } from 'src/routes/paths';
+import { useResponsive } from 'src/hooks';
+// router
+import { useRouter } from 'next/router';
+// components
+import Iconify from 'src/components/iconify/Iconify';
 import ServiceItem from '../item/ServiceItem';
- 
 
 // ----------------------------------------------------------------------
 
@@ -15,13 +19,33 @@ type Props = {
 };
 
 export default function ServicesList({ services }: Props) {
-  const [tab, setTab] = useState('All');
+  const isSmUp = useResponsive('up', 'sm');
+  const [tab, setTab] = useState('all');
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const router = useRouter();
+  const [servicesSelected, setServicesSelected] = useState<string[]>([]);
+  const servicesPerPage = 6;
+  const startIndex = (currentPage - 1) * servicesPerPage;
+  const endIndex = startIndex + servicesPerPage;
 
-  const getCategories = services.map((service) => service.category);
+  const categories = [
+    { text: 'Todos', value: 'all' },
+    { text: 'Apoio Domiciliário', value: 'normal' },
+    { text: 'Adicionais', value: 'special' },
+  ];
 
-  const categories = ['All', ...Array.from(new Set(getCategories))];
+  const [filtered, setFiltered] = useState<IServiceProps[]>([]);
+  useEffect(() => {
+    const auxFiltered = applyFilter(services, tab);
+    setFiltered(auxFiltered);
+    setCurrentPage(1);
+  }, [services, tab]);
 
-  const filtered = applyFilter(services, tab);
+  useEffect(() => {
+    console.log('selected:', servicesSelected);
+  }, [servicesSelected]);
+
+  applyFilter(services, tab);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
     setTab(newValue);
@@ -29,17 +53,75 @@ export default function ServicesList({ services }: Props) {
 
   return (
     <>
-      <Tabs
-        value={tab}
-        scrollButtons="auto"
-        variant="scrollable"
-        allowScrollButtonsMobile
-        onChange={handleChangeTab}
+      <Stack
+        direction={isSmUp ? 'row' : 'column'}
+        alignItems="center"
+        justifyContent="space-between"
+        width="100%"
       >
-        {categories.map((category) => (
-          <Tab key={category} value={category} label={category} />
-        ))}
-      </Tabs>
+        <Tabs
+          value={tab}
+          scrollButtons="auto"
+          variant="scrollable"
+          allowScrollButtonsMobile
+          onChange={handleChangeTab}
+        >
+          {categories.map((category) => (
+            <Tab key={category.value} value={category.value} label={category.text} />
+          ))}
+        </Tabs>
+
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          gap="10px"
+          sx={{ mt: isSmUp ? '0px' : '20px', width: '100%' }}
+        >
+          {servicesSelected.length > 0 && (
+            <Button
+              variant="contained"
+              color="inherit"
+              onClick={() => setServicesSelected([])}
+              sx={{
+                height: '40px',
+                width: '40px',
+                px: 4,
+                bgcolor: 'rgb(238, 75, 43)',
+                color: 'common.white',
+                '&:hover': {
+                  bgcolor: 'rgb(238, 75, 43,0.8)',
+                },
+              }}
+            >
+              <Iconify icon="tabler:trash" color="white" />
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            color="inherit"
+            onClick={() => {
+              router.push({
+                pathname: PATHS.companies.root,
+                query: { services: servicesSelected.join(',') },
+              });
+            }}
+            sx={{
+              height: '40px',
+              width: isSmUp ? 'contained' : '100%',
+              px: 4,
+              bgcolor: 'primary.main',
+              color: 'common.white',
+              '&:hover': {
+                bgcolor: 'primary.dark',
+                color: 'common.white',
+              },
+            }}
+          >
+            Encontrar Cuidador
+          </Button>
+        </Stack>
+      </Stack>
 
       <Box
         sx={{
@@ -54,13 +136,38 @@ export default function ServicesList({ services }: Props) {
           },
         }}
       >
-        {filtered.map((service) => (
-          <ServiceItem key={service._id} service={service} />
+        {filtered.slice(startIndex, endIndex).map((service) => (
+          <ServiceItem
+            key={service._id}
+            service={service}
+            selected={!!servicesSelected.includes(service._id)}
+            onItemSelect={(add) => {
+              if (add) {
+                setServicesSelected((prev) => [...prev, service._id]);
+              } else {
+                const newArray: string[] = servicesSelected.filter((item) => {
+                  return service._id !== item;
+                });
+                setServicesSelected(newArray);
+              }
+            }}
+          />
         ))}
       </Box>
 
       <Pagination
-        count={10}
+        count={Math.ceil(filtered.length / 6) || 1}
+        page={currentPage}
+        onChange={(event, value) => {
+          const element = document.getElementById('services_title');
+          if (element) {
+            element.scrollIntoView({
+              behavior: 'smooth', // Scroll with smooth animation
+              block: 'start', // Scroll to the top of the element
+            });
+          }
+          setCurrentPage(value);
+        }}
         color="primary"
         size="large"
         sx={{
@@ -77,8 +184,8 @@ export default function ServicesList({ services }: Props) {
 // ----------------------------------------------------------------------
 
 function applyFilter(arr: IServiceProps[], category: string) {
-  if (category !== 'All') {
-    arr = arr.filter((service) => service.category === category);
+  if (category !== 'all') {
+    arr = arr.filter((service) => service.type === category);
   }
   return arr;
 }

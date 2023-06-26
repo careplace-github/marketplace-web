@@ -1,7 +1,7 @@
 // @mui
-import { MenuItem, Checkbox, FormControl, Typography, Avatar, Stack } from '@mui/material';
+import { MenuItem, FormControl, Typography, Avatar, Stack } from '@mui/material';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useEffect, useState, ReactNode } from 'react';
+import { ReactNode } from 'react';
 // types
 import { inputStyle, menuItemStyle, MenuProps } from './styles';
 

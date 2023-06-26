@@ -5,11 +5,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // mui
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { Modal, Box, Typography, Stack } from '@mui/material';
+import { Modal, Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // components
 import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
 import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
 import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
 
@@ -17,12 +16,9 @@ import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/comp
 import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 // assets
 import { countries, genders, kinshipDegrees } from 'src/data';
-import { set } from 'lodash';
-import React from 'react';
-import { watch } from 'fs';
 // types
 import { IRelativeProps } from 'src/types/relative';
 
