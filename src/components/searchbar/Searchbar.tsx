@@ -3,34 +3,18 @@ import React, { useState, useEffect, useRef } from 'react';
 // next
 import { useRouter } from 'next/router';
 // mui
-import {
-  Box,
-  Stack,
-  Button,
-  TextField,
-  Divider,
-  Container,
-  Typography,
-  Snackbar,
-  Alert,
-  Unstable_Grid2 as Grid,
-} from '@mui/material';
+import { Box, Stack, Button, TextField, Snackbar, Alert } from '@mui/material';
 // google api
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
-import { google } from 'google-maps';
-// hooks
 import useResponsive from 'src/hooks/useResponsive';
+import { google } from 'google-maps';
+
 // components
 import Iconify from 'src/components/iconify';
 // routes
 import { PATHS } from 'src/routes/paths';
 // types
 import { ISnackbarProps } from 'src/types/snackbar';
-import { ILocationFiltersProps } from './types';
-
-//
-import { StyledBar } from './styles';
-import { LocationFilterKeyword } from './LocationFilterKeyword';
 
 // ----------------------------------------------------------------------
 
@@ -58,6 +42,7 @@ type Location = {
 
 export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   const { pathname, push, query } = useRouter();
+  const isSmUp = useResponsive('up', 'sm');
   const searchbarRef = useRef<HTMLDivElement | null>();
   const router = useRouter();
   const [searchInputValue, setSearchInputValue] = useState<string>('');
@@ -98,6 +83,9 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
     if (address === 'Pesquisar nas proximidades') {
       const nearbyLocation = await getCurrentLocationCoordinates();
+      if (nearbyLocation === 'error') {
+        return 'error';
+      }
       location = {
         lat: nearbyLocation.lat,
         lng: nearbyLocation.lng,
@@ -174,8 +162,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
           message:
             'Não foi possível aceder à sua localização. Para aceder a esta funcionalidade altere as permissões do seu browser',
         });
-        setValue('');
-        setSelectedOption(null);
+        return 'error';
       }
     } else {
       setShowSnackbar({
@@ -184,6 +171,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
         message:
           'Não foi possível aceder à sua localização. Para aceder a esta funcionalidade altere as permissões do seu browser',
       });
+      return 'error';
     }
 
     return location;
@@ -199,11 +187,14 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   const handleClick = async (option: any) => {
     const location = await getCoordinates(option.description);
-    setSelectedOption(option);
-    setValue(option.description);
-    clearSuggestions();
-    setOpenOptions(false);
-    handleSelect(location, option.description);
+
+    if (location != 'error') {
+      setSelectedOption(option);
+      setValue(option.description);
+      clearSuggestions();
+      setOpenOptions(false);
+      handleSelect(location, option.description);
+    }
   };
 
   useEffect(() => {
@@ -277,7 +268,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
     <Box ref={searchbarRef} sx={{ width: !isMdUp ? '100%' : '400px', position: 'relative' }}>
       <Snackbar
         open={showSnackbar.show}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         onClose={() =>
           setShowSnackbar({
@@ -341,7 +332,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
                 }}
                 onClick={handleSearch}
               >
-                <Iconify icon="carbon:search" width={20} />
+                <Iconify icon="carbon:search" width={isSmUp ? 20 : 15} />
               </Button>
             </Stack>
           ),

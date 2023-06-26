@@ -1,6 +1,6 @@
 // @mui
 import { styled } from '@mui/material/styles';
-import { Stack, Unstable_Grid2 as Grid } from '@mui/material';
+import { Stack } from '@mui/material';
 
 // ----------------------------------------------------------------------
 

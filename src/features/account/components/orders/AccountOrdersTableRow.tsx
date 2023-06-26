@@ -4,25 +4,21 @@ import {
   Popover,
   Divider,
   TableRow,
-  Checkbox,
   MenuItem,
   TableCell,
   IconButton,
-  InputBase,
   Stack,
   Avatar,
   Typography,
 } from '@mui/material';
 //  utils
-import { fDate } from 'src/utils/formatTime';
-import { fCurrency } from 'src/utils/formatNumber';
 import { getRecurrencyText, getScheduleText } from 'src/utils/orderUtils';
 
 // components
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 import { IOrderProps } from 'src/types/order';
-import { IServiceProps } from 'src/types/service';
+import { IServiceProps } from 'src/types/utils';
 // hooks
 import { useResponsive } from 'src/hooks';
 //
@@ -75,13 +71,6 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
 
   const handleClose = () => {
     setOpen(null);
-  };
-
-  const inputStyles = {
-    pl: 1,
-    '&.Mui-focused': {
-      bgcolor: 'action.selected',
-    },
   };
 
   return (
