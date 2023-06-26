@@ -1,6 +1,5 @@
 // react
-import React from 'react';
-import { memo } from 'react';
+import React, { memo } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, BoxProps } from '@mui/material';

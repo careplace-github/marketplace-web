@@ -1,13 +1,11 @@
-// next
-import NextLink from 'next/link';
 // @mui
-import { Stack, Box, Typography, Link, Checkbox } from '@mui/material';
+import { Stack, Box, Typography } from '@mui/material';
 // components
 import Image from 'src/components/image';
 import TextMaxLine from 'src/components/text-max-line';
 import Iconify from 'src/components/iconify/Iconify';
 // types
-import { IServiceProps } from 'src/types/service';
+import { IServiceProps } from 'src/types/utils';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +16,6 @@ type Props = {
 };
 
 export default function ServiceItem({ service, selected, onItemSelect }: Props) {
-  // const { title, coverImg, category } = service;
   const { name, image, type, short_description } = service;
 
   function mapServiceType(serviceType: string) {

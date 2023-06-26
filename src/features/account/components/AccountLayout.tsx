@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // @mui
-import { Container, Stack, Typography, Button, Box } from '@mui/material';
+import { Container, Stack, Typography, Box } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // auth
@@ -8,7 +8,6 @@ import { useAuthContext } from 'src/contexts';
 // config
 import { NAV } from 'src/layouts';
 // components
-import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
 import AccountMenu from './AccountMenu';
@@ -23,10 +22,6 @@ export default function AccountLayout({ children }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const { isInitialized } = useAuthContext();
   const [menuOpen, setMenuOpen] = useState(false);
-
-  const handleMenuOpen = () => {
-    setMenuOpen(true);
-  };
 
   const handleMenuClose = () => {
     setMenuOpen(false);

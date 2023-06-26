@@ -4,8 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 // @mui
 import { Container, Typography, Stack } from '@mui/material';
-// _mock
-import { _caseStudies as _services } from 'src/_mock';
 // types
 import { IServiceProps } from 'src/types/utils';
 // axios
@@ -56,7 +54,7 @@ export default function ServicesListView() {
         </Typography>
       </Stack>
 
-      <ServicesList services={availableServices} />
+      {availableServices && <ServicesList services={availableServices} />}
     </Container>
   );
 }
