@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 // @mui
 import { Pagination, Tabs, Tab, Box, Stack, Button } from '@mui/material';
 // types
-import { IServiceProps } from 'src/types/service';
+import { IServiceProps } from 'src/types/utils';
 //
 import { PATHS } from 'src/routes/paths';
 import { useResponsive } from 'src/hooks';
@@ -83,7 +83,6 @@ export default function ServicesList({ services }: Props) {
               variant="contained"
               color="inherit"
               onClick={() => setServicesSelected([])}
-              rel="noopener"
               sx={{
                 height: '40px',
                 width: '40px',
@@ -107,7 +106,6 @@ export default function ServicesList({ services }: Props) {
                 query: { services: servicesSelected.join(',') },
               });
             }}
-            rel="noopener"
             sx={{
               height: '40px',
               width: isSmUp ? 'contained' : '100%',

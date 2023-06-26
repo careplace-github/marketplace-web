@@ -1,19 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
-import { Box, Stack, Divider, Popover, MenuItem, Typography, IconButton } from '@mui/material';
-import Modal from '@mui/material/Modal';
+import { Box, Stack, Popover, MenuItem, Typography, IconButton } from '@mui/material';
+
 // next
 import { useRouter } from 'next/router';
 // contexts
 import { useAuthContext } from 'src/contexts';
 // components
 import Iconify from 'src/components/iconify';
-import Label from 'src/components/label';
-// lib
-import axios from 'src/lib/axios';
-// routes
-import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +29,6 @@ type Props = {
 
 export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const { user } = useAuthContext();
-  const { pathname, push } = useRouter();
 
   const value = card.card.brand;
   // First character should be uppercase
@@ -46,7 +40,6 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
       ? `${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`
       : `0${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`;
 
-  const isPrimary = card.id === user?.stripe_information?.default_payment_method;
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,8 +49,6 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const handleClose = () => {
     setOpen(null);
   };
-
-  const handleSetPrimary = () => {};
 
   return (
     <>

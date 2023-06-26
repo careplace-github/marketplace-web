@@ -3,18 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // next
 import { useRouter } from 'next/router';
 // mui
-import {
-  Box,
-  Stack,
-  Button,
-  TextField,
-  Divider,
-  Container,
-  Typography,
-  Snackbar,
-  Alert,
-  Unstable_Grid2 as Grid,
-} from '@mui/material';
+import { Box, Stack, Button, TextField, Snackbar, Alert } from '@mui/material';
 // google api
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useResponsive from 'src/hooks/useResponsive';
@@ -26,11 +15,6 @@ import Iconify from 'src/components/iconify';
 import { PATHS } from 'src/routes/paths';
 // types
 import { ISnackbarProps } from 'src/types/snackbar';
-import { ILocationFiltersProps } from './types';
-
-//
-import { StyledBar } from './styles';
-import { LocationFilterKeyword } from './LocationFilterKeyword';
 
 // ----------------------------------------------------------------------
 
