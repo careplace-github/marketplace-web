@@ -1,43 +1,32 @@
 // next
 import NextLink from 'next/link';
 // react
-import { useCallback } from 'react';
-import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
-import { alpha } from '@mui/material/styles';
-import { LoadingButton } from '@mui/lab';
-import Modal from '@mui/material/Modal';
 import {
   Link,
   Stack,
   Drawer,
   Avatar,
   Divider,
-  Button,
-  Box,
-  Typography,
   ListItemIcon,
   ListItemText,
   ListItemButton,
 } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
-import useActiveLink from 'src/hooks/useActiveLink';
-import { useState, useEffect } from 'react';
+
 // config
 import { NAV } from 'src/layouts';
 // routes
 import { PATHS } from 'src/routes/paths';
 import { useRouter } from 'next/router';
-// _mock
-import _mock from 'src/_mock';
 // components
 import Iconify from 'src/components/iconify';
 import TextMaxLine from 'src/components/text-max-line';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
-import { CustomFile } from 'src/components/upload';
 import UploadPictureModal from './UploadPictureModal';
 
 // ----------------------------------------------------------------------

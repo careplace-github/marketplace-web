@@ -1,8 +1,7 @@
-// react
+// form
 import { useForm } from 'react-hook-form';
 // @mui
-import { Box, Stack, Button, Divider, TextField, Typography } from '@mui/material';
-import { useRef, useEffect, useState } from 'react';
+import { Box, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
@@ -20,8 +19,6 @@ import useResponsive from 'src/hooks/useResponsive';
 import { useAuthContext } from 'src/contexts';
 // lib
 import axios from 'src/lib/axios';
-// routes
-import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +41,6 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
   const theme = useTheme();
 
   const { user } = useAuthContext();
-  const { pathname, push } = useRouter();
 
   const isMdUp = useResponsive('up', 'md');
 
@@ -72,10 +68,10 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
 
   const {
     setValue,
-    getValues,
+
     handleSubmit,
     reset,
-    formState: { isSubmitting, errors, isDirty },
+    formState: { isSubmitting },
   } = methods;
 
   const close = () => {

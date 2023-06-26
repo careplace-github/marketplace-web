@@ -1,5 +1,5 @@
 // @mui
-import { Box, TableRow, Checkbox, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import { Box, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
 //
 import { visuallyHidden } from './utils';
 
