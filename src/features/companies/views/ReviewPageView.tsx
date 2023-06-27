@@ -42,7 +42,7 @@ export default function ReviewPageView() {
   const router = useRouter();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [loading, setLoading] = useState<boolean>(true);
-  const [rating, setRating] = useState<number>(0);
+  const [reviewRating, setReviewRating] = useState<number>(0);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [reviewComment, setReviewComment] = useState<string>();
   const isMdUp = useResponsive('up', 'md');
@@ -69,8 +69,13 @@ export default function ReviewPageView() {
 
   const handleSubmitReview = async () => {
     try {
+      await axios.post(`/companies/${companyInfo?._id}/reviews`, {
+        comment: reviewComment,
+        rating: reviewRating,
+      });
       setSubmitted(true);
     } catch (error) {
+      console.log('error:', error.error.message);
       setShowSnackbar({
         show: true,
         severity: 'error',
@@ -170,10 +175,10 @@ export default function ReviewPageView() {
 
                 <Rating
                   name="simple-controlled"
-                  value={rating}
+                  value={reviewRating}
                   size="large"
                   onChange={(event, newValue) => {
-                    if (newValue) setRating(newValue);
+                    if (newValue) setReviewRating(newValue);
                   }}
                 />
                 <Typography
@@ -194,7 +199,10 @@ export default function ReviewPageView() {
                   sx={{ bgColor: 'primary.main', width: '100%', mt: 4 }}
                   variant="contained"
                   disabled={
-                    rating < 1 || rating > 5 || !reviewComment || reviewComment.trim() === ''
+                    reviewRating < 1 ||
+                    reviewRating > 5 ||
+                    !reviewComment ||
+                    reviewComment.trim() === ''
                   }
                 >
                   Submeter

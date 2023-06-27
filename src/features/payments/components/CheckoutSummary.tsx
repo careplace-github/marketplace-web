@@ -129,7 +129,7 @@ export default function CheckoutSummary({
             </TextMaxLine>
             <Stack spacing={0.5} direction="row" alignItems="center">
               <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
-              <Box sx={{ typography: 'h6' }}>{company.rating.average}</Box>
+              <Box sx={{ typography: 'h6' }}>{company.rating.average.toFixed(1)}</Box>
               {company.rating.count && (
                 <Link variant="body2" sx={{ color: 'text.secondary' }}>
                   ({company.rating.count} avaliações)

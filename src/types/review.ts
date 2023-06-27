@@ -16,3 +16,22 @@ export type IReviewItemProp = {
   avatarUrl: string;
   users: IReviewUsers[];
 };
+
+export type IReviewProps = {
+  comment: string;
+  company: string;
+  createdAt: string;
+  rating: number;
+  updatedAt: string;
+  user: {
+    name: string;
+    _id: string;
+    profile_picture?: string;
+  };
+  _id: string;
+};
+
+export type IReviewsPaginationProps = {
+  currentPage: number;
+  pages: number;
+};

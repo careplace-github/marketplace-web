@@ -4,8 +4,8 @@ import { Stack, Select, MenuItem, Typography, FormControl, SelectChangeEvent } f
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'latest', label: 'Mais recentes' },
-  { value: 'oldest', label: 'Mais antigas' },
+  { value: 'desc', label: 'Mais recentes' },
+  { value: 'asc', label: 'Mais antigas' },
 ];
 
 const inputStyle = {
