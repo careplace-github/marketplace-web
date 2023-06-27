@@ -8,26 +8,42 @@ import { useRouter } from 'next/router';
 //
 import { ReviewList, ReviewToolbar, ReviewSummary } from 'src/features/reviews';
 import Iconify from 'src/components/iconify/Iconify';
+import { IReviewProps } from 'src/types/review';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   rating: any;
+  reviews: IReviewProps[];
+  numberOfPages: number;
+  currentPage: number;
+  onChangeReviewsPage: Function;
+  sortOrder: string;
+  onChangeSort: (event: SelectChangeEvent) => void;
 };
 
-export default function CompanyDetailReviews({ rating }: Props) {
-  const [sort, setSort] = useState('latest');
+export default function CompanyDetailReviews({
+  rating,
+  reviews,
+  numberOfPages,
+  currentPage,
+  onChangeReviewsPage,
+  sortOrder,
+  onChangeSort,
+}: Props) {
   const router = useRouter();
   const companyReviewUrl = `${router.asPath.split('?')[0]}/review`;
 
+  console.log('reviews in:', reviews);
+
   const handleChangeSort = (event: SelectChangeEvent) => {
-    setSort(event.target.value as string);
+    onChangeSort(event.target.value as string);
   };
 
   return (
     <Container sx={{ overflow: 'hidden' }}>
       <Grid xs={12} md={7} lg={8}>
-        <ReviewToolbar sort={sort} onChangeSort={handleChangeSort} />
+        <ReviewToolbar sort={sortOrder} onChangeSort={handleChangeSort} />
       </Grid>
 
       <Grid container spacing={8} direction="row-reverse">
@@ -49,7 +65,12 @@ export default function CompanyDetailReviews({ rating }: Props) {
         </Grid>
 
         <Grid xs={12} md={7} lg={8}>
-          <ReviewList reviews={[]} />
+          <ReviewList
+            reviews={reviews}
+            currentPage={currentPage}
+            numberOfPages={numberOfPages}
+            onChangeReviewsPage={onChangeReviewsPage}
+          />
         </Grid>
       </Grid>
     </Container>

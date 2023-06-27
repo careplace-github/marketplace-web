@@ -23,6 +23,7 @@ import { otherServices } from 'src/data';
 // type props
 import { IServiceProps } from 'src/types/utils';
 import { ICompanyProps } from 'src/types/company';
+import { IReviewProps, IReviewsPaginationProps } from 'src/types/review';
 // components
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
@@ -55,8 +56,12 @@ export default function CompanyDetailView() {
   const [companyServices, setCompanyServices] = useState<string[]>([]);
   const [companySpecialServices, setCompanySpecialServices] = useState<IServiceProps[]>([]);
   const [companyAvailableServices, setCompanyAvailableServices] = useState<IServiceProps[]>([]);
+  const [companyReviews, setCompanyReviews] = useState<IReviewProps[]>([]);
+  const [reviewsPaginationInfo, setReviewsPaginationInfo] = useState<IReviewsPaginationProps>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [similarCompanies, setSimilarCompanies] = useState<ICompanyProps[]>([]);
+  const [reviewSortOrder, setReviewSortOrder] = useState<string>('desc');
+  const reviewsPerPage = 5;
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
 
@@ -108,18 +113,35 @@ export default function CompanyDetailView() {
     fetchCompanies();
   }, [router.asPath, router.isReady]);
 
+  const fetchReviews = async (current, order, companyId) => {
+    const responseCompanyReviews = await axios.get(`/companies/${companyId}/reviews`, {
+      params: {
+        documentsPerPage: reviewsPerPage,
+        page: current,
+        sortBy: 'date',
+        sortOrder: order,
+      },
+    });
+    const reviewsInfo = responseCompanyReviews.data;
+    setCompanyReviews(reviewsInfo.data);
+    setReviewsPaginationInfo({
+      currentPage: reviewsInfo.page,
+      pages: reviewsInfo.totalPages,
+    });
+  };
+
   useEffect(() => {
     if (router.isReady) {
       setLoading(true);
       const companyId = router.asPath.split('/')[2].split('?')[0];
-      const fetchCompany = async () => {
-        const response = await axios.get(`/companies/${companyId}`);
-        console.log('company info:', response.data);
-        setCompanyInfo(response.data);
+      const fetchInfo = async () => {
+        const responseCompanyInfo = await axios.get(`/companies/${companyId}`);
+        setCompanyInfo(responseCompanyInfo.data);
+        await fetchReviews(1, reviewSortOrder, companyId);
         setLoading(false);
       };
 
-      fetchCompany();
+      fetchInfo();
     }
   }, [router.asPath, router.isReady]);
 
@@ -274,7 +296,22 @@ export default function CompanyDetailView() {
 
       <Divider sx={{ my: 10 }} />
 
-      <CompanyDetailReviews rating={companyInfo.rating} />
+      {reviewsPaginationInfo && (
+        <CompanyDetailReviews
+          sortOrder={reviewSortOrder}
+          onChangeSort={(value) => {
+            fetchReviews(reviewsPaginationInfo.currentPage, value, companyInfo._id);
+            setReviewSortOrder(value);
+          }}
+          rating={companyInfo.rating}
+          reviews={companyReviews}
+          numberOfPages={reviewsPaginationInfo.pages}
+          currentPage={reviewsPaginationInfo.currentPage}
+          onChangeReviewsPage={(newPage) => {
+            fetchReviews(newPage, reviewSortOrder, companyInfo._id);
+          }}
+        />
+      )}
       <Divider sx={{ mt: 10 }} />
       <SimilarCompaniesList companies={similarCompanies} />
     </>

@@ -146,7 +146,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     <Box sx={{ typography: 'h6', fontSize: '1rem' }}>
                       {Number.isInteger(company.rating.average)
                         ? `${company.rating.average}.0`
-                        : company.rating.average}
+                        : company.rating.average.toFixed(1)}
                     </Box>
 
                     <Link variant="body2" sx={{ color: 'text.secondary' }}>
@@ -230,7 +230,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 <Box sx={{ typography: 'h6', fontSize: '1rem' }}>
                   {Number.isInteger(company.rating.average)
                     ? `${company.rating.average}.0`
-                    : company.rating.average}
+                    : company.rating.average.toFixed(1)}
                 </Box>
 
                 <Link variant="body2" sx={{ color: 'text.secondary' }}>

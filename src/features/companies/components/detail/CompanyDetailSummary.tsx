@@ -65,32 +65,34 @@ export default function CompanyDetailSummary({
         </Box>
       </div>
       {/* -- Extra Services -- */}
-      <div>
-        <Typography variant="h5" sx={{ mb: 3 }}>
-          Serviços Adicionais
-        </Typography>
-        <Box
-          sx={{
-            rowGap: 4,
-            columnGap: 5,
-            display: 'grid',
-            gridTemplateColumns: {
-              xs: 'repeat(1, 1fr)',
-              sm: 'repeat(2, 1fr)',
-            },
-          }}
-        >
-          {extraServices.map((service) => {
-            return (
-              <OverviewItem
-                key={service._id}
-                icon={service.icon ? service.icon : ''}
-                label={service.name}
-              />
-            );
-          })}
-        </Box>
-      </div>
+      {extraServices?.length > 0 && (
+        <div>
+          <Typography variant="h5" sx={{ mb: 3 }}>
+            Serviços Adicionais
+          </Typography>
+          <Box
+            sx={{
+              rowGap: 4,
+              columnGap: 5,
+              display: 'grid',
+              gridTemplateColumns: {
+                xs: 'repeat(1, 1fr)',
+                sm: 'repeat(2, 1fr)',
+              },
+            }}
+          >
+            {extraServices.map((service) => {
+              return (
+                <OverviewItem
+                  key={service._id}
+                  icon={service.icon ? service.icon : ''}
+                  label={service.name}
+                />
+              );
+            })}
+          </Box>
+        </div>
+      )}
     </Stack>
   );
 }
