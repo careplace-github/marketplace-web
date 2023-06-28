@@ -2,6 +2,7 @@
 import { useState, useEffect, MouseEventHandler } from 'react';
 import { IScheduleProps } from 'src/types/order';
 import { ISnackbarProps } from 'src/types/snackbar';
+import { countries } from 'src/data';
 // react
 
 // lib
@@ -17,6 +18,7 @@ import {
   TextField,
   Button,
   SelectChangeEvent,
+  FormControl as Form,
   Snackbar,
   Alert,
 } from '@mui/material';
@@ -35,6 +37,7 @@ import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
 import AddNewCardForm from './AddNewCardForm';
 import CheckoutPaymentMethod from './CheckoutPaymentMethod';
+import { useAuthContext } from 'src/contexts';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +53,7 @@ type Props = {
   schedule: IScheduleProps[];
   startDate: Date | null;
   onPaymentMethodSelect: Function;
+  onBillingDetailsChange: Function;
 };
 
 type PaymentMethodProps = {
@@ -57,6 +61,17 @@ type PaymentMethodProps = {
   value: string;
   brand: string;
   description: string;
+};
+
+type BillingDetailsProps = {
+  name: string;
+  nif: string;
+  address: {
+    street: string;
+    postal_code: string;
+    city: string;
+    country: string;
+  };
 };
 
 export default function CheckoutQuestionnaireInfo({
@@ -71,9 +86,20 @@ export default function CheckoutQuestionnaireInfo({
   startDate,
   selectedServices,
   onPaymentMethodSelect,
+  onBillingDetailsChange,
 }: Props) {
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
   const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(false);
+  const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>({
+    name: '',
+    nif: '',
+    address: {
+      street: '',
+      postal_code: '',
+      city: '',
+      country: '',
+    },
+  });
   const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(false);
   const [CARDS, setCARDS] = useState<PaymentMethodProps[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
@@ -81,6 +107,33 @@ export default function CheckoutQuestionnaireInfo({
     severity: 'success',
     message: '',
   });
+  const { user } = useAuthContext();
+  useEffect(() => {
+    if (user) {
+      let countryLabel = '';
+      countries.forEach((item) => {
+        if (item.code === user.address.country) {
+          countryLabel = item.label;
+        }
+      });
+      setBillingDetails((prev) => {
+        return {
+          ...prev,
+          address: {
+            city: user.address.city || '',
+            postal_code: user.address.postal_code || '',
+            street: user.address.street || '',
+            country: countryLabel,
+          },
+          name: user.name || '',
+        };
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    onBillingDetailsChange(billingDetails);
+  }, [billingDetails]);
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
@@ -391,7 +444,153 @@ export default function CheckoutQuestionnaireInfo({
             </Collapse>
           </div>
         </Collapse>
-        <StepLabel title="Método de Pagamento" step="3" />
+        <StepLabel title="Dados de Faturação" step="3" />
+        <Form>
+          <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+            <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              <TextField
+                value={billingDetails.name}
+                onChange={(e) =>
+                  setBillingDetails((prev) => {
+                    return { ...prev, name: e.target.value };
+                  })
+                }
+                label="Nome *"
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                value={billingDetails.nif}
+                onChange={(e) => {
+                  const { value } = e.target;
+
+                  /**
+                   * Only allow numbers and dashes
+                   */
+                  if (!/^[0-9 ]*$/.test(value)) {
+                    return;
+                  }
+
+                  /**
+                   * Portugal Zip Code Validation
+                   */
+
+                  // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+
+                  if (value.length === 4 && value[3] !== ' ') {
+                    setBillingDetails((prev) => {
+                      return {
+                        ...prev,
+                        nif: `${value[0]}${value[1]}${value[2]} ${value[3]}`,
+                      };
+                    });
+                    return;
+                  }
+                  if (value.length === 8 && value[7] !== ' ') {
+                    setBillingDetails((prev) => {
+                      return {
+                        ...prev,
+                        nif: `${value[0]}${value[1]}${value[2]}${value[3]}${value[4]}${value[5]}${value[6]} ${value[7]}`,
+                      };
+                    });
+                    return;
+                  }
+
+                  // // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                  if (value.length > 11) {
+                    return;
+                  }
+
+                  setBillingDetails((prev) => {
+                    return { ...prev, nif: value };
+                  });
+                }}
+                label="NIF"
+                sx={{ flex: 1 }}
+              />
+            </Stack>
+            <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              <TextField
+                value={billingDetails.address.street}
+                onChange={(e) =>
+                  setBillingDetails((prev) => {
+                    return { ...prev, address: { ...prev.address, street: e.target.value } };
+                  })
+                }
+                label="Morada *"
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                value={billingDetails.address.postal_code}
+                onChange={(e) => {
+                  const { value } = e.target;
+
+                  /**
+                   * Only allow numbers and dashes
+                   */
+                  if (!/^[0-9-]*$/.test(value)) {
+                    return;
+                  }
+
+                  /**
+                   * Portugal Zip Code Validation
+                   */
+                  if (
+                    billingDetails.address.country === 'Portugal' ||
+                    billingDetails.address.country === ''
+                  ) {
+                    // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+                    if (value.length === 5 && value[4] !== '-') {
+                      setBillingDetails((prev) => {
+                        return {
+                          ...prev,
+                          address: {
+                            ...prev.address,
+                            postal_code: `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`,
+                          },
+                        };
+                      });
+                      return;
+                    }
+
+                    // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                    if (value.length > 8) {
+                      return;
+                    }
+                  }
+                  setBillingDetails((prev) => {
+                    return { ...prev, address: { ...prev.address, postal_code: value } };
+                  });
+                }}
+                label="Código Postal *"
+                sx={{ flex: 1 }}
+              />
+            </Stack>
+            <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+              <TextField
+                value={billingDetails.address.city}
+                onChange={(e) =>
+                  setBillingDetails((prev) => {
+                    return { ...prev, address: { ...prev.address, city: e.target.value } };
+                  })
+                }
+                label="Cidade *"
+                sx={{ flex: 1 }}
+              />
+              <TextField
+                value={billingDetails.address.country}
+                onChange={(e) =>
+                  setBillingDetails((prev) => {
+                    return { ...prev, address: { ...prev.address, country: e.target.value } };
+                  })
+                }
+                label="País *"
+                sx={{ flex: 1 }}
+              />
+            </Stack>
+            <Typography sx={{ fontSize: '12px', color: '#91A0AD' }}>* Campo obrigatório</Typography>
+          </Box>
+        </Form>
+        <StepLabel title="Método de Pagamento" step="4" />
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           <CheckoutPaymentMethod options={CARDS} onPaymentMethodSelect={onPaymentMethodSelect} />
           <Divider sx={{ mt: '20px', mb: '20px' }} />

@@ -22,7 +22,8 @@ import { useTheme } from '@mui/material/styles';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { ISnackbarProps } from 'src/types/snackbar';
-
+// axios
+import axios from 'src/lib/axios';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
@@ -36,6 +37,7 @@ type Props = {
   subtotal: number;
   isSubmitting: boolean;
   handleSubmit: MouseEventHandler<HTMLButtonElement>;
+  onDiscountApplied: Function;
 };
 
 export default function CheckoutSummary({
@@ -44,10 +46,11 @@ export default function CheckoutSummary({
   subtotal,
   disabled,
   isSubmitting,
+  onDiscountApplied,
 }: Props) {
   const theme = useTheme();
   const { palette } = theme;
-  const [discount, setDiscount] = useState<number>();
+  const [discount, setDiscount] = useState<{ type: 'percentage' | 'amount'; value: number }>();
   const [discountCode, setDiscountCode] = useState<string>('');
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
@@ -55,11 +58,25 @@ export default function CheckoutSummary({
     message: '',
   });
 
+  const totalValueWithDiscount =
+    discount?.type === 'percentage'
+      ? `${fCurrency(subtotal / 100 - (subtotal / 100) * (discount?.value / 100))} €`
+      : `${fCurrency(subtotal / 100 - discount?.value / 100)} €`;
+
   const handleSubmitDiscount = async () => {
     try {
       // TODO: check discount code that was submitted
-      setDiscountCode('');
-      setDiscount(10);
+      const response = await axios.post('/payments/coupons', {
+        coupon: discountCode,
+      });
+      console.log('discount:', response.data);
+      if (response.data.coupon.ammount_off) {
+        setDiscount({ type: 'amount', value: response.data.coupon.ammount_off });
+      }
+      if (response.data.coupon.percent_off) {
+        setDiscount({ type: 'percentage', value: response.data.coupon.percent_off });
+      }
+      onDiscountApplied(discountCode);
       setShowSnackbar({
         show: true,
         severity: 'success',
@@ -69,9 +86,10 @@ export default function CheckoutSummary({
       setShowSnackbar({
         show: true,
         severity: 'error',
-        message: 'Nºao foi possível aplicar o código introduzido.',
+        message: 'Não foi possível aplicar o código introduzido.',
       });
     }
+    setDiscountCode('');
   };
 
   return (
@@ -158,10 +176,18 @@ export default function CheckoutSummary({
         <Stack spacing={2} p={3}>
           <Stack spacing={2}>
             <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
-            {discount && (
+            {!!discount?.value && (
               <Row
-                label={`Desconto (${fPercent(discount)})`}
-                value={`- ${fCurrency((subtotal / 100) * (discount / 100))} €`}
+                label={
+                  discount?.type === 'percentage'
+                    ? `Desconto (${fPercent(discount?.value)})`
+                    : 'Desconto'
+                }
+                value={
+                  discount.type === 'percentage'
+                    ? `- ${fCurrency((subtotal / 100) * (discount?.value / 100))} €`
+                    : `- ${fCurrency(discount?.value / 100)} €`
+                }
               />
             )}
           </Stack>
@@ -189,11 +215,7 @@ export default function CheckoutSummary({
 
           <Row
             label="Total"
-            value={
-              discount
-                ? `${fCurrency(subtotal / 100 - (subtotal / 100) * (discount / 100))} €`
-                : `${fCurrency(subtotal / 100)} €`
-            }
+            value={discount?.value ? totalValueWithDiscount : `${fCurrency(subtotal / 100)} €`}
             sx={{
               typography: 'h6',
               '& span': { typography: 'h6' },
@@ -222,7 +244,7 @@ export default function CheckoutSummary({
             Confirmar Pagamento
           </LoadingButton>
           <Typography variant="caption" sx={{ opacity: 0.72 }}>
-            * Assim que efetuar o pagamento seu pedido, irá receber um email com do comprovativo
+            * Assim que efetuar o pagamento seu pedido, irá receber um email com o comprovativo
             associado{' '}
           </Typography>
         </Stack>
