@@ -38,7 +38,11 @@ import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
-export default function ReviewPageView() {
+type Props = {
+  update?: boolean;
+};
+
+export default function ReviewPageView({ update }: Props) {
   const router = useRouter();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -69,10 +73,13 @@ export default function ReviewPageView() {
 
   const handleSubmitReview = async () => {
     try {
-      await axios.post(`/companies/${companyInfo?._id}/reviews`, {
-        comment: reviewComment,
-        rating: reviewRating,
-      });
+      if (update) {
+      } else {
+        await axios.post(`/companies/${companyInfo?._id}/reviews`, {
+          comment: reviewComment,
+          rating: reviewRating,
+        });
+      }
       setSubmitted(true);
     } catch (error) {
       console.log('error:', error.error.message);
@@ -220,7 +227,9 @@ export default function ReviewPageView() {
                   />
                 </m.div>
                 <Stack spacing={1} sx={{ my: 5 }}>
-                  <Typography variant="h3">A sua avaliação foi submetida com sucesso!</Typography>
+                  <Typography variant="h3">
+                    A sua avaliação foi {update ? 'atualizada' : 'submetida'} com sucesso!
+                  </Typography>
 
                   <Typography sx={{ color: 'text.secondary' }}>
                     Obrigado por contribuir para o melhoramento da nossa plataforma.
