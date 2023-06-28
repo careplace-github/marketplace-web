@@ -20,7 +20,7 @@ type Props = {
   onChangeReviewsPage: Function;
   sort: { sortBy: string; sortOrder: string };
   companyId: string;
-  onChangeSort: (event: SelectChangeEvent) => void;
+  onChangeSort: (event: string) => void;
 };
 
 export default function CompanyDetailReviews({
@@ -34,7 +34,7 @@ export default function CompanyDetailReviews({
   companyId,
 }: Props) {
   const router = useRouter();
-  const [buttonType, setButtonType] = useState<'create' | 'edit'>();
+  const [buttonType, setButtonType] = useState<'create' | 'update'>();
   const companyReviewUrl = `${router.asPath.split('?')[0]}/review`;
   const companyUpdateReviewUrl = `${router.asPath.split('?')[0]}/review/update`;
 
@@ -51,14 +51,14 @@ export default function CompanyDetailReviews({
 
   console.log('reviews in:', reviews);
 
-  const handleChangeSort = (event: SelectChangeEvent) => {
-    onChangeSort(event.target.value as string);
+  const handleChangeSort = (newValue: string) => {
+    onChangeSort(newValue);
   };
 
   return (
     <Container sx={{ overflow: 'hidden' }}>
       <Grid xs={12} md={7} lg={8}>
-        <ReviewToolbar sort={sort} onChangeSort={handleChangeSort} />
+        <ReviewToolbar sort={sort} onChangeSort={(value: string) => handleChangeSort(value)} />
       </Grid>
 
       <Grid container spacing={8} direction="row-reverse">
