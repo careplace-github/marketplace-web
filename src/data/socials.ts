@@ -1,7 +1,7 @@
 const socials = [
   {
     value: 'https://www.facebook.com/careplace.pt',
-    label: 'FaceBook',
+    label: 'Facebook',
     icon: 'carbon:logo-facebook',
     color: '#1877F2',
   },
@@ -17,7 +17,6 @@ const socials = [
     icon: 'carbon:logo-linkedin',
     color: '#007EBB',
   },
-  
 ];
 
 export default socials;

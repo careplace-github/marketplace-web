@@ -4,8 +4,9 @@ import { Stack, Select, MenuItem, Typography, FormControl, SelectChangeEvent } f
 // ----------------------------------------------------------------------
 
 const SORT_OPTIONS = [
-  { value: 'latest', label: 'Mais recentes' },
-  { value: 'oldest', label: 'Mais antigas' },
+  { value: JSON.stringify({ sortBy: 'relevance', sortOrder: 'desc' }), label: 'Relevância' },
+  { value: JSON.stringify({ sortBy: 'date', sortOrder: 'desc' }), label: 'Mais recentes' },
+  { value: JSON.stringify({ sortBy: 'date', sortOrder: 'asc' }), label: 'Mais antigas' },
 ];
 
 const inputStyle = {
@@ -26,8 +27,8 @@ const MenuProps = {
 // ----------------------------------------------------------------------
 
 type Props = {
-  sort: string;
-  onChangeSort: (event: SelectChangeEvent) => void;
+  sort: { sortBy: string; sortOrder: string };
+  onChangeSort: (event: string) => void;
 };
 
 export default function ReviewToolbar({ sort, onChangeSort }: Props) {
@@ -44,12 +45,24 @@ export default function ReviewToolbar({ sort, onChangeSort }: Props) {
 
       <Stack direction="row" spacing={2} flexShrink={0} alignItems="center">
         <FormControl hiddenLabel variant="filled" sx={inputStyle}>
-          <Select value={sort} onChange={onChangeSort} MenuProps={MenuProps}>
-            {SORT_OPTIONS.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
+          <Select
+            value={JSON.stringify(sort)}
+            onChange={(event: SelectChangeEvent<string>) => {
+              const selectedSort = event.target.value as string;
+              onChangeSort(selectedSort);
+              // Rest of your code
+            }}
+            MenuProps={MenuProps}
+          >
+            {SORT_OPTIONS.map((option) => {
+              console.log('option:', option);
+              console.log('sort:', sort);
+              return (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
       </Stack>
