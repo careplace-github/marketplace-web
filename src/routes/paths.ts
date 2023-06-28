@@ -32,14 +32,15 @@ export const PATHS = {
 
   // Order
   orders: {
-    view: (id: string) => `/order/${id}`,
+    view: (id: string) => `/orders/${id}/view`,
+    edit: (id: string) => `/orders/${id}/edit`,
+    checkout: (id: string) => `/orders/${id}/checkout`,
     questionnaire: (query: string) => `/orders/questionnaire/${query}`,
     questionnaireCompleted: (id: string) => `/orders/questionnaire/completed/${id}`,
   },
 
   // Payments
   payments: {
-    checkout: (query: string) => `/payment/${query}/checkout`,
     success: (query: string) => `/payment/${query}/success`,
   },
 
