@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useResponsive } from 'src/hooks';
 // axios
 import axios from 'src/lib/axios';
+// mock
+import { _socials, _courses as _companies } from 'src/_mock';
 // @mui
 import { alpha } from '@mui/material/styles';
 import {
@@ -14,15 +16,12 @@ import {
   Card,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-// _mock
-import { _socials, _courses as _companies } from 'src/_mock';
 // router
 import { useRouter } from 'next/router';
-// data
-import { otherServices } from 'src/data';
 // type props
 import { IServiceProps } from 'src/types/utils';
 import { ICompanyProps } from 'src/types/company';
+import { IReviewProps, IReviewsPaginationProps } from 'src/types/review';
 // components
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
@@ -55,8 +54,15 @@ export default function CompanyDetailView() {
   const [companyServices, setCompanyServices] = useState<string[]>([]);
   const [companySpecialServices, setCompanySpecialServices] = useState<IServiceProps[]>([]);
   const [companyAvailableServices, setCompanyAvailableServices] = useState<IServiceProps[]>([]);
+  const [companyReviews, setCompanyReviews] = useState<IReviewProps[]>([]);
+  const [reviewsPaginationInfo, setReviewsPaginationInfo] = useState<IReviewsPaginationProps>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [similarCompanies, setSimilarCompanies] = useState<ICompanyProps[]>([]);
+  const [reviewSort, setReviewSort] = useState<{ sortBy: string; sortOrder: string }>({
+    sortBy: 'relevance',
+    sortOrder: 'desc',
+  });
+  const reviewsPerPage = 5;
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
 
@@ -65,7 +71,6 @@ export default function CompanyDetailView() {
       setServicesLoading(true);
       const response = await axios.get('/services');
       setAvailableServices(response.data.data);
-      console.log('all services:', response.data);
       setServicesLoading(false);
     };
 
@@ -108,18 +113,35 @@ export default function CompanyDetailView() {
     fetchCompanies();
   }, [router.asPath, router.isReady]);
 
+  const fetchReviews = async (current, sortSelected, companyId) => {
+    const responseCompanyReviews = await axios.get(`/companies/${companyId}/reviews`, {
+      params: {
+        documentsPerPage: reviewsPerPage,
+        page: current,
+        sortBy: sortSelected.sortBy,
+        sortOrder: sortSelected.sortOrder,
+      },
+    });
+    const reviewsInfo = responseCompanyReviews.data;
+    setCompanyReviews(reviewsInfo.data);
+    setReviewsPaginationInfo({
+      currentPage: reviewsInfo.page,
+      pages: reviewsInfo.totalPages,
+    });
+  };
+
   useEffect(() => {
     if (router.isReady) {
       setLoading(true);
       const companyId = router.asPath.split('/')[2].split('?')[0];
-      const fetchCompany = async () => {
-        const response = await axios.get(`/companies/${companyId}`);
-        console.log('company info:', response.data);
-        setCompanyInfo(response.data);
+      const fetchInfo = async () => {
+        const responseCompanyInfo = await axios.get(`/companies/${companyId}`);
+        setCompanyInfo(responseCompanyInfo.data);
+        await fetchReviews(1, reviewSort, companyId);
         setLoading(false);
       };
 
-      fetchCompany();
+      fetchInfo();
     }
   }, [router.asPath, router.isReady]);
 
@@ -274,7 +296,23 @@ export default function CompanyDetailView() {
 
       <Divider sx={{ my: 10 }} />
 
-      <CompanyDetailReviews rating={companyInfo.rating} />
+      {reviewsPaginationInfo && (
+        <CompanyDetailReviews
+          companyId={companyInfo._id}
+          sort={reviewSort}
+          onChangeSort={(value) => {
+            fetchReviews(reviewsPaginationInfo.currentPage, JSON.parse(value), companyInfo._id);
+            setReviewSort(JSON.parse(value));
+          }}
+          rating={companyInfo.rating}
+          reviews={companyReviews}
+          numberOfPages={reviewsPaginationInfo.pages}
+          currentPage={reviewsPaginationInfo.currentPage}
+          onChangeReviewsPage={(newPage) => {
+            fetchReviews(newPage, reviewSort, companyInfo._id);
+          }}
+        />
+      )}
       <Divider sx={{ mt: 10 }} />
       <SimilarCompaniesList companies={similarCompanies} />
     </>

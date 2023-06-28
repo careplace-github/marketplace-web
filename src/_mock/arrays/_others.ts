@@ -42,7 +42,7 @@ export const _testimonials = [...Array(8)].map((_, index) => ({
 export const _socials = [
   {
     value: 'facebook',
-    label: 'FaceBook',
+    label: 'Facebook',
     icon: 'carbon:logo-facebook',
     color: '#1877F2',
   },
