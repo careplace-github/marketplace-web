@@ -46,6 +46,7 @@ export default function ReviewPageView({ update }: Props) {
   const router = useRouter();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [prevReview, setPrevReview] = useState<{ id: string }>();
   const [reviewRating, setReviewRating] = useState<number>(0);
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [reviewComment, setReviewComment] = useState<string>();
@@ -64,16 +65,31 @@ export default function ReviewPageView({ update }: Props) {
         const response = await axios.get(`/companies/${companyId}`);
         console.log('company info:', response.data);
         setCompanyInfo(response.data);
-        setLoading(false);
       };
 
       fetchCompany();
+      if (update) {
+        const fetchPrevReview = async () => {
+          const response = await axios.get(`/users/reviews/companies/${companyId}`);
+          setPrevReview({
+            id: response.data._id,
+          });
+          setReviewRating(response.data.rating);
+          setReviewComment(response.data.comment);
+        };
+        fetchPrevReview();
+      }
+      setLoading(false);
     }
   }, [router.asPath, router.isReady]);
 
   const handleSubmitReview = async () => {
     try {
       if (update) {
+        await axios.put(`/reviews/${prevReview?.id}`, {
+          comment: reviewComment,
+          rating: reviewRating,
+        });
       } else {
         await axios.post(`/companies/${companyInfo?._id}/reviews`, {
           comment: reviewComment,
@@ -198,6 +214,7 @@ export default function ReviewPageView({ update }: Props) {
                   multiline
                   minRows={5}
                   hiddenLabel
+                  value={reviewComment}
                   onChange={(event) => setReviewComment(event.target.value)}
                 />
                 <Button

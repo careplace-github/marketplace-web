@@ -28,7 +28,7 @@ const MenuProps = {
 
 type Props = {
   sort: { sortBy: string; sortOrder: string };
-  onChangeSort: (event: SelectChangeEvent) => void;
+  onChangeSort: (event: string) => void;
 };
 
 export default function ReviewToolbar({ sort, onChangeSort }: Props) {
@@ -45,7 +45,15 @@ export default function ReviewToolbar({ sort, onChangeSort }: Props) {
 
       <Stack direction="row" spacing={2} flexShrink={0} alignItems="center">
         <FormControl hiddenLabel variant="filled" sx={inputStyle}>
-          <Select value={JSON.stringify(sort)} onChange={onChangeSort} MenuProps={MenuProps}>
+          <Select
+            value={JSON.stringify(sort)}
+            onChange={(event: SelectChangeEvent<string>) => {
+              const selectedSort = event.target.value as string;
+              onChangeSort(selectedSort);
+              // Rest of your code
+            }}
+            MenuProps={MenuProps}
+          >
             {SORT_OPTIONS.map((option) => {
               console.log('option:', option);
               console.log('sort:', sort);
