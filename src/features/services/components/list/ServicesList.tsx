@@ -65,6 +65,7 @@ export default function ServicesList({ services }: Props) {
           variant="scrollable"
           allowScrollButtonsMobile
           onChange={handleChangeTab}
+          sx={{ width: '100%' }}
         >
           {categories.map((category) => (
             <Tab key={category.value} value={category.value} label={category.text} />
