@@ -4,41 +4,19 @@ import { Box, Rating, Button, Stack, Avatar, Divider, Typography, TextField } fr
 // utils
 import { fDate } from 'src/utils/formatTime';
 // types
-import { IReviewItemProp } from 'src/types/review';
-
+import { IReviewProps } from 'src/types/review';
 // ----------------------------------------------------------------------
 
 const AVATAR_SIZE = 48;
 
 const WIDTH = `calc(100% - ${AVATAR_SIZE + 20}px)`;
 
-type Props = Partial<IReviewItemProp> & {
-  tagUser?: string;
-  hasReply?: boolean;
+type Props = {
+  review: IReviewProps;
 };
 
-export default function ReviewItem({
-  name,
-  rating,
-  message,
-  tagUser,
-  postedAt,
-  hasReply,
-  avatarUrl,
-  helpful = 0,
-}: Props) {
-  const [openReply, setOpenReply] = useState(false);
-
-  const [isHelpful, setIsHelpful] = useState(false);
-
-  const handleOpenReply = () => {
-    setOpenReply(!openReply);
-  };
-
-  const handleToggleHelpful = () => {
-    setIsHelpful(!isHelpful);
-  };
-
+export default function ReviewItem({ review }: Props) {
+  const { user, rating, comment, updatedAt } = review;
   return (
     <>
       <Stack
@@ -46,15 +24,11 @@ export default function ReviewItem({
         sx={{
           py: 3,
           alignItems: 'flex-start',
-          ...(hasReply && {
-            ml: 'auto',
-            width: WIDTH,
-          }),
         }}
       >
         <Avatar
-          alt={name}
-          src={avatarUrl}
+          alt={user.name}
+          src={user.profile_picture}
           sx={{ width: AVATAR_SIZE, height: AVATAR_SIZE, mr: 2.5 }}
         />
 
@@ -65,12 +39,11 @@ export default function ReviewItem({
             direction={{ xs: 'column', sm: 'row' }}
             justifyContent={{ sm: 'space-between' }}
           >
-            <Typography variant="subtitle2">{name}</Typography>
-
-            {!hasReply && <Rating size="small" value={rating} precision={0.5} readOnly />}
+            <Typography variant="subtitle2">{user.name}</Typography>
+            <Rating size="small" value={rating} precision={0.5} readOnly />
           </Stack>
 
-          {postedAt && (
+          {updatedAt && (
             <Typography
               variant="body2"
               sx={{
@@ -79,14 +52,11 @@ export default function ReviewItem({
                 color: 'text.disabled',
               }}
             >
-              {fDate(postedAt)}
+              {fDate(updatedAt)}
             </Typography>
           )}
 
-          <Typography variant="body2">
-            {tagUser && <strong>{`@${tagUser} `}</strong>}
-            {message}
-          </Typography>
+          <Typography variant="body2">{comment}</Typography>
         </Stack>
       </Stack>
 
@@ -96,11 +66,3 @@ export default function ReviewItem({
 }
 
 // ----------------------------------------------------------------------
-
-const getHelpful = (helpful: number, isHelpful: boolean) => {
-  if (helpful > 0) {
-    return isHelpful ? `(${helpful + 1})` : `(${helpful})`;
-  }
-
-  return isHelpful ? `(${helpful + 1})` : '';
-};
