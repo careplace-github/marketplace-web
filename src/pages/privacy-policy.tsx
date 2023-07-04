@@ -1,13 +1,13 @@
 // next
 import Head from 'next/head';
 // layouts
-import MainLayout from 'src/layouts/main';
+import SimpleLayout from 'src/layouts/simple/SimpleLayout';
 // features
 import { PrivacyPolicyView } from 'src/features/common';
 
 // ----------------------------------------------------------------------
 
-PrivacyPolicyPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
+PrivacyPolicyPage.getLayout = (page: React.ReactElement) => <SimpleLayout>{page}</SimpleLayout>;
 
 // ----------------------------------------------------------------------
 
