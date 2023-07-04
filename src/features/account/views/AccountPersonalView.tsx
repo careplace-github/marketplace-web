@@ -2,6 +2,7 @@ import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { PATHS } from 'src/routes';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
@@ -13,6 +14,7 @@ import { useTheme } from '@mui/material/styles';
 import { countries, genders } from 'src/data';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+import { useRouter } from 'next/router';
 // types
 import { ISnackbarProps } from 'src/types/snackbar';
 // components
@@ -29,6 +31,8 @@ export default function AccountPersonalView() {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
   const { user, updateUser } = useAuthContext();
+  const router = useRouter();
+  console.log('user', user);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
@@ -216,38 +220,101 @@ export default function AccountPersonalView() {
 
               <RHFTextField name="lastName" label="Apelido" />
 
-              <RHFTextField name="emailAddress" label="Email" disabled />
+              <Box>
+                <RHFTextField
+                  name="emailAddress"
+                  label="Email"
+                  disabled
+                  tooltip={{
+                    tooltipWidth: '200px',
+                    icon:
+                      user?.email_verified === 'true' ? 'simple-line-icons:check' : 'ep:warning',
+                    text:
+                      user?.email_verified === 'true'
+                        ? 'O seu email foi verificado com sucesso!'
+                        : 'O seu email não está verificado.',
+                    iconColor: user?.email_verified === 'true' ? 'green' : 'orange',
+                  }}
+                />
+                {user?.email_verified === 'false' && (
+                  <Typography
+                    onClick={() => router.push(PATHS.auth.verifyEmail)}
+                    sx={{
+                      color: 'text.disabled',
+                      width: 'fit-content',
+                      fontSize: '12px',
+                      pl: '5px',
+                      pt: '5px',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        color: 'primary.main',
+                      },
+                    }}
+                  >
+                    Confirmar email
+                  </Typography>
+                )}
+              </Box>
+              <Box>
+                <RHFPhoneField
+                  name="phoneNumber"
+                  label="Telemóvel"
+                  defaultCountry="PT"
+                  forceCallingCode
+                  disabled
+                  tooltip={{
+                    tooltipWidth: '200px',
+                    icon:
+                      user?.phone_verified === 'true' ? 'simple-line-icons:check' : 'ep:warning',
+                    text:
+                      user?.phone_verified === 'true'
+                        ? 'O seu telemóvel foi verificado com sucesso!'
+                        : 'O seu telemóvel não está verificado.',
+                    iconColor: user?.phone_verified === 'true' ? 'green' : 'orange',
+                  }}
+                  onChange={(value: string) => {
+                    /**
+                     * Portuguese Number Validation
+                     */
 
-              <RHFPhoneField
-                name="phoneNumber"
-                label="Telemóvel"
-                defaultCountry="PT"
-                forceCallingCode
-                disabled
-                onChange={(value: string) => {
-                  /**
-                   * Portuguese Number Validation
-                   */
+                    // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
+                    if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
+                      // (eg: +351 9123456780 -> +351 912 345 678)
+                      const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
+                        11,
+                        14
+                      )}`;
+                      setValue('phoneNumber', newValue);
+                      return;
+                    }
 
-                  // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
-                  if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
-                    // (eg: +351 9123456780 -> +351 912 345 678)
-                    const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
-                      11,
-                      14
-                    )}`;
-                    setValue('phoneNumber', newValue);
-                    return;
-                  }
+                    // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
+                    if (value.length > 16) {
+                      return;
+                    }
 
-                  // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
-                  if (value.length > 16) {
-                    return;
-                  }
-
-                  setValue('phoneNumber', value);
-                }}
-              />
+                    setValue('phoneNumber', value);
+                  }}
+                />
+                {user?.phone_verified === 'false' && (
+                  <Typography
+                    onClick={() => router.push(PATHS.auth.verifyPhone)}
+                    sx={{
+                      color: 'text.disabled',
+                      width: 'fit-content',
+                      fontSize: '12px',
+                      pl: '5px',
+                      pt: '5px',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        color: 'primary.main',
+                      },
+                    }}
+                  >
+                    Confirmar telemóvel
+                  </Typography>
+                )}
+              </Box>
 
               <Controller
                 name="birthdate"
