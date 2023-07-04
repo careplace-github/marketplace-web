@@ -54,7 +54,13 @@ export default function Header({ headerOnDark }: Props) {
   });
 
   return isInitialized && isLoaded.isLoaded ? (
-    <AppBar color="transparent" sx={{ boxShadow: '0px 1px 20px rgba(0,0,0,0.07)' }}>
+    <AppBar
+      color="transparent"
+      sx={{
+        boxShadow: '0px 1px 20px rgba(0,0,0,0.07)',
+        backgroundColor: 'white',
+      }}
+    >
       <Stack direction="column" sx={{ width: '100%' }}>
         <Toolbar
           disableGutters

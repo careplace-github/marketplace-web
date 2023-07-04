@@ -35,13 +35,9 @@ export const PATHS = {
     view: (id: string) => `/orders/${id}/view`,
     edit: (id: string) => `/orders/${id}/edit`,
     checkout: (id: string) => `/orders/${id}/checkout`,
+    checkoutSucess: (id: string) => `/orders/${id}/checkout/success`,
     questionnaire: (query: string) => `/orders/questionnaire/${query}`,
     questionnaireCompleted: (id: string) => `/orders/questionnaire/completed/${id}`,
-  },
-
-  // Payments
-  payments: {
-    success: (query: string) => `/payment/${query}/success`,
   },
 
   // Auth

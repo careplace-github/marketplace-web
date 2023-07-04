@@ -22,6 +22,7 @@ import { IRelativeProps } from 'src/types/relative';
 import { ISnackbarProps } from 'src/types/snackbar';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
+import { PATHS } from 'src/routes';
 // components
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
@@ -180,6 +181,8 @@ export default function CheckoutView() {
           },
         },
       });
+
+      router.push(PATHS.orders.checkoutSucess(orderId));
     } catch (error) {
       console.log('message:', error.error.message);
       if (error.error.message === 'Order already has a subscription') {
@@ -196,20 +199,6 @@ export default function CheckoutView() {
         message: 'Algo correu mal, tente de novo.',
       });
     }
-    // {
-    // 	"payment_method_id": "pm_1NNtZkCw5BCjUyyhm2AFviAw",
-    // 	"billing_details": {
-    // 		"name": "Dummy User",
-    // 		"email": "henrique.fonseca@careplace.pt",
-    // 		"tax_id": "123456789",
-    // 		"address": {
-    // 			"street": "Rua de teste 1",
-    // 			"postal_code": "1234-567",
-    // 			"city": "Lisboa",
-    // 			"country": "Portugal"
-    // 		}
-    // 	}
-    // }
   };
 
   const handleBillingDetailsChange = (details) => {
