@@ -58,11 +58,17 @@ export default function CheckoutSummary({
     message: '',
   });
 
-  const totalValueWithDiscount =
-    discount?.type === 'percentage'
-      ? `${fCurrency(subtotal / 100 - (subtotal / 100) * (discount?.value / 100))} €`
-      : `${fCurrency(subtotal / 100 - discount?.value / 100)} €`;
+  let totalValueWithDiscount;
 
+  if (discount?.type === 'percentage' && discount.value) {
+    totalValueWithDiscount = `${fCurrency(
+      subtotal / 100 - (subtotal / 100) * (discount.value / 100)
+    )} €`;
+  } else if (discount?.value) {
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - discount.value / 100)} €`;
+  } else {
+    totalValueWithDiscount = subtotal;
+  }
   const handleSubmitDiscount = async () => {
     try {
       // TODO: check discount code that was submitted
@@ -176,7 +182,7 @@ export default function CheckoutSummary({
         <Stack spacing={2} p={3}>
           <Stack spacing={2}>
             <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
-            {!!discount?.value && (
+            {discount?.value && (
               <Row
                 label={
                   discount?.type === 'percentage'
@@ -185,8 +191,8 @@ export default function CheckoutSummary({
                 }
                 value={
                   discount.type === 'percentage'
-                    ? `- ${fCurrency((subtotal / 100) * (discount?.value / 100))} €`
-                    : `- ${fCurrency(discount?.value / 100)} €`
+                    ? `- ${fCurrency((subtotal / 100) * (discount.value / 100))} €`
+                    : `- ${fCurrency(discount.value / 100)} €`
                 }
               />
             )}
