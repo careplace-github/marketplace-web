@@ -44,6 +44,10 @@ type BillingDetailsProps = {
   };
 };
 
+type CardProps = {
+  id: string;
+};
+
 export default function CheckoutView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
@@ -51,7 +55,7 @@ export default function CheckoutView() {
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>();
-  const [selectedCard, setSelectedCard] = useState();
+  const [selectedCard, setSelectedCard] = useState<CardProps>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [orderInfo, setOrderInfo] = useState<any>();
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
@@ -167,7 +171,7 @@ export default function CheckoutView() {
     const orderId = router.asPath.split('/').at(2);
     try {
       const response = await axios.post(`/checkout/orders/${orderId}/payment-intent`, {
-        payment_method_id: selectedCard.id,
+        payment_method_id: selectedCard?.id,
         coupon: discountCode,
         billing_details: {
           name: billingDetails?.name,
@@ -182,7 +186,7 @@ export default function CheckoutView() {
         },
       });
 
-      router.push(PATHS.orders.checkoutSucess(orderId));
+      router.push(PATHS.orders.checkoutSucess(orderId || ''));
     } catch (error) {
       console.log('message:', error.error.message);
       if (error.error.message === 'Order already has a subscription') {

@@ -35,9 +35,9 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
+import { useAuthContext } from 'src/contexts';
 import AddNewCardForm from './AddNewCardForm';
 import CheckoutPaymentMethod from './CheckoutPaymentMethod';
-import { useAuthContext } from 'src/contexts';
 
 // ----------------------------------------------------------------------
 
