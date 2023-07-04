@@ -28,6 +28,7 @@ type FiltersProps = {
   lat: string | null;
   lng: string | null;
   query?: string;
+  applied: boolean;
 };
 
 type SearchbarProps = {
@@ -52,6 +53,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
     lat: null,
     lng: null,
     query: '',
+    applied: false,
   });
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
@@ -182,6 +184,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       lat: location.lat,
       lng: location.lng,
       query: filterQuery,
+      applied: true,
     });
   };
 
@@ -219,17 +222,25 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   useEffect(() => {
     if (router.isReady) {
-      if (router.query) {
+      if (router.query.lat || router.query.lng || router.query.query) {
         setFilters({
           lat: router.query.lat as string,
           lng: router.query.lng as string,
           query: router.query.query as string,
+          applied: true,
         });
       }
     }
   }, [router.isReady]);
+
   useEffect(() => {
     console.log('router path', router.asPath);
+    setFilters((prev) => {
+      return {
+        ...prev,
+        applied: false,
+      };
+    });
     const pathWithoutQueries = router.asPath.split('?')[0];
     if (pathWithoutQueries !== '/companies') {
       setValue('');
@@ -251,8 +262,14 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   };
 
   useEffect(() => {
-    handleSearch();
+    if (filters.applied) {
+      handleSearch();
+    }
   }, [filters]);
+
+  useEffect(() => {
+    console.log('filters applied:', filters.applied);
+  }, [filters.applied]);
 
   const handleClearClick = () => {
     setValue('');
@@ -260,6 +277,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       lat: null,
       lng: null,
       query: '',
+      applied: true,
     });
     setSelectedOption(null);
   };

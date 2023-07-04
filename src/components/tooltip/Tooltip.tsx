@@ -54,13 +54,15 @@ export function Tooltip({
     <MuiTooltip
       open={openTooltip}
       onClick={() => setOpenTooltip(true)}
+      onMouseOver={() => setOpenTooltip(true)}
+      onMouseOut={() => setOpenTooltip(false)}
       ref={tooltipRef}
       arrow
       title={text}
       placement={placement}
       componentsProps={{
         tooltip: {
-          sx: { width: tooltipWidth, fontSize: '12px', p: padding },
+          sx: { width: tooltipWidth, fontSize: '12px', p: padding, zIndex: 10 },
         },
       }}
     >
