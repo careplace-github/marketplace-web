@@ -54,6 +54,7 @@ export const TABLE_HEAD = [
   { id: 'schedule_information', label: 'Recorrência', width: 100 },
   { id: '', label: 'Horário' },
   { id: 'status', label: 'Estado', width: 100 },
+  { id: 'actions', label: '' },
   // Uncomment this line to add the column with the "options" icon to the table
   // { id: '' },
 ];
