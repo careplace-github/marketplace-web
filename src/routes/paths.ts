@@ -47,6 +47,8 @@ export const PATHS = {
     resetPassword: '/auth/reset-password',
     forgotPassword: '/auth/forgot-password',
     verifyCode: '/auth/verify-code',
+    verifyEmail: '/auth/verify-email',
+    verifyPhone: '/auth/verify-phone',
   },
 
   // Common
