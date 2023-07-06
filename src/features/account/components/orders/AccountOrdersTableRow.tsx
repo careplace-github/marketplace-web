@@ -54,6 +54,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
   const order = row;
 
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const isMdUp = useResponsive('up', 'md');
 
@@ -71,6 +72,24 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const handleMoreClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMoreClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleEditClick = (orderSelected) => {
+    setAnchorEl(null);
+    // redirect to edit order page
+  };
+
+  const handleViewClick = (orderSelected) => {
+    setAnchorEl(null);
+    // redirect to view order page
   };
 
   return (
@@ -153,41 +172,67 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
           </Label>
         </TableCell>
 
-        {false && (
-          <TableCell align="right" padding="none">
-            <IconButton onClick={handleOpen}>
-              <Iconify icon="carbon:overflow-menu-vertical" />
-            </IconButton>
-          </TableCell>
-        )}
+        <TableCell align="center" padding="none">
+          <IconButton
+            sx={{
+              width: '40px',
+              height: '40px',
+              p: 0,
+              '&.MuiButtonBase-root': {
+                justifyContent: !isMdUp ? 'flex-end' : undefined,
+              },
+            }}
+            onClick={handleMoreClick}
+          >
+            <Iconify icon="material-symbols:more-vert" />
+          </IconButton>
+        </TableCell>
       </TableRow>
 
-      {false && (
-        <Popover
-          open={Boolean(open)}
-          anchorEl={open}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          PaperProps={{
-            sx: { p: 1, width: 160 },
-          }}
-        >
-          <MenuItem onClick={handleClose}>
-            <Iconify icon="carbon:view" sx={{ mr: 1 }} /> Ver
+      <Popover
+        open={!!anchorEl}
+        anchorEl={anchorEl}
+        onClose={handleMoreClose}
+        anchorOrigin={{
+          vertical: isMdUp ? 'top' : 'bottom',
+          horizontal: 'right',
+        }}
+      >
+        <Stack sx={{ alignItems: 'flex-start' }}>
+          <MenuItem onClick={() => handleViewClick(order)}>
+            <IconButton
+              // disableanimation="true"
+              disableRipple
+              sx={{
+                width: '120px',
+                height: '40px',
+                flexDirection: 'row',
+                gap: '8px',
+                justifyContent: 'flex-start',
+              }}
+            >
+              <Iconify icon="mi:eye" color="primary.main" width="20px" />
+              <Typography sx={{ color: 'primary.main' }}>Ver</Typography>
+            </IconButton>
           </MenuItem>
-
-          <MenuItem onClick={handleClose}>
-            <Iconify icon="carbon:edit" sx={{ mr: 1 }} /> Editar
+          <MenuItem onClick={() => handleEditClick(order)}>
+            <IconButton
+              // disableanimation="true"
+              disableRipple
+              sx={{
+                width: '120px',
+                height: '40px',
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                gap: '8px',
+              }}
+            >
+              <Iconify icon="material-symbols:edit" />
+              <Typography>Editar</Typography>
+            </IconButton>
           </MenuItem>
-
-          <Divider sx={{ borderStyle: 'dashed', mt: 0.5 }} />
-
-          <MenuItem onClick={handleClose} sx={{ color: 'error.main' }}>
-            <Iconify icon="carbon:trash-can" sx={{ mr: 1 }} /> Eliminar
-          </MenuItem>
-        </Popover>
-      )}
+        </Stack>
+      </Popover>
     </>
   );
 }
