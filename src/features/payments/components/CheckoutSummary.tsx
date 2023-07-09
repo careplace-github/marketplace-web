@@ -33,11 +33,12 @@ import TextMaxLine from 'src/components/text-max-line';
 
 type Props = {
   company: ICompanyProps;
-  disabled: boolean;
+  disabled?: boolean;
   subtotal: number;
-  isSubmitting: boolean;
-  handleSubmit: MouseEventHandler<HTMLButtonElement>;
+  isSubmitting?: boolean;
+  handleSubmit?: MouseEventHandler<HTMLButtonElement>;
   onDiscountApplied: Function;
+  isOrderView?: boolean;
 };
 
 export default function CheckoutSummary({
@@ -47,6 +48,7 @@ export default function CheckoutSummary({
   disabled,
   isSubmitting,
   onDiscountApplied,
+  isOrderView,
 }: Props) {
   const theme = useTheme();
   const { palette } = theme;
@@ -180,45 +182,47 @@ export default function CheckoutSummary({
         </Box>
         <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
         <Stack spacing={2} p={3}>
-          <Stack spacing={2}>
-            <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
-            {discount?.value && (
-              <Row
-                label={
-                  discount?.type === 'percentage'
-                    ? `Desconto (${fPercent(discount?.value)})`
-                    : 'Desconto'
-                }
-                value={
-                  discount.type === 'percentage'
-                    ? `- ${fCurrency((subtotal / 100) * (discount.value / 100))} €`
-                    : `- ${fCurrency(discount.value / 100)} €`
-                }
+          {!isOrderView && (
+            <>
+              {' '}
+              <Stack spacing={2}>
+                <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
+                {discount?.value && (
+                  <Row
+                    label={
+                      discount?.type === 'percentage'
+                        ? `Desconto (${fPercent(discount?.value)})`
+                        : 'Desconto'
+                    }
+                    value={
+                      discount.type === 'percentage'
+                        ? `- ${fCurrency((subtotal / 100) * (discount.value / 100))} €`
+                        : `- ${fCurrency(discount.value / 100)} €`
+                    }
+                  />
+                )}
+              </Stack>
+              <TextField
+                hiddenLabel
+                value={discountCode}
+                placeholder="Código promocional"
+                sx={{ width: '100%' }}
+                onChange={(e) => {
+                  setDiscountCode(e.target.value);
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button disabled={!discountCode} onClick={handleSubmitDiscount}>
+                        Aplicar
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-            )}
-          </Stack>
-
-          <TextField
-            hiddenLabel
-            value={discountCode}
-            placeholder="Código promocional"
-            sx={{ width: '100%' }}
-            onChange={(e) => {
-              setDiscountCode(e.target.value);
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button disabled={!discountCode} onClick={handleSubmitDiscount}>
-                    Aplicar
-                  </Button>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <Divider sx={{ borderStyle: 'dashed' }} />
-
+              <Divider sx={{ borderStyle: 'dashed' }} />
+            </>
+          )}
           <Row
             label="Total"
             value={discount?.value ? totalValueWithDiscount : `${fCurrency(subtotal / 100)} €`}
@@ -229,31 +233,33 @@ export default function CheckoutSummary({
           />
         </Stack>
 
-        <Stack spacing={3} sx={{ p: 3, pt: 0 }}>
-          <LoadingButton
-            disabled={disabled}
-            size="large"
-            variant="contained"
-            color="inherit"
-            onClick={handleSubmit}
-            loading={isSubmitting}
-            sx={{
-              px: 4,
-              bgcolor: 'primary.main',
-              color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-              '&:hover': {
-                bgcolor: 'primary.dark',
+        {!isOrderView && (
+          <Stack spacing={3} sx={{ p: 3, pt: 0 }}>
+            <LoadingButton
+              disabled={disabled}
+              size="large"
+              variant="contained"
+              color="inherit"
+              onClick={handleSubmit}
+              loading={isSubmitting}
+              sx={{
+                px: 4,
+                bgcolor: 'primary.main',
                 color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-              },
-            }}
-          >
-            Confirmar Pagamento
-          </LoadingButton>
-          <Typography variant="caption" sx={{ opacity: 0.72 }}>
-            * Assim que efetuar o pagamento seu pedido, irá receber um email com o comprovativo
-            associado{' '}
-          </Typography>
-        </Stack>
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                  color: palette.mode === 'light' ? 'common.white' : 'grey.800',
+                },
+              }}
+            >
+              Confirmar Pagamento
+            </LoadingButton>
+            <Typography variant="caption" sx={{ opacity: 0.72 }}>
+              * Assim que efetuar o pagamento seu pedido, irá receber um email com o comprovativo
+              associado{' '}
+            </Typography>
+          </Stack>
+        )}
       </Card>
     </>
   );
