@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { PATHS } from 'src/routes';
 // @mui
 import {
   Popover,
@@ -52,6 +54,7 @@ const getKinshipDegree = (degree) => {
 
 export default function AccountOrdersTableRow({ row, selected }: Props) {
   const order = row;
+  const router = useRouter();
 
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -85,11 +88,13 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
   const handleEditClick = (orderSelected) => {
     setAnchorEl(null);
     // redirect to edit order page
+    router.push(PATHS.orders.edit(order._id));
   };
 
   const handleViewClick = (orderSelected) => {
     setAnchorEl(null);
     // redirect to view order page
+    router.push(PATHS.orders.view(order._id));
   };
 
   return (
