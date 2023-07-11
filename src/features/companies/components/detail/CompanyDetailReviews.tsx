@@ -39,7 +39,7 @@ export default function CompanyDetailReviews({
   const companyUpdateReviewUrl = `${router.asPath.split('?')[0]}/review/update`;
 
   const fetchReviewEligibilty = async () => {
-    const response = await axios.get(`/companies/${companyId}/reviews/eligibility`);
+    const response = await axios.get(`/health-units/${companyId}/reviews/eligibility`);
     if (response.data.eligible) {
       setButtonType(response.data.type);
     }

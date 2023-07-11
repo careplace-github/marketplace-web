@@ -158,7 +158,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setSession(accessToken);
 
-        const response = await axios.get('/users/account');
+        const response = await axios.get(
+          '/auth/account',
+          {},
+          {
+            headers: {
+              'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+            },
+          }
+        );
 
         user = response.data;
 
@@ -202,10 +210,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [initialize]);
 
   // REGISTER
-  const register = useCallback(async (user: IUserProps) => {
-    const response = await axios.post('/auth/marketplace/signup', {
-      user,
-    });
+  const register = useCallback(async (payload: IUserProps) => {
+    const response = await axios.post(
+      '/auth/signup',
+      {
+        customer: payload.customer,
+        password: payload.password,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
 
     dispatch({
       type: Types.REGISTER,
@@ -215,17 +232,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CONFIRMATION_CODE
   const confirmationCode = useCallback(async (email: string) => {
-    const response = await axios.post('/auth/marketplace/send/confirmation-code', {
-      email,
-    });
+    const response = await axios.post(
+      '/auth/send/confirmation-code',
+      {
+        email,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // CONFIRM_USER
   const confirmUser = useCallback(async (email: string, code: string, password?: string) => {
-    const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
-      email,
-      code,
-    });
+    const response = await axios.post(
+      '/auth/verify/confirmation-code',
+      {
+        email,
+        code,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
 
     // Check if the api response has a 200 status code
     if (response.status !== 200) {
@@ -243,30 +276,62 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // FORGOT_PASSWORD
   const forgotPassword = useCallback(async (email: string) => {
-    const response = await axios.post('/auth/marketplace/send/forgot-password-code', {
-      email,
-    });
+    const response = await axios.post(
+      '/auth/send/forgot-password-code',
+      {
+        email,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // RESET_PASSWORD
   const resetPassword = useCallback(async (email: string, code: string, newPassword: string) => {
-    const response = await axios.post('/auth/marketplace/verify/forgot-password-code', {
-      email,
-      code,
-      newPassword,
-    });
+    const response = await axios.post(
+      '/auth/verify/forgot-password-code',
+      {
+        email,
+        code,
+        newPassword,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
-    let response = await axios.post('/auth/marketplace/login', {
-      email,
-      password,
-    });
+    let response = await axios.post(
+      '/auth/signin',
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
     const { accessToken } = response.data;
     setSession(accessToken);
 
-    response = await axios.get('/users/account');
+    response = await axios.get(
+      '/auth/account',
+      {},
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
 
     const user = response.data;
 
@@ -283,18 +348,34 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CHANGE_PASSWORD
   const changePassword = useCallback(async (oldPassword: string, newPassword: string) => {
-    const response = await axios.post('/auth/change-password', {
-      oldPassword,
-      newPassword,
-    });
+    const response = await axios.post(
+      '/auth/change-password',
+      {
+        oldPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // UPDATE_USER
   const updateUser = useCallback(async (user: AuthUserType) => {
     const updatedUser = (
-      await axios.put('/users/account', {
-        user,
-      })
+      await axios.put(
+        '/auth/account',
+        {
+          user,
+        },
+        {
+          headers: {
+            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+          },
+        }
+      )
     ).data;
 
     setItem('profile_picture', updatedUser.profile_picture);

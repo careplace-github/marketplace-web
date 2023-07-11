@@ -20,7 +20,7 @@ import { useAuthContext } from 'src/contexts';
 // data
 import { countries } from 'src/data';
 // types
-import { IUserProps } from 'src/types/user';
+import { ICustomerProps } from 'src/types/user';
 
 // ----------------------------------------------------------------------
 
@@ -124,17 +124,20 @@ export default function AuthRegisterForm() {
 
       // Create the user object
 
-      const user: IUserProps = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone,
-        address: {
-          country: countryCode,
+      const payload: ICustomerProps = {
+        customer: {
+          name: data.name,
+          email: data.email,
+
+          phone,
+          address: {
+            country: countryCode,
+          },
         },
+        password: data.password,
       };
 
-      await register(user);
+      await register(payload);
 
       enqueueSnackbar('Conta criada com sucesso.', { variant: 'success' });
 

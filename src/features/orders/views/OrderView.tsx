@@ -59,7 +59,7 @@ export default function OrderView() {
 
   const fetchUserRelatives = async () => {
     try {
-      const response = await axios.get('users/relatives');
+      const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
     } catch (error) {
       console.log('error fetching relatives:', error);
@@ -73,7 +73,7 @@ export default function OrderView() {
 
   const fetchCompany = async (companyId) => {
     try {
-      const response = await axios.get(`/companies/${companyId}`);
+      const response = await axios.get(`/health-units/${companyId}`);
       setCompanyInfo(response.data);
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
@@ -88,7 +88,7 @@ export default function OrderView() {
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/users/orders/${orderId}`);
+        const response = await axios.get(`/customer/orders/home-care/${orderId}`);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {
@@ -201,6 +201,7 @@ export default function OrderView() {
                   schedule={orderInfo?.schedule_information?.schedule}
                   startDate={new Date(orderInfo?.schedule_information?.start_date)}
                   onBillingDetailsChange={handleBillingDetailsChange}
+                  orderStatus={orderInfo.status}
                 />
               )}
             </Stack>
@@ -210,6 +211,7 @@ export default function OrderView() {
             {companyInfo && (
               <CheckoutSummary
                 isOrderView
+                orderStatus={orderInfo.status}
                 subtotal={orderInfo?.order_total}
                 company={companyInfo}
                 onDiscountApplied={(code) => setDiscountCode(code)}

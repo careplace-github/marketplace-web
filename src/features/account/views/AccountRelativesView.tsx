@@ -41,7 +41,7 @@ export default function AccountRelativesView() {
   const isMdUp = useResponsive('up', 'md');
 
   const fetchUserRelatives = async () => {
-    const response = await axios.get('users/relatives');
+    const response = await axios.get('customers/patients');
     setUserRelatives(response.data.data);
     setIsLoading(false);
   };
@@ -52,7 +52,7 @@ export default function AccountRelativesView() {
 
   const handleDeleteRelative = async (relativeToDelete: IRelativeProps) => {
     try {
-      const response = await axios.delete(`/users/relatives/${relativeToDelete._id}`);
+      const response = await axios.delete(`/customers/patients/${relativeToDelete._id}`);
       setShowSnackbar({
         show: true,
         severity: 'success',
@@ -165,7 +165,7 @@ export default function AccountRelativesView() {
               </Stack>
             )}
           </Stack>
-          {userRelatives.length > 0 ? (
+          {userRelatives?.length > 0 ? (
             <Box sx={{ maxHeight: '700px', mt: 3 }}>
               <RelativesList
                 userRelatives={userRelatives}
