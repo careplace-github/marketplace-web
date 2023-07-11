@@ -33,6 +33,7 @@ import TextMaxLine from 'src/components/text-max-line';
 
 type Props = {
   company: ICompanyProps;
+  orderStatus?: string;
   disabled?: boolean;
   subtotal: number;
   isSubmitting?: boolean;
@@ -44,6 +45,7 @@ type Props = {
 export default function CheckoutSummary({
   handleSubmit,
   company,
+  orderStatus,
   subtotal,
   disabled,
   isSubmitting,
@@ -180,11 +182,12 @@ export default function CheckoutSummary({
             </Stack>
           </Stack>
         </Box>
-        <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
+        {(!isOrderView || orderStatus !== 'new') && (
+          <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
+        )}
         <Stack spacing={2} p={3}>
-          {!isOrderView && (
+          {(!isOrderView || orderStatus !== 'new') && (
             <>
-              {' '}
               <Stack spacing={2}>
                 <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
                 {discount?.value && (
@@ -223,17 +226,19 @@ export default function CheckoutSummary({
               <Divider sx={{ borderStyle: 'dashed' }} />
             </>
           )}
-          <Row
-            label="Total"
-            value={discount?.value ? totalValueWithDiscount : `${fCurrency(subtotal / 100)} €`}
-            sx={{
-              typography: 'h6',
-              '& span': { typography: 'h6' },
-            }}
-          />
+          {(!isOrderView || orderStatus !== 'new') && (
+            <Row
+              label="Total"
+              value={discount?.value ? totalValueWithDiscount : `${fCurrency(subtotal / 100)} €`}
+              sx={{
+                typography: 'h6',
+                '& span': { typography: 'h6' },
+              }}
+            />
+          )}
         </Stack>
 
-        {!isOrderView && (
+        {(!isOrderView || orderStatus !== 'new') && (
           <Stack spacing={3} sx={{ p: 3, pt: 0 }}>
             <LoadingButton
               disabled={disabled}

@@ -203,7 +203,7 @@ export default function RelativeInformationModal({
             medical_conditions: data.medicalConditions,
           };
 
-          await axios.put(`/users/relatives/${relative._id}`, updateRelative);
+          await axios.put(`/customers/patients/${relative._id}`, updateRelative);
           onActionMade(action, 'success');
         } catch (error) {
           setIsSubmiting(false);
@@ -235,7 +235,7 @@ export default function RelativeInformationModal({
           gender: data.gender,
         };
 
-        await axios.post(`/users/relatives/`, createRelative);
+        await axios.post(`/customers/patients/`, createRelative);
         onActionMade(action, 'success');
       } catch (error) {
         setIsSubmiting(false);
@@ -440,15 +440,18 @@ export default function RelativeInformationModal({
                 </option>
               ))}
             </RHFSelect>
-            <RHFTextField
+            <Box
               sx={{
                 gridColumn: isMdUp ? 'span 2' : null,
               }}
-              name="medicalConditions"
-              label="Condições Médicas (opcional)"
-              multiline
-              minRows={isMdUp ? 3 : 5}
-            />
+            >
+              <RHFTextField
+                name="medicalConditions"
+                label="Condições Médicas (opcional)"
+                multiline
+                minRows={isMdUp ? 3 : 5}
+              />
+            </Box>
           </Box>
           <Typography sx={{ fontSize: '12px', color: '#91A0AD', marginTop: '20px' }}>
             *Campo obrigatório

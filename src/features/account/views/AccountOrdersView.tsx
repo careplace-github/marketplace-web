@@ -54,7 +54,6 @@ export const TABLE_HEAD = [
   { id: 'schedule_information', label: 'Recorrência', width: 100 },
   { id: '', label: 'Horário' },
   { id: 'status', label: 'Estado', width: 100 },
-  { id: 'actions', label: '' },
   // Uncomment this line to add the column with the "options" icon to the table
   // { id: '' },
 ];
@@ -105,8 +104,9 @@ export default function AccountOrdersView() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/users/orders');
-        setOrders(response.data.data);
+        const response = await axios.get('/customers/orders/home-care');
+        // setOrders(response.data.data);
+        setOrders(response.data);
         setOrdersFetched(response.data.data);
       } catch (error) {
         console.error(error);
@@ -155,7 +155,7 @@ export default function AccountOrdersView() {
           ))}
         </Tabs>
 
-        {orders.length > 0 ? (
+        {orders?.length > 0 ? (
           <TableContainer
             sx={{
               overflow: 'unset',
@@ -222,7 +222,7 @@ export default function AccountOrdersView() {
           <TablePagination
             page={page}
             component="div"
-            count={orders.length}
+            count={orders?.length || 0}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}

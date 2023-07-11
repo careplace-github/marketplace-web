@@ -72,7 +72,7 @@ export default function CheckoutView() {
 
   const fetchUserRelatives = async () => {
     try {
-      const response = await axios.get('users/relatives');
+      const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
       console.log(response.data.data);
     } catch (error) {
@@ -87,7 +87,7 @@ export default function CheckoutView() {
 
   const fetchCompany = async (companyId) => {
     try {
-      const response = await axios.get(`/companies/${companyId}`);
+      const response = await axios.get(`/health-units/${companyId}`);
       setCompanyInfo(response.data);
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
@@ -102,7 +102,7 @@ export default function CheckoutView() {
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/users/orders/${orderId}`);
+        const response = await axios.get(`/customer/orders/home-care/${orderId}`);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {

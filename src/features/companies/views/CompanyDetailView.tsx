@@ -85,7 +85,11 @@ export default function CompanyDetailView() {
 
     const fetchCompanies = async () => {
       const companyId = router.asPath.split('/')[2].split('?')[0];
-      const response = await axios.get('/companies/search');
+      const response = await axios.get('/health-units/agencies/search', {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      });
       const allCompanies = response.data.data;
       const randomIndex: number[] = [];
       // eslint-disable-next-line no-plusplus
@@ -114,12 +118,15 @@ export default function CompanyDetailView() {
   }, [router.asPath, router.isReady]);
 
   const fetchReviews = async (current, sortSelected, companyId) => {
-    const responseCompanyReviews = await axios.get(`/companies/${companyId}/reviews`, {
+    const responseCompanyReviews = await axios.get(`/health-units/${companyId}/reviews`, {
       params: {
         documentsPerPage: reviewsPerPage,
         page: current,
         sortBy: sortSelected.sortBy,
         sortOrder: sortSelected.sortOrder,
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
       },
     });
     const reviewsInfo = responseCompanyReviews.data;
@@ -135,7 +142,11 @@ export default function CompanyDetailView() {
       setLoading(true);
       const companyId = router.asPath.split('/')[2].split('?')[0];
       const fetchInfo = async () => {
-        const responseCompanyInfo = await axios.get(`/companies/${companyId}`);
+        const responseCompanyInfo = await axios.get(`/health-units/${companyId}`, {
+          headers: {
+            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+          },
+        });
         setCompanyInfo(responseCompanyInfo.data);
         await fetchReviews(1, reviewSort, companyId);
         setLoading(false);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 // hooks
 import { useResponsive } from 'src/hooks';
 // components
@@ -11,6 +11,7 @@ type IEmptyStateProps = {
   description: string;
   containerWidth?: string;
   containerHeight?: string;
+  actionComponent?: ReactNode;
 };
 
 function EmptyState({
@@ -19,6 +20,7 @@ function EmptyState({
   description,
   containerWidth = '100%',
   containerHeight = '100%',
+  actionComponent,
 }: IEmptyStateProps) {
   const isSmUp = useResponsive('up', 'sm');
 
@@ -42,6 +44,7 @@ function EmptyState({
         {title}
       </Typography>
       <Typography sx={{ maxWidth: '90%', textAlign: 'center' }}>{description}</Typography>
+      {actionComponent}
     </Stack>
   );
 }
