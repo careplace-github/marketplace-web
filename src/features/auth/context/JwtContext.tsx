@@ -363,30 +363,35 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   // UPDATE_USER
-  const updateUser = useCallback(async (user: AuthUserType) => {
-    const updatedUser = (
-      await axios.put(
-        '/auth/account',
-        {
-          user,
-        },
-        {
-          headers: {
-            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+  const updateUser = useCallback(async (user: AuthUserType): Promise<boolean> => {
+    try {
+      const updatedUser = (
+        await axios.put(
+          '/auth/account',
+          {
+            user,
           },
-        }
-      )
-    ).data;
+          {
+            headers: {
+              'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+            },
+          }
+        )
+      ).data;
 
-    setItem('profile_picture', updatedUser.profile_picture);
-    setItem('name', updatedUser.name);
-
-    dispatch({
-      type: Types.UPDATE_USER,
-      payload: {
-        user: updatedUser,
-      },
-    });
+      setItem('profile_picture', updatedUser.profile_picture);
+      setItem('name', updatedUser.name);
+      dispatch({
+        type: Types.UPDATE_USER,
+        payload: {
+          user: updatedUser,
+        },
+      });
+    } catch (error) {
+      return false;
+      console.log(error);
+    }
+    return true;
   }, []);
 
   // LOGOUT

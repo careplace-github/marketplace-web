@@ -121,7 +121,15 @@ export default function AccountPersonalView() {
         user.address.postal_code = data.zipCode;
         user.address.city = data.city;
         user.address.country = data.country;
-        updateUser(user);
+        const status: boolean = await updateUser(user);
+        if (!status) {
+          setShowSnackbar({
+            show: true,
+            severity: 'error',
+            message: 'Algo correu mal, tente novamente.',
+          });
+          return;
+        }
         setShowSnackbar({
           show: true,
           severity: 'success',

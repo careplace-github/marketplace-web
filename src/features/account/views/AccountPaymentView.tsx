@@ -29,7 +29,7 @@ export default function AccountPaymentView() {
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
-    return response.data;
+    return response.data.data;
   }
 
   const [CARDS, setCARDS] = useState([]);
