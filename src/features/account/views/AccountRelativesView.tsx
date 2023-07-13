@@ -60,6 +60,14 @@ export default function AccountRelativesView() {
       });
       fetchUserRelatives();
     } catch (error) {
+      if (error.error.message === 'You cannot delete a patient with associated orders') {
+        setShowSnackbar({
+          show: true,
+          severity: 'error',
+          message: 'Não pode eliminar familiares que tenham pedidos efetuados.',
+        });
+        return;
+      }
       setShowSnackbar({
         show: true,
         severity: 'error',

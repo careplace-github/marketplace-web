@@ -31,7 +31,7 @@ export default function AccountOrdersTableHead({
           <TableCell
             key={headCell.id}
             align={headCell.align ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'normal' : 'normal'}
+            padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{ width: headCell.width, minWidth: headCell.minWidth }}
           >

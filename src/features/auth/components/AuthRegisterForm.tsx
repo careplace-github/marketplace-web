@@ -27,7 +27,7 @@ import { ICustomerProps } from 'src/types/user';
 type FormValuesProps = {
   email: string;
   password: string;
-  name: string;
+  firstName: string;
   phoneNumber: string;
   confirmPassword: string;
 };
@@ -47,7 +47,11 @@ export default function AuthRegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string()
+    firstName: Yup.string()
+      .required('O nome é obrigatório.')
+      .min(3, 'O nome deve ter pelo menos 3 caracteres.')
+      .max(50, 'O nome deve ter no máximo 50 caracteres.'),
+    lastName: Yup.string()
       .required('O nome é obrigatório.')
       .min(3, 'O nome deve ter pelo menos 3 caracteres.')
       .max(50, 'O nome deve ter no máximo 50 caracteres.'),
@@ -84,7 +88,8 @@ export default function AuthRegisterForm() {
   });
 
   const defaultValues = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -126,7 +131,7 @@ export default function AuthRegisterForm() {
 
       const payload: ICustomerProps = {
         customer: {
-          name: data.name,
+          name: `${data.firstName} ${data.lastName}`,
           email: data.email,
 
           phone,
@@ -172,7 +177,8 @@ export default function AuthRegisterForm() {
           </Alert>
         )}
 
-        <RHFTextField name="name" label="Nome" />
+        <RHFTextField name="firstName" label="Nome" />
+        <RHFTextField name="lastName" label="Apelido" />
 
         <RHFTextField name="email" label="Email" />
 

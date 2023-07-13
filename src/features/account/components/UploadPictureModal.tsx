@@ -1,3 +1,4 @@
+// hooks
 import FormProvider, { RHFUploadAvatar } from 'src/components/hook-form';
 import { useForm } from 'react-hook-form';
 import { useCallback, useState } from 'react';
@@ -23,7 +24,7 @@ type FormValuesProps = {
 
 const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
-
+  const [resetImage, setResetImage] = useState<boolean>(false);
   const { user, updateUser } = useAuthContext();
   const isMdUp = useResponsive('up', 'md');
   const [fileData, setFileData] = useState<FormData>();
@@ -98,10 +99,14 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
 
   // function when the user clicks cancel button (modal opened)
   const handleCancelClick = () => {
-    const prevImage = Object.assign(user?.profile_picture, {
-      preview: user?.profile_picture,
-    });
-    setValue('profile_picture', prevImage);
+    if (user?.profile_picture) {
+      const prevImage = Object.assign(user?.profile_picture, {
+        preview: user?.profile_picture,
+      });
+      setValue('profile_picture', prevImage);
+    } else {
+      setValue('profile_picture', null);
+    }
     onClose({}, 'backdropClick');
   };
 
