@@ -88,7 +88,7 @@ export default function OrderView() {
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/customer/orders/home-care/${orderId}`);
+        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {
@@ -108,7 +108,7 @@ export default function OrderView() {
         }
         setSelectedWeekdays(auxWeekdays);
         console.log('order info:', response.data);
-        fetchCompany(response.data.company._id);
+        fetchCompany(response.data.health_unit._id);
       } catch (error) {
         console.log('error fetching order:', error);
       }
@@ -190,7 +190,7 @@ export default function OrderView() {
                   isOrderView
                   onPaymentMethodSelect={(card) => setSelectedCard(card)}
                   relatives={userRelatives}
-                  selectedRelative={orderInfo?.relative}
+                  selectedRelative={orderInfo?.patient}
                   checkoutVersion
                   orderBillingDetails={billingDetails}
                   services={availableServices}

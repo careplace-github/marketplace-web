@@ -102,7 +102,7 @@ export default function CheckoutView() {
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/customer/orders/home-care/${orderId}`);
+        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {
