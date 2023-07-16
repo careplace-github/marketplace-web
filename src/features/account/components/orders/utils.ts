@@ -8,8 +8,6 @@ export function descendingComparator<T extends ComparatorObject, Key extends key
   orderBy: Key
 ) {
   if (orderBy === 'patient' || orderBy === 'services') {
-    console.log('b[orderBy]', b[orderBy]);
-    console.log('a[orderBy]', a[orderBy]);
     if (b[orderBy].name < a[orderBy].name) {
       return -1;
     }
