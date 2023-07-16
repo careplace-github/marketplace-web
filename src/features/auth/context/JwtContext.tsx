@@ -158,15 +158,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setSession(accessToken);
 
-        const response = await axios.get(
-          '/auth/account',
-          {},
-          {
-            headers: {
-              'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-            },
-          }
-        );
+        const response = await axios.get('/auth/account', {
+          headers: {
+            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+          },
+        });
 
         user = response.data;
 
@@ -323,15 +319,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { accessToken } = response.data;
     setSession(accessToken);
 
-    response = await axios.get(
-      '/auth/account',
-      {},
-      {
-        headers: {
-          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-        },
-      }
-    );
+    response = await axios.get('/auth/account', {
+      headers: {
+        'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+      },
+    });
 
     const user = response.data;
 

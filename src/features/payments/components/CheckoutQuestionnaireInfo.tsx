@@ -95,7 +95,7 @@ export default function CheckoutQuestionnaireInfo({
   orderStatus,
 }: Props) {
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
-  const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(isOrderView);
+  const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(!!isOrderView);
   const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>({
     name: '',
     nif: '',
@@ -106,7 +106,7 @@ export default function CheckoutQuestionnaireInfo({
       country: '',
     },
   });
-  const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(isOrderView);
+  const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(!!isOrderView);
   const [openBillingInfo, setOpenBillingInfo] = useState<boolean>(true);
   const [openPaymentInfo, setOpenPaymentInfo] = useState<boolean>(true);
   const [CARDS, setCARDS] = useState<PaymentMethodProps[]>([]);
@@ -663,10 +663,7 @@ export default function CheckoutQuestionnaireInfo({
                   </Button>
                 </Stack>
                 <Collapse in={openAddCardForm} unmountOnExit>
-                  <AddNewCardForm
-                    isOrderView={isOrderView}
-                    onAddCard={(result) => handleAddCard(result)}
-                  />
+                  <AddNewCardForm onAddCard={(result) => handleAddCard(result)} />
                 </Collapse>
               </Box>
             </Collapse>

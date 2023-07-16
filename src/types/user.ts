@@ -1,13 +1,13 @@
 // ----------------------------------------------------------------------
 
 export type IUserProps = {
-
+  customer: {
     name: string;
     email: string;
-    password: string;
     phone: string;
     address: {
-        country: string;
-    }
+      country: string;
+    };
   };
-  
+  password: string;
+};

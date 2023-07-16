@@ -37,7 +37,7 @@ export type ActionMapType<M extends { [index: string]: any }> = {
     resetPassword: (email: string, code: string, newPassword: string) => Promise<void>;
     login: (email: string, password: string) => Promise<void>;
     changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
-    updateUser: (user: AuthUserType) => Promise<void>;
+    updateUser: (user: AuthUserType) => Promise<boolean>;
     logout: () => void;
     
   };

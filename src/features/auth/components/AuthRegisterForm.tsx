@@ -20,7 +20,7 @@ import { useAuthContext } from 'src/contexts';
 // data
 import { countries } from 'src/data';
 // types
-import { ICustomerProps } from 'src/types/user';
+import { IUserProps } from 'src/types/user';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +28,7 @@ type FormValuesProps = {
   email: string;
   password: string;
   firstName: string;
+  lastName: string;
   phoneNumber: string;
   confirmPassword: string;
 };
@@ -129,7 +130,7 @@ export default function AuthRegisterForm() {
 
       // Create the user object
 
-      const payload: ICustomerProps = {
+      const payload: IUserProps = {
         customer: {
           name: `${data.firstName} ${data.lastName}`,
           email: data.email,

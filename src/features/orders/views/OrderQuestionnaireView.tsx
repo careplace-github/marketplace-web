@@ -28,9 +28,8 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components
 // ----------------------------------------------------------------------
 
 type OrderRequestProps = {
-  company: string;
-  user: string;
-  relative: string;
+  health_unit: string;
+  patient: string;
   services: string[];
   schedule_information: {
     start_date: Date;
