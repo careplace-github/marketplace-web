@@ -5,14 +5,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // router
 import { useRouter } from 'next/router';
 // @mui
-import {
-  Stack,
-  Container,
-  Typography,
-  Unstable_Grid2 as Grid,
-  Snackbar,
-  Alert,
-} from '@mui/material';
+import { Stack, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // types
@@ -27,9 +20,10 @@ import { PATHS } from 'src/routes';
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
+import isObjectEmpty from 'src/utils/functions';
 import { useAuthContext } from 'src/contexts';
-import CheckoutSummary from '../components/CheckoutSummary';
-import CheckoutQuestionnaireInfo from '../components/CheckoutQuestionnaireInfo';
+import CheckoutSummary from 'src/features/payments/components/CheckoutSummary';
+import CheckoutQuestionnaireInfo from 'src/features/payments/components/CheckoutQuestionnaireInfo';
 
 // ----------------------------------------------------------------------
 
@@ -48,7 +42,7 @@ type CardProps = {
   id: string;
 };
 
-export default function CheckoutView() {
+export default function OrderView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [relativesLoading, setRelativesLoading] = useState<boolean>(true);
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
@@ -56,17 +50,10 @@ export default function CheckoutView() {
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>();
   const [selectedCard, setSelectedCard] = useState<CardProps>();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [orderInfo, setOrderInfo] = useState<any>();
-  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
   const [discountCode, setDiscountCode] = useState<string>();
   const router = useRouter();
-  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
-    show: false,
-    severity: 'success',
-    message: '',
-  });
 
   const { user } = useAuthContext();
 
@@ -74,7 +61,6 @@ export default function CheckoutView() {
     try {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       console.log('error fetching relatives:', error);
     }
@@ -108,6 +94,18 @@ export default function CheckoutView() {
         response.data.schedule_information.schedule.forEach((item) => {
           auxWeekdays.push(item.week_day);
         });
+        if (!isObjectEmpty(response.data.billing_details)) {
+          setBillingDetails({
+            name: response.data.billing_details.name || '',
+            nif: response.data.billing_details.tax_id || '',
+            address: {
+              street: response.data.billing_details.address.street || '',
+              postal_code: response.data.billing_details.address.postal_code || '',
+              city: response.data.billing_details.address.city || '',
+              country: response.data.billing_details.address.country || '',
+            },
+          });
+        }
         setSelectedWeekdays(auxWeekdays);
         console.log('order info:', response.data);
         fetchCompany(response.data.company._id);
@@ -167,72 +165,9 @@ export default function CheckoutView() {
     defaultValues,
   });
 
-  const onCheckoutSubmit = async () => {
-    const orderId = router.asPath.split('/').at(2);
-    try {
-      const response = await axios.post(`/checkout/orders/${orderId}/payment-intent`, {
-        payment_method_id: selectedCard?.id,
-        coupon: discountCode,
-        billing_details: {
-          name: billingDetails?.name,
-          email: user?.email,
-          tax_id: billingDetails?.nif,
-          address: {
-            street: billingDetails?.address.street,
-            city: billingDetails?.address.city,
-            country: billingDetails?.address.country,
-            postal_code: billingDetails?.address.postal_code,
-          },
-        },
-      });
-
-      router.push(PATHS.orders.checkoutSucess(orderId || ''));
-    } catch (error) {
-      console.log('message:', error.error.message);
-      if (error.error.message === 'Order already has a subscription') {
-        setShowSnackbar({
-          show: true,
-          severity: 'error',
-          message: 'Já foi confirmado um pagamento para este pedido ',
-        });
-        return;
-      }
-      setShowSnackbar({
-        show: true,
-        severity: 'error',
-        message: 'Algo correu mal, tente de novo.',
-      });
-    }
-  };
-
   const handleBillingDetailsChange = (details) => {
     setBillingDetails(details);
   };
-
-  useEffect(() => {
-    const isNifValid = (value) => {
-      if (value.length === 11 && value[3] === ' ' && value[7] === ' ') return true;
-      return false;
-    };
-    const isPostalCodeValid = (value) => {
-      if (value.length === 8 && value[4] === '-') return true;
-      return false;
-    };
-
-    const disable =
-      !selectedCard ||
-      !billingDetails?.name ||
-      (billingDetails?.nif && !isNifValid(billingDetails?.nif)) ||
-      !billingDetails?.address.street ||
-      !billingDetails?.address.city ||
-      !billingDetails?.address.country ||
-      !isPostalCodeValid(billingDetails?.address.postal_code);
-    if (disable) {
-      setSubmitButtonDisabled(true);
-    } else {
-      setSubmitButtonDisabled(false);
-    }
-  }, [billingDetails, selectedCard]);
 
   return !loading && !relativesLoading ? (
     <Container
@@ -242,34 +177,8 @@ export default function CheckoutView() {
         pb: { xs: 8, md: 15 },
       }}
     >
-      <Snackbar
-        open={showSnackbar.show}
-        autoHideDuration={3000}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        onClose={() =>
-          setShowSnackbar({
-            show: false,
-            severity: 'success',
-            message: '',
-          })
-        }
-      >
-        <Alert
-          onClose={() =>
-            setShowSnackbar({
-              show: false,
-              severity: 'success',
-              message: '',
-            })
-          }
-          severity={showSnackbar.severity}
-          sx={{ width: '100%' }}
-        >
-          {showSnackbar.message}
-        </Alert>
-      </Snackbar>
       <Typography variant="h2" sx={{ mb: 5, mt: 10 }}>
-        Checkout
+        Pedido
       </Typography>
 
       <FormProvider key="checkout_view_form" methods={methods}>
@@ -278,10 +187,12 @@ export default function CheckoutView() {
             <Stack>
               {userRelatives && (
                 <CheckoutQuestionnaireInfo
+                  isOrderView
                   onPaymentMethodSelect={(card) => setSelectedCard(card)}
                   relatives={userRelatives}
                   selectedRelative={orderInfo?.relative}
                   checkoutVersion
+                  orderBillingDetails={billingDetails}
                   services={availableServices}
                   onValidChange={() => {}}
                   selectedWeekdays={selectedWeekdays}
@@ -290,6 +201,7 @@ export default function CheckoutView() {
                   schedule={orderInfo?.schedule_information?.schedule}
                   startDate={new Date(orderInfo?.schedule_information?.start_date)}
                   onBillingDetailsChange={handleBillingDetailsChange}
+                  orderStatus={orderInfo.status}
                 />
               )}
             </Stack>
@@ -298,11 +210,10 @@ export default function CheckoutView() {
           <Grid xs={12} md={5}>
             {companyInfo && (
               <CheckoutSummary
-                handleSubmit={onCheckoutSubmit}
-                disabled={submitButtonDisabled}
+                isOrderView
+                orderStatus={orderInfo.status}
                 subtotal={orderInfo?.order_total}
                 company={companyInfo}
-                isSubmitting={isSubmitting}
                 onDiscountApplied={(code) => setDiscountCode(code)}
               />
             )}

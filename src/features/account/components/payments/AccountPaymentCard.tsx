@@ -36,7 +36,7 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const cardNumber = card.card.last4;
   const cardHolder = card.billing_details.name || user?.name;
   const expirationDate =
-    card.card.exp_month > 12
+    card.card.exp_month > 10
       ? `${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`
       : `0${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`;
 

@@ -1,6 +1,7 @@
 // @mui
-import { Box, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import { Box, TableRow, TableCell, TableHead, TableSortLabel, Stack } from '@mui/material';
 //
+import { useResponsive } from 'src/hooks';
 import { visuallyHidden } from './utils';
 
 // ----------------------------------------------------------------------
@@ -22,6 +23,7 @@ export default function AccountOrdersTableHead({
   headCells,
   numSelected,
 }: Prop) {
+  const isMdUp = useResponsive('up', 'md');
   return (
     <TableHead>
       <TableRow>
@@ -29,25 +31,31 @@ export default function AccountOrdersTableHead({
           <TableCell
             key={headCell.id}
             align={headCell.align ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'normal' : 'normal'}
+            padding="normal"
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{ width: headCell.width, minWidth: headCell.minWidth }}
           >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={() => onSort(headCell.id)}
-              sx={{
-                alignItems: 'center',
-              }}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+            {headCell.id !== 'actions' ? (
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : 'asc'}
+                onClick={() => onSort(headCell.id)}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            ) : (
+              <Stack
+                sx={{ width: '70px', textAlign: 'left', pl: 2, flex: !isMdUp ? 1 : undefined }}
+              />
+            )}
           </TableCell>
         ))}
       </TableRow>

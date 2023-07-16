@@ -49,7 +49,7 @@ const TABS = [
 ];
 
 export const TABLE_HEAD = [
-  { id: 'relative', label: 'Familiar' },
+  { id: 'relative', label: 'Familiar', width: '400px', minWidth: '240px' },
   { id: 'services', label: 'Serviços', width: 160 },
   { id: 'schedule_information', label: 'Recorrência', width: 100 },
   { id: '', label: 'Horário' },
@@ -104,7 +104,7 @@ export default function AccountOrdersView() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/users/orders');
+        const response = await axios.get('/customers/orders/home-care');
         setOrders(response.data.data);
         setOrdersFetched(response.data.data);
       } catch (error) {
@@ -154,7 +154,7 @@ export default function AccountOrdersView() {
           ))}
         </Tabs>
 
-        {orders.length > 0 ? (
+        {orders?.length > 0 ? (
           <TableContainer
             sx={{
               overflow: 'unset',
@@ -221,7 +221,7 @@ export default function AccountOrdersView() {
           <TablePagination
             page={page}
             component="div"
-            count={orders.length}
+            count={orders?.length || 0}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}

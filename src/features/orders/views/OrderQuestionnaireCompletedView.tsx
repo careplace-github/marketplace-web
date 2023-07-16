@@ -33,7 +33,7 @@ export default function OrderQuestionnaireCompletedView() {
     setLoading(true);
     const fetchData = async () => {
       const orderId = router.asPath.split('/').at(-1);
-      const response = await axios.get(`/users/orders/${orderId}`);
+      const response = await axios.get(`/customer/orders/home-care/${orderId}`);
       setData(response.data);
       setLoading(false);
     };

@@ -32,7 +32,7 @@ export const PATHS = {
 
   // Order
   orders: {
-    view: (id: string) => `/orders/${id}/view`,
+    view: (id: string) => `/orders/${id}`,
     edit: (id: string) => `/orders/${id}/edit`,
     checkout: (id: string) => `/orders/${id}/checkout`,
     checkoutSucess: (id: string) => `/orders/${id}/checkout/success`,
