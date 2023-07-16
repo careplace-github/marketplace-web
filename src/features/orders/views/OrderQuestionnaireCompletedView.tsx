@@ -33,7 +33,7 @@ export default function OrderQuestionnaireCompletedView() {
     setLoading(true);
     const fetchData = async () => {
       const orderId = router.asPath.split('/').at(-1);
-      const response = await axios.get(`/customer/orders/home-care/${orderId}`);
+      const response = await axios.get(`/customers/orders/home-care/${orderId}`);
       setData(response.data);
       setLoading(false);
     };
@@ -70,9 +70,9 @@ export default function OrderQuestionnaireCompletedView() {
           }}
         >
           <CompanyPicture
-            name={data?.company.business_profile.name}
-            image={data?.company.business_profile.logo}
-            location={data?.company.addresses[0].city}
+            name={data?.health_unit.business_profile.name}
+            image={data?.health_unit.business_profile.logo}
+            location={data?.health_unit.addresses[0].city}
           />
         </Card>
       )}
@@ -99,7 +99,7 @@ export default function OrderQuestionnaireCompletedView() {
           </Box>
         )}
         <OrderQuestionnaireCompletedSummary
-          relative={data.relative}
+          relative={data.patient}
           services={data.services}
           scheduleInformation={data.schedule_information}
           recurrency={data.schedule_information.recurrency}
