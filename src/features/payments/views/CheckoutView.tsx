@@ -112,6 +112,9 @@ export default function CheckoutView() {
         console.log('order info:', response.data);
         fetchCompany(response.data.company._id);
       } catch (error) {
+        if (error.error.type === 'FORBIDDEN') {
+          router.push('/404');
+        }
         console.log('error fetching order:', error);
       }
     };
