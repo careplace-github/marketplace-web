@@ -5,8 +5,6 @@ import { useTheme } from '@mui/material/styles';
 import { AppBar, Toolbar, Link, Stack, Container } from '@mui/material';
 // config
 import { HEADER } from 'src/layouts';
-// utils
-import { bgBlur } from 'src/utils/cssStyles';
 // components
 import Logo from 'src/components/logo';
 //
