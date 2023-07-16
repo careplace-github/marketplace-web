@@ -110,6 +110,9 @@ export default function OrderView() {
         console.log('order info:', response.data);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
+        if (error.error.type === 'FORBIDDEN') {
+          router.push('/404');
+        }
         console.log('error fetching order:', error);
       }
     };

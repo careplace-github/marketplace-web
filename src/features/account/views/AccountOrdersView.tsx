@@ -65,7 +65,7 @@ export default function AccountOrdersView() {
 
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const [sortBy, setSortBy] = useState('patient');
+  const [sortBy, setSortBy] = useState('');
 
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -104,12 +104,8 @@ export default function AccountOrdersView() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/customers/orders/home-care', {
-          params: {
-            sortBy: 'updated_at',
-            sortOrder: 'desc',
-          },
-        });
+        const response = await axios.get('/customers/orders/home-care');
+        console.log('orders', response.data.data);
         setOrders(response.data.data);
         setOrdersFetched(response.data.data);
       } catch (error) {
