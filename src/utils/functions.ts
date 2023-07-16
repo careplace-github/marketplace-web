@@ -1,17 +1,8 @@
 export default function isObjectEmpty(obj: any): boolean {
-  const values = Object.values(obj);
-
-  for (let value of values) {
-    if (value !== null) {
-      if (typeof value === 'object' && !Array.isArray(value)) {
-        if (!isObjectEmpty(value)) {
-          return false;
-        }
-      } else {
-        return false;
-      }
+  return Object.values(obj).every((value) => {
+    if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+      return isObjectEmpty(value);
     }
-  }
-
-  return true;
+    return false;
+  });
 }

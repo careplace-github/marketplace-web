@@ -495,10 +495,10 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                   width: '90%',
                   maxWidth: '300px',
                   bgcolor: 'primary.main',
-                  color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                  color: 'common.white',
                   '&:hover': {
                     bgcolor: 'primary.dark',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                    color: 'common.white',
                   },
                 }}
               >
