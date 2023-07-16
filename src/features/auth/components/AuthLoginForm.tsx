@@ -35,6 +35,7 @@ export default function AuthLoginForm() {
   const { login } = useAuthContext();
 
   const { pathname, push } = useRouter();
+  const router = useRouter();
 
   const handleForgotPassword = () => {
     const path = methods.getValues('email')
@@ -79,9 +80,21 @@ export default function AuthLoginForm() {
       setErrorMessage(undefined);
     } catch (error) {
       console.error(error);
-
+      if (error.error.message === 'User is not confirmed.') {
+        setIsSubmitting(false);
+        router.push(
+          {
+            pathname: PATHS.auth.verifyCode,
+            query: {
+              email: data.email,
+              resend: true,
+            },
+          },
+          PATHS.auth.verifyCode
+        );
+        return;
+      }
       setIsSubmitting(false);
-
       switch (error?.error?.type) {
         case 'UNAUTHORIZED':
           setErrorMessage('O email ou a password estão incorretos.');

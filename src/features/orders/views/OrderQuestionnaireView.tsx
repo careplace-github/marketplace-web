@@ -28,9 +28,8 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components
 // ----------------------------------------------------------------------
 
 type OrderRequestProps = {
-  company: string;
-  user: string;
-  relative: string;
+  health_unit: string;
+  patient: string;
   services: string[];
   schedule_information: {
     start_date: Date;
@@ -52,8 +51,9 @@ export default function OrderQuestionnaireView() {
   const { user } = useAuthContext();
 
   const fetchUserRelatives = async () => {
-    const response = await axios.get('users/relatives');
-    setUserRelatives(response.data.data);
+    const response = await axios.get('customers/patients');
+    setUserRelatives(response.data.data || []);
+    console.log('advance');
     setRelativesLoading(false);
     console.log(response.data.data);
   };
@@ -65,7 +65,7 @@ export default function OrderQuestionnaireView() {
   useEffect(() => {
     if (router.isReady) {
       const fetchCompany = async (companyId) => {
-        const response = await axios.get(`/companies/${companyId}`);
+        const response = await axios.get(`/health-units/${companyId}`);
         setCompanyInfo(response.data);
         const available = await getAvailableServices(response.data.services);
         setAvailableServices(available);
@@ -124,7 +124,9 @@ export default function OrderQuestionnaireView() {
     if (companyInfo) {
       setIsSubmitting(true);
       try {
-        const response = await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
+        const response = await axios.post(`/health-units/${companyInfo._id}/orders/home-care`, {
+          ...formData,
+        });
         reset();
         router.push(PATHS.orders.questionnaireCompleted(response.data._id));
       } catch (error) {
@@ -137,9 +139,8 @@ export default function OrderQuestionnaireView() {
   const handleValidChange = (valid, data) => {
     if (valid && companyInfo && user) {
       const dataToSubmit: OrderRequestProps = {
-        company: companyInfo._id,
-        user: user._id,
-        relative: data.relativeSelected,
+        health_unit: companyInfo._id,
+        patient: data.relativeSelected,
         services: data.servicesSelected,
         schedule_information: {
           start_date: data.startDateSelected,

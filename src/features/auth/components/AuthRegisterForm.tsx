@@ -27,7 +27,8 @@ import { IUserProps } from 'src/types/user';
 type FormValuesProps = {
   email: string;
   password: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   phoneNumber: string;
   confirmPassword: string;
 };
@@ -47,7 +48,11 @@ export default function AuthRegisterForm() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string()
+    firstName: Yup.string()
+      .required('O nome é obrigatório.')
+      .min(3, 'O nome deve ter pelo menos 3 caracteres.')
+      .max(50, 'O nome deve ter no máximo 50 caracteres.'),
+    lastName: Yup.string()
       .required('O nome é obrigatório.')
       .min(3, 'O nome deve ter pelo menos 3 caracteres.')
       .max(50, 'O nome deve ter no máximo 50 caracteres.'),
@@ -84,7 +89,8 @@ export default function AuthRegisterForm() {
   });
 
   const defaultValues = {
-    name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -124,17 +130,20 @@ export default function AuthRegisterForm() {
 
       // Create the user object
 
-      const user: IUserProps = {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        phone,
-        address: {
-          country: countryCode,
+      const payload: IUserProps = {
+        customer: {
+          name: `${data.firstName} ${data.lastName}`,
+          email: data.email,
+
+          phone,
+          address: {
+            country: countryCode,
+          },
         },
+        password: data.password,
       };
 
-      await register(user);
+      await register(payload);
 
       enqueueSnackbar('Conta criada com sucesso.', { variant: 'success' });
 
@@ -169,7 +178,8 @@ export default function AuthRegisterForm() {
           </Alert>
         )}
 
-        <RHFTextField name="name" label="Nome" />
+        <RHFTextField name="firstName" label="Nome" />
+        <RHFTextField name="lastName" label="Apelido" />
 
         <RHFTextField name="email" label="Email" />
 

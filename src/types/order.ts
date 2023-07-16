@@ -3,7 +3,7 @@ export type IOrderProps = {
   _id: string;
   company: string;
   user: string;
-  relative: {
+  patient: {
     _id: string;
     name: string;
     birthdate: string;

@@ -36,7 +36,6 @@ export const isValidToken = (accessToken: string) => {
   // if (decoded.aud !== process.env.COGNITO_CLIENT_ID) {
   //   return false;
   // }
-  
 
   return decoded.exp > currentTime;
 };
@@ -56,8 +55,6 @@ export const tokenExpired = (exp: number) => {
   clearTimeout(expiredTimer);
 
   expiredTimer = setTimeout(() => {
-    alert('Token expired');
-
     localStorage.removeItem('accessToken');
 
     window.location.href = PATHS.auth.login;

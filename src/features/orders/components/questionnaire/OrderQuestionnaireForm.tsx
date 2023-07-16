@@ -3,6 +3,8 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { IScheduleProps } from 'src/types/order';
 import { useResponsive } from 'src/hooks';
+// paths
+import { PATHS } from 'src/routes';
 // @mui
 import {
   Stack,
@@ -12,6 +14,7 @@ import {
   TextField,
   SelectChangeEvent,
   Checkbox,
+  Button,
 } from '@mui/material';
 import { useTheme } from '@emotion/react';
 // components
@@ -28,6 +31,7 @@ import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
 import Iconify from 'src/components/iconify/Iconify';
+import EmptyState from 'src/components/empty-state/EmptyState';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +43,7 @@ type Props = {
 
 export default function OrderQuestionnaireForm({ relatives, onValidChange, services }: Props) {
   const router = useRouter();
+  const theme = useTheme();
   const isSmUp = useResponsive('up', 'sm');
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
@@ -454,12 +459,54 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
 
       <StepLabel title="Escolha o Familiar" step="2" />
       <div>
-        <AvatarDropdown
-          onChange={handleChangeRelativeSelected}
-          selected={JSON.stringify(selectedRelative)}
-          options={relatives}
-          selectText="Escolha um familiar"
-        />
+        {relatives.length > 0 ? (
+          <>
+            <AvatarDropdown
+              onChange={handleChangeRelativeSelected}
+              selected={JSON.stringify(selectedRelative)}
+              options={relatives}
+              selectText="Escolha um familiar"
+            />
+            <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
+              <Button
+                variant="text"
+                sx={{
+                  mt: 2,
+                  color: 'primary.main',
+                }}
+                onClick={() => router.push(PATHS.account.relatives)}
+              >
+                Adicionar Familiar
+              </Button>
+            </Stack>
+          </>
+        ) : (
+          <EmptyState
+            icon="bi:person-x-fill"
+            title="Não tem nenhum familiar associado"
+            description="Todos os familiares que adicionar vão ser apresentados nesta página"
+            actionComponent={
+              <Button
+                variant="contained"
+                onClick={() => router.push(PATHS.account.relatives)}
+                sx={{
+                  mt: 3,
+                  px: 4,
+                  width: '90%',
+                  maxWidth: '300px',
+                  bgcolor: 'primary.main',
+                  color: 'common.white',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    color: 'common.white',
+                  },
+                }}
+              >
+                Adicionar familiar
+              </Button>
+            }
+          />
+        )}
 
         <Collapse in={!!selectedRelative} unmountOnExit>
           <Stack spacing={2.5}>

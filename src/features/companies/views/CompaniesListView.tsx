@@ -62,10 +62,13 @@ export default function CompaniesListView() {
       if (!router.isReady) return;
       const currentQuery = router.query;
 
-      const response = await axios.get('/companies/search', {
+      const response = await axios.get('/health-units/agencies/search', {
         params: {
           ...currentQuery,
           documentsPerPage: 5,
+          headers: {
+            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+          },
         },
       });
       setCompanies(response.data.data);
