@@ -14,7 +14,6 @@ import createEmotionServer from '@emotion/server/create-instance';
 // utils
 import createEmotionCache from 'src/utils/createEmotionCache';
 // theme
-import palette from 'src/theme/palette';
 import { primaryFont } from 'src/theme/typography';
 //
 import { MyAppProps } from './_app';
@@ -44,7 +43,6 @@ const Meta = () => (
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="application-name" content="Careplace" />
     <meta name="msapplication-TileColor" content="#ffffff" />
-
 
     <meta name="title" content="Careplace" />
     <meta name="description" content="Careplace Description" />
