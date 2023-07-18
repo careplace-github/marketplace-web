@@ -241,6 +241,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
   }, []);
 
+  // CONFIRM EMAIL
+  const sendConfirmEmailCode = useCallback(async (email: string) => {
+    const response = await axios.post(
+      '/auth/send/confirm-email-code',
+      { email },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  });
+
+  const verifyEmailCode = useCallback(async (email: string, code: string) => {
+    const response = await axios.post(
+      '/auth/verify/confirm-email-code',
+      { email, code },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  });
+
   // CONFIRM_USER
   const confirmUser = useCallback(async (email: string, code: string, password?: string) => {
     const response = await axios.post(
@@ -406,6 +431,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       register,
       confirmationCode,
+      verifyEmailCode,
+      sendConfirmEmailCode,
       confirmUser,
       forgotPassword,
       resetPassword,
@@ -420,6 +447,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
       state.user,
       register,
       confirmationCode,
+      verifyEmailCode,
+      sendConfirmEmailCode,
       confirmUser,
       forgotPassword,
       resetPassword,
