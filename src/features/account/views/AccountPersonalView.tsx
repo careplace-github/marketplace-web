@@ -30,7 +30,7 @@ import { AccountLayout } from '../components';
 export default function AccountPersonalView() {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
-  const { user, updateUser } = useAuthContext();
+  const { user, updateUser, sendConfirmEmailCode } = useAuthContext();
   const router = useRouter();
   console.log('user', user);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
@@ -147,6 +147,15 @@ export default function AccountPersonalView() {
     }
   };
 
+  const handleConfirmEmailClick = async () => {
+    try {
+      await sendConfirmEmailCode(user?.email);
+    } catch (error) {
+      console.log(error);
+    }
+    router.push(PATHS.auth.verifyEmail);
+  };
+
   return (
     <>
       <Snackbar
@@ -235,18 +244,19 @@ export default function AccountPersonalView() {
                   disabled
                   tooltip={{
                     tooltipWidth: '200px',
-                    icon:
-                      user?.email_verified === 'true' ? 'simple-line-icons:check' : 'ep:warning',
+                    icon: user?.email_verified === true ? 'simple-line-icons:check' : 'ep:warning',
                     text:
-                      user?.email_verified === 'true'
+                      user?.email_verified === true
                         ? 'O seu email foi verificado com sucesso!'
                         : 'O seu email não está verificado.',
-                    iconColor: user?.email_verified === 'true' ? 'green' : 'orange',
+                    iconColor: user?.email_verified === true ? 'green' : 'orange',
                   }}
                 />
-                {user?.email_verified === 'false' && (
+                {user?.email_verified !== true && (
                   <Typography
-                    onClick={() => router.push(PATHS.auth.verifyEmail)}
+                    onClick={() => {
+                      handleConfirmEmailClick();
+                    }}
                     sx={{
                       color: 'text.disabled',
                       width: 'fit-content',
@@ -272,13 +282,12 @@ export default function AccountPersonalView() {
                   disabled
                   tooltip={{
                     tooltipWidth: '200px',
-                    icon:
-                      user?.phone_verified === 'true' ? 'simple-line-icons:check' : 'ep:warning',
+                    icon: user?.phone_verified === true ? 'simple-line-icons:check' : 'ep:warning',
                     text:
-                      user?.phone_verified === 'true'
+                      user?.phone_verified === true
                         ? 'O seu telemóvel foi verificado com sucesso!'
                         : 'O seu telemóvel não está verificado.',
-                    iconColor: user?.phone_verified === 'true' ? 'green' : 'orange',
+                    iconColor: user?.phone_verified === true ? 'green' : 'orange',
                   }}
                   onChange={(value: string) => {
                     /**
@@ -304,9 +313,11 @@ export default function AccountPersonalView() {
                     setValue('phoneNumber', value);
                   }}
                 />
-                {user?.phone_verified === 'false' && (
+                {user?.phone_verified !== true && (
                   <Typography
-                    onClick={() => router.push(PATHS.auth.verifyPhone)}
+                    onClick={() => {
+                      router.push(PATHS.auth.verifyPhone);
+                    }}
                     sx={{
                       color: 'text.disabled',
                       width: 'fit-content',
