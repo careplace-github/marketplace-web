@@ -241,6 +241,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     );
   }, []);
 
+  // CONFIRM MOBILE
+  const sendConfirmPhoneCode = useCallback(async (email: string) => {
+    const response = await axios.post(
+      '/auth/send/confirm-phone-code',
+      { email },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  });
+
+  const verifyPhoneCode = useCallback(async (email: string, code: string) => {
+    const response = await axios.post(
+      '/auth/verify/confirm-phone-code',
+      { email, code },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  });
+
   // CONFIRM EMAIL
   const sendConfirmEmailCode = useCallback(async (email: string) => {
     const response = await axios.post(
@@ -432,7 +457,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       register,
       confirmationCode,
       verifyEmailCode,
+      verifyPhoneCode,
       sendConfirmEmailCode,
+      sendConfirmPhoneCode,
       confirmUser,
       forgotPassword,
       resetPassword,
@@ -448,7 +475,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       register,
       confirmationCode,
       verifyEmailCode,
+      verifyPhoneCode,
       sendConfirmEmailCode,
+      sendConfirmPhoneCode,
       confirmUser,
       forgotPassword,
       resetPassword,

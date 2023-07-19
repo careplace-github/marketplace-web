@@ -111,7 +111,13 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal
+      open={open}
+      onClose={() => {
+        setValue('profile_picture', null);
+        onClose({}, 'backdropClick');
+      }}
+    >
       <Box
         sx={{
           outline: 'none',
