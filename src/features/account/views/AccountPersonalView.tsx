@@ -30,7 +30,7 @@ import { AccountLayout } from '../components';
 export default function AccountPersonalView() {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
-  const { user, updateUser, sendConfirmEmailCode } = useAuthContext();
+  const { user, updateUser, sendConfirmEmailCode, sendConfirmPhoneCode } = useAuthContext();
   const router = useRouter();
   console.log('user', user);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
@@ -154,6 +154,15 @@ export default function AccountPersonalView() {
       console.log(error);
     }
     router.push(PATHS.auth.verifyEmail);
+  };
+
+  const handleConfirmPhoneClick = async () => {
+    try {
+      await sendConfirmPhoneCode(user?.email);
+    } catch (error) {
+      console.log(error);
+    }
+    router.push(PATHS.auth.verifyPhone);
   };
 
   return (
@@ -316,7 +325,7 @@ export default function AccountPersonalView() {
                 {user?.phone_verified !== true && (
                   <Typography
                     onClick={() => {
-                      router.push(PATHS.auth.verifyPhone);
+                      handleConfirmPhoneClick();
                     }}
                     sx={{
                       color: 'text.disabled',
