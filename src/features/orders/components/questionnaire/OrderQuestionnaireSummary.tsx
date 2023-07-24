@@ -87,52 +87,9 @@ export default function OrderQuestionnaireSummary({
           {/* <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} /> */}
         </Stack>
       </Box>
-      {/* <Stack sx={{ p: 4, pb: 3 }}>
-        <Stack
-          spacing={2.5}
-          direction={{ xs: 'column', sm: 'row' }}
-          sx={{
-            p: 2.5,
-            borderRadius: 2,
-            color: 'text.disabled',
-            bgcolor: 'background.neutral',
-          }}
-        >
-          <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
-            <Iconify icon="carbon:events" width={24} />
-            <Stack spacing={0.5}>
-              <Typography variant="caption">Departure day</Typography>
-              <FilterGuests
-                startAdornment={null}
-                guests={guests}
-                onDecreaseGuests={onDecreaseGuests}
-                onIncrementGuests={onIncrementGuests}
-                sx={{ height: 'unset', color: 'text.primary' }}
-              />
-            </Stack>
-          </Stack>
-          {isSmUp && <Divider flexItem orientation="vertical" sx={{ borderStyle: 'dashed' }} />}
-          <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
-            <Iconify icon="carbon:calendar" width={24} />
-            <Stack spacing={0.5}>
-              <Typography variant="caption">Guests</Typography>
-              <FilterTime
-                departureDay={departureDay}
-                onChangeDepartureDay={onChangeDepartureDay}
-                sx={{
-                  height: 'unset',
-                  color: 'text.primary',
-                  '& .MuiInputAdornment-root': { display: 'none' },
-                  }}
-              />
-            </Stack>
-          </Stack> */}
-      {/* </Stack> */}
-      {/* </Stack> */}
       <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
       <Stack spacing={3} sx={{ p: 3 }}>
         <LoadingButton
-          type="submit"
           disabled={disabled}
           size="large"
           variant="contained"
