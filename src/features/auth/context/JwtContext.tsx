@@ -252,7 +252,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       }
     );
-  });
+  }, []);
 
   const verifyPhoneCode = useCallback(async (email: string, code: string) => {
     const response = await axios.post(
@@ -264,7 +264,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       }
     );
-  });
+  }, []);
 
   // CONFIRM EMAIL
   const sendConfirmEmailCode = useCallback(async (email: string) => {
@@ -277,7 +277,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       }
     );
-  });
+  }, []);
 
   const verifyEmailCode = useCallback(async (email: string, code: string) => {
     const response = await axios.post(
@@ -289,7 +289,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         },
       }
     );
-  });
+  }, []);
 
   // CONFIRM_USER
   const confirmUser = useCallback(async (email: string, code: string, password?: string) => {
