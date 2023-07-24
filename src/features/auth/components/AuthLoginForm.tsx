@@ -32,7 +32,7 @@ export default function AuthLoginForm() {
 
   const theme = useTheme();
 
-  const { login } = useAuthContext();
+  const { login, confirmationCode } = useAuthContext();
 
   const { pathname, push } = useRouter();
   const router = useRouter();
@@ -79,15 +79,14 @@ export default function AuthLoginForm() {
       await login(data.email, data.password);
       setErrorMessage(undefined);
     } catch (error) {
-      console.error(error);
       if (error.error.message === 'User is not confirmed.') {
         setIsSubmitting(false);
+        await confirmationCode(data.email);
         router.push(
           {
             pathname: PATHS.auth.verifyCode,
             query: {
               email: data.email,
-              resend: true,
             },
           },
           PATHS.auth.verifyCode

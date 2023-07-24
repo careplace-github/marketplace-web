@@ -19,6 +19,7 @@ import { useSnackbar } from 'src/components/snackbar';
 import { useAuthContext } from 'src/contexts';
 // routes
 import { PATHS } from 'src/routes/paths';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -31,12 +32,11 @@ type FormValuesProps = {
   code6: string;
 };
 
-export default function AuthVerifyCodeForm() {
+function EmailVerifyCodeForm() {
   const theme = useTheme();
   const { push } = useRouter();
   const router = useRouter();
-  const { confirmationCode, confirmUser } = useAuthContext();
-  const [emailRecovery, setEmailRecovery] = useState(router.query.email as string | null);
+  const { sendConfirmEmailCode, verifyEmailCode, user } = useAuthContext();
   const [resendAvailable, setResendAvailable] = useState(false);
   // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
   const countdown = useCountdown(new Date(Date.now() + 47000));
@@ -50,8 +50,6 @@ export default function AuthVerifyCodeForm() {
     code4: Yup.string().required('O código é obrigatório.'),
     code5: Yup.string().required('O código é obrigatório.'),
     code6: Yup.string().required('O código é obrigatório.'),
-
-    email: Yup.string().required('O email é obrigatório.').email('O email inserido é inválido.'),
   });
 
   const defaultValues = {
@@ -61,8 +59,6 @@ export default function AuthVerifyCodeForm() {
     code4: '',
     code5: '',
     code6: '',
-
-    email: emailRecovery || '',
   };
 
   const methods = useForm({
@@ -88,18 +84,18 @@ export default function AuthVerifyCodeForm() {
         getValues('code5') +
         getValues('code6');
 
-      await confirmUser(getValues('email'), code);
+      await verifyEmailCode(user?.email, code);
 
-      push(PATHS.auth.login);
+      push(PATHS.account.personal);
     } catch (error) {
       console.error(error);
     }
   };
+
   const onResendCode = async () => {
     try {
-      const email = getValues('email');
-
-      if (!email || email == '' || errors.email) return;
+      const email = user?.email;
+      if (!email || email === '') return;
 
       // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
       countdown.update(new Date(Date.now() + 47000));
@@ -109,7 +105,7 @@ export default function AuthVerifyCodeForm() {
         setResendAvailable(false);
       }, 1000);
 
-      await confirmationCode(email);
+      await sendConfirmEmailCode(email);
 
       // Reset the code inputs
       setValue('code1', '');
@@ -120,26 +116,17 @@ export default function AuthVerifyCodeForm() {
       setValue('code6', '');
 
       // Show success message popup
-      enqueueSnackbar('Code sent successfully!');
+      console.log('code sent successfully');
     } catch (error) {
       // Show error message popup
       console.error(error);
     }
   };
 
-  useEffect(() => {
-    if (router.isReady) {
-      if (router.query.email) {
-        setEmailRecovery(router.query.email as string);
-        setValue('email', router.query.email as string);
-      }
-    }
-  }, [router.isReady, router.query?.email, emailRecovery]);
-
   // Set the resendvaialble to true when the countdown ends
   useEffect(() => {
     // The countdown starts at 00 so we need to check if it's 01 and if the resend is not available yet
-    if (countdown.seconds == '01' && resendAvailable == false) {
+    if (countdown.seconds == '01' && !resendAvailable) {
       // Reset the resend available
 
       // Wait 1 second
@@ -153,10 +140,10 @@ export default function AuthVerifyCodeForm() {
    * Resend the confirmation code
    */
 
-  return (
+  return user?.email ? (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
-        <RHFTextField name="email" label="Email" disabled={!!emailRecovery} />
+        <RHFTextField name="email" label="Email" disabled value={user?.email} />
 
         <RHFCodes keyName="code" inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
 
@@ -229,5 +216,9 @@ export default function AuthVerifyCodeForm() {
         </LoadingButton>
       </Stack>
     </FormProvider>
+  ) : (
+    <LoadingScreen />
   );
 }
+
+export default EmailVerifyCodeForm;
