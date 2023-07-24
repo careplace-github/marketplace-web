@@ -89,7 +89,7 @@ export default function OrderView() {
       try {
         const orderId = router.asPath.split('/').at(2);
         const response = await axios.get(`/customers/orders/home-care/${orderId}`);
-        if (response.data.status === 'payment_pending') {
+        if (response.data.status === 'payment_pending' && orderId) {
           router.push(PATHS.orders.checkout(orderId));
           return;
         }
