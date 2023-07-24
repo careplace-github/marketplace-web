@@ -110,9 +110,9 @@ export default function CheckoutView() {
         });
         setSelectedWeekdays(auxWeekdays);
         console.log('order info:', response.data);
-        fetchCompany(response.data.company._id);
+        fetchCompany(response.data.health_unit._id);
       } catch (error) {
-        if (error.error.type === 'FORBIDDEN') {
+        if (error?.error?.type === 'FORBIDDEN') {
           router.push('/404');
         }
         console.log('error fetching order:', error);
@@ -173,7 +173,7 @@ export default function CheckoutView() {
   const onCheckoutSubmit = async () => {
     const orderId = router.asPath.split('/').at(2);
     try {
-      const response = await axios.post(`/checkout/orders/${orderId}/payment-intent`, {
+      const response = await axios.post(`/payments/orders/${orderId}/subscription`, {
         payment_method_id: selectedCard?.id,
         coupon: discountCode,
         billing_details: {
@@ -188,11 +188,10 @@ export default function CheckoutView() {
           },
         },
       });
-
       router.push(PATHS.orders.checkoutSucess(orderId || ''));
     } catch (error) {
-      console.log('message:', error.error.message);
-      if (error.error.message === 'Order already has a subscription') {
+      console.log('message:', error?.error?.message);
+      if (error?.error?.message === 'Order already has a subscription') {
         setShowSnackbar({
           show: true,
           severity: 'error',
@@ -283,7 +282,7 @@ export default function CheckoutView() {
                 <CheckoutQuestionnaireInfo
                   onPaymentMethodSelect={(card) => setSelectedCard(card)}
                   relatives={userRelatives}
-                  selectedRelative={orderInfo?.relative}
+                  selectedRelative={orderInfo?.patient}
                   checkoutVersion
                   services={availableServices}
                   onValidChange={() => {}}

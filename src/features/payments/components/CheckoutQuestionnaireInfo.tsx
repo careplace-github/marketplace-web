@@ -153,7 +153,8 @@ export default function CheckoutQuestionnaireInfo({
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
-    return response.data;
+    console.log('get cards response', response);
+    return response.data.data;
   }
 
   useEffect(() => {
@@ -646,6 +647,7 @@ export default function CheckoutQuestionnaireInfo({
             />
             <Collapse sx={{ mt: '0px' }} in={openPaymentInfo} unmountOnExit>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                {console.log('cards', CARDS)}
                 <CheckoutPaymentMethod
                   options={CARDS}
                   onPaymentMethodSelect={onPaymentMethodSelect}

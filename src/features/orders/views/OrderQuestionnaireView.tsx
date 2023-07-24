@@ -7,7 +7,14 @@ import { useAuthContext } from 'src/contexts';
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // @mui
-import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import {
+  Snackbar,
+  Alert,
+  Stack,
+  Container,
+  Typography,
+  Unstable_Grid2 as Grid,
+} from '@mui/material';
 // _mock
 import { _tours as _companies } from 'src/_mock';
 // axios
@@ -24,6 +31,7 @@ import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
 import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components';
+import { ISnackbarProps } from 'src/types/snackbar';
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +55,11 @@ export default function OrderQuestionnaireView() {
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [formData, setFormData] = useState<OrderRequestProps>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
   const router = useRouter();
   const { user } = useAuthContext();
 
@@ -121,7 +134,17 @@ export default function OrderQuestionnaireView() {
   const { reset } = methods;
 
   const onSubmit = async (data) => {
-    if (companyInfo) {
+    const canPlaceAnOrder = user?.email_verified && user?.phone_verified;
+    if (!canPlaceAnOrder) {
+      setShowSnackbar({
+        show: true,
+        severity: 'warning',
+        message: 'Para fazer um pedido tem que ter o seu Email e Telémovel verificados.',
+      });
+      setIsSubmitting(false);
+      return;
+    }
+    if (companyInfo && canPlaceAnOrder) {
       setIsSubmitting(true);
       try {
         const response = await axios.post(`/health-units/${companyInfo._id}/orders/home-care`, {
@@ -165,6 +188,34 @@ export default function OrderQuestionnaireView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      {showSnackbar.show && (
+        <Snackbar
+          open={showSnackbar.show}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+        >
+          <Alert
+            onClose={() =>
+              setShowSnackbar({
+                show: false,
+                severity: 'success',
+                message: '',
+              })
+            }
+            severity={showSnackbar.severity}
+            sx={{ width: '100%' }}
+          >
+            {showSnackbar.message}
+          </Alert>
+        </Snackbar>
+      )}
       <Typography variant="h2" sx={{ mb: 5 }}>
         Orçamento
       </Typography>

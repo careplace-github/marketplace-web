@@ -133,9 +133,6 @@ export default function AuthVerifyCodeForm() {
         setEmailRecovery(router.query.email as string);
         setValue('email', router.query.email as string);
       }
-      if (router.query.resend) {
-        onResendCode();
-      }
     }
   }, [router.isReady, router.query?.email, emailRecovery]);
 
