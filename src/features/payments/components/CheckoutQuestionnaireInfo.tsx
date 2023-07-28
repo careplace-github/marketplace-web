@@ -120,7 +120,7 @@ export default function CheckoutQuestionnaireInfo({
     if (user && !isOrderView) {
       let countryLabel = '';
       countries.forEach((item) => {
-        if (item.code === user.address.country) {
+        if (item.code === user?.address?.country) {
           countryLabel = item.label;
         }
       });

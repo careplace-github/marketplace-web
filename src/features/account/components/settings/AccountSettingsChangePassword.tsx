@@ -32,7 +32,7 @@ export default function AccountPersonalView() {
   const { changePassword } = useAuthContext();
 
   const ChangePasswordSchema = Yup.object().shape({
-    oldPassword: Yup.string().required('A Password Antiga é obrigatóri.'),
+    oldPassword: Yup.string().required('A Password Antiga é obrigatória.'),
     newPassword: Yup.string().required('A Nova Password  é obrigatória.'),
     confirmNewPassword: Yup.string()
       .oneOf([Yup.ref('newPassword')], 'As Passwords não coincidem.')

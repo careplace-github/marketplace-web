@@ -63,7 +63,7 @@ export default function RHFPhoneField({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'relative', width: '100%' }}>
           <MuiTelInputStyled
             {...field}
             fullWidth

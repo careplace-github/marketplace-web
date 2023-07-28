@@ -65,19 +65,17 @@ export default function CheckoutSummary({
   let totalValueWithDiscount;
 
   if (discount?.type === 'percentage' && discount.value) {
-    totalValueWithDiscount = `${fCurrency(
-      subtotal / 100 - (subtotal / 100) * (discount.value / 100)
-    )} €`;
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - (subtotal / 100) * discount.value)} €`;
   } else if (discount?.value) {
-    totalValueWithDiscount = `${fCurrency(subtotal / 100 - discount.value / 100)} €`;
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - discount.value)} €`;
   } else {
     totalValueWithDiscount = subtotal;
   }
   const handleSubmitDiscount = async () => {
     try {
       // TODO: check discount code that was submitted
-      const response = await axios.post('/payments/coupons', {
-        coupon: discountCode,
+      const response = await axios.post('/payments/promotion-code/eligibility', {
+        promotion_code: discountCode,
       });
       console.log('discount:', response.data);
       if (response.data.coupon.ammount_off) {
@@ -199,8 +197,8 @@ export default function CheckoutSummary({
                     }
                     value={
                       discount.type === 'percentage'
-                        ? `- ${fCurrency((subtotal / 100) * (discount.value / 100))} €`
-                        : `- ${fCurrency(discount.value / 100)} €`
+                        ? `- ${fCurrency((subtotal / 100) * discount.value)} €`
+                        : `- ${fCurrency(discount.value)} €`
                     }
                   />
                 )}
