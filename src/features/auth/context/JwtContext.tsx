@@ -390,7 +390,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CHANGE_PASSWORD
   const changePassword = useCallback(async (oldPassword: string, newPassword: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/change-password',
       {
         oldPassword,
@@ -420,7 +420,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           }
         )
       ).data;
-
+      console.log('user', user);
+      console.log('updated user', updatedUser);
       setItem('profile_picture', updatedUser.profile_picture);
       setItem('name', updatedUser.name);
       dispatch({
