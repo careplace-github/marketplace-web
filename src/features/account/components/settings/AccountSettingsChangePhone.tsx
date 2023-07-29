@@ -38,7 +38,7 @@ export default function AccountSettingsChangePhone() {
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { changePassword } = useAuthContext();
+  const { sendConfirmPhoneCode, user } = useAuthContext();
 
   const ChangePhoneSchema = Yup.object().shape({
     phoneNumber: Yup.string()
@@ -81,12 +81,16 @@ export default function AccountSettingsChangePhone() {
     formState: { isDirty, errors, isValid },
   } = methods;
 
-  const handleOnSubmit = async () => {
-    setIsSubmitting(true);
+  const sendPhoneCode = async () => {
     try {
-      const data = getValues();
-      // Remove spaces from the phone number
-      const newPhone = data.phoneNumber.replace(/\s/g, '') as string;
+      await sendConfirmPhoneCode(user?.email);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const changeUserPhoneNumber = async (newPhone) => {
+    try {
       await axios.post('/auth/account/change-phone', {
         phone: newPhone,
       });
@@ -98,7 +102,17 @@ export default function AccountSettingsChangePhone() {
       });
       console.log('error', error);
     }
+  };
+
+  const handleOnSubmit = async () => {
+    setIsSubmitting(true);
+    const data = getValues();
+    // Remove spaces from the phone number
+    const newPhone = data.phoneNumber.replace(/\s/g, '') as string;
+    await changeUserPhoneNumber(newPhone);
+    await sendPhoneCode();
     setIsSubmitting(false);
+    router.push(PATHS.auth.verifyPhone);
   };
 
   return (

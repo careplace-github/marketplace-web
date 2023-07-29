@@ -1,8 +1,9 @@
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PATHS } from 'src/routes';
+
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
@@ -12,6 +13,8 @@ import { Box, Avatar, Typography, Stack, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // assets
 import { countries, genders } from 'src/data';
+// axios
+import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import { useRouter } from 'next/router';
@@ -27,7 +30,11 @@ import { AccountLayout } from '../components';
 
 // ----------------------------------------------------------------------
 
-export default function AccountPersonalView() {
+type props = {
+  updatedUser: Object;
+};
+
+export default function AccountPersonalView({ updatedUser }: props) {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
   const { user, updateUser, sendConfirmEmailCode, sendConfirmPhoneCode } = useAuthContext();
@@ -109,6 +116,10 @@ export default function AccountPersonalView() {
     formState: { isSubmitting, isDirty, errors },
   } = methods;
 
+  useEffect(() => {
+    console.log('user', user);
+  }, []);
+
   const onSubmit = async (data: typeof defaultValues) => {
     try {
       if (user) {
@@ -121,21 +132,24 @@ export default function AccountPersonalView() {
         user.address.postal_code = data.zipCode;
         user.address.city = data.city;
         user.address.country = data.country;
-        const status: boolean = await updateUser(user);
-        if (!status) {
-          setShowSnackbar({
-            show: true,
-            severity: 'error',
-            message: 'Algo correu mal, tente novamente.',
-          });
-          return;
-        }
-        setShowSnackbar({
-          show: true,
-          severity: 'success',
-          message: 'Os seus dados foram atualizados com sucesso.',
-        });
-        reset(data);
+        console.log('user prev', user);
+        // const status: boolean = await updateUser(user);
+        const response = await axios.put('/auth/account', user);
+        console.log('response', response);
+        //   if (!status) {
+        //     setShowSnackbar({
+        //       show: true,
+        //       severity: 'error',
+        //       message: 'Algo correu mal, tente novamente.',
+        //     });
+        //     return;
+        //   }
+        //   setShowSnackbar({
+        //     show: true,
+        //     severity: 'success',
+        //     message: 'Os seus dados foram atualizados com sucesso.',
+        //   });
+        //   reset(data);
       }
     } catch (error) {
       setShowSnackbar({
