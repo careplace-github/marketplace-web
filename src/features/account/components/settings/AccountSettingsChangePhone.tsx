@@ -81,20 +81,13 @@ export default function AccountSettingsChangePhone() {
     formState: { isDirty, errors, isValid },
   } = methods;
 
-  const sendPhoneCode = async () => {
-    try {
-      await sendConfirmPhoneCode(user?.email);
-    } catch (error) {
-      console.log('error', error);
-    }
-  };
-
   const changeUserPhoneNumber = async (newPhone) => {
     try {
       await axios.post('/auth/account/change-phone', {
         phone: newPhone,
       });
       fetchUser();
+      router.push(PATHS.auth.verifyPhone);
     } catch (error) {
       setShowSnackbar({
         show: true,
@@ -110,9 +103,12 @@ export default function AccountSettingsChangePhone() {
     const data = getValues();
     // Remove spaces from the phone number
     const newPhone = data.phoneNumber.replace(/\s/g, '') as string;
-    await changeUserPhoneNumber(newPhone);
+    try {
+      await changeUserPhoneNumber(newPhone);
+    } catch (error) {
+      console.error('error', error);
+    }
     setIsSubmitting(false);
-    router.push(PATHS.auth.verifyPhone);
   };
 
   return (

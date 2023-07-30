@@ -89,9 +89,9 @@ export default function OrderView() {
       try {
         const orderId = router.asPath.split('/').at(2);
         const response = await axios.get(`/customers/orders/home-care/${orderId}`);
-        console.log('sub id', response.data.stripe_information.subscription_id);
+
         if (
-          response.data.status === 'payment_pending' &&
+          response.data.status === 'pending_payment' &&
           !response.data.stripe_information.subscription_id &&
           orderId
         ) {
@@ -116,13 +116,11 @@ export default function OrderView() {
           });
         }
         setSelectedWeekdays(auxWeekdays);
-        console.log('order info:', response.data);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         if (error.error.type === 'FORBIDDEN') {
           router.push('/404');
         }
-        console.log('error fetching order:', error);
       }
     };
     if (router.isReady) {
