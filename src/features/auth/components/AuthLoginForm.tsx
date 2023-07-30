@@ -82,15 +82,12 @@ export default function AuthLoginForm() {
       if (error.error.message === 'User is not confirmed.') {
         setIsSubmitting(false);
         await confirmationCode(data.email);
-        router.push(
-          {
-            pathname: PATHS.auth.verifyCode,
-            query: {
-              email: data.email,
-            },
+        router.push({
+          pathname: PATHS.auth.verifyCode,
+          query: {
+            email: data.email,
           },
-          PATHS.auth.verifyCode
-        );
+        });
         return;
       }
       setIsSubmitting(false);

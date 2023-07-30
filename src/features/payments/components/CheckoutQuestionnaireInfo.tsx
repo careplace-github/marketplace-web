@@ -128,9 +128,9 @@ export default function CheckoutQuestionnaireInfo({
         return {
           ...prev,
           address: {
-            city: user.address.city || '',
-            postal_code: user.address.postal_code || '',
-            street: user.address.street || '',
+            city: user.address?.city || '',
+            postal_code: user.address?.postal_code || '',
+            street: user.address?.street || '',
             country: countryLabel,
           },
           name: user.name || '',

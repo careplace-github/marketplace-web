@@ -17,6 +17,7 @@ import {
   InputAdornment,
   TablePagination,
   FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 // types
 import { IOrderProps } from 'src/types/order';
@@ -76,6 +77,7 @@ export default function AccountOrdersView() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [ordersFetched, setOrdersFetched] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState<boolean>(true);
   const [orders, setOrders] = useState([]);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -111,6 +113,7 @@ export default function AccountOrdersView() {
       } catch (error) {
         console.error(error);
       }
+      setOrdersLoading(false);
     };
     fetchOrders();
     handleSort(sortBy);
@@ -155,7 +158,7 @@ export default function AccountOrdersView() {
           ))}
         </Tabs>
 
-        {orders?.length > 0 ? (
+        {orders?.length > 0 && (
           <TableContainer
             sx={{
               overflow: 'unset',
@@ -210,7 +213,21 @@ export default function AccountOrdersView() {
               </Table>
             </Scrollbar>
           </TableContainer>
-        ) : (
+        )}
+        {orders?.length === 0 && ordersLoading && (
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '200px',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+        {orders?.length === 0 && !ordersLoading && (
           <EmptyState
             icon="fluent-mdl2:reservation-orders"
             title="Não tem nenhum pedido"
