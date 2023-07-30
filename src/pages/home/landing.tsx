@@ -5,6 +5,9 @@ import MainLayout from 'src/layouts/main';
 // features
 import { GuestGuard } from 'src/features/auth';
 import { LandingView } from 'src/features/home';
+// router
+import { useRouter } from 'next/router';
+import { PATHS } from 'src/routes';
 
 // ----------------------------------------------------------------------
 
@@ -13,15 +16,22 @@ LandingPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLa
 // ----------------------------------------------------------------------
 
 export default function LandingPage() {
-  return (
-    <>
-      <Head>
-        <title>Careplace</title>
-      </Head>
+  const redirectToCompanies = true;
+  const router = useRouter();
 
-      <GuestGuard>
-        <LandingView />
-      </GuestGuard>
-    </>
+  router.push(PATHS.companies.root);
+
+  return (
+    !redirectToCompanies && (
+      <>
+        <Head>
+          <title>Careplace</title>
+        </Head>
+
+        <GuestGuard>
+          <LandingView />
+        </GuestGuard>
+      </>
+    )
   );
 }

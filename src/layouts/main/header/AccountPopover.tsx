@@ -11,6 +11,8 @@ import { useTheme } from '@mui/material/styles';
 import Iconify from 'src/components/iconify';
 // routes
 import { PATHS } from 'src/routes/paths';
+// utils
+import { truncateString } from 'src/utils/functions';
 // components
 import { CustomAvatar } from 'src/components/custom-avatar';
 import { useSnackbar } from 'src/components/snackbar';
@@ -107,7 +109,7 @@ export default function AccountPopover() {
         >
           <CustomAvatar src={user?.profile_picture} type="normal" />
           <Typography sx={{ color: 'text.primary', fontSize: '1rem', fontWeight: '600' }} noWrap>
-            {user?.name}
+            {truncateString(user?.name, 20)}
           </Typography>
           <Iconify
             icon="ic:baseline-keyboard-arrow-down"

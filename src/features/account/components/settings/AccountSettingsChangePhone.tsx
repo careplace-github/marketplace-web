@@ -38,7 +38,7 @@ export default function AccountSettingsChangePhone() {
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { sendConfirmPhoneCode, user } = useAuthContext();
+  const { sendConfirmPhoneCode, user, fetchUser } = useAuthContext();
 
   const ChangePhoneSchema = Yup.object().shape({
     phoneNumber: Yup.string()
@@ -94,6 +94,7 @@ export default function AccountSettingsChangePhone() {
       await axios.post('/auth/account/change-phone', {
         phone: newPhone,
       });
+      fetchUser();
     } catch (error) {
       setShowSnackbar({
         show: true,
@@ -110,7 +111,6 @@ export default function AccountSettingsChangePhone() {
     // Remove spaces from the phone number
     const newPhone = data.phoneNumber.replace(/\s/g, '') as string;
     await changeUserPhoneNumber(newPhone);
-    await sendPhoneCode();
     setIsSubmitting(false);
     router.push(PATHS.auth.verifyPhone);
   };

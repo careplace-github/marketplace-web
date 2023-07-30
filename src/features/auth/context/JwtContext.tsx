@@ -197,6 +197,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [storageAvailable]);
 
+  const fetchUser = useCallback(async () => {
+    const response = await axios.get('/auth/account');
+    const user = response.data;
+
+    setItem('profile_picture', user.profile_picture);
+    setItem('name', user.name);
+    dispatch({
+      type: Types.INITIAL,
+      payload: {
+        isAuthenticated: true,
+        user,
+      },
+    });
+  }, []);
+
   /**
    * Refresh the auth context
    * This will c
@@ -228,7 +243,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CONFIRMATION_CODE
   const confirmationCode = useCallback(async (email: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/send/confirmation-code',
       {
         email,
@@ -255,15 +270,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const verifyPhoneCode = useCallback(async (email: string, code: string) => {
-    const response = await axios.post(
-      '/auth/verify/confirm-phone-code',
-      { email, code },
-      {
-        headers: {
-          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-        },
-      }
-    );
+    await axios.post('/auth/verify/confirm-phone-code', { email, code });
+    fetchUser();
   }, []);
 
   // CONFIRM EMAIL
@@ -407,21 +415,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // UPDATE_USER
   const updateUser = useCallback(async (user: AuthUserType): Promise<boolean> => {
     try {
-      const updatedUser = (
-        await axios.put(
-          '/auth/account',
-          {
-            user,
-          },
-          {
-            headers: {
-              'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-            },
-          }
-        )
-      ).data;
-      console.log('user', user);
-      console.log('updated user', updatedUser);
+      await axios.put('/auth/account', user);
+      const updatedUser = (await axios.get('/auth/account')).data;
       setItem('profile_picture', updatedUser.profile_picture);
       setItem('name', updatedUser.name);
       dispatch({
@@ -457,6 +452,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       register,
       confirmationCode,
+      fetchUser,
       verifyEmailCode,
       verifyPhoneCode,
       sendConfirmEmailCode,
@@ -475,6 +471,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       state.user,
       register,
       confirmationCode,
+      fetchUser,
       verifyEmailCode,
       verifyPhoneCode,
       sendConfirmEmailCode,

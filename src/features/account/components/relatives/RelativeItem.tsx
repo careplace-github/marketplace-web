@@ -100,10 +100,9 @@ export default function RelativeItem({ relative, onEditClick, onDeleteRelative }
           <Avatar
             src={relative.profile_picture}
             sx={{
-              width: isMdUp ? 80 : 60,
-              height: isMdUp ? 80 : 60,
+              width: 60,
+              height: 60,
               flexShrink: 0,
-              // bgcolor: 'background.neutral',
             }}
           />
         </Stack>

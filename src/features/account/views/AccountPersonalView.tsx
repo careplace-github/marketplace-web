@@ -38,6 +38,8 @@ export default function AccountPersonalView({ updatedUser }: props) {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
   const { user, updateUser, sendConfirmEmailCode, sendConfirmPhoneCode } = useAuthContext();
+  const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
+  const [customIsValid, setCustomIsValid] = useState<boolean>(true);
   const router = useRouter();
   console.log('user', user);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
@@ -53,12 +55,13 @@ export default function AccountPersonalView({ updatedUser }: props) {
     emailAddress: Yup.string().required('O email é obrigatório.'),
     birthdate: Yup.string().nullable(),
     gender: Yup.string().nullable(),
-    streetAddress: Yup.string().nullable(),
-    city: Yup.string().nullable(),
+    streetAddress: Yup.string().nullable().max(100, 'O número máximo de caracteres é 100'),
+    city: Yup.string().nullable().max(15, 'O número máximo de caracteres é 15'),
     zipCode: Yup.string()
       .nullable()
       .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
         if (value) {
+          console.log('value', value);
           const showErrorMessage = value.includes('-') && value.length === 8;
           return showErrorMessage;
         }
@@ -104,7 +107,6 @@ export default function AccountPersonalView({ updatedUser }: props) {
   const methods = useForm<typeof defaultValues>({
     mode: 'onChange',
     resolver: yupResolver(AccountPersonalSchema),
-
     defaultValues,
   });
 
@@ -113,43 +115,40 @@ export default function AccountPersonalView({ updatedUser }: props) {
     handleSubmit,
     setValue,
     getValues,
-    formState: { isSubmitting, isDirty, errors },
+    formState: { isSubmitting, isDirty, isValid },
   } = methods;
-
-  useEffect(() => {
-    console.log('user', user);
-  }, []);
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
       if (user) {
-        user.name = `${data.firstName} ${data.lastName}`;
+        user.name = `${data.firstName.split(' ')[0]} ${data.lastName.split(' ')[0]}`;
         user.email = data.emailAddress;
         user.phone = data.phoneNumber;
         user.birthdate = data.birthdate;
-        user.gender = data.gender;
+        if (data.gender) {
+          user.gender = data.gender;
+        }
         user.address.street = data.streetAddress;
         user.address.postal_code = data.zipCode;
         user.address.city = data.city;
         user.address.country = data.country;
         console.log('user prev', user);
-        // const status: boolean = await updateUser(user);
-        const response = await axios.put('/auth/account', user);
-        console.log('response', response);
-        //   if (!status) {
-        //     setShowSnackbar({
-        //       show: true,
-        //       severity: 'error',
-        //       message: 'Algo correu mal, tente novamente.',
-        //     });
-        //     return;
-        //   }
-        //   setShowSnackbar({
-        //     show: true,
-        //     severity: 'success',
-        //     message: 'Os seus dados foram atualizados com sucesso.',
-        //   });
-        //   reset(data);
+        const status: boolean = await updateUser(user);
+        if (!status) {
+          setShowSnackbar({
+            show: true,
+            severity: 'error',
+            message: 'Algo correu mal, tente novamente.',
+          });
+          return;
+        }
+        setShowSnackbar({
+          show: true,
+          severity: 'success',
+          message: 'Os seus dados foram atualizados com sucesso.',
+        });
+        reset(data);
+        setCustomIsDirty(false);
       }
     } catch (error) {
       setShowSnackbar({
@@ -256,9 +255,41 @@ export default function AccountPersonalView({ updatedUser }: props) {
               display="grid"
               gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             >
-              <RHFTextField name="firstName" label="Nome" />
+              <RHFTextField
+                name="firstName"
+                label="Nome"
+                onChange={(e) => {
+                  const { value } = e.target;
 
-              <RHFTextField name="lastName" label="Apelido" />
+                  if (!/^[a-zA-Z-]*$/.test(value)) {
+                    return;
+                  }
+
+                  if (value.length > 20) {
+                    return;
+                  }
+
+                  setValue('firstName', value);
+                  setCustomIsDirty(true);
+                }}
+              />
+
+              <RHFTextField
+                name="lastName"
+                label="Apelido"
+                onChange={(e) => {
+                  const { value } = e.target;
+
+                  if (!/^[a-zA-Z-]*$/.test(value)) {
+                    return;
+                  }
+                  if (value.length > 20) {
+                    return;
+                  }
+                  setValue('lastName', value);
+                  setCustomIsDirty(true);
+                }}
+              />
 
               <Box>
                 <RHFTextField
@@ -334,6 +365,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                     }
 
                     setValue('phoneNumber', value);
+                    setCustomIsDirty(true);
                   }}
                 />
                 {user?.phone_verified !== true && (
@@ -418,7 +450,13 @@ export default function AccountPersonalView({ updatedUser }: props) {
                     }
                   }
 
+                  if (value.length === 8 && value[4] === '-') {
+                    setCustomIsValid(true);
+                  } else {
+                    setCustomIsValid(false);
+                  }
                   setValue('zipCode', value);
+                  setCustomIsDirty(true);
                 }}
               />
 
@@ -446,7 +484,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                   },
                 }}
                 color="inherit"
-                disabled={!isDirty}
+                disabled={(!isDirty && !customIsDirty) || !isValid || !customIsValid}
                 size="large"
                 type="submit"
                 variant="contained"
