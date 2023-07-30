@@ -113,7 +113,6 @@ function EmailVerifyCodeForm() {
       setValue('code6', '');
 
       // Show success message popup
-      console.log('code sent successfully');
     } catch (error) {
       // Show error message popup
       console.error(error);

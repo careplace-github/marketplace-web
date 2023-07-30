@@ -66,9 +66,8 @@ export default function OrderQuestionnaireView() {
   const fetchUserRelatives = async () => {
     const response = await axios.get('customers/patients');
     setUserRelatives(response.data.data || []);
-    console.log('advance');
+
     setRelativesLoading(false);
-    console.log(response.data.data);
   };
 
   useEffect(() => {
@@ -175,10 +174,6 @@ export default function OrderQuestionnaireView() {
     }
     setIsFormValid(valid);
   };
-
-  useEffect(() => {
-    console.log('data to submit:', formData);
-  }, [formData]);
 
   return !loading && !relativesLoading ? (
     <Container

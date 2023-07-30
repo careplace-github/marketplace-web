@@ -201,10 +201,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   };
 
   useEffect(() => {
-    console.log('enhancedData:', enhancedData);
-  }, [enhancedData]);
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchbarRef.current && !searchbarRef.current.contains(event.target)) {
         setOpenOptions(false);
@@ -234,7 +230,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   }, [router.isReady]);
 
   useEffect(() => {
-    console.log('router path', router.asPath);
     setFilters((prev) => {
       return {
         ...prev,
@@ -266,10 +261,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       handleSearch();
     }
   }, [filters]);
-
-  useEffect(() => {
-    console.log('filters applied:', filters.applied);
-  }, [filters.applied]);
 
   const handleClearClick = () => {
     setValue('');

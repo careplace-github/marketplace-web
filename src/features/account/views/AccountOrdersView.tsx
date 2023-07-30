@@ -44,7 +44,7 @@ const TABS = [
   { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Novos', value: 'new' },
   { label: 'Ativos', value: 'active' },
-  { label: 'Pagamentos Pendentes', value: 'payment_pending' },
+  { label: 'Pagamentos Pendentes', value: 'pending_payment' },
   { label: 'Concluídos', value: 'completed' },
   { label: 'Cancelados', value: 'cancelled' },
 ];
@@ -107,7 +107,7 @@ export default function AccountOrdersView() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get('/customers/orders/home-care');
-        console.log('orders', response.data.data);
+
         setOrders(response.data.data);
         setOrdersFetched(response.data.data);
       } catch (error) {

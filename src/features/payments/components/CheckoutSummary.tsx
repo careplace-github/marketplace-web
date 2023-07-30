@@ -77,7 +77,6 @@ export default function CheckoutSummary({
       const response = await axios.post('/payments/promotion-code/eligibility', {
         promotion_code: discountCode,
       });
-      console.log('discount:', response.data);
       if (response.data.coupon.ammount_off) {
         setDiscount({ type: 'amount', value: response.data.coupon.ammount_off });
       }

@@ -37,7 +37,7 @@ const statusOptions = [
   { label: 'Novo', value: 'new' },
   { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Ativo', value: 'active' },
-  { label: 'Pagamento Pendente', value: 'payment_pending' },
+  { label: 'Pagamento Pendente', value: 'pending_payment' },
   { label: 'Concluído', value: 'completed' },
   { label: 'Cancelado', value: 'cancelled' },
 ];
@@ -141,7 +141,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
             (order.status === 'new' && 'info') ||
             (order.status === 'accepted' && 'info') ||
             (order.status === 'active' && 'success') ||
-            (order.status === 'payment_pending' && 'warning') ||
+            (order.status === 'pending_payment' && 'warning') ||
             (order.status === 'cancelled' && 'error') ||
             (order.status === 'completed' && 'default') ||
             'default'

@@ -63,7 +63,6 @@ export default function ReviewPageView({ update }: Props) {
       const companyId = router.asPath.split('/')[2];
       const fetchCompany = async () => {
         const response = await axios.get(`/health-units/${companyId}`);
-        console.log('company info:', response.data);
         setCompanyInfo(response.data);
       };
 

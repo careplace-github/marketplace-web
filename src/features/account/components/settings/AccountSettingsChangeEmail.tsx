@@ -63,7 +63,6 @@ export default function AccountSettingsChangeEmail() {
     setIsSubmitting(true);
     try {
       const data = getValues();
-      console.log('data', data);
     } catch (error) {
       setShowSnackbar({
         show: true,

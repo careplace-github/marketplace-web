@@ -16,8 +16,6 @@ export default function ReviewProgress({ ratings, ...other }: ReviewProgressProp
     .map((rating) => rating.number)
     .reduce((accumulator: number, curr: number) => accumulator + curr);
 
-  console.log('ratings:', ratings);
-
   return (
     <RadioGroup>
       <Stack spacing={2} {...other}>

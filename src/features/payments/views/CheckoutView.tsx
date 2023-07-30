@@ -74,7 +74,6 @@ export default function CheckoutView() {
     try {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       console.log('error fetching relatives:', error);
     }
@@ -109,7 +108,6 @@ export default function CheckoutView() {
           auxWeekdays.push(item.week_day);
         });
         setSelectedWeekdays(auxWeekdays);
-        console.log('order info:', response.data);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         if (error?.error?.type === 'FORBIDDEN') {
@@ -190,7 +188,6 @@ export default function CheckoutView() {
       });
       router.push(PATHS.orders.checkoutSucess(orderId || ''));
     } catch (error) {
-      console.log('message:', error?.error?.message);
       if (error?.error?.message === 'Order already has a subscription') {
         setShowSnackbar({
           show: true,

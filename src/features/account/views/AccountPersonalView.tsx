@@ -41,7 +41,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
   const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
   const [customIsValid, setCustomIsValid] = useState<boolean>(true);
   const router = useRouter();
-  console.log('user', user);
+
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
@@ -61,7 +61,6 @@ export default function AccountPersonalView({ updatedUser }: props) {
       .nullable()
       .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
         if (value) {
-          console.log('value', value);
           const showErrorMessage = value.includes('-') && value.length === 8;
           return showErrorMessage;
         }
@@ -88,8 +87,6 @@ export default function AccountPersonalView({ updatedUser }: props) {
         return true;
       }),
   });
-
-  console.log(user);
 
   const defaultValues = {
     firstName: user?.name ? user.name.split(' ')[0] : null,
@@ -132,7 +129,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
         user.address.postal_code = data.zipCode;
         user.address.city = data.city;
         user.address.country = data.country;
-        console.log('user prev', user);
+
         const status: boolean = await updateUser(user);
         if (!status) {
           setShowSnackbar({

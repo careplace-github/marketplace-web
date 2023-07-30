@@ -153,7 +153,6 @@ export default function CheckoutQuestionnaireInfo({
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
-    console.log('get cards response', response);
     return response.data.data;
   }
 

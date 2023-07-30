@@ -216,8 +216,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
       target: { value },
     } = event;
     const newRelative = value as string;
-    console.log(newRelative);
-    console.log(JSON.parse(newRelative));
+
     setSelectedRelative(JSON.parse(newRelative));
   };
 
@@ -239,10 +238,6 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
     newDate.setDate(newDate.getDate() - 1);
     return newDate;
   }
-
-  useEffect(() => {
-    console.log(schedule);
-  }, [schedule]);
 
   return (
     <Stack spacing={5}>
