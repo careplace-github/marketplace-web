@@ -53,6 +53,7 @@ export default function OrderView() {
   const [orderInfo, setOrderInfo] = useState<any>();
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
   const [discountCode, setDiscountCode] = useState<string>();
+  const [previousPaymentMethod, setPreviousPaymentMethod] = useState<string>();
   const router = useRouter();
 
   const { user } = useAuthContext();
@@ -116,7 +117,7 @@ export default function OrderView() {
           });
         }
         setSelectedWeekdays(auxWeekdays);
-        setSelectedCard(response.data.stripe_information?.payment_method || null);
+        setPreviousPaymentMethod(response.data.stripe_information?.payment_method || null);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         if (error.error.type === 'FORBIDDEN') {
@@ -199,7 +200,10 @@ export default function OrderView() {
               {userRelatives && (
                 <CheckoutQuestionnaireInfo
                   isOrderView
-                  onPaymentMethodSelect={(card) => setSelectedCard(card)}
+                  onPaymentMethodSelect={(card) => {
+                    setSelectedCard(card);
+                    setPreviousPaymentMethod(null);
+                  }}
                   relatives={userRelatives}
                   selectedRelative={orderInfo?.patient}
                   checkoutVersion
@@ -213,7 +217,7 @@ export default function OrderView() {
                   startDate={new Date(orderInfo?.schedule_information?.start_date)}
                   onBillingDetailsChange={handleBillingDetailsChange}
                   orderStatus={orderInfo.status}
-                  selectedCard={selectedCard}
+                  previousPaymentMethod={previousPaymentMethod}
                 />
               )}
             </Stack>

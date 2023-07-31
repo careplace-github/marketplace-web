@@ -21,13 +21,13 @@ type OptionProps = {
 type Props = {
   options: OptionProps[];
   onPaymentMethodSelect: Function;
-  selectedCard?: string;
+  previousPaymentMethod?: string;
 };
 
 export default function CheckoutPaymentMethod({
   options,
   onPaymentMethodSelect,
-  selectedCard,
+  previousPaymentMethod,
 }: Props) {
   const { control } = useFormContext();
 
@@ -46,12 +46,14 @@ export default function CheckoutPaymentMethod({
             {options.map((option) => (
               <>
                 {console.log('option', option)}
+                {console.log('prev payment method', previousPaymentMethod)}
                 <OptionItem
                   key={option.value}
                   option={option}
                   onPaymentMethodSelect={onPaymentMethodSelect}
                   selected={
-                    field.value === option.value || selectedCard === JSON.parse(option.value).id
+                    field.value === option.value ||
+                    previousPaymentMethod === JSON.parse(option.value).id
                   }
                 />
               </>

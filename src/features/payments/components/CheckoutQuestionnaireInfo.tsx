@@ -68,7 +68,7 @@ type Props = {
   isOrderView?: boolean;
   orderBillingDetails?: BillingDetailsProps;
   orderStatus?: string;
-  selectedCard?: string;
+  previousPaymentMethod?: string;
 };
 
 type PaymentMethodProps = {
@@ -88,7 +88,7 @@ export default function CheckoutQuestionnaireInfo({
   selectedWeekdays,
   selectedRecurrency,
   schedule,
-  selectedCard,
+  previousPaymentMethod,
   startDate,
   selectedServices,
   onPaymentMethodSelect,
@@ -650,7 +650,7 @@ export default function CheckoutQuestionnaireInfo({
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CheckoutPaymentMethod
                   options={CARDS}
-                  selectedCard={selectedCard}
+                  previousPaymentMethod={previousPaymentMethod}
                   onPaymentMethodSelect={onPaymentMethodSelect}
                 />
                 <Divider sx={{ mt: '20px', mb: '20px' }} />
@@ -666,10 +666,7 @@ export default function CheckoutQuestionnaireInfo({
                   </Button>
                 </Stack>
                 <Collapse in={openAddCardForm} unmountOnExit>
-                  <AddNewCardForm
-                    selectedCard={selectedCard}
-                    onAddCard={(result) => handleAddCard(result)}
-                  />
+                  <AddNewCardForm onAddCard={(result) => handleAddCard(result)} />
                 </Collapse>
               </Box>
             </Collapse>
