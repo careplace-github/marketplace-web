@@ -116,6 +116,7 @@ export default function OrderView() {
           });
         }
         setSelectedWeekdays(auxWeekdays);
+        setSelectedCard(response.data.stripe_information?.payment_method || null);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         if (error.error.type === 'FORBIDDEN') {
@@ -212,6 +213,7 @@ export default function OrderView() {
                   startDate={new Date(orderInfo?.schedule_information?.start_date)}
                   onBillingDetailsChange={handleBillingDetailsChange}
                   orderStatus={orderInfo.status}
+                  selectedCard={selectedCard}
                 />
               )}
             </Stack>
