@@ -44,19 +44,15 @@ export default function CheckoutPaymentMethod({
             gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
           >
             {options.map((option) => (
-              <>
-                {console.log('option', option)}
-                {console.log('prev payment method', previousPaymentMethod)}
-                <OptionItem
-                  key={option.value}
-                  option={option}
-                  onPaymentMethodSelect={onPaymentMethodSelect}
-                  selected={
-                    field.value === option.value ||
-                    previousPaymentMethod === JSON.parse(option.value).id
-                  }
-                />
-              </>
+              <OptionItem
+                key={option.value}
+                option={option}
+                onPaymentMethodSelect={onPaymentMethodSelect}
+                selected={
+                  field.value === option.value ||
+                  previousPaymentMethod === JSON.parse(option.value).id
+                }
+              />
             ))}
           </Box>
         </RadioGroup>
