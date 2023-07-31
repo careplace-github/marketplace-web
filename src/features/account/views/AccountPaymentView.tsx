@@ -51,6 +51,38 @@ export default function AccountPaymentView() {
     });
   }, []);
 
+  const handleDeleteCard = async (card) => {
+    try {
+      await axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
+        getCards().then((data) => {
+          setCARDS(data);
+        });
+        setShowSnackbar({
+          show: true,
+          severity: 'success',
+          message: 'O cartão foi eliminado com sucesso.',
+        });
+      });
+    } catch (error) {
+      if (
+        error.error?.message ===
+        'You cannot delete a payment method that is associated with an active order.'
+      ) {
+        setShowSnackbar({
+          show: true,
+          severity: 'warning',
+          message: 'Não é possivel eliminar um cartão que esteja associado a um pedido.',
+        });
+        return;
+      }
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente novamente.',
+      });
+    }
+  };
+
   return (
     <>
       <Snackbar
@@ -141,18 +173,7 @@ export default function AccountPaymentView() {
                   <AccountPaymentCard
                     key={card.id}
                     card={card}
-                    handleDelete={() => {
-                      axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
-                        getCards().then((data) => {
-                          setCARDS(data);
-                        });
-                        setShowSnackbar({
-                          show: true,
-                          severity: 'success',
-                          message: 'O cartão foi eliminado com sucesso.',
-                        });
-                      });
-                    }}
+                    handleDelete={() => handleDeleteCard(card)}
                   />
                 ))}
 
