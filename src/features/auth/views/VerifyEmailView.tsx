@@ -25,7 +25,6 @@ const VerifyEmailView = () => {
           justifyContent: 'center',
         }}
       >
-        {/* TODO: Add email related image */}
         <Image
           alt="email inbox"
           src="/assets/icons/undraw_email.svg"
