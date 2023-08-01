@@ -26,6 +26,7 @@ import { PATHS } from 'src/routes';
 // components
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import Page404 from 'src/pages/404';
 //
 import { useAuthContext } from 'src/contexts';
 import CheckoutSummary from '../components/CheckoutSummary';
@@ -173,7 +174,7 @@ export default function CheckoutView() {
     try {
       const response = await axios.post(`/payments/orders/${orderId}/subscription`, {
         payment_method_id: selectedCard?.id,
-        coupon: discountCode,
+        promotion_code: discountCode,
         billing_details: {
           name: billingDetails?.name,
           email: user?.email,
@@ -297,12 +298,14 @@ export default function CheckoutView() {
           <Grid xs={12} md={5}>
             {companyInfo && (
               <CheckoutSummary
+                hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
                 handleSubmit={onCheckoutSubmit}
                 disabled={submitButtonDisabled}
                 subtotal={orderInfo?.order_total}
                 company={companyInfo}
                 isSubmitting={isSubmitting}
                 onDiscountApplied={(code) => setDiscountCode(code)}
+                orderStatus={orderInfo.status}
               />
             )}
           </Grid>

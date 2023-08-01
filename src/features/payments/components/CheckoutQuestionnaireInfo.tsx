@@ -99,13 +99,13 @@ export default function CheckoutQuestionnaireInfo({
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
   const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(!!isOrderView);
   const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>({
-    name: '',
-    nif: '',
+    name: orderBillingDetails?.name || '',
+    nif: orderBillingDetails?.nif || '',
     address: {
-      street: '',
-      postal_code: '',
-      city: '',
-      country: '',
+      street: orderBillingDetails?.address.street || '',
+      postal_code: orderBillingDetails?.address.postal_code || '',
+      city: orderBillingDetails?.address.city || '',
+      country: orderBillingDetails?.address.country || '',
     },
   });
   const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(!!isOrderView);
@@ -142,16 +142,8 @@ export default function CheckoutQuestionnaireInfo({
   }, [user]);
 
   useEffect(() => {
-    if (!isOrderView) {
-      onBillingDetailsChange(billingDetails);
-    }
+    onBillingDetailsChange(billingDetails);
   }, [billingDetails]);
-
-  useEffect(() => {
-    if (isOrderView && !!orderBillingDetails) {
-      setBillingDetails(orderBillingDetails);
-    }
-  }, [isOrderView, orderBillingDetails]);
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
@@ -473,9 +465,6 @@ export default function CheckoutQuestionnaireInfo({
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.name}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -486,9 +475,6 @@ export default function CheckoutQuestionnaireInfo({
                       sx={{ flex: 1 }}
                     />
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.nif}
                       onChange={(e) => {
                         const { value } = e.target;
@@ -540,9 +526,6 @@ export default function CheckoutQuestionnaireInfo({
                   </Stack>
                   <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.street}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -553,9 +536,6 @@ export default function CheckoutQuestionnaireInfo({
                       sx={{ flex: 1 }}
                     />
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.postal_code}
                       onChange={(e) => {
                         const { value } = e.target;
@@ -603,9 +583,6 @@ export default function CheckoutQuestionnaireInfo({
                   </Stack>
                   <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.city}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -616,9 +593,6 @@ export default function CheckoutQuestionnaireInfo({
                       sx={{ flex: 1 }}
                     />
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.country}
                       onChange={(e) =>
                         setBillingDetails((prev) => {

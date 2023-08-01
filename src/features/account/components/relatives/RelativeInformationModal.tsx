@@ -57,6 +57,7 @@ export default function RelativeInformationModal({
   const [fileData, setFileData] = useState<FormData>();
   const [imageChanged, setImageChanged] = useState<boolean>(false);
   const [isSubmitting, setIsSubmiting] = useState(false);
+  const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
 
   const defaultValues =
     relative && action === 'edit'
@@ -189,7 +190,7 @@ export default function RelativeInformationModal({
             _id: relative._id,
             profile_picture: uploadedFileURL,
             name: `${data.firstName} ${data.lastName}`,
-            phone_number: data.phoneNumber,
+            phone: data.phoneNumber,
             birthdate: data.birthday,
             address: {
               street: data.streetAddress,
@@ -222,7 +223,7 @@ export default function RelativeInformationModal({
         const createRelative: IRelativeProps = {
           profile_picture: uploadedFileURL,
           name: `${data.firstName} ${data.lastName}`,
-          phone_number: data.phoneNumber,
+          phone: data.phoneNumber,
           birthdate: data.birthday,
           address: {
             street: data.streetAddress,
@@ -331,7 +332,6 @@ export default function RelativeInformationModal({
                 /**
                  * Portuguese Number Validation
                  */
-
                 // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
                 if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
                   // (eg: +351 9123456780 -> +351 912 345 678)
@@ -339,6 +339,7 @@ export default function RelativeInformationModal({
                     11,
                     14
                   )}`;
+                  setCustomIsDirty(true);
                   setValue('phoneNumber', newValue);
                   return;
                 }
@@ -347,7 +348,7 @@ export default function RelativeInformationModal({
                 if (value.length > 16) {
                   return;
                 }
-
+                setCustomIsDirty(true);
                 setValue('phoneNumber', value);
               }}
             />
@@ -427,6 +428,7 @@ export default function RelativeInformationModal({
                 }
 
                 setValue('zipCode', value);
+                setCustomIsDirty(true);
               }}
             />
 
@@ -469,7 +471,11 @@ export default function RelativeInformationModal({
                 },
               }}
               color="inherit"
-              disabled={action === 'add' ? !isValid : (!isValid || !isDirty) && !imageChanged}
+              disabled={
+                action === 'add'
+                  ? !isValid
+                  : (!isValid || (!isDirty && !customIsDirty)) && !imageChanged
+              }
               size="large"
               type="submit"
               variant="contained"
