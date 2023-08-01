@@ -5,7 +5,14 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // router
 import { useRouter } from 'next/router';
 // @mui
-import { Stack, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import {
+  Stack,
+  Container,
+  Typography,
+  Unstable_Grid2 as Grid,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // types
@@ -54,6 +61,12 @@ export default function OrderView() {
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
   const [discountCode, setDiscountCode] = useState<string>();
   const [previousPaymentMethod, setPreviousPaymentMethod] = useState<string>();
+  const [disableSubmitButton, setDisableSubmitButton] = useState<boolean>(false);
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
   const router = useRouter();
 
   const { user } = useAuthContext();
@@ -118,6 +131,7 @@ export default function OrderView() {
         }
         setSelectedWeekdays(auxWeekdays);
         setPreviousPaymentMethod(response.data.stripe_information?.payment_method || null);
+        setSelectedCard(response.data.stripe_information?.payment_method || null);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         if (error.error.type === 'FORBIDDEN') {
@@ -181,6 +195,36 @@ export default function OrderView() {
     setBillingDetails(details);
   };
 
+  const updateOrderPayments = async () => {
+    try {
+      await axios.put(`/payments/orders/${orderInfo._id}/subscription/payment-method`, {
+        payment_method: selectedCard.id,
+      });
+      setShowSnackbar({
+        show: true,
+        severity: 'success',
+        message: 'Informações de Pagamento atualizadas com sucesso.',
+      });
+      await axios.post(`payments/orders/${orderInfo._id}/subscription/charge`, {
+        payment_method_id: selectedCard?.id,
+        promotion_code: discountCode,
+        billing_details: {
+          name: billingDetails?.name,
+          email: user?.email,
+          tax_id: billingDetails?.nif,
+          address: {
+            street: billingDetails?.address.street,
+            city: billingDetails?.address.city,
+            country: billingDetails?.address.country,
+            postal_code: billingDetails?.address.postal_code,
+          },
+        },
+      });
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
   return !loading && !relativesLoading ? (
     <Container
       sx={{
@@ -189,6 +233,32 @@ export default function OrderView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: 'success',
+            message: '',
+          })
+        }
+      >
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
       <Typography variant="h2" sx={{ mb: 5, mt: 10 }}>
         Pedido
       </Typography>
@@ -226,11 +296,14 @@ export default function OrderView() {
           <Grid xs={12} md={5}>
             {companyInfo && (
               <CheckoutSummary
+                handleSubmit={updateOrderPayments}
                 isOrderView
+                disabled={disableSubmitButton}
                 orderStatus={orderInfo.status}
                 subtotal={orderInfo?.order_total}
                 company={companyInfo}
                 onDiscountApplied={(code) => setDiscountCode(code)}
+                hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
               />
             )}
           </Grid>

@@ -13,6 +13,7 @@ import {
 // utils
 import { fCurrency } from 'src/utils/formatNumber';
 import kinshipDegrees from 'src/data/kinshipDegrees';
+import { truncateString } from 'src/utils/functions';
 // hooks
 import { useResponsive } from 'src/hooks';
 import React, { useState } from 'react';
@@ -119,7 +120,7 @@ export default function RelativeItem({ relative, onEditClick, onDeleteRelative }
             {' '}
             <Stack sx={{ p: 2, width: '45%', minWidth: '0px' }}>
               <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
-                {relative.address.street}
+                {truncateString(relative.address.street, 40)}
               </Typography>
             </Stack>
             <Stack sx={{ width: '15%', pl: 2, fontSize: '14px', fontWeight: '400' }}>

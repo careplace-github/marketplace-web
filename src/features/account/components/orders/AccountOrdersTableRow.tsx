@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 //  utils
 import { getRecurrencyText, getScheduleText } from 'src/utils/orderUtils';
-
 // components
 import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
@@ -101,9 +100,9 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
           </Stack>
 
           <Stack sx={{ p: 2, width: '100%', flex: !isMdUp ? 2 : undefined }}>
-            <Typography variant="subtitle2">{order.patient.name}</Typography>
+            <Typography variant="subtitle2">{order.patient?.name}</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {getKinshipDegree(order.patient.kinship)}
+              {getKinshipDegree(order.patient?.kinship)}
             </Typography>
           </Stack>
         </Stack>

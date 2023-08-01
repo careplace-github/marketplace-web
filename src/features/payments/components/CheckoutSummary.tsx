@@ -40,6 +40,7 @@ type Props = {
   handleSubmit?: MouseEventHandler<HTMLButtonElement>;
   onDiscountApplied: Function;
   isOrderView?: boolean;
+  hasSubsciptionId?: boolean;
 };
 
 export default function CheckoutSummary({
@@ -51,6 +52,7 @@ export default function CheckoutSummary({
   isSubmitting,
   onDiscountApplied,
   isOrderView,
+  hasSubsciptionId,
 }: Props) {
   const theme = useTheme();
   const { palette } = theme;
@@ -254,10 +256,12 @@ export default function CheckoutSummary({
                 },
               }}
             >
-              Confirmar Pagamento
+              {orderStatus === 'pending_payment' && !hasSubsciptionId
+                ? 'Confirmar Pagamento'
+                : 'Atualizar Pagamento'}
             </LoadingButton>
             <Typography variant="caption" sx={{ opacity: 0.72 }}>
-              * Assim que efetuar o pagamento seu pedido, irá receber um email com o comprovativo
+              * Assim que efetuar o pagamento do seu pedido, irá receber um email com o comprovativo
               associado{' '}
             </Typography>
           </Stack>
