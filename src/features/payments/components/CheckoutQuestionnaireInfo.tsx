@@ -246,7 +246,7 @@ export default function CheckoutQuestionnaireInfo({
                     Serviços
                   </Typography>
                   <FilterServices
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     services={services}
                     filterServices={selectedServices}
                     onChangeServices={(keyword: IServiceProps[]) => {}}
@@ -265,7 +265,7 @@ export default function CheckoutQuestionnaireInfo({
                     Dias da semana
                   </Typography>
                   <FilterWeekdays
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     filterWeekdays={selectedWeekdays}
                     onChangeWeekdays={(event: SelectChangeEvent<number[]>) => {}}
                   />
@@ -277,7 +277,7 @@ export default function CheckoutQuestionnaireInfo({
                     Recorrência
                   </Typography>
                   <FilterRecurrency
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     filterRecurrency={selectedRecurrency}
                     onChangeRecurrency={(event: SelectChangeEvent<number>) => {}}
                   />
@@ -287,7 +287,7 @@ export default function CheckoutQuestionnaireInfo({
                     Data de ínicio
                   </Typography>
                   <DatePicker
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     slotProps={{
                       textField: {
                         hiddenLabel: true,
@@ -322,7 +322,7 @@ export default function CheckoutQuestionnaireInfo({
 
                         <Stack gap="10px" direction="row">
                           <TimePicker
-                            readOnly={checkoutVersion}
+                            readOnly={checkoutVersion && orderStatus !== 'new'}
                             ampm={false}
                             sx={{ flex: 1 }}
                             value={item.start ? new Date(item.start) : new Date()}
@@ -344,7 +344,7 @@ export default function CheckoutQuestionnaireInfo({
                             -
                           </Typography>
                           <TimePicker
-                            readOnly={checkoutVersion}
+                            readOnly={checkoutVersion && orderStatus !== 'new'}
                             skipDisabled
                             ampm={false}
                             sx={{ flex: 1 }}
@@ -372,7 +372,7 @@ export default function CheckoutQuestionnaireInfo({
         <Collapse sx={{ mt: '0px' }} in={openRelativeInfo} unmountOnExit>
           <div>
             <AvatarDropdown
-              readOnly={checkoutVersion}
+              readOnly={checkoutVersion && orderStatus !== 'new'}
               selected={JSON.stringify(selectedRelative)}
               options={relatives}
               selectText="Escolha um familiar"

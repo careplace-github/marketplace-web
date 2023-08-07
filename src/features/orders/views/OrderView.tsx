@@ -31,6 +31,8 @@ import isObjectEmpty from 'src/utils/functions';
 import { useAuthContext } from 'src/contexts';
 import CheckoutSummary from 'src/features/payments/components/CheckoutSummary';
 import CheckoutQuestionnaireInfo from 'src/features/payments/components/CheckoutQuestionnaireInfo';
+import { fullAddress } from 'src/_mock/assets';
+import { OrderQuestionnaireForm, OrderQuestionnaireSummary } from '../components';
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +64,9 @@ export default function OrderView() {
   const [discountCode, setDiscountCode] = useState<string>();
   const [previousPaymentMethod, setPreviousPaymentMethod] = useState<string>();
   const [disableSubmitButton, setDisableSubmitButton] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
+  const [dataToSubmit, setDataToSubmit] = useState<any>();
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
@@ -84,6 +89,31 @@ export default function OrderView() {
   useEffect(() => {
     fetchUserRelatives();
   }, []);
+
+  useEffect(() => {
+    console.log('verify');
+    if (billingDetails) {
+      const { address, tax_id } = billingDetails;
+      const { city, country, postal_code, street } = address;
+      console.log(tax_id, city, country, postal_code, street, customIsDirty);
+      if (
+        !customIsDirty ||
+        !city ||
+        !country ||
+        !postal_code ||
+        postal_code.length !== 8 ||
+        !street ||
+        (tax_id && tax_id.length !== 11)
+      ) {
+        console.log('disable');
+        setDisableSubmitButton(true);
+        return;
+      }
+      setDisableSubmitButton(false);
+    } else {
+      setDisableSubmitButton(true);
+    }
+  }, [billingDetails, selectedCard, customIsDirty]);
 
   const fetchCompany = async (companyId) => {
     try {
@@ -193,20 +223,44 @@ export default function OrderView() {
 
   const handleBillingDetailsChange = (details) => {
     setBillingDetails(details);
+    setCustomIsDirty(true);
   };
 
   const updateOrderPayments = async () => {
     try {
-      await axios.put(`/payments/orders/${orderInfo._id}/subscription/payment-method`, {
+      await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
         payment_method: selectedCard.id,
+      });
+      await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`, {
+        billing_details: {
+          name: billingDetails?.name,
+          email: user?.email,
+          tax_id: billingDetails?.nif,
+          address: {
+            street: billingDetails?.address.street,
+            city: billingDetails?.address.city,
+            country: billingDetails?.address.country,
+            postal_code: billingDetails?.address.postal_code,
+          },
+        },
       });
       setShowSnackbar({
         show: true,
         severity: 'success',
         message: 'Informações de Pagamento atualizadas com sucesso.',
       });
-      await axios.post(`payments/orders/${orderInfo._id}/subscription/charge`, {
-        payment_method_id: selectedCard?.id,
+    } catch (error) {
+      console.log('error', error);
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente novamente.',
+      });
+      return;
+    }
+    try {
+      await axios.post(`payments/orders/home-care/${orderInfo._id}/subscription/charge`, {
+        payment_method: selectedCard?.id,
         promotion_code: discountCode,
         billing_details: {
           name: billingDetails?.name,
@@ -223,6 +277,32 @@ export default function OrderView() {
     } catch (error) {
       console.log('error', error);
     }
+  };
+
+  const handleValidChange = (valid, data) => {
+    setDisableSubmitButton(!valid);
+    setDataToSubmit(data);
+  };
+
+  const onSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      console.log('submit', dataToSubmit);
+      await axios.put(`/customers/orders/home-care/${orderInfo._id}`, dataToSubmit);
+      setShowSnackbar({
+        show: true,
+        severity: 'success',
+        message: 'O seu pedido foi atualizado com sucesso.',
+      });
+    } catch (error) {
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente novamente',
+      });
+    }
+    setDisableSubmitButton(true);
+    setIsSubmitting(false);
   };
 
   return !loading && !relativesLoading ? (
@@ -267,11 +347,12 @@ export default function OrderView() {
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
-              {userRelatives && (
+              {userRelatives && orderInfo.status !== 'new' && (
                 <CheckoutQuestionnaireInfo
                   isOrderView
                   onPaymentMethodSelect={(card) => {
                     setSelectedCard(card);
+                    setCustomIsDirty(true);
                     setPreviousPaymentMethod(null);
                   }}
                   relatives={userRelatives}
@@ -290,11 +371,20 @@ export default function OrderView() {
                   previousPaymentMethod={previousPaymentMethod}
                 />
               )}
+
+              {userRelatives && orderInfo.status === 'new' && (
+                <OrderQuestionnaireForm
+                  relatives={userRelatives}
+                  orderInfo={orderInfo || null}
+                  services={availableServices}
+                  onValidChange={handleValidChange}
+                />
+              )}
             </Stack>
           </Grid>
 
           <Grid xs={12} md={5}>
-            {companyInfo && (
+            {companyInfo && orderInfo.status !== 'new' && (
               <CheckoutSummary
                 handleSubmit={updateOrderPayments}
                 isOrderView
@@ -304,6 +394,15 @@ export default function OrderView() {
                 company={companyInfo}
                 onDiscountApplied={(code) => setDiscountCode(code)}
                 hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
+              />
+            )}
+            {companyInfo && orderInfo.status === 'new' && (
+              <OrderQuestionnaireSummary
+                handleSubmit={onSubmit}
+                disabled={disableSubmitButton}
+                company={companyInfo}
+                updateVersion
+                isSubmitting={isSubmitting}
               />
             )}
           </Grid>

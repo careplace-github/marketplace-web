@@ -39,9 +39,15 @@ type Props = {
   services: IServiceProps[];
   relatives: IRelativeProps[];
   onValidChange: Function;
+  orderInfo?: any;
 };
 
-export default function OrderQuestionnaireForm({ relatives, onValidChange, services }: Props) {
+export default function OrderQuestionnaireForm({
+  relatives,
+  onValidChange,
+  services,
+  orderInfo,
+}: Props) {
   const router = useRouter();
   const theme = useTheme();
   const isSmUp = useResponsive('up', 'sm');
@@ -103,7 +109,49 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const handleChangeServices = (keyword: IServiceProps[]) => {
     setFilterServices(keyword);
+    console.log('services', keyword);
   };
+
+  function areDifferentDays(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() !== date2.getFullYear() ||
+      date1.getMonth() !== date2.getMonth() ||
+      date1.getDate() !== date2.getDate()
+    );
+  }
+
+  const mapWeekdays = (schedule_info) => {
+    console.log('schedule', schedule_info);
+    const auxWeekdays: number[] = [];
+    const auxSchedule: any[] = schedule;
+    schedule_info.forEach((day) => {
+      console.log('weekday', day.week_day);
+      auxWeekdays.push(day.week_day);
+      const isNightService = areDifferentDays(new Date(day.start), new Date(day.end));
+      auxSchedule[day.week_day - 1] = {
+        week_day: day.week_day,
+        start: new Date(day.start),
+        end: new Date(day.end),
+        nightService: isNightService,
+        valid: true,
+      };
+    });
+    setSchedule(auxSchedule);
+    setFilterWeekdays(auxWeekdays);
+  };
+
+  useEffect(() => {
+    if (orderInfo) {
+      console.log('order Info', orderInfo);
+      setSelectedRelative(orderInfo.patient);
+      setStartDate(new Date(orderInfo.schedule_information.start_date));
+      setFilterRecurrency(orderInfo.schedule_information.recurrency);
+      setFilterServices(orderInfo.services);
+      mapWeekdays(orderInfo.schedule_information.schedule);
+    } else {
+      console.log('there is not order info');
+    }
+  }, [orderInfo]);
 
   useEffect(() => {
     let counter: number = 0;
@@ -206,6 +254,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
       removeFromSchedule(toRemove);
     }
     setFilterWeekdays(newFilter);
+    console.log('weekdays', newFilter);
   };
 
   const handleChangeRelativeSelected: (
@@ -218,6 +267,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
     const newRelative = value as string;
 
     setSelectedRelative(JSON.parse(newRelative));
+    console.log(JSON.parse(newRelative));
   };
 
   const handleChangeRecurrency = (event: SelectChangeEvent<number>) => {
@@ -343,9 +393,11 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                       />
                     </Stack>
                     <Stack gap="10px" direction="row">
+                      {/* Start time */}
                       <TimePicker
                         ampm={false}
                         sx={{ flex: 1 }}
+                        value={schedule[item - 1].start ? new Date(schedule[item - 1].start) : null}
                         onChange={(value) => {
                           const startHour = value as Date;
                           const prevState = schedule[weekdayItem.value - 1];
@@ -379,10 +431,13 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                       >
                         -
                       </Typography>
+                      {/* End time */}
+                      {console.log('item', item)}
                       <TimePicker
                         skipDisabled
                         ampm={false}
                         sx={{ flex: 1 }}
+                        value={schedule[item - 1].end ? new Date(schedule[item - 1].end) : null}
                         onChange={(value) => {
                           const prevState = schedule[weekdayItem.value - 1];
 
