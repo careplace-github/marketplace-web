@@ -172,8 +172,8 @@ export default function CheckoutView() {
   const onCheckoutSubmit = async () => {
     const orderId = router.asPath.split('/').at(2);
     try {
-      const response = await axios.post(`/payments/orders/${orderId}/subscription`, {
-        payment_method_id: selectedCard?.id,
+      const response = await axios.post(`/payments/orders/home-care/${orderId}/subscription`, {
+        payment_method: selectedCard?.id,
         promotion_code: discountCode,
         billing_details: {
           name: billingDetails?.name,
