@@ -42,11 +42,10 @@ type Location = {
 };
 
 export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
-  const { pathname, push, query } = useRouter();
+  const { push, query } = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const searchbarRef = useRef<HTMLDivElement | null>();
   const router = useRouter();
-  const [searchInputValue, setSearchInputValue] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [openOptions, setOpenOptions] = useState<boolean>(false);
   const [filters, setFilters] = useState<FiltersProps>({

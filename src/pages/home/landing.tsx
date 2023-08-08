@@ -1,5 +1,7 @@
 // next
 import Head from 'next/head';
+// react
+import { useEffect } from 'react';
 // layouts
 import MainLayout from 'src/layouts/main';
 // features
@@ -19,19 +21,25 @@ export default function LandingPage() {
   const redirectToCompanies = true;
   const router = useRouter();
 
-  router.push(PATHS.companies.root);
+  useEffect(() => {
+    if (redirectToCompanies) {
+      router.push(PATHS.companies.root);
+    }
+  }, [redirectToCompanies]);
 
   return (
-    !redirectToCompanies && (
-      <>
-        <Head>
-          <title>Careplace</title>
-        </Head>
+    <>
+      {!redirectToCompanies && (
+        <>
+          <Head>
+            <title>Careplace</title>
+          </Head>
 
-        <GuestGuard>
-          <LandingView />
-        </GuestGuard>
-      </>
-    )
+          <GuestGuard>
+            <LandingView />
+          </GuestGuard>
+        </>
+      )}
+    </>
   );
 }

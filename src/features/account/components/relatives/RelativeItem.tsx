@@ -1,24 +1,12 @@
 // @mui
-import {
-  Stack,
-  Popover,
-  Box,
-  Divider,
-  TextField,
-  IconButton,
-  Typography,
-  Avatar,
-  MenuItem,
-} from '@mui/material';
+import { Stack, Popover, IconButton, Typography, Avatar, MenuItem } from '@mui/material';
 // utils
-import { fCurrency } from 'src/utils/formatNumber';
 import kinshipDegrees from 'src/data/kinshipDegrees';
 import { truncateString } from 'src/utils/functions';
 // hooks
 import { useResponsive } from 'src/hooks';
 import React, { useState } from 'react';
 // components
-import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import { IRelativeProps } from 'src/types/relative';
 

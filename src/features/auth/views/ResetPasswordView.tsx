@@ -1,23 +1,19 @@
 // react
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 // next
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
 // @mui
-import { Link, Typography, Box } from '@mui/material';
+import { Link, Typography } from '@mui/material';
 // routes
 import { PATHS } from 'src/routes/paths';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar'; //
 import { AuthResetPasswordForm } from '../components';
 
 // ----------------------------------------------------------------------
 
 export default function ResetPasswordView() {
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <>
       <Image
@@ -36,7 +32,7 @@ export default function ResetPasswordView() {
         Por favor escreva o código abaixo para definir a sua nova password.
       </Typography>
 
-      <AuthResetPasswordForm  />
+      <AuthResetPasswordForm />
 
       <Link
         component={NextLink}

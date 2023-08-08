@@ -70,7 +70,7 @@ export default function AccountPersonalView() {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, isDirty, errors },
+    formState: { isSubmitting, isDirty },
   } = methods;
 
   const onSubmit = async (data: typeof defaultValues) => {

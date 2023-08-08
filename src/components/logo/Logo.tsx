@@ -4,7 +4,6 @@ import { forwardRef } from 'react';
 import NextLink from 'next/link';
 // @mui
 import { Box, BoxProps, Link } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 

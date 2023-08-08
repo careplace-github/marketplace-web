@@ -1,8 +1,7 @@
 import * as Yup from 'yup';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
@@ -34,7 +33,7 @@ type FormValuesProps = {
 };
 
 export default function AuthRegisterForm() {
-  const { pathname, push } = useRouter();
+  const { push } = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 

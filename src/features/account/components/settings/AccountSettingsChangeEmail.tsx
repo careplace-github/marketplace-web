@@ -7,18 +7,13 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // types
 import { ISnackbarProps } from 'src/types/snackbar';
 // routes
-import { useRouter } from 'next/router';
-import { PATHS } from 'src/routes';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Typography, Stack, InputAdornment, IconButton, Snackbar, Alert } from '@mui/material';
+import { Box, Typography, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-// contexts
-import { useAuthContext } from 'src/contexts';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // components
-import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
@@ -26,15 +21,12 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 export default function AccountSettingsChangeEmail() {
   const isMdUp = useResponsive('up', 'md');
   const theme = useTheme();
-  const router = useRouter();
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const { changePassword } = useAuthContext();
 
   const ChangePasswordSchema = Yup.object().shape({
     newEmail: Yup.string()
@@ -53,23 +45,20 @@ export default function AccountSettingsChangeEmail() {
   });
 
   const {
-    reset,
-    handleSubmit,
     getValues,
-    formState: { isDirty, errors, isValid },
+    formState: { isDirty, isValid },
   } = methods;
 
   const handleOnSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const data = getValues();
+      getValues();
     } catch (error) {
       setShowSnackbar({
         show: true,
         severity: 'error',
         message: 'Algo correu mal, tente novamente.',
       });
-      console.log('error', error);
     }
     setIsSubmitting(false);
   };

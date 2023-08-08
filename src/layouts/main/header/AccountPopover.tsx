@@ -1,11 +1,9 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // next
 import { useRouter } from 'next/router';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
-import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Iconify from 'src/components/iconify';
@@ -55,7 +53,6 @@ const OPTIONS = [
 export default function AccountPopover() {
   const { user, logout } = useAuthContext();
   const router = useRouter();
-  const theme = useTheme();
 
   const { enqueueSnackbar } = useSnackbar();
 
