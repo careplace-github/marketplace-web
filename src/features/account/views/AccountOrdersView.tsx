@@ -1,27 +1,21 @@
 import { useEffect, useState } from 'react';
 // @mui
-import { DatePicker } from '@mui/x-date-pickers';
 import {
   Box,
   Tab,
   Tabs,
   Table,
-  Stack,
-  Switch,
   TableRow,
   TableBody,
   TableCell,
-  TextField,
   Typography,
   TableContainer,
-  InputAdornment,
   TablePagination,
-  FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 // types
 import { IOrderProps } from 'src/types/order';
 // components
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import EmptyState from 'src/components/empty-state/EmptyState';
 // lib
@@ -43,7 +37,7 @@ const TABS = [
   { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Novos', value: 'new' },
   { label: 'Ativos', value: 'active' },
-  { label: 'Pagamentos Pendentes', value: 'payment_pending' },
+  { label: 'Pagamentos Pendentes', value: 'pending_payment' },
   { label: 'Concluídos', value: 'completed' },
   { label: 'Cancelados', value: 'cancelled' },
 ];
@@ -76,6 +70,7 @@ export default function AccountOrdersView() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [ordersFetched, setOrdersFetched] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState<boolean>(true);
   const [orders, setOrders] = useState([]);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -105,12 +100,13 @@ export default function AccountOrdersView() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get('/customers/orders/home-care');
-        console.log('orders', response.data.data);
+
         setOrders(response.data.data);
         setOrdersFetched(response.data.data);
       } catch (error) {
         console.error(error);
       }
+      setOrdersLoading(false);
     };
     fetchOrders();
     handleSort(sortBy);
@@ -155,7 +151,7 @@ export default function AccountOrdersView() {
           ))}
         </Tabs>
 
-        {orders?.length > 0 ? (
+        {orders?.length > 0 && (
           <TableContainer
             sx={{
               overflow: 'unset',
@@ -210,7 +206,21 @@ export default function AccountOrdersView() {
               </Table>
             </Scrollbar>
           </TableContainer>
-        ) : (
+        )}
+        {orders?.length === 0 && ordersLoading && (
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '200px',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+        {orders?.length === 0 && !ordersLoading && (
           <EmptyState
             icon="fluent-mdl2:reservation-orders"
             title="Não tem nenhum pedido"

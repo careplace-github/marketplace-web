@@ -23,7 +23,7 @@ export default function AccountPersonalPage() {
         <title>Conta | Careplace</title>
       </Head>
 
-      <AuthGuard>{user?.email && <AccountPersonalView />}</AuthGuard>
+      <AuthGuard>{user?.email && <AccountPersonalView updatedUser={user} />}</AuthGuard>
     </>
   );
 }

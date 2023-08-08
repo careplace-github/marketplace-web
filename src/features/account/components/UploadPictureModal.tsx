@@ -24,7 +24,6 @@ type FormValuesProps = {
 
 const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
-  const [resetImage, setResetImage] = useState<boolean>(false);
   const { user, updateUser } = useAuthContext();
   const isMdUp = useResponsive('up', 'md');
   const [fileData, setFileData] = useState<FormData>();

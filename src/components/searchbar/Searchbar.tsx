@@ -42,11 +42,10 @@ type Location = {
 };
 
 export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
-  const { pathname, push, query } = useRouter();
+  const { push, query } = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const searchbarRef = useRef<HTMLDivElement | null>();
   const router = useRouter();
-  const [searchInputValue, setSearchInputValue] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [openOptions, setOpenOptions] = useState<boolean>(false);
   const [filters, setFilters] = useState<FiltersProps>({
@@ -201,10 +200,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   };
 
   useEffect(() => {
-    console.log('enhancedData:', enhancedData);
-  }, [enhancedData]);
-
-  useEffect(() => {
     const handleClickOutside = (event) => {
       if (searchbarRef.current && !searchbarRef.current.contains(event.target)) {
         setOpenOptions(false);
@@ -234,7 +229,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   }, [router.isReady]);
 
   useEffect(() => {
-    console.log('router path', router.asPath);
     setFilters((prev) => {
       return {
         ...prev,
@@ -266,10 +260,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       handleSearch();
     }
   }, [filters]);
-
-  useEffect(() => {
-    console.log('filters applied:', filters.applied);
-  }, [filters.applied]);
 
   const handleClearClick = () => {
     setValue('');

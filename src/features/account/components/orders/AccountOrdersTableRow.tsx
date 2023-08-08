@@ -2,22 +2,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // @mui
-import {
-  Popover,
-  Divider,
-  TableRow,
-  MenuItem,
-  TableCell,
-  IconButton,
-  Stack,
-  Avatar,
-  Typography,
-} from '@mui/material';
+import { TableRow, TableCell, Stack, Avatar, Typography } from '@mui/material';
 //  utils
 import { getRecurrencyText, getScheduleText } from 'src/utils/orderUtils';
-
 // components
-import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 import { IOrderProps } from 'src/types/order';
 import { IServiceProps } from 'src/types/utils';
@@ -37,7 +25,7 @@ const statusOptions = [
   { label: 'Novo', value: 'new' },
   { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Ativo', value: 'active' },
-  { label: 'Pagamento Pendente', value: 'payment_pending' },
+  { label: 'Pagamento Pendente', value: 'pending_payment' },
   { label: 'Concluído', value: 'completed' },
   { label: 'Cancelado', value: 'cancelled' },
 ];
@@ -56,9 +44,6 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
   const order = row;
   const router = useRouter();
 
-  const [open, setOpen] = useState<HTMLButtonElement | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
   const isMdUp = useResponsive('up', 'md');
 
   const [statusLabel, setStatusLabel] = useState(
@@ -70,7 +55,6 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
   }, [order.status]);
 
   const handleViewClick = (orderSelected) => {
-    setAnchorEl(null);
     // redirect to view order page
     router.push(PATHS.orders.view(order._id));
   };
@@ -101,9 +85,9 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
           </Stack>
 
           <Stack sx={{ p: 2, width: '100%', flex: !isMdUp ? 2 : undefined }}>
-            <Typography variant="subtitle2">{order.patient.name}</Typography>
+            <Typography variant="subtitle2">{order.patient?.name}</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {getKinshipDegree(order.patient.kinship)}
+              {getKinshipDegree(order.patient?.kinship)}
             </Typography>
           </Stack>
         </Stack>
@@ -141,7 +125,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
             (order.status === 'new' && 'info') ||
             (order.status === 'accepted' && 'info') ||
             (order.status === 'active' && 'success') ||
-            (order.status === 'payment_pending' && 'warning') ||
+            (order.status === 'pending_payment' && 'warning') ||
             (order.status === 'cancelled' && 'error') ||
             (order.status === 'completed' && 'default') ||
             'default'

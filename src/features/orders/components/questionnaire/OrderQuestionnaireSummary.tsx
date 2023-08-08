@@ -21,12 +21,14 @@ type Props = {
   disabled: boolean;
   isSubmitting: boolean;
   handleSubmit: MouseEventHandler<HTMLButtonElement>;
+  updateVersion?: boolean;
 };
 
 export default function OrderQuestionnaireSummary({
   handleSubmit,
   company,
   disabled,
+  updateVersion,
   isSubmitting,
 }: Props) {
   const theme = useTheme();
@@ -106,11 +108,13 @@ export default function OrderQuestionnaireSummary({
             },
           }}
         >
-          Pedir Orçamento
+          {updateVersion ? 'Atualizar Pedido' : 'Pedir Orçamento'}
         </LoadingButton>
+
         <Typography variant="caption" sx={{ opacity: 0.72 }}>
-          * Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendo
-          totalmente gratuíto.
+          {updateVersion
+            ? '* Ao atualizar o seu pedido será feita uma nova solicitação de orçamento.'
+            : '* Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendototalmente gratuíto.'}
         </Typography>
       </Stack>
     </Card>

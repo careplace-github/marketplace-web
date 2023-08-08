@@ -49,8 +49,6 @@ export default function CompanyDetailReviews({
     fetchReviewEligibilty();
   }, []);
 
-  console.log('reviews in:', reviews);
-
   const handleChangeSort = (newValue: string) => {
     onChangeSort(newValue);
   };

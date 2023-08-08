@@ -166,7 +166,6 @@ export default function CompanyDetailView() {
           if (availableService._id === item && availableService.type === 'normal') {
             aux.push(availableService.name);
           } else if (availableService._id === item && availableService.type === 'special') {
-            console.log('IS SPECIAL');
             auxSpecials.push(availableService);
           }
         });
@@ -182,7 +181,6 @@ export default function CompanyDetailView() {
           }
         });
       });
-      console.log(allCompanyAvailableServices);
       setCompanyAvailableServices(allCompanyAvailableServices);
     }
     setServicesLoading(false);
@@ -191,8 +189,6 @@ export default function CompanyDetailView() {
   if (loading || servicesLoading || companiesLoading) {
     return <LoadingScreen />;
   }
-
-  console.log('services: ', companyServices);
 
   const handleGoBackClick = () => {
     if (router.isReady) {
@@ -222,7 +218,6 @@ export default function CompanyDetailView() {
             <CustomBreadcrumbs
               sx={{ mb: 0 }}
               links={[
-                { name: 'Home', href: '/' },
                 { name: 'Empresas SAD', href: '/' },
                 { name: companyInfo.business_profile.name },
               ]}

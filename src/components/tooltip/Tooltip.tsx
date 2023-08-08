@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 // components
 import { SxProps } from '@mui/system';
-import { Tooltip as MuiTooltip, Box } from '@mui/material';
+import { Tooltip as MuiTooltip } from '@mui/material';
 import Iconify from '../iconify/Iconify';
 
 type TooltipProps = {

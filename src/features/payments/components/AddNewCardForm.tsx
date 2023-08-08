@@ -60,12 +60,6 @@ function AddNewCardForm({ onAddCard }: Props) {
     formState: { errors, isDirty, isValid },
   } = methods;
 
-  useEffect(() => {
-    console.log('errors:', errors);
-    console.log('is dirty:', isDirty);
-    console.log('is valid:', isValid);
-  }, [errors, isDirty, isValid]);
-
   const handleSaveNewCard = async () => {
     try {
       setIsSubmitting(true);
@@ -118,13 +112,7 @@ function AddNewCardForm({ onAddCard }: Props) {
         },
       }}
     >
-      <FormProvider
-        key="checkout_add_new_card"
-        methods={methods}
-        onSubmit={() => {
-          console.log('hello');
-        }}
-      >
+      <FormProvider key="checkout_add_new_card" methods={methods}>
         <Stack direction="column" spacing={2} sx={{ pb: 2 }}>
           <RHFTextField
             name="cardHolder"

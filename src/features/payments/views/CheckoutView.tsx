@@ -26,6 +26,7 @@ import { PATHS } from 'src/routes';
 // components
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import Page404 from 'src/pages/404';
 //
 import { useAuthContext } from 'src/contexts';
 import CheckoutSummary from '../components/CheckoutSummary';
@@ -74,7 +75,6 @@ export default function CheckoutView() {
     try {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       console.log('error fetching relatives:', error);
     }
@@ -109,7 +109,6 @@ export default function CheckoutView() {
           auxWeekdays.push(item.week_day);
         });
         setSelectedWeekdays(auxWeekdays);
-        console.log('order info:', response.data);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         if (error?.error?.type === 'FORBIDDEN') {
@@ -173,9 +172,9 @@ export default function CheckoutView() {
   const onCheckoutSubmit = async () => {
     const orderId = router.asPath.split('/').at(2);
     try {
-      const response = await axios.post(`/payments/orders/${orderId}/subscription`, {
-        payment_method_id: selectedCard?.id,
-        coupon: discountCode,
+      const response = await axios.post(`/payments/orders/home-care/${orderId}/subscription`, {
+        payment_method: selectedCard?.id,
+        promotion_code: discountCode,
         billing_details: {
           name: billingDetails?.name,
           email: user?.email,
@@ -190,7 +189,6 @@ export default function CheckoutView() {
       });
       router.push(PATHS.orders.checkoutSucess(orderId || ''));
     } catch (error) {
-      console.log('message:', error?.error?.message);
       if (error?.error?.message === 'Order already has a subscription') {
         setShowSnackbar({
           show: true,
@@ -300,12 +298,14 @@ export default function CheckoutView() {
           <Grid xs={12} md={5}>
             {companyInfo && (
               <CheckoutSummary
+                hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
                 handleSubmit={onCheckoutSubmit}
                 disabled={submitButtonDisabled}
                 subtotal={orderInfo?.order_total}
                 company={companyInfo}
                 isSubmitting={isSubmitting}
                 onDiscountApplied={(code) => setDiscountCode(code)}
+                orderStatus={orderInfo.status}
               />
             )}
           </Grid>
