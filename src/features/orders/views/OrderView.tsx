@@ -31,7 +31,6 @@ import isObjectEmpty from 'src/utils/functions';
 import { useAuthContext } from 'src/contexts';
 import CheckoutSummary from 'src/features/payments/components/CheckoutSummary';
 import CheckoutQuestionnaireInfo from 'src/features/payments/components/CheckoutQuestionnaireInfo';
-import { fullAddress } from 'src/_mock/assets';
 import { OrderQuestionnaireForm, OrderQuestionnaireSummary } from '../components';
 
 // ----------------------------------------------------------------------
@@ -93,9 +92,9 @@ export default function OrderView() {
   useEffect(() => {
     console.log('verify');
     if (billingDetails) {
-      const { address, tax_id } = billingDetails;
+      const { address, nif } = billingDetails;
       const { city, country, postal_code, street } = address;
-      console.log(tax_id, city, country, postal_code, street, customIsDirty);
+      console.log(nif, city, country, postal_code, street, customIsDirty);
       if (
         !customIsDirty ||
         !city ||
@@ -103,9 +102,8 @@ export default function OrderView() {
         !postal_code ||
         postal_code.length !== 8 ||
         !street ||
-        (tax_id && tax_id.length !== 11)
+        (nif && nif.length !== 11)
       ) {
-        console.log('disable');
         setDisableSubmitButton(true);
         return;
       }
@@ -229,7 +227,7 @@ export default function OrderView() {
   const updateOrderPayments = async () => {
     try {
       await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
-        payment_method: selectedCard.id,
+        payment_method: selectedCard?.id,
       });
       await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`, {
         billing_details: {
@@ -353,7 +351,7 @@ export default function OrderView() {
                   onPaymentMethodSelect={(card) => {
                     setSelectedCard(card);
                     setCustomIsDirty(true);
-                    setPreviousPaymentMethod(null);
+                    setPreviousPaymentMethod(undefined);
                   }}
                   relatives={userRelatives}
                   selectedRelative={orderInfo?.patient}

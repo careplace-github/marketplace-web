@@ -42,4 +42,5 @@ export type JWTContextType = {
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
   updateUser: (user: AuthUserType) => Promise<boolean>;
   logout: () => void;
+  fetchUser: () => void;
 };

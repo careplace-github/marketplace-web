@@ -16,7 +16,6 @@ import {
   Checkbox,
   Button,
 } from '@mui/material';
-import { useTheme } from '@emotion/react';
 // components
 import { Tooltip } from 'src/components/tooltip/Tooltip';
 import AvatarDropdown from 'src/components/avatar-dropdown';
@@ -30,7 +29,6 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
-import Iconify from 'src/components/iconify/Iconify';
 import EmptyState from 'src/components/empty-state/EmptyState';
 
 // ----------------------------------------------------------------------
@@ -49,7 +47,6 @@ export default function OrderQuestionnaireForm({
   orderInfo,
 }: Props) {
   const router = useRouter();
-  const theme = useTheme();
   const isSmUp = useResponsive('up', 'sm');
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
@@ -58,50 +55,50 @@ export default function OrderQuestionnaireForm({
   const [schedule, setSchedule] = useState<IScheduleProps[]>([
     {
       week_day: 1,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 2,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 3,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 4,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 5,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 6,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 7,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
@@ -205,7 +202,7 @@ export default function OrderQuestionnaireForm({
   useEffect(() => {
     // show pre selected values for weekdays and services
     if (router.isReady) {
-      const query = router.query;
+      const { query } = router;
       const weekdaysPreSelected: number[] = [];
       const weekdays = query.weekDay as string;
       if (weekdays) {
@@ -238,7 +235,7 @@ export default function OrderQuestionnaireForm({
 
   const removeFromSchedule = (weekdayId) => {
     const prevState = schedule[weekdayId - 1];
-    const newItem = { ...prevState, start: null, end: null, valid: null };
+    const newItem = { ...prevState, start: undefined, end: undefined, valid: null };
     const newSchedule = schedule;
     newSchedule[weekdayId - 1] = newItem;
     setSchedule([...newSchedule]);
@@ -397,7 +394,11 @@ export default function OrderQuestionnaireForm({
                       <TimePicker
                         ampm={false}
                         sx={{ flex: 1 }}
-                        value={schedule[item - 1].start ? new Date(schedule[item - 1].start) : null}
+                        value={
+                          schedule[item - 1]?.start
+                            ? new Date(schedule[item - 1]?.start as Date)
+                            : ''
+                        }
                         onChange={(value) => {
                           const startHour = value as Date;
                           const prevState = schedule[weekdayItem.value - 1];
@@ -432,12 +433,13 @@ export default function OrderQuestionnaireForm({
                         -
                       </Typography>
                       {/* End time */}
-                      {console.log('item', item)}
                       <TimePicker
                         skipDisabled
                         ampm={false}
                         sx={{ flex: 1 }}
-                        value={schedule[item - 1].end ? new Date(schedule[item - 1].end) : null}
+                        value={
+                          schedule[item - 1]?.end ? new Date(schedule[item - 1]?.end as Date) : ''
+                        }
                         onChange={(value) => {
                           const prevState = schedule[weekdayItem.value - 1];
 
@@ -642,7 +644,6 @@ type StepLabelProps = {
 };
 
 function StepLabel({ step, title }: StepLabelProps) {
-  const theme = useTheme();
   return (
     <Stack direction="row" alignItems="center" sx={{ mb: 3, typography: 'h5' }}>
       <Box

@@ -222,7 +222,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // REGISTER
   const register = useCallback(async (payload: IUserProps) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/signup',
       {
         customer: payload.customer,
@@ -258,7 +258,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CONFIRM MOBILE
   const sendConfirmPhoneCode = useCallback(async (email: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/send/confirm-phone-code',
       { email },
       {
@@ -276,7 +276,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CONFIRM EMAIL
   const sendConfirmEmailCode = useCallback(async (email: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/send/confirm-email-code',
       { email },
       {
@@ -288,7 +288,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   const verifyEmailCode = useCallback(async (email: string, code: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/verify/confirm-email-code',
       { email, code },
       {
@@ -330,7 +330,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // FORGOT_PASSWORD
   const forgotPassword = useCallback(async (email: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/send/forgot-password-code',
       {
         email,
@@ -345,7 +345,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // RESET_PASSWORD
   const resetPassword = useCallback(async (email: string, code: string, newPassword: string) => {
-    const response = await axios.post(
+    await axios.post(
       '/auth/verify/forgot-password-code',
       {
         email,

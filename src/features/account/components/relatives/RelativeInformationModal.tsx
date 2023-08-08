@@ -65,7 +65,7 @@ export default function RelativeInformationModal({
           profile_picture: relative && relative.profile_picture,
           firstName: relative && relative.name.split(' ')[0],
           lastName: relative && relative.name.split(' ').pop(),
-          phoneNumber: relative && relative.phone_number,
+          phoneNumber: relative && relative.phone,
           kinshipDegree: relative && relative.kinship,
           birthday: relative && relative.birthdate,
           gender: relative && relative.gender,
