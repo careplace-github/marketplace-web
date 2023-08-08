@@ -90,11 +90,9 @@ export default function OrderView() {
   }, []);
 
   useEffect(() => {
-    console.log('verify');
     if (billingDetails) {
       const { address, nif } = billingDetails;
       const { city, country, postal_code, street } = address;
-      console.log(nif, city, country, postal_code, street, customIsDirty);
       if (
         !customIsDirty ||
         !city ||
@@ -285,7 +283,6 @@ export default function OrderView() {
   const onSubmit = async () => {
     setIsSubmitting(true);
     try {
-      console.log('submit', dataToSubmit);
       await axios.put(`/customers/orders/home-care/${orderInfo._id}`, dataToSubmit);
       setShowSnackbar({
         show: true,
