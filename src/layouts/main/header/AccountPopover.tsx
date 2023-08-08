@@ -1,16 +1,16 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 // next
 import { useRouter } from 'next/router';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
-import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Iconify from 'src/components/iconify';
 // routes
 import { PATHS } from 'src/routes/paths';
+// utils
+import { truncateString } from 'src/utils/functions';
 // components
 import { CustomAvatar } from 'src/components/custom-avatar';
 import { useSnackbar } from 'src/components/snackbar';
@@ -53,7 +53,6 @@ const OPTIONS = [
 export default function AccountPopover() {
   const { user, logout } = useAuthContext();
   const router = useRouter();
-  const theme = useTheme();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -107,7 +106,7 @@ export default function AccountPopover() {
         >
           <CustomAvatar src={user?.profile_picture} type="normal" />
           <Typography sx={{ color: 'text.primary', fontSize: '1rem', fontWeight: '600' }} noWrap>
-            {user?.name}
+            {truncateString(user?.name, 20)}
           </Typography>
           <Iconify
             icon="ic:baseline-keyboard-arrow-down"

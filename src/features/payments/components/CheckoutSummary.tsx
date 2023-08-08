@@ -40,6 +40,7 @@ type Props = {
   handleSubmit?: MouseEventHandler<HTMLButtonElement>;
   onDiscountApplied: Function;
   isOrderView?: boolean;
+  hasSubsciptionId?: boolean;
 };
 
 export default function CheckoutSummary({
@@ -51,6 +52,7 @@ export default function CheckoutSummary({
   isSubmitting,
   onDiscountApplied,
   isOrderView,
+  hasSubsciptionId,
 }: Props) {
   const theme = useTheme();
   const { palette } = theme;
@@ -65,21 +67,18 @@ export default function CheckoutSummary({
   let totalValueWithDiscount;
 
   if (discount?.type === 'percentage' && discount.value) {
-    totalValueWithDiscount = `${fCurrency(
-      subtotal / 100 - (subtotal / 100) * (discount.value / 100)
-    )} €`;
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - (subtotal / 100) * discount.value)} €`;
   } else if (discount?.value) {
-    totalValueWithDiscount = `${fCurrency(subtotal / 100 - discount.value / 100)} €`;
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - discount.value)} €`;
   } else {
     totalValueWithDiscount = subtotal;
   }
   const handleSubmitDiscount = async () => {
     try {
       // TODO: check discount code that was submitted
-      const response = await axios.post('/payments/coupons', {
-        coupon: discountCode,
+      const response = await axios.post('/payments/promotion-code/eligibility', {
+        promotion_code: discountCode,
       });
-      console.log('discount:', response.data);
       if (response.data.coupon.ammount_off) {
         setDiscount({ type: 'amount', value: response.data.coupon.ammount_off });
       }
@@ -199,8 +198,8 @@ export default function CheckoutSummary({
                     }
                     value={
                       discount.type === 'percentage'
-                        ? `- ${fCurrency((subtotal / 100) * (discount.value / 100))} €`
-                        : `- ${fCurrency(discount.value / 100)} €`
+                        ? `- ${fCurrency((subtotal / 100) * discount.value)} €`
+                        : `- ${fCurrency(discount.value)} €`
                     }
                   />
                 )}
@@ -257,10 +256,12 @@ export default function CheckoutSummary({
                 },
               }}
             >
-              Confirmar Pagamento
+              {orderStatus === 'pending_payment' && !hasSubsciptionId
+                ? 'Confirmar Pagamento'
+                : 'Atualizar Pagamento'}
             </LoadingButton>
             <Typography variant="caption" sx={{ opacity: 0.72 }}>
-              * Assim que efetuar o pagamento seu pedido, irá receber um email com o comprovativo
+              * Assim que efetuar o pagamento do seu pedido, irá receber um email com o comprovativo
               associado{' '}
             </Typography>
           </Stack>

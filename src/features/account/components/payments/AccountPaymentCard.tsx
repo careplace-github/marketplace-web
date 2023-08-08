@@ -2,9 +2,6 @@ import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Popover, MenuItem, Typography, IconButton } from '@mui/material';
-
-// next
-import { useRouter } from 'next/router';
 // contexts
 import { useAuthContext } from 'src/contexts';
 // components

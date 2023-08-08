@@ -1,5 +1,5 @@
 // @mui
-import { Box, Stack, Button, Typography, Snackbar, Alert } from '@mui/material';
+import { Box, Stack, Button, Typography, Snackbar, Alert, CircularProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 // types
@@ -21,6 +21,7 @@ export default function AccountPaymentView() {
   const theme = useTheme();
 
   const [openModal, setOpenModal] = useState(false);
+  const [cardsLoading, setCardsLoading] = useState<boolean>(true);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
@@ -28,17 +29,59 @@ export default function AccountPaymentView() {
   });
 
   async function getCards() {
-    const response = await axios.get('/payments/payment-methods');
-    return response.data.data;
+    try {
+      const response = await axios.get('/payments/payment-methods');
+      setCardsLoading(false);
+      return response.data.data;
+    } catch (error) {
+      console.log('error', error);
+    }
+    setCardsLoading(false);
+    return { error: true };
   }
 
   const [CARDS, setCARDS] = useState([]);
 
   useEffect(() => {
     getCards().then((data) => {
+      if (data?.error) {
+        return;
+      }
       setCARDS(data);
     });
   }, []);
+
+  const handleDeleteCard = async (card) => {
+    try {
+      await axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
+        getCards().then((data) => {
+          setCARDS(data);
+        });
+        setShowSnackbar({
+          show: true,
+          severity: 'success',
+          message: 'O cartão foi eliminado com sucesso.',
+        });
+      });
+    } catch (error) {
+      if (
+        error.error?.message ===
+        'You cannot delete a payment method that is associated with an active order.'
+      ) {
+        setShowSnackbar({
+          show: true,
+          severity: 'warning',
+          message: 'Não é possivel eliminar um cartão que esteja associado a um pedido.',
+        });
+        return;
+      }
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente novamente.',
+      });
+    }
+  };
 
   return (
     <>
@@ -125,33 +168,36 @@ export default function AccountPaymentView() {
                 </Stack>
               )}
 
-              {CARDS.length > 0 ? (
+              {CARDS.length > 0 &&
                 CARDS.map((card: any) => (
                   <AccountPaymentCard
                     key={card.id}
                     card={card}
-                    handleDelete={() => {
-                      axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
-                        getCards().then((data) => {
-                          setCARDS(data);
-                        });
-                        setShowSnackbar({
-                          show: true,
-                          severity: 'success',
-                          message: 'O cartão foi eliminado com sucesso.',
-                        });
-                      });
-                    }}
+                    handleDelete={() => handleDeleteCard(card)}
                   />
-                ))
-              ) : (
+                ))}
+
+              {CARDS.length === 0 && cardsLoading && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '200px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gridColumn: 'span 2',
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              )}
+              {CARDS.length === 0 && !cardsLoading && (
                 <EmptyState
                   icon="uil:atm-card"
                   title="Sem cartões adicionados"
                   description="Neste momento não tem nenhum método de pagamento associado."
                 />
               )}
-
               {!isMdUp && (
                 <Stack
                   spacing={3}

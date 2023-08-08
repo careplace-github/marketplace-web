@@ -43,8 +43,8 @@ export default function AuthResetPasswordForm() {
     defaultValues,
   });
 
-  const { reset, handleSubmit, setValue, getValues } = methods;
-  const { pathname, push } = useRouter();
+  const { handleSubmit, setValue } = methods;
+  const { push } = useRouter();
   const onSubmit = async (data: FormValuesProps) => {
     try {
       setIsSubmitting(true);

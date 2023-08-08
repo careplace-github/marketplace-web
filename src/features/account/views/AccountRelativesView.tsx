@@ -1,6 +1,6 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Typography, Button, Stack, Snackbar, Alert } from '@mui/material';
+import { Box, Typography, Button, Stack, Snackbar, Alert, CircularProgress } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // hooks
@@ -76,9 +76,7 @@ export default function AccountRelativesView() {
     }
   };
 
-  return isLoading ? (
-    <LoadingScreen />
-  ) : (
+  return (
     <>
       <Snackbar
         open={showSnackbar.show}
@@ -173,7 +171,7 @@ export default function AccountRelativesView() {
               </Stack>
             )}
           </Stack>
-          {userRelatives?.length > 0 ? (
+          {userRelatives?.length > 0 && (
             <Box sx={{ maxHeight: '700px', mt: 3 }}>
               <RelativesList
                 userRelatives={userRelatives}
@@ -187,12 +185,26 @@ export default function AccountRelativesView() {
                 onDeleteRelative={handleDeleteRelative}
               />
             </Box>
-          ) : (
+          )}
+          {userRelatives?.length === 0 && !isLoading && (
             <EmptyState
               icon="bi:person-x-fill"
               title="Não tem nenhum familiar associado"
               description="Todos os familiares que adicionar vão ser apresentados nesta página"
             />
+          )}
+          {userRelatives?.length === 0 && isLoading && (
+            <Box
+              sx={{
+                display: 'flex',
+                width: '100%',
+                height: '300px',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <CircularProgress />
+            </Box>
           )}
           {!isMdUp && (
             <Stack alignItems={{ sm: 'flex-end' }} sx={{ mt: 3 }}>

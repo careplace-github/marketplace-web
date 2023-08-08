@@ -68,6 +68,7 @@ type Props = {
   isOrderView?: boolean;
   orderBillingDetails?: BillingDetailsProps;
   orderStatus?: string;
+  previousPaymentMethod?: string;
 };
 
 type PaymentMethodProps = {
@@ -87,6 +88,7 @@ export default function CheckoutQuestionnaireInfo({
   selectedWeekdays,
   selectedRecurrency,
   schedule,
+  previousPaymentMethod,
   startDate,
   selectedServices,
   onPaymentMethodSelect,
@@ -97,13 +99,13 @@ export default function CheckoutQuestionnaireInfo({
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
   const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(!!isOrderView);
   const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>({
-    name: '',
-    nif: '',
+    name: orderBillingDetails?.name || '',
+    nif: orderBillingDetails?.nif || '',
     address: {
-      street: '',
-      postal_code: '',
-      city: '',
-      country: '',
+      street: orderBillingDetails?.address.street || '',
+      postal_code: orderBillingDetails?.address.postal_code || '',
+      city: orderBillingDetails?.address.city || '',
+      country: orderBillingDetails?.address.country || '',
     },
   });
   const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(!!isOrderView);
@@ -120,7 +122,7 @@ export default function CheckoutQuestionnaireInfo({
     if (user && !isOrderView) {
       let countryLabel = '';
       countries.forEach((item) => {
-        if (item.code === user.address.country) {
+        if (item.code === user?.address?.country) {
           countryLabel = item.label;
         }
       });
@@ -128,9 +130,9 @@ export default function CheckoutQuestionnaireInfo({
         return {
           ...prev,
           address: {
-            city: user.address.city || '',
-            postal_code: user.address.postal_code || '',
-            street: user.address.street || '',
+            city: user.address?.city || '',
+            postal_code: user.address?.postal_code || '',
+            street: user.address?.street || '',
             country: countryLabel,
           },
           name: user.name || '',
@@ -140,20 +142,11 @@ export default function CheckoutQuestionnaireInfo({
   }, [user]);
 
   useEffect(() => {
-    if (!isOrderView) {
-      onBillingDetailsChange(billingDetails);
-    }
+    onBillingDetailsChange(billingDetails);
   }, [billingDetails]);
-
-  useEffect(() => {
-    if (isOrderView && !!orderBillingDetails) {
-      setBillingDetails(orderBillingDetails);
-    }
-  }, [isOrderView, orderBillingDetails]);
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
-    console.log('get cards response', response);
     return response.data.data;
   }
 
@@ -253,7 +246,7 @@ export default function CheckoutQuestionnaireInfo({
                     Serviços
                   </Typography>
                   <FilterServices
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     services={services}
                     filterServices={selectedServices}
                     onChangeServices={(keyword: IServiceProps[]) => {}}
@@ -272,7 +265,7 @@ export default function CheckoutQuestionnaireInfo({
                     Dias da semana
                   </Typography>
                   <FilterWeekdays
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     filterWeekdays={selectedWeekdays}
                     onChangeWeekdays={(event: SelectChangeEvent<number[]>) => {}}
                   />
@@ -284,7 +277,7 @@ export default function CheckoutQuestionnaireInfo({
                     Recorrência
                   </Typography>
                   <FilterRecurrency
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     filterRecurrency={selectedRecurrency}
                     onChangeRecurrency={(event: SelectChangeEvent<number>) => {}}
                   />
@@ -294,7 +287,7 @@ export default function CheckoutQuestionnaireInfo({
                     Data de ínicio
                   </Typography>
                   <DatePicker
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     slotProps={{
                       textField: {
                         hiddenLabel: true,
@@ -329,7 +322,7 @@ export default function CheckoutQuestionnaireInfo({
 
                         <Stack gap="10px" direction="row">
                           <TimePicker
-                            readOnly={checkoutVersion}
+                            readOnly={checkoutVersion && orderStatus !== 'new'}
                             ampm={false}
                             sx={{ flex: 1 }}
                             value={item.start ? new Date(item.start) : new Date()}
@@ -351,7 +344,7 @@ export default function CheckoutQuestionnaireInfo({
                             -
                           </Typography>
                           <TimePicker
-                            readOnly={checkoutVersion}
+                            readOnly={checkoutVersion && orderStatus !== 'new'}
                             skipDisabled
                             ampm={false}
                             sx={{ flex: 1 }}
@@ -379,7 +372,7 @@ export default function CheckoutQuestionnaireInfo({
         <Collapse sx={{ mt: '0px' }} in={openRelativeInfo} unmountOnExit>
           <div>
             <AvatarDropdown
-              readOnly={checkoutVersion}
+              readOnly={checkoutVersion && orderStatus !== 'new'}
               selected={JSON.stringify(selectedRelative)}
               options={relatives}
               selectText="Escolha um familiar"
@@ -472,9 +465,6 @@ export default function CheckoutQuestionnaireInfo({
                 <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.name}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -485,9 +475,6 @@ export default function CheckoutQuestionnaireInfo({
                       sx={{ flex: 1 }}
                     />
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.nif}
                       onChange={(e) => {
                         const { value } = e.target;
@@ -539,9 +526,6 @@ export default function CheckoutQuestionnaireInfo({
                   </Stack>
                   <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.street}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -552,9 +536,6 @@ export default function CheckoutQuestionnaireInfo({
                       sx={{ flex: 1 }}
                     />
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.postal_code}
                       onChange={(e) => {
                         const { value } = e.target;
@@ -602,9 +583,6 @@ export default function CheckoutQuestionnaireInfo({
                   </Stack>
                   <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.city}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -615,9 +593,6 @@ export default function CheckoutQuestionnaireInfo({
                       sx={{ flex: 1 }}
                     />
                     <TextField
-                      InputProps={{
-                        readOnly: isOrderView,
-                      }}
                       value={billingDetails.address.country}
                       onChange={(e) =>
                         setBillingDetails((prev) => {
@@ -649,6 +624,7 @@ export default function CheckoutQuestionnaireInfo({
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <CheckoutPaymentMethod
                   options={CARDS}
+                  previousPaymentMethod={previousPaymentMethod}
                   onPaymentMethodSelect={onPaymentMethodSelect}
                 />
                 <Divider sx={{ mt: '20px', mb: '20px' }} />

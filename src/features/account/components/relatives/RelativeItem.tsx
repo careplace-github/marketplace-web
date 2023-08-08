@@ -1,23 +1,12 @@
 // @mui
-import {
-  Stack,
-  Popover,
-  Box,
-  Divider,
-  TextField,
-  IconButton,
-  Typography,
-  Avatar,
-  MenuItem,
-} from '@mui/material';
+import { Stack, Popover, IconButton, Typography, Avatar, MenuItem } from '@mui/material';
 // utils
-import { fCurrency } from 'src/utils/formatNumber';
 import kinshipDegrees from 'src/data/kinshipDegrees';
+import { truncateString } from 'src/utils/functions';
 // hooks
 import { useResponsive } from 'src/hooks';
 import React, { useState } from 'react';
 // components
-import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
 import { IRelativeProps } from 'src/types/relative';
 
@@ -100,10 +89,9 @@ export default function RelativeItem({ relative, onEditClick, onDeleteRelative }
           <Avatar
             src={relative.profile_picture}
             sx={{
-              width: isMdUp ? 80 : 60,
-              height: isMdUp ? 80 : 60,
+              width: 60,
+              height: 60,
               flexShrink: 0,
-              // bgcolor: 'background.neutral',
             }}
           />
         </Stack>
@@ -120,7 +108,7 @@ export default function RelativeItem({ relative, onEditClick, onDeleteRelative }
             {' '}
             <Stack sx={{ p: 2, width: '45%', minWidth: '0px' }}>
               <Typography sx={{ fontSize: '14px', fontWeight: '400' }}>
-                {relative.address.street}
+                {truncateString(relative.address.street, 40)}
               </Typography>
             </Stack>
             <Stack sx={{ width: '15%', pl: 2, fontSize: '14px', fontWeight: '400' }}>

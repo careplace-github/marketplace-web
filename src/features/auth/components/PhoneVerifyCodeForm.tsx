@@ -40,9 +40,6 @@ function EmailVerifyCodeForm() {
   const [resendAvailable, setResendAvailable] = useState(false);
   // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
   const countdown = useCountdown(new Date(Date.now() + 47000));
-
-  const { enqueueSnackbar } = useSnackbar();
-
   const VerifyCodeSchema = Yup.object().shape({
     code1: Yup.string().required('O código é obrigatório.'),
     code2: Yup.string().required('O código é obrigatório.'),
@@ -116,7 +113,6 @@ function EmailVerifyCodeForm() {
       setValue('code6', '');
 
       // Show success message popup
-      console.log('code sent successfully');
     } catch (error) {
       // Show error message popup
       console.error(error);
@@ -136,11 +132,7 @@ function EmailVerifyCodeForm() {
     }
   }, [countdown]);
 
-  /**
-   * Resend the confirmation code
-   */
-
-  return user?.email ? (
+  return user?.phone ? (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Stack spacing={3}>
         <RHFTextField name="phone" label="Telemóvel" disabled value={user?.phone} />
