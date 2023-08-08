@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Box, Typography, Stack, InputAdornment, IconButton, Snackbar, Alert } from '@mui/material';
+import { Box, Typography, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // contexts
 import { useAuthContext } from 'src/contexts';
@@ -22,7 +22,6 @@ import { countries } from 'src/data';
 // axios
 import axios from 'src/lib/axios';
 // components
-import Iconify from 'src/components/iconify';
 import FormProvider, { RHFPhoneField } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
@@ -38,7 +37,7 @@ export default function AccountSettingsChangePhone() {
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { sendConfirmPhoneCode, user, fetchUser } = useAuthContext();
+  const { fetchUser } = useAuthContext();
 
   const ChangePhoneSchema = Yup.object().shape({
     phoneNumber: Yup.string()
@@ -74,11 +73,9 @@ export default function AccountSettingsChangePhone() {
   });
 
   const {
-    reset,
-    handleSubmit,
     setValue,
     getValues,
-    formState: { isDirty, errors, isValid },
+    formState: { isValid },
   } = methods;
 
   const changeUserPhoneNumber = async (newPhone) => {
