@@ -1,28 +1,21 @@
 import { useEffect, useState } from 'react';
 // @mui
-import { DatePicker } from '@mui/x-date-pickers';
 import {
   Box,
   Tab,
   Tabs,
   Table,
-  Stack,
-  Switch,
   TableRow,
   TableBody,
   TableCell,
-  TextField,
   Typography,
   TableContainer,
-  InputAdornment,
   TablePagination,
-  FormControlLabel,
   CircularProgress,
 } from '@mui/material';
 // types
 import { IOrderProps } from 'src/types/order';
 // components
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import EmptyState from 'src/components/empty-state/EmptyState';
 // lib

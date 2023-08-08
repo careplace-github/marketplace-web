@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { PATHS } from 'src/routes';
 
 // auth
@@ -13,8 +13,6 @@ import { Box, Avatar, Typography, Stack, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // assets
 import { countries, genders } from 'src/data';
-// axios
-import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import { useRouter } from 'next/router';

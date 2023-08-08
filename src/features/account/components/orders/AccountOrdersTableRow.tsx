@@ -2,21 +2,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // @mui
-import {
-  Popover,
-  Divider,
-  TableRow,
-  MenuItem,
-  TableCell,
-  IconButton,
-  Stack,
-  Avatar,
-  Typography,
-} from '@mui/material';
+import { TableRow, TableCell, Stack, Avatar, Typography } from '@mui/material';
 //  utils
 import { getRecurrencyText, getScheduleText } from 'src/utils/orderUtils';
 // components
-import Iconify from 'src/components/iconify';
 import Label from 'src/components/label';
 import { IOrderProps } from 'src/types/order';
 import { IServiceProps } from 'src/types/utils';
@@ -55,9 +44,6 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
   const order = row;
   const router = useRouter();
 
-  const [open, setOpen] = useState<HTMLButtonElement | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-
   const isMdUp = useResponsive('up', 'md');
 
   const [statusLabel, setStatusLabel] = useState(
@@ -69,7 +55,6 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
   }, [order.status]);
 
   const handleViewClick = (orderSelected) => {
-    setAnchorEl(null);
     // redirect to view order page
     router.push(PATHS.orders.view(order._id));
   };
