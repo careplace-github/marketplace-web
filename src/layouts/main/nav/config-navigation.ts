@@ -3,7 +3,7 @@ import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
-export const footerLinks = [
+export const footerLinksLoggedOut = [
   {
     order: '1',
     type: 'Main',
@@ -11,6 +11,27 @@ export const footerLinks = [
     items: [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
+      { title: 'Contacte-nos', path: PATHS.contactUs}
+    ],
+  },
+  {
+    order: '2',
+    type: 'Main',
+    subheader: 'Encontrar',
+    items: [
+      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Serviços', path: PATHS.services.root },
+    ],
+  },
+];
+
+export const footerLinksLoggedIn = [
+  {
+    order: '1',
+    type: 'Main',
+    subheader: 'Careplace',
+    items: [
+      { title: 'Contacte-nos', path: PATHS.contactUs}
     ],
   },
   {
