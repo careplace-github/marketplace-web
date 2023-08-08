@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useAuthContext } from 'src/contexts';
 // @mui
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 import Iconify from 'src/components/iconify';
 // routes
 import { PATHS } from 'src/routes/paths';

@@ -27,8 +27,10 @@ import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 // _mock
 import { socials } from 'src/data';
+// auth
+import { useAuthContext } from 'src/contexts';
 //
-import { footerLinks, navConfig } from '../nav/config-navigation';
+import { footerLinksLoggedIn, footerLinksLoggedOut, navConfig } from '../nav/config-navigation';
 import ListDesktop from './ListDesktop';
 import ListMobile from './ListMobile';
 
@@ -50,12 +52,14 @@ const StyledAppStoreButton = styled(Button)(({ theme }) => ({
 
 export default function Footer() {
   const isMdUp = useResponsive('up', 'md');
-
+  const { user } = useAuthContext();
   const { pathname } = useRouter();
 
   const mobileList = navConfig.find((i) => i.title === 'Pages')?.children || [];
 
-  const desktopList = footerLinks.sort((listA, listB) => Number(listA.order) - Number(listB.order));
+  const desktopList = user
+    ? footerLinksLoggedIn.sort((listA, listB) => Number(listA.order) - Number(listB.order))
+    : footerLinksLoggedOut.sort((listA, listB) => Number(listA.order) - Number(listB.order));
 
   const renderLists = desktopList;
 
