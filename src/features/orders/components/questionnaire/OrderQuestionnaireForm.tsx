@@ -106,7 +106,6 @@ export default function OrderQuestionnaireForm({
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const handleChangeServices = (keyword: IServiceProps[]) => {
     setFilterServices(keyword);
-    console.log('services', keyword);
   };
 
   function areDifferentDays(date1: Date, date2: Date): boolean {
@@ -118,11 +117,9 @@ export default function OrderQuestionnaireForm({
   }
 
   const mapWeekdays = (schedule_info) => {
-    console.log('schedule', schedule_info);
     const auxWeekdays: number[] = [];
     const auxSchedule: any[] = schedule;
     schedule_info.forEach((day) => {
-      console.log('weekday', day.week_day);
       auxWeekdays.push(day.week_day);
       const isNightService = areDifferentDays(new Date(day.start), new Date(day.end));
       auxSchedule[day.week_day - 1] = {
@@ -139,14 +136,11 @@ export default function OrderQuestionnaireForm({
 
   useEffect(() => {
     if (orderInfo) {
-      console.log('order Info', orderInfo);
       setSelectedRelative(orderInfo.patient);
       setStartDate(new Date(orderInfo.schedule_information.start_date));
       setFilterRecurrency(orderInfo.schedule_information.recurrency);
       setFilterServices(orderInfo.services);
       mapWeekdays(orderInfo.schedule_information.schedule);
-    } else {
-      console.log('there is not order info');
     }
   }, [orderInfo]);
 
@@ -251,7 +245,6 @@ export default function OrderQuestionnaireForm({
       removeFromSchedule(toRemove);
     }
     setFilterWeekdays(newFilter);
-    console.log('weekdays', newFilter);
   };
 
   const handleChangeRelativeSelected: (
@@ -264,7 +257,6 @@ export default function OrderQuestionnaireForm({
     const newRelative = value as string;
 
     setSelectedRelative(JSON.parse(newRelative));
-    console.log(JSON.parse(newRelative));
   };
 
   const handleChangeRecurrency = (event: SelectChangeEvent<number>) => {

@@ -5,7 +5,6 @@ import { alpha, styled } from '@mui/material/styles';
 import { Box } from '@mui/material';
 //
 import Logo from 'src/components/logo';
- 
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +33,7 @@ export default function LoadingScreen() {
   }
 
   return (
-    <StyledRoot>  
+    <StyledRoot>
       <m.div
         animate={{
           scale: [1, 0.9, 0.9, 1, 1],
@@ -47,7 +46,7 @@ export default function LoadingScreen() {
           repeat: Infinity,
         }}
       >
-        <Logo single sx={{ width: 64, height: 64, align: "center" }} />
+        <Logo single sx={{ width: 64, height: 64, align: 'center' }} />
       </m.div>
 
       <Box
