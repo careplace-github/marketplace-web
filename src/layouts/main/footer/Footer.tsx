@@ -16,23 +16,28 @@ import {
   StackProps,
   InputAdornment,
   Unstable_Grid2 as Grid,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 // paths
 import { PATHS } from 'src/routes/paths';
 import { startsWith } from 'lodash';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+import { useState, useEffect } from 'react';
 // components
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 // _mock
 import { socials } from 'src/data';
+// axios
+import axios from 'src/lib/axios';
 // auth
 import { useAuthContext } from 'src/contexts';
 //
-import { footerLinksLoggedIn, footerLinksLoggedOut, navConfig } from '../nav/config-navigation';
+import { ISnackbarProps } from 'src/types/snackbar';
+import { footerLinksLoggedIn, footerLinksLoggedOut } from '../nav/config-navigation';
 import ListDesktop from './ListDesktop';
-import ListMobile from './ListMobile';
 
 // ----------------------------------------------------------------------
 
@@ -54,14 +59,60 @@ export default function Footer() {
   const isMdUp = useResponsive('up', 'md');
   const { user } = useAuthContext();
   const { pathname } = useRouter();
-
-  const mobileList = navConfig.find((i) => i.title === 'Pages')?.children || [];
+  const [email, setEmail] = useState<string>('');
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
+  const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
 
   const desktopList = user
     ? footerLinksLoggedIn.sort((listA, listB) => Number(listA.order) - Number(listB.order))
     : footerLinksLoggedOut.sort((listA, listB) => Number(listA.order) - Number(listB.order));
 
   const renderLists = desktopList;
+
+  const handleSubscribeNewsletter = async () => {
+    try {
+      await axios.post('/leads/newsletter/customer', {
+        email,
+        name: user?.name || null,
+      });
+      setShowSnackbar({
+        show: true,
+        severity: 'success',
+        message: 'Newsletter subscrita com sucesso.',
+      });
+    } catch (error) {
+      console.log(error?.error?.message);
+      if (error?.error?.message === 'Lead already exists') {
+        setShowSnackbar({
+          show: true,
+          severity: 'warning',
+          message: 'Já subscreveu a newsletter.',
+        });
+      } else {
+        setShowSnackbar({
+          show: true,
+          severity: 'error',
+          message: 'Algo correu mal, tente novamente.',
+        });
+      }
+    }
+    setEmail('');
+  };
+
+  useEffect(() => {
+    if (email.length > 0) {
+      const isEmail = email.includes('@') && email.split('@')[1].includes('.');
+      setIsEmailValid(isEmail);
+    } else setIsEmailValid(false);
+  }, [email]);
+
+  useEffect(() => {
+    if (user?.email) setEmail(user?.email);
+  }, [user?.email]);
 
   // Check if pathname begins with /account
   const isAccount = startsWith(pathname, PATHS.account.root);
@@ -77,7 +128,32 @@ export default function Footer() {
   const mainFooter = (
     <>
       <Divider />
-
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: 'success',
+            message: '',
+          })
+        }
+      >
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
       <Container
         sx={{
           overflow: 'hidden',
@@ -101,13 +177,22 @@ export default function Footer() {
                 </Stack>
 
                 <TextField
+                  value={email}
                   fullWidth
                   hiddenLabel
+                  disabled={!!user?.email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <Button variant="contained" color="inherit" size="large">
+                        <Button
+                          disabled={!isEmailValid}
+                          variant="contained"
+                          color="inherit"
+                          size="large"
+                          onClick={handleSubscribeNewsletter}
+                        >
                           Subscrever
                         </Button>
                       </InputAdornment>
