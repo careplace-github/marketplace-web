@@ -12,6 +12,7 @@ import {
   Unstable_Grid2 as Grid,
   Snackbar,
   Alert,
+  Button,
 } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
@@ -326,6 +327,15 @@ export default function OrderView() {
     setIsSubmitting(false);
   };
 
+  // TODO: Implement cancel order flow (confirmation modal with cancelation_reason textbox)
+  const onCancelOrder = async () => {
+    console.log('cancel order', orderInfo._id);
+    await axios.post(`/customers/orders/home-care/${orderInfo._id}/cancel`, {
+      cancellation_reason: 'Test',
+    });
+    router.push(PATHS.account.orders);
+  };
+
   return !loading && !relativesLoading ? (
     <Container
       sx={{
@@ -429,6 +439,25 @@ export default function OrderView() {
           </Grid>
         </Grid>
       </FormProvider>
+      <Stack sx={{ alignItems: 'flex-start', justifyContent: 'flex-start', mt: '50px' }}>
+        <Button
+          onClick={() => onCancelOrder()}
+          variant="outlined"
+          sx={{
+            backgroundColor: 'white',
+            color: 'red',
+            width: 'fit-content',
+            height: '48px',
+            borderColor: 'red',
+            '& :hover': {
+              backgroundColor: 'red',
+              color: 'white',
+            },
+          }}
+        >
+          Cancelar Pedido
+        </Button>
+      </Stack>
     </Container>
   ) : (
     <LoadingScreen />
