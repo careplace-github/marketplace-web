@@ -62,5 +62,5 @@ export const PATHS = {
   page500: '/500',
   privacyPolicy: '/privacy-policy',
   termsAndConditions: '/terms-and-conditions',
-  contactUs: '/contact-us',
+  contactUs: '/caregivers',
 };

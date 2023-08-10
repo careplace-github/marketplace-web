@@ -46,6 +46,17 @@ type BillingDetailsProps = {
   };
 };
 
+type OrderRequestProps = {
+  health_unit: string;
+  patient: string;
+  services: string[];
+  schedule_information: {
+    start_date: Date;
+    recurrency: number;
+    schedule: IScheduleProps[];
+  };
+};
+
 type CardProps = {
   id: string;
 };
@@ -280,10 +291,25 @@ export default function OrderView() {
     setDataToSubmit(data);
   };
 
-  const onSubmit = async () => {
+  useEffect(() => {
+    console.log('data to subit in update', dataToSubmit);
+  }, [dataToSubmit]);
+
+  const handleUpdateOrder = async () => {
     setIsSubmitting(true);
     try {
-      await axios.put(`/customers/orders/home-care/${orderInfo._id}`, dataToSubmit);
+      const updatedOrder: OrderRequestProps = {
+        health_unit: companyInfo._id,
+        patient: dataToSubmit.relativeSelected,
+        services: dataToSubmit.servicesSelected,
+        schedule_information: {
+          start_date: dataToSubmit.startDateSelected,
+          recurrency: dataToSubmit.recurrency,
+          schedule: dataToSubmit.schedule,
+        },
+      };
+      console.log('updated order', updatedOrder);
+      await axios.put(`/customers/orders/home-care/${orderInfo._id}`, updatedOrder);
       setShowSnackbar({
         show: true,
         severity: 'success',
@@ -393,7 +419,7 @@ export default function OrderView() {
             )}
             {companyInfo && orderInfo.status === 'new' && (
               <OrderQuestionnaireSummary
-                handleSubmit={onSubmit}
+                handleSubmit={handleUpdateOrder}
                 disabled={disableSubmitButton}
                 company={companyInfo}
                 updateVersion
