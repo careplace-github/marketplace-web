@@ -3,22 +3,22 @@ import Head from 'next/head';
 // layouts
 import MainLayout from 'src/layouts/main/MainLayout';
 // features
-import ContactUsView from 'src/features/contact-us/views/ContactUsView';
+import CaregiversView from 'src/features/caregivers/views/CaregiversView';
 
 // ----------------------------------------------------------------------
 
-ContactUsPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
+RegisterCaregiverPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
 
 // ----------------------------------------------------------------------
 
-export default function ContactUsPage() {
+export default function RegisterCaregiverPage() {
   return (
     <>
       <Head>
-        <title>Contacte-nos | Careplace </title>
+        <title>Registe-se como Cuidador | Careplace </title>
       </Head>
 
-      <ContactUsView />
+      <CaregiversView />
     </>
   );
 }

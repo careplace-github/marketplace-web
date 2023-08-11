@@ -12,6 +12,7 @@ import {
   Unstable_Grid2 as Grid,
   Snackbar,
   Alert,
+  Button,
 } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
@@ -20,6 +21,7 @@ import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
 import { IRelativeProps } from 'src/types/relative';
 import { ISnackbarProps } from 'src/types/snackbar';
+import { IScheduleProps } from 'src/types/order';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 import { PATHS } from 'src/routes';
@@ -43,6 +45,17 @@ type BillingDetailsProps = {
     postal_code: string;
     city: string;
     country: string;
+  };
+};
+
+type OrderRequestProps = {
+  health_unit: string;
+  patient: string;
+  services: string[];
+  schedule_information: {
+    start_date: Date;
+    recurrency: number;
+    schedule: IScheduleProps[];
   };
 };
 
@@ -280,10 +293,25 @@ export default function OrderView() {
     setDataToSubmit(data);
   };
 
-  const onSubmit = async () => {
+  useEffect(() => {
+    console.log('data to subit in update', dataToSubmit);
+  }, [dataToSubmit]);
+
+  const handleUpdateOrder = async () => {
     setIsSubmitting(true);
     try {
-      await axios.put(`/customers/orders/home-care/${orderInfo._id}`, dataToSubmit);
+      const updatedOrder: OrderRequestProps = {
+        health_unit: companyInfo?._id as string,
+        patient: dataToSubmit?.relativeSelected,
+        services: dataToSubmit?.servicesSelected,
+        schedule_information: {
+          start_date: dataToSubmit?.startDateSelected,
+          recurrency: dataToSubmit?.recurrency,
+          schedule: dataToSubmit?.schedule,
+        },
+      };
+      console.log('updated order', updatedOrder);
+      await axios.put(`/customers/orders/home-care/${orderInfo._id}`, updatedOrder);
       setShowSnackbar({
         show: true,
         severity: 'success',
@@ -298,6 +326,15 @@ export default function OrderView() {
     }
     setDisableSubmitButton(true);
     setIsSubmitting(false);
+  };
+
+  // TODO: Implement cancel order flow (confirmation modal with cancelation_reason textbox)
+  const onCancelOrder = async () => {
+    console.log('cancel order', orderInfo._id);
+    await axios.post(`/customers/orders/home-care/${orderInfo._id}/cancel`, {
+      cancellation_reason: 'Test',
+    });
+    router.push(PATHS.account.orders);
   };
 
   return !loading && !relativesLoading ? (
@@ -393,7 +430,7 @@ export default function OrderView() {
             )}
             {companyInfo && orderInfo.status === 'new' && (
               <OrderQuestionnaireSummary
-                handleSubmit={onSubmit}
+                handleSubmit={handleUpdateOrder}
                 disabled={disableSubmitButton}
                 company={companyInfo}
                 updateVersion
@@ -403,6 +440,25 @@ export default function OrderView() {
           </Grid>
         </Grid>
       </FormProvider>
+      <Stack sx={{ alignItems: 'flex-start', justifyContent: 'flex-start', mt: '50px' }}>
+        <Button
+          onClick={() => onCancelOrder()}
+          variant="outlined"
+          sx={{
+            backgroundColor: 'white',
+            color: 'red',
+            width: 'fit-content',
+            height: '48px',
+            borderColor: 'red',
+            '& :hover': {
+              backgroundColor: 'red',
+              color: 'white',
+            },
+          }}
+        >
+          Cancelar Pedido
+        </Button>
+      </Stack>
     </Container>
   ) : (
     <LoadingScreen />

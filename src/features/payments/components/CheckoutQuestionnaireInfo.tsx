@@ -81,6 +81,7 @@ type PaymentMethodProps = {
 export default function CheckoutQuestionnaireInfo({
   relatives,
   onValidChange,
+
   orderBillingDetails,
   services,
   checkoutVersion = false,

@@ -11,7 +11,7 @@ export const footerLinksLoggedOut = [
     items: [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
-      { title: 'Contacte-nos', path: PATHS.contactUs}
+      { title: 'Torne-se Cuidador', path: PATHS.contactUs}
     ],
   },
   {
@@ -31,7 +31,7 @@ export const footerLinksLoggedIn = [
     type: 'Main',
     subheader: 'Careplace',
     items: [
-      { title: 'Contacte-nos', path: PATHS.contactUs}
+      { title: 'Torne-se Cuidador', path: PATHS.contactUs}
     ],
   },
   {
