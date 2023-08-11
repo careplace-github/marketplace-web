@@ -146,7 +146,7 @@ export default function OrderQuestionnaireView() {
     if (companyInfo && canPlaceAnOrder) {
       setIsSubmitting(true);
       try {
-        const response = await axios.post(`/health-units/${companyInfo._id}/orders/home-care`, {
+        const response = await axios.post(`/customers/orders/home-care`, {
           ...formData,
         });
         reset();

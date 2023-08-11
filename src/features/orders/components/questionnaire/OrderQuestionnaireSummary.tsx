@@ -1,6 +1,6 @@
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Card, Stack, Divider, Typography, Avatar, Box, Link } from '@mui/material';
+import { Card, Stack, Divider, Typography, Box, Link } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import { useTheme } from '@mui/material/styles';
@@ -35,10 +35,12 @@ export default function OrderQuestionnaireSummary({
   const { palette } = theme;
   const isSmUp = useResponsive('up', 'sm');
   const isMdUp = useResponsive('up', 'md');
+
   return (
     <Card>
       <Box
         sx={{
+          position: 'relative',
           p: 4,
           pb: 0,
           gap: 3,
