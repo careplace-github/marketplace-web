@@ -23,6 +23,8 @@ import { ISnackbarProps } from 'src/types/snackbar';
 type FormValuesProps = {
   email: string;
   phoneNumber: string;
+  firstName: string;
+  lastName: string;
 };
 
 const CaregiversView = () => {

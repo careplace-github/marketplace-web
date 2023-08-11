@@ -21,6 +21,7 @@ import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
 import { IRelativeProps } from 'src/types/relative';
 import { ISnackbarProps } from 'src/types/snackbar';
+import { IScheduleProps } from 'src/types/order';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 import { PATHS } from 'src/routes';
@@ -300,13 +301,13 @@ export default function OrderView() {
     setIsSubmitting(true);
     try {
       const updatedOrder: OrderRequestProps = {
-        health_unit: companyInfo._id,
-        patient: dataToSubmit.relativeSelected,
-        services: dataToSubmit.servicesSelected,
+        health_unit: companyInfo?._id as string,
+        patient: dataToSubmit?.relativeSelected,
+        services: dataToSubmit?.servicesSelected,
         schedule_information: {
-          start_date: dataToSubmit.startDateSelected,
-          recurrency: dataToSubmit.recurrency,
-          schedule: dataToSubmit.schedule,
+          start_date: dataToSubmit?.startDateSelected,
+          recurrency: dataToSubmit?.recurrency,
+          schedule: dataToSubmit?.schedule,
         },
       };
       console.log('updated order', updatedOrder);
