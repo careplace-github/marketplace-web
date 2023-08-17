@@ -22,18 +22,19 @@ import { IServiceProps } from 'src/types/utils';
 import { IRelativeProps } from 'src/types/relative';
 import { ISnackbarProps } from 'src/types/snackbar';
 import { IScheduleProps } from 'src/types/order';
+//
+import isObjectEmpty from 'src/utils/functions';
+import { useAuthContext } from 'src/contexts';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 import { PATHS } from 'src/routes';
 // components
-import FormProvider from 'src/components/hook-form';
-import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
-//
-import isObjectEmpty from 'src/utils/functions';
-import { useAuthContext } from 'src/contexts';
 import CheckoutSummary from 'src/features/payments/components/CheckoutSummary';
 import CheckoutQuestionnaireInfo from 'src/features/payments/components/CheckoutQuestionnaireInfo';
+import FormProvider from 'src/components/hook-form';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { OrderQuestionnaireForm, OrderQuestionnaireSummary } from '../components';
+import CancelOrderModal from '../components/cancel-order-modal/CancelOrderModal';
 
 // ----------------------------------------------------------------------
 
@@ -79,6 +80,7 @@ export default function OrderView() {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
   const [dataToSubmit, setDataToSubmit] = useState<any>();
+  const [showCancelOrderModal, setShowCancelOrderModal] = useState<boolean>(false);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
@@ -293,10 +295,6 @@ export default function OrderView() {
     setDataToSubmit(data);
   };
 
-  useEffect(() => {
-    console.log('data to subit in update', dataToSubmit);
-  }, [dataToSubmit]);
-
   const handleUpdateOrder = async () => {
     setIsSubmitting(true);
     try {
@@ -326,15 +324,6 @@ export default function OrderView() {
     }
     setDisableSubmitButton(true);
     setIsSubmitting(false);
-  };
-
-  // TODO: Implement cancel order flow (confirmation modal with cancelation_reason textbox)
-  const onCancelOrder = async () => {
-    console.log('cancel order', orderInfo._id);
-    await axios.post(`/customers/orders/home-care/${orderInfo._id}/cancel`, {
-      cancellation_reason: 'Test',
-    });
-    router.push(PATHS.account.orders);
   };
 
   if (!loading && !relativesLoading && orderInfo?.status === 'cancelled') {
@@ -399,6 +388,11 @@ export default function OrderView() {
       <Typography variant="h2" sx={{ mb: 5, mt: 10 }}>
         Pedido
       </Typography>
+      <CancelOrderModal
+        orderId={orderInfo._id}
+        onClose={() => setShowCancelOrderModal(false)}
+        open={showCancelOrderModal}
+      />
 
       <FormProvider key="checkout_view_form" methods={methods}>
         <Grid container spacing={{ xs: 5, md: 8 }}>
@@ -465,25 +459,27 @@ export default function OrderView() {
           </Grid>
         </Grid>
       </FormProvider>
-      <Stack sx={{ alignItems: 'flex-start', justifyContent: 'flex-start', mt: '50px' }}>
-        <Button
-          onClick={() => onCancelOrder()}
-          variant="outlined"
-          sx={{
-            backgroundColor: 'white',
-            color: 'red',
-            width: 'fit-content',
-            height: '48px',
-            borderColor: 'red',
-            '& :hover': {
-              backgroundColor: 'red',
-              color: 'white',
-            },
-          }}
-        >
-          Cancelar Pedido
-        </Button>
-      </Stack>
+      {orderInfo.status !== 'new' && (
+        <Stack sx={{ alignItems: 'flex-start', justifyContent: 'flex-start', mt: '50px' }}>
+          <Button
+            onClick={() => setShowCancelOrderModal(true)}
+            variant="outlined"
+            sx={{
+              backgroundColor: 'white',
+              color: 'red',
+              width: 'fit-content',
+              height: '48px',
+              borderColor: 'red',
+              '& :hover': {
+                backgroundColor: 'red',
+                color: 'white',
+              },
+            }}
+          >
+            Cancelar Pedido
+          </Button>
+        </Stack>
+      )}
     </Container>
   ) : (
     <LoadingScreen />
