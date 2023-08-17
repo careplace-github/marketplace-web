@@ -59,12 +59,16 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
     router.push(PATHS.orders.view(order._id));
   };
 
+  console.log('status', order.status);
+
   return (
     <TableRow
       hover
       selected={selected}
-      sx={{ cursor: 'pointer' }}
-      onClick={() => handleViewClick(order)}
+      sx={{ cursor: order?.status !== 'cancelled' ? 'pointer' : 'not-allowed' }}
+      onClick={() => {
+        if (order?.status !== 'cancelled') handleViewClick(order);
+      }}
     >
       <TableCell sx={{ px: 1 }}>
         <Stack
