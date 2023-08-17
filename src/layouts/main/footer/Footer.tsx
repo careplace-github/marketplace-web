@@ -100,7 +100,7 @@ export default function Footer() {
         });
       }
     }
-    setEmail('');
+    if (!user?.email) setEmail('');
   };
 
   useEffect(() => {

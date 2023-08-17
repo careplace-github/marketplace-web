@@ -337,6 +337,31 @@ export default function OrderView() {
     router.push(PATHS.account.orders);
   };
 
+  if (!loading && !relativesLoading && orderInfo?.status === 'cancelled') {
+    return (
+      <Stack direction="column" alignItems="center" justifyContent="center">
+        <Typography
+          sx={{
+            color: 'text.secondary',
+            fontSize: '16px',
+            width: '100%',
+            textAlign: 'center',
+            p: '30px',
+            pt: '60px',
+            pb: '0px',
+          }}
+        >
+          Este pedido foi cancelado.
+        </Typography>
+        <Typography sx={{ color: 'text.secondary', mb: 10, textAlign: 'center' }}>
+          <br />
+          Se achar que isto é um erro por favor contacte-nos através do email{' '}
+          <a href="mailto:suporte@careplace.pt"> suporte@careplace.pt </a>
+        </Typography>
+      </Stack>
+    );
+  }
+
   return !loading && !relativesLoading ? (
     <Container
       sx={{
