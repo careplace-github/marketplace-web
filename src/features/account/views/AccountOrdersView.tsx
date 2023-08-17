@@ -78,11 +78,10 @@ export default function AccountOrdersView() {
     // Filter the orders by the selected tab
     const ordersFiltered = ordersFetched.filter((order: IOrderProps) => {
       if (newValue === 'all') {
-        return order;
+        return order.status !== 'cancelled';
       }
       return order.status === newValue;
     });
-
     setOrders(ordersFiltered);
   };
 
@@ -100,8 +99,13 @@ export default function AccountOrdersView() {
     const fetchOrders = async () => {
       try {
         const response = await axios.get('/customers/orders/home-care');
-
-        setOrders(response.data.data);
+        const auxFilteredOrders = response.data.data.filter((order: IOrderProps) => {
+          if (tab === 'all') {
+            return order.status !== 'cancelled';
+          }
+          return order.status === tab;
+        });
+        setOrders(auxFilteredOrders);
         setOrdersFetched(response.data.data);
       } catch (error) {
         console.error(error);
@@ -185,13 +189,15 @@ export default function AccountOrdersView() {
                 <TableBody>
                   {stableSort(orders, getComparator(sortOrder, sortBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((order: IOrderProps) => (
-                      <AccountOrdersTableRow
-                        key={order._id}
-                        row={order}
-                        selected={selected.includes(order._id)}
-                      />
-                    ))}
+                    .map((order: IOrderProps) => {
+                      return (
+                        <AccountOrdersTableRow
+                          key={order._id}
+                          row={order}
+                          selected={selected.includes(order._id)}
+                        />
+                      );
+                    })}
 
                   {emptyRows > 0 && (
                     <TableRow
