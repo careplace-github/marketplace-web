@@ -4,13 +4,10 @@ import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Box, TextField, Typography, Container, Stack, Grid, Snackbar, Alert } from '@mui/material';
-// routes
-import { PATHS } from 'src/routes/paths';
+import { Typography, Container, Stack, Grid, Snackbar, Alert } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // components
-import Logo from 'src/components/logo/Logo';
 import LoadingButton from 'src/components/loading-button/LoadingButton';
 import FormProvider, { RHFTextField, RHFPhoneField } from 'src/components/hook-form';
 // data
@@ -161,23 +158,6 @@ const CaregiversView = () => {
           justifyContent: 'center',
         }}
       >
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mb: 10,
-          }}
-        >
-          <Logo
-            disabledLink
-            single
-            logoWidth="80px"
-            sx={{ width: '500px', height: '500px', align: 'center' }}
-          />
-        </Box>
-
         <Typography variant="h3">Quer se tornar um Cuidador?</Typography>
 
         <Typography variant="body2" sx={{ mt: 2, mb: 5, color: 'text.secondary' }}>
