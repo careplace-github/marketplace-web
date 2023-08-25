@@ -7,6 +7,8 @@ import { AppBar, Toolbar, Link, Stack, Container } from '@mui/material';
 import { HEADER } from 'src/layouts';
 // components
 import Logo from 'src/components/logo';
+import { PATHS } from 'src/routes';
+
 //
 import HeaderShadow from '../components/HeaderShadow';
 
@@ -48,7 +50,7 @@ export default function Header({ isOffset }: Props) {
           <Logo />
 
           <Stack spacing={1} direction="row" alignItems="center">
-            <Link href="/" component={NextLink} variant="subtitle2" color="inherit">
+            <Link href={PATHS.support} component={NextLink} variant="subtitle2" color="inherit">
               Precisa de Ajuda?
             </Link>
           </Stack>
