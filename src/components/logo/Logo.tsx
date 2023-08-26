@@ -4,26 +4,45 @@ import { forwardRef } from 'react';
 import NextLink from 'next/link';
 // @mui
 import { Box, BoxProps, Link } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
 interface LogoProps extends BoxProps {
   single?: boolean;
   disabledLink?: boolean;
+  logoWidth?: string | number;
+  logoHeight?: string | number;
 }
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(
-  ({ disabledLink = false, single = false, sx, ...other }, ref) => {
+  ({ disabledLink = false, logoWidth, logoHeight, single = false, sx, ...other }, ref) => {
     const singleLogo = (
-      <Box component="img" src="/logo/icon.svg" sx={{ width: 55, cursor: 'pointer' }} />
+      <Box
+        component="img"
+        src="/logo/icon.svg"
+        sx={{
+          width: logoWidth || 55,
+          height: logoHeight || undefined,
+          cursor: disabledLink ? undefined : 'pointer',
+        }}
+      />
     );
 
     const fullLogo = (
-      <Box component="img" src="/logo/logo.svg" sx={{ height: 40, cursor: 'pointer' }} />
+      <Box
+        component="img"
+        src="/logo/logo.svg"
+        sx={{
+          width: logoWidth || undefined,
+          height: logoHeight || 40,
+          cursor: disabledLink ? undefined : 'pointer',
+        }}
+      />
     );
 
-    return (
+    return disabledLink ? (
+      <Box>{single ? singleLogo : fullLogo}</Box>
+    ) : (
       <Link component={NextLink} href="/" sx={{ display: 'contents' }}>
         {single ? singleLogo : fullLogo}
       </Link>

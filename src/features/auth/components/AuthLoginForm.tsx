@@ -1,9 +1,8 @@
 import * as Yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // next
-import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
 import { LoadingButton } from '@mui/lab';
@@ -32,9 +31,10 @@ export default function AuthLoginForm() {
 
   const theme = useTheme();
 
-  const { login } = useAuthContext();
+  const { login, confirmationCode } = useAuthContext();
 
-  const { pathname, push } = useRouter();
+  const { push } = useRouter();
+  const router = useRouter();
 
   const handleForgotPassword = () => {
     const path = methods.getValues('email')
@@ -58,15 +58,7 @@ export default function AuthLoginForm() {
     defaultValues,
   });
 
-  const {
-    reset,
-    setValue,
-    getValues,
-    register,
-    setError,
-    handleSubmit,
-    formState: { errors },
-  } = methods;
+  const { handleSubmit } = methods;
 
   const handleShowPassword = () => {
     setShowPassword(!showPassword);
@@ -78,10 +70,18 @@ export default function AuthLoginForm() {
       await login(data.email, data.password);
       setErrorMessage(undefined);
     } catch (error) {
-      console.error(error);
-
+      if (error.error.message === 'User is not confirmed.') {
+        setIsSubmitting(false);
+        await confirmationCode(data.email);
+        router.push({
+          pathname: PATHS.auth.verifyCode,
+          query: {
+            email: data.email,
+          },
+        });
+        return;
+      }
       setIsSubmitting(false);
-
       switch (error?.error?.type) {
         case 'UNAUTHORIZED':
           setErrorMessage('O email ou a password estão incorretos.');

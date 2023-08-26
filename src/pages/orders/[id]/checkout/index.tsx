@@ -1,15 +1,14 @@
 // next
 import Head from 'next/head';
-
 // layouts
-import SimpleLayout from 'src/layouts/simple';
+import MainLayout from 'src/layouts/main';
 // features
 import { CheckoutView } from 'src/features/payments';
 import { AuthGuard } from 'src/features/auth';
 
 // ----------------------------------------------------------------------
 
-CheckoutPage.getLayout = (page: React.ReactElement) => <SimpleLayout>{page}</SimpleLayout>;
+CheckoutPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLayout>;
 
 // ----------------------------------------------------------------------
 

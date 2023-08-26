@@ -3,7 +3,7 @@ export type IOrderProps = {
   _id: string;
   company: string;
   user: string;
-  relative: {
+  patient: {
     _id: string;
     name: string;
     birthdate: string;
@@ -55,8 +55,8 @@ export type IScheduleInformationResponseProps = {
 
 export type IScheduleProps = {
   week_day: number;
-  start: Date | null;
-  end: Date | null;
+  start?: Date;
+  end?: Date;
   nightService?: boolean;
   valid?: boolean | null;
 };

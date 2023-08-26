@@ -3,7 +3,7 @@ import { PATHS } from 'src/routes/paths';
 
 // ----------------------------------------------------------------------
 
-export const footerLinks = [
+export const footerLinksLoggedOut = [
   {
     order: '1',
     type: 'Main',
@@ -11,6 +11,29 @@ export const footerLinks = [
     items: [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
+      { title: 'Torne-se Cuidador', path: PATHS.contactUs},
+      { title: 'Suporte', path: PATHS.support}
+    ],
+  },
+  {
+    order: '2',
+    type: 'Main',
+    subheader: 'Encontrar',
+    items: [
+      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Serviços', path: PATHS.services.root },
+    ],
+  },
+];
+
+export const footerLinksLoggedIn = [
+  {
+    order: '1',
+    type: 'Main',
+    subheader: 'Careplace',
+    items: [
+      { title: 'Torne-se Cuidador', path: PATHS.contactUs},
+      { title: 'Suporte', path: PATHS.support}
     ],
   },
   {
@@ -42,7 +65,7 @@ export const navLinks = [
   {
     order: '2',
     type: 'Main',
-    subheader: 'Careplace Sales',
+    subheader: 'Careplace Business',
     cover: '/assets/images/menu/careplace_sales.png',
     items: [
       { title: 'Funcionamento', path: PATHS.comingsoon as string },
@@ -60,7 +83,7 @@ export const navLinks = [
     items: [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
-      { title: 'Suporte', path: PATHS.comingsoon },
+      { title: 'Suporte', path: PATHS.support },
     ],
   },
 ];

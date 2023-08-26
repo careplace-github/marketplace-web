@@ -1,29 +1,20 @@
-import * as Yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { DatePicker } from '@mui/x-date-pickers';
-import { Box, Avatar, Typography, Stack, InputAdornment, IconButton } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-// assets
-import { countries, genders } from 'src/data';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // components
-import Iconify from 'src/components/iconify';
-import { RHFSwitch } from 'src/components/hook-form';
-import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
+import FormProvider, { RHFSwitch } from 'src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
 export default function AccountSettingsGeneral() {
-  const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
-  const { user, updateUser } = useAuthContext();
+  const { user } = useAuthContext();
   const theme = useTheme();
 
   const defaultValues = {
@@ -38,7 +29,7 @@ export default function AccountSettingsGeneral() {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, isDirty, errors },
+    formState: { isSubmitting, isDirty },
   } = methods;
 
   const onSubmit = async (data) => {

@@ -90,38 +90,11 @@ export default function AuthVerifyCodeForm() {
 
       await confirmUser(getValues('email'), code);
 
-      push(PATHS.auth.login)
-
+      push(PATHS.auth.login);
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (router.isReady) {
-      if (router.query.email) {
-        setEmailRecovery(router.query.email as string);
-        setValue('email', router.query.email as string);
-      }
-    }
-  }, [router.isReady, router.query?.email, emailRecovery]);
-
-  // Set the resendvaialble to true when the countdown ends
-  useEffect(() => {
-    // The countdown starts at 00 so we need to check if it's 01 and if the resend is not available yet
-    if (countdown.seconds == '01' && resendAvailable == false) {
-      // Reset the resend available
-
-      // Wait 1 second
-      setTimeout(() => {
-        setResendAvailable(true);
-      }, 1000);
-    }
-  }, [countdown]);
-
-  /**
-   * Resend the confirmation code
-   */
   const onResendCode = async () => {
     try {
       const email = getValues('email');
@@ -153,6 +126,32 @@ export default function AuthVerifyCodeForm() {
       console.error(error);
     }
   };
+
+  useEffect(() => {
+    if (router.isReady) {
+      if (router.query.email) {
+        setEmailRecovery(router.query.email as string);
+        setValue('email', router.query.email as string);
+      }
+    }
+  }, [router.isReady, router.query?.email, emailRecovery]);
+
+  // Set the resendvaialble to true when the countdown ends
+  useEffect(() => {
+    // The countdown starts at 00 so we need to check if it's 01 and if the resend is not available yet
+    if (countdown.seconds == '01' && resendAvailable == false) {
+      // Reset the resend available
+
+      // Wait 1 second
+      setTimeout(() => {
+        setResendAvailable(true);
+      }, 1000);
+    }
+  }, [countdown]);
+
+  /**
+   * Resend the confirmation code
+   */
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>

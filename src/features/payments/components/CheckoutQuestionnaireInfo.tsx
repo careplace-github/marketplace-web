@@ -2,6 +2,7 @@
 import { useState, useEffect, MouseEventHandler } from 'react';
 import { IScheduleProps } from 'src/types/order';
 import { ISnackbarProps } from 'src/types/snackbar';
+import { countries } from 'src/data';
 // react
 
 // lib
@@ -17,6 +18,7 @@ import {
   TextField,
   Button,
   SelectChangeEvent,
+  FormControl as Form,
   Snackbar,
   Alert,
 } from '@mui/material';
@@ -33,10 +35,22 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
+import { useAuthContext } from 'src/contexts';
 import AddNewCardForm from './AddNewCardForm';
 import CheckoutPaymentMethod from './CheckoutPaymentMethod';
 
 // ----------------------------------------------------------------------
+
+type BillingDetailsProps = {
+  name: string;
+  nif: string;
+  address: {
+    street: string;
+    postal_code: string;
+    city: string;
+    country: string;
+  };
+};
 
 type Props = {
   services: IServiceProps[];
@@ -50,6 +64,11 @@ type Props = {
   schedule: IScheduleProps[];
   startDate: Date | null;
   onPaymentMethodSelect: Function;
+  onBillingDetailsChange: Function;
+  isOrderView?: boolean;
+  orderBillingDetails?: BillingDetailsProps;
+  orderStatus?: string;
+  previousPaymentMethod?: string;
 };
 
 type PaymentMethodProps = {
@@ -62,29 +81,74 @@ type PaymentMethodProps = {
 export default function CheckoutQuestionnaireInfo({
   relatives,
   onValidChange,
+
+  orderBillingDetails,
   services,
   checkoutVersion = false,
   selectedRelative,
   selectedWeekdays,
   selectedRecurrency,
   schedule,
+  previousPaymentMethod,
   startDate,
   selectedServices,
   onPaymentMethodSelect,
+  onBillingDetailsChange,
+  isOrderView,
+  orderStatus,
 }: Props) {
   const [openAddCardForm, setOpenAddCardForm] = useState<boolean>(false);
-  const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(false);
-  const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(false);
+  const [openRelativeInfo, setOpenRelativeInfo] = useState<boolean>(!!isOrderView);
+  const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>({
+    name: orderBillingDetails?.name || '',
+    nif: orderBillingDetails?.nif || '',
+    address: {
+      street: orderBillingDetails?.address.street || '',
+      postal_code: orderBillingDetails?.address.postal_code || '',
+      city: orderBillingDetails?.address.city || '',
+      country: orderBillingDetails?.address.country || '',
+    },
+  });
+  const [openOrderInfo, setOpenOrderInfo] = useState<boolean>(!!isOrderView);
+  const [openBillingInfo, setOpenBillingInfo] = useState<boolean>(true);
+  const [openPaymentInfo, setOpenPaymentInfo] = useState<boolean>(true);
   const [CARDS, setCARDS] = useState<PaymentMethodProps[]>([]);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
     message: '',
   });
+  const { user } = useAuthContext();
+  useEffect(() => {
+    if (user && !isOrderView) {
+      let countryLabel = '';
+      countries.forEach((item) => {
+        if (item.code === user?.address?.country) {
+          countryLabel = item.label;
+        }
+      });
+      setBillingDetails((prev) => {
+        return {
+          ...prev,
+          address: {
+            city: user.address?.city || '',
+            postal_code: user.address?.postal_code || '',
+            street: user.address?.street || '',
+            country: countryLabel,
+          },
+          name: user.name || '',
+        };
+      });
+    }
+  }, [user]);
+
+  useEffect(() => {
+    onBillingDetailsChange(billingDetails);
+  }, [billingDetails]);
 
   async function getCards() {
     const response = await axios.get('/payments/payment-methods');
-    return response.data;
+    return response.data.data;
   }
 
   useEffect(() => {
@@ -100,7 +164,6 @@ export default function CheckoutQuestionnaireInfo({
           });
         });
         setCARDS(auxCards);
-        console.log(data);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -127,7 +190,6 @@ export default function CheckoutQuestionnaireInfo({
           });
         });
         setCARDS(auxCards);
-        console.log(data);
       })
       .catch((error) => console.log(error));
   };
@@ -185,7 +247,7 @@ export default function CheckoutQuestionnaireInfo({
                     Serviços
                   </Typography>
                   <FilterServices
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     services={services}
                     filterServices={selectedServices}
                     onChangeServices={(keyword: IServiceProps[]) => {}}
@@ -204,7 +266,7 @@ export default function CheckoutQuestionnaireInfo({
                     Dias da semana
                   </Typography>
                   <FilterWeekdays
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     filterWeekdays={selectedWeekdays}
                     onChangeWeekdays={(event: SelectChangeEvent<number[]>) => {}}
                   />
@@ -216,7 +278,7 @@ export default function CheckoutQuestionnaireInfo({
                     Recorrência
                   </Typography>
                   <FilterRecurrency
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     filterRecurrency={selectedRecurrency}
                     onChangeRecurrency={(event: SelectChangeEvent<number>) => {}}
                   />
@@ -226,7 +288,7 @@ export default function CheckoutQuestionnaireInfo({
                     Data de ínicio
                   </Typography>
                   <DatePicker
-                    readOnly={checkoutVersion}
+                    readOnly={checkoutVersion && orderStatus !== 'new'}
                     slotProps={{
                       textField: {
                         hiddenLabel: true,
@@ -234,7 +296,6 @@ export default function CheckoutQuestionnaireInfo({
                     }}
                     format="dd-MM-yyyy"
                     value={startDate}
-                    minDate={new Date()}
                   />
                 </Box>
               </Stack>
@@ -262,7 +323,7 @@ export default function CheckoutQuestionnaireInfo({
 
                         <Stack gap="10px" direction="row">
                           <TimePicker
-                            readOnly={checkoutVersion}
+                            readOnly={checkoutVersion && orderStatus !== 'new'}
                             ampm={false}
                             sx={{ flex: 1 }}
                             value={item.start ? new Date(item.start) : new Date()}
@@ -284,7 +345,7 @@ export default function CheckoutQuestionnaireInfo({
                             -
                           </Typography>
                           <TimePicker
-                            readOnly={checkoutVersion}
+                            readOnly={checkoutVersion && orderStatus !== 'new'}
                             skipDisabled
                             ampm={false}
                             sx={{ flex: 1 }}
@@ -312,7 +373,7 @@ export default function CheckoutQuestionnaireInfo({
         <Collapse sx={{ mt: '0px' }} in={openRelativeInfo} unmountOnExit>
           <div>
             <AvatarDropdown
-              readOnly={checkoutVersion}
+              readOnly={checkoutVersion && orderStatus !== 'new'}
               selected={JSON.stringify(selectedRelative)}
               options={relatives}
               selectText="Escolha um familiar"
@@ -391,25 +452,201 @@ export default function CheckoutQuestionnaireInfo({
             </Collapse>
           </div>
         </Collapse>
-        <StepLabel title="Método de Pagamento" step="3" />
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <CheckoutPaymentMethod options={CARDS} onPaymentMethodSelect={onPaymentMethodSelect} />
-          <Divider sx={{ mt: '20px', mb: '20px' }} />
-          <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
-            <Button
-              variant="text"
-              sx={{
-                color: openAddCardForm ? 'red' : 'primary.main',
-              }}
-              onClick={() => setOpenAddCardForm((prev) => !prev)}
-            >
-              {!openAddCardForm ? 'Adicionar Cartão' : 'Cancelar'}
-            </Button>
-          </Stack>
-          <Collapse in={openAddCardForm} unmountOnExit>
-            <AddNewCardForm onAddCard={(result) => handleAddCard(result)} />
-          </Collapse>
-        </Box>
+        {orderStatus !== 'new' && (
+          <>
+            <StepLabel
+              title="Dados de Faturação"
+              step="3"
+              droppable={isOrderView}
+              opened={openBillingInfo}
+              onOpenClick={() => setOpenBillingInfo((prev) => !prev)}
+            />
+            <Collapse sx={{ mt: '0px' }} in={openBillingInfo} unmountOnExit>
+              <Form sx={{ width: '100%' }}>
+                <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                  <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+                    <TextField
+                      value={billingDetails.name}
+                      onChange={(e) =>
+                        setBillingDetails((prev) => {
+                          return { ...prev, name: e.target.value };
+                        })
+                      }
+                      label="Nome *"
+                      sx={{ flex: 1 }}
+                    />
+                    <TextField
+                      value={billingDetails.nif}
+                      onChange={(e) => {
+                        const { value } = e.target;
+
+                        /**
+                         * Only allow numbers and dashes
+                         */
+                        if (!/^[0-9 ]*$/.test(value)) {
+                          return;
+                        }
+
+                        /**
+                         * Portugal Zip Code Validation
+                         */
+
+                        // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+
+                        if (value.length === 4 && value[3] !== ' ') {
+                          setBillingDetails((prev) => {
+                            return {
+                              ...prev,
+                              nif: `${value[0]}${value[1]}${value[2]} ${value[3]}`,
+                            };
+                          });
+                          return;
+                        }
+                        if (value.length === 8 && value[7] !== ' ') {
+                          setBillingDetails((prev) => {
+                            return {
+                              ...prev,
+                              nif: `${value[0]}${value[1]}${value[2]}${value[3]}${value[4]}${value[5]}${value[6]} ${value[7]}`,
+                            };
+                          });
+                          return;
+                        }
+
+                        // // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                        if (value.length > 11) {
+                          return;
+                        }
+
+                        setBillingDetails((prev) => {
+                          return { ...prev, nif: value };
+                        });
+                      }}
+                      label="NIF"
+                      sx={{ flex: 1 }}
+                    />
+                  </Stack>
+                  <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+                    <TextField
+                      value={billingDetails.address.street}
+                      onChange={(e) =>
+                        setBillingDetails((prev) => {
+                          return { ...prev, address: { ...prev.address, street: e.target.value } };
+                        })
+                      }
+                      label="Morada *"
+                      sx={{ flex: 1 }}
+                    />
+                    <TextField
+                      value={billingDetails.address.postal_code}
+                      onChange={(e) => {
+                        const { value } = e.target;
+
+                        /**
+                         * Only allow numbers and dashes
+                         */
+                        if (!/^[0-9-]*$/.test(value)) {
+                          return;
+                        }
+
+                        /**
+                         * Portugal Zip Code Validation
+                         */
+                        if (
+                          billingDetails.address.country === 'Portugal' ||
+                          billingDetails.address.country === ''
+                        ) {
+                          // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
+                          if (value.length === 5 && value[4] !== '-') {
+                            setBillingDetails((prev) => {
+                              return {
+                                ...prev,
+                                address: {
+                                  ...prev.address,
+                                  postal_code: `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`,
+                                },
+                              };
+                            });
+                            return;
+                          }
+
+                          // Do not allow the zip code to have more than 8 digits (XXXX-XXX -> 8 digits)
+                          if (value.length > 8) {
+                            return;
+                          }
+                        }
+                        setBillingDetails((prev) => {
+                          return { ...prev, address: { ...prev.address, postal_code: value } };
+                        });
+                      }}
+                      label="Código Postal *"
+                      sx={{ flex: 1 }}
+                    />
+                  </Stack>
+                  <Stack sx={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '16px' }}>
+                    <TextField
+                      value={billingDetails.address.city}
+                      onChange={(e) =>
+                        setBillingDetails((prev) => {
+                          return { ...prev, address: { ...prev.address, city: e.target.value } };
+                        })
+                      }
+                      label="Cidade *"
+                      sx={{ flex: 1 }}
+                    />
+                    <TextField
+                      value={billingDetails.address.country}
+                      onChange={(e) =>
+                        setBillingDetails((prev) => {
+                          return { ...prev, address: { ...prev.address, country: e.target.value } };
+                        })
+                      }
+                      label="País *"
+                      sx={{ flex: 1 }}
+                    />
+                  </Stack>
+                  <Typography sx={{ fontSize: '12px', color: '#91A0AD' }}>
+                    * Campo obrigatório
+                  </Typography>
+                </Box>
+              </Form>
+            </Collapse>
+          </>
+        )}
+        {orderStatus !== 'new' && (
+          <>
+            <StepLabel
+              title="Método de Pagamento"
+              step="4"
+              droppable={isOrderView}
+              opened={openPaymentInfo}
+              onOpenClick={() => setOpenPaymentInfo((prev) => !prev)}
+            />
+            <Collapse sx={{ mt: '0px' }} in={openPaymentInfo} unmountOnExit>
+              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                <CheckoutPaymentMethod
+                  options={CARDS}
+                  previousPaymentMethod={previousPaymentMethod}
+                  onPaymentMethodSelect={onPaymentMethodSelect}
+                />
+                <Divider sx={{ mt: '20px', mb: '20px' }} />
+                <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
+                  <Button
+                    variant="text"
+                    sx={{
+                      color: openAddCardForm ? 'red' : 'primary.main',
+                    }}
+                    onClick={() => setOpenAddCardForm((prev) => !prev)}
+                  >
+                    {!openAddCardForm ? 'Adicionar Cartão' : 'Cancelar'}
+                  </Button>
+                </Stack>
+                <Collapse in={openAddCardForm} unmountOnExit>
+                  <AddNewCardForm onAddCard={(result) => handleAddCard(result)} />
+                </Collapse>
+              </Box>
+            </Collapse>
+          </>
+        )}
       </Stack>
     </>
   );

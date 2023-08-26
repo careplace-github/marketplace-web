@@ -46,14 +46,14 @@ export default function CompanyDetailReserveForm({
           weekdaysSelected.push(parseInt(item, 10));
         }
       });
-      console.log('weekdays selected:', weekdaysSelected);
+
       if (weekdaysSelected.length > 0) {
         setFilterWeekdays(weekdaysSelected);
       }
     }
     if (preSelectedServices && services.length > 0) {
       const servicesSelected: IServiceProps[] = [];
-      console.log(services);
+
       services.forEach((service: IServiceProps) => {
         preSelectedServices.forEach((preSelected) => {
           if (service._id === preSelected) {

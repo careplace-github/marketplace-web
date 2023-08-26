@@ -1,27 +1,21 @@
 import { useEffect, useState } from 'react';
 // @mui
-import { DatePicker } from '@mui/x-date-pickers';
 import {
   Box,
   Tab,
   Tabs,
   Table,
-  Stack,
-  Switch,
   TableRow,
   TableBody,
   TableCell,
-  TextField,
   Typography,
   TableContainer,
-  InputAdornment,
   TablePagination,
-  FormControlLabel,
+  CircularProgress,
 } from '@mui/material';
 // types
 import { IOrderProps } from 'src/types/order';
 // components
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import EmptyState from 'src/components/empty-state/EmptyState';
 // lib
@@ -43,13 +37,13 @@ const TABS = [
   { label: 'Aguarda Visita', value: 'accepted' },
   { label: 'Novos', value: 'new' },
   { label: 'Ativos', value: 'active' },
-  { label: 'Pagamentos Pendentes', value: 'payment_pending' },
+  { label: 'Pagamentos Pendentes', value: 'pending_payment' },
   { label: 'Concluídos', value: 'completed' },
   { label: 'Cancelados', value: 'cancelled' },
 ];
 
 export const TABLE_HEAD = [
-  { id: 'relative', label: 'Familiar' },
+  { id: 'relative', label: 'Familiar', width: '400px', minWidth: '240px' },
   { id: 'services', label: 'Serviços', width: 160 },
   { id: 'schedule_information', label: 'Recorrência', width: 100 },
   { id: '', label: 'Horário' },
@@ -65,7 +59,7 @@ export default function AccountOrdersView() {
 
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
-  const [sortBy, setSortBy] = useState('relative');
+  const [sortBy, setSortBy] = useState('');
 
   const [selected, setSelected] = useState<string[]>([]);
 
@@ -76,6 +70,7 @@ export default function AccountOrdersView() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [ordersFetched, setOrdersFetched] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState<boolean>(true);
   const [orders, setOrders] = useState([]);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {
@@ -83,19 +78,18 @@ export default function AccountOrdersView() {
     // Filter the orders by the selected tab
     const ordersFiltered = ordersFetched.filter((order: IOrderProps) => {
       if (newValue === 'all') {
-        return order;
+        return order.status !== 'cancelled';
       }
       return order.status === newValue;
     });
-
     setOrders(ordersFiltered);
   };
 
   const handleSort = (attribute: string) => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
 
-    if (attribute === 'relative.name') {
-      setSortBy('relative.name');
+    if (attribute === 'patient.name') {
+      setSortBy('patient.name');
     }
 
     setSortBy(attribute);
@@ -104,12 +98,19 @@ export default function AccountOrdersView() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/users/orders');
-        setOrders(response.data.data);
+        const response = await axios.get('/customers/orders/home-care');
+        const auxFilteredOrders = response.data.data.filter((order: IOrderProps) => {
+          if (tab === 'all') {
+            return order.status !== 'cancelled';
+          }
+          return order.status === tab;
+        });
+        setOrders(auxFilteredOrders);
         setOrdersFetched(response.data.data);
       } catch (error) {
         console.error(error);
       }
+      setOrdersLoading(false);
     };
     fetchOrders();
     handleSort(sortBy);
@@ -154,7 +155,7 @@ export default function AccountOrdersView() {
           ))}
         </Tabs>
 
-        {orders.length > 0 ? (
+        {orders?.length > 0 && (
           <TableContainer
             sx={{
               overflow: 'unset',
@@ -188,13 +189,15 @@ export default function AccountOrdersView() {
                 <TableBody>
                   {stableSort(orders, getComparator(sortOrder, sortBy))
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((order: IOrderProps) => (
-                      <AccountOrdersTableRow
-                        key={order._id}
-                        row={order}
-                        selected={selected.includes(order._id)}
-                      />
-                    ))}
+                    .map((order: IOrderProps) => {
+                      return (
+                        <AccountOrdersTableRow
+                          key={order._id}
+                          row={order}
+                          selected={selected.includes(order._id)}
+                        />
+                      );
+                    })}
 
                   {emptyRows > 0 && (
                     <TableRow
@@ -209,7 +212,21 @@ export default function AccountOrdersView() {
               </Table>
             </Scrollbar>
           </TableContainer>
-        ) : (
+        )}
+        {orders?.length === 0 && ordersLoading && (
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              height: '200px',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        )}
+        {orders?.length === 0 && !ordersLoading && (
           <EmptyState
             icon="fluent-mdl2:reservation-orders"
             title="Não tem nenhum pedido"
@@ -221,7 +238,7 @@ export default function AccountOrdersView() {
           <TablePagination
             page={page}
             component="div"
-            count={orders.length}
+            count={orders?.length || 0}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}

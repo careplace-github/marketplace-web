@@ -158,7 +158,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setSession(accessToken);
 
-        const response = await axios.get('/users/account');
+        const response = await axios.get('/auth/account', {
+          headers: {
+            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+          },
+        });
 
         user = response.data;
 
@@ -193,6 +197,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, [storageAvailable]);
 
+  const fetchUser = useCallback(async () => {
+    const response = await axios.get('/auth/account');
+    const user = response.data;
+
+    setItem('profile_picture', user.profile_picture);
+    setItem('name', user.name);
+    dispatch({
+      type: Types.INITIAL,
+      payload: {
+        isAuthenticated: true,
+        user,
+      },
+    });
+  }, []);
+
   /**
    * Refresh the auth context
    * This will c
@@ -202,10 +221,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [initialize]);
 
   // REGISTER
-  const register = useCallback(async (user: IUserProps) => {
-    const response = await axios.post('/auth/marketplace/signup', {
-      user,
-    });
+  const register = useCallback(async (payload: IUserProps) => {
+    await axios.post(
+      '/auth/signup',
+      {
+        customer: payload.customer,
+        password: payload.password,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
 
     dispatch({
       type: Types.REGISTER,
@@ -215,17 +243,76 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CONFIRMATION_CODE
   const confirmationCode = useCallback(async (email: string) => {
-    const response = await axios.post('/auth/marketplace/send/confirmation-code', {
-      email,
-    });
+    await axios.post(
+      '/auth/send/confirmation-code',
+      {
+        email,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  }, []);
+
+  // CONFIRM MOBILE
+  const sendConfirmPhoneCode = useCallback(async (email: string) => {
+    await axios.post(
+      '/auth/send/confirm-phone-code',
+      { email },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  }, []);
+
+  const verifyPhoneCode = useCallback(async (email: string, code: string) => {
+    await axios.post('/auth/verify/confirm-phone-code', { email, code });
+    fetchUser();
+  }, []);
+
+  // CONFIRM EMAIL
+  const sendConfirmEmailCode = useCallback(async (email: string) => {
+    await axios.post(
+      '/auth/send/confirm-email-code',
+      { email },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
+  }, []);
+
+  const verifyEmailCode = useCallback(async (email: string, code: string) => {
+    await axios.post(
+      '/auth/verify/confirm-email-code',
+      { email, code },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // CONFIRM_USER
   const confirmUser = useCallback(async (email: string, code: string, password?: string) => {
-    const response = await axios.post('/auth/marketplace/verify/confirmation-code', {
-      email,
-      code,
-    });
+    const response = await axios.post(
+      '/auth/verify/confirmation-code',
+      {
+        email,
+        code,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
 
     // Check if the api response has a 200 status code
     if (response.status !== 200) {
@@ -243,30 +330,58 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // FORGOT_PASSWORD
   const forgotPassword = useCallback(async (email: string) => {
-    const response = await axios.post('/auth/marketplace/send/forgot-password-code', {
-      email,
-    });
+    await axios.post(
+      '/auth/send/forgot-password-code',
+      {
+        email,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // RESET_PASSWORD
   const resetPassword = useCallback(async (email: string, code: string, newPassword: string) => {
-    const response = await axios.post('/auth/marketplace/verify/forgot-password-code', {
-      email,
-      code,
-      newPassword,
-    });
+    await axios.post(
+      '/auth/verify/forgot-password-code',
+      {
+        email,
+        code,
+        newPassword,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // LOGIN
   const login = useCallback(async (email: string, password: string) => {
-    let response = await axios.post('/auth/marketplace/login', {
-      email,
-      password,
-    });
+    let response = await axios.post(
+      '/auth/signin',
+      {
+        email,
+        password,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
     const { accessToken } = response.data;
     setSession(accessToken);
 
-    response = await axios.get('/users/account');
+    response = await axios.get('/auth/account', {
+      headers: {
+        'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+      },
+    });
 
     const user = response.data;
 
@@ -283,29 +398,38 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // CHANGE_PASSWORD
   const changePassword = useCallback(async (oldPassword: string, newPassword: string) => {
-    const response = await axios.post('/auth/change-password', {
-      oldPassword,
-      newPassword,
-    });
+    await axios.post(
+      '/auth/change-password',
+      {
+        oldPassword,
+        newPassword,
+      },
+      {
+        headers: {
+          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
+        },
+      }
+    );
   }, []);
 
   // UPDATE_USER
-  const updateUser = useCallback(async (user: AuthUserType) => {
-    const updatedUser = (
-      await axios.put('/users/account', {
-        user,
-      })
-    ).data;
-
-    setItem('profile_picture', updatedUser.profile_picture);
-    setItem('name', updatedUser.name);
-
-    dispatch({
-      type: Types.UPDATE_USER,
-      payload: {
-        user: updatedUser,
-      },
-    });
+  const updateUser = useCallback(async (user: AuthUserType): Promise<boolean> => {
+    try {
+      await axios.put('/auth/account', user);
+      const updatedUser = (await axios.get('/auth/account')).data;
+      setItem('profile_picture', updatedUser.profile_picture);
+      setItem('name', updatedUser.name);
+      dispatch({
+        type: Types.UPDATE_USER,
+        payload: {
+          user: updatedUser,
+        },
+      });
+    } catch (error) {
+      return false;
+      console.log(error);
+    }
+    return true;
   }, []);
 
   // LOGOUT
@@ -328,6 +452,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       register,
       confirmationCode,
+      fetchUser,
+      verifyEmailCode,
+      verifyPhoneCode,
+      sendConfirmEmailCode,
+      sendConfirmPhoneCode,
       confirmUser,
       forgotPassword,
       resetPassword,
@@ -342,6 +471,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
       state.user,
       register,
       confirmationCode,
+      fetchUser,
+      verifyEmailCode,
+      verifyPhoneCode,
+      sendConfirmEmailCode,
+      sendConfirmPhoneCode,
       confirmUser,
       forgotPassword,
       resetPassword,

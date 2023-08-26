@@ -41,10 +41,6 @@ export default function ServicesList({ services }: Props) {
     setCurrentPage(1);
   }, [services, tab]);
 
-  useEffect(() => {
-    console.log('selected:', servicesSelected);
-  }, [servicesSelected]);
-
   applyFilter(services, tab);
 
   const handleChangeTab = (event: React.SyntheticEvent, newValue: string) => {

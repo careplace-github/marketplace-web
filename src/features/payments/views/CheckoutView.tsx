@@ -5,23 +5,49 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // router
 import { useRouter } from 'next/router';
 // @mui
-import { Stack, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import {
+  Stack,
+  Container,
+  Typography,
+  Unstable_Grid2 as Grid,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
 import { IRelativeProps } from 'src/types/relative';
+import { ISnackbarProps } from 'src/types/snackbar';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
+import { PATHS } from 'src/routes';
 // components
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import Page404 from 'src/pages/404';
 //
+import { useAuthContext } from 'src/contexts';
 import CheckoutSummary from '../components/CheckoutSummary';
 import CheckoutQuestionnaireInfo from '../components/CheckoutQuestionnaireInfo';
 
 // ----------------------------------------------------------------------
+
+type BillingDetailsProps = {
+  name: string;
+  nif: string;
+  address: {
+    street: string;
+    postal_code: string;
+    city: string;
+    country: string;
+  };
+};
+
+type CardProps = {
+  id: string;
+};
 
 export default function CheckoutView() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -29,17 +55,26 @@ export default function CheckoutView() {
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
-  const [selectedCard, setSelectedCard] = useState();
+  const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>();
+  const [selectedCard, setSelectedCard] = useState<CardProps>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [orderInfo, setOrderInfo] = useState<any>();
+  const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
+  const [discountCode, setDiscountCode] = useState<string>();
   const router = useRouter();
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
+
+  const { user } = useAuthContext();
 
   const fetchUserRelatives = async () => {
     try {
-      const response = await axios.get('users/relatives');
+      const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       console.log('error fetching relatives:', error);
     }
@@ -52,7 +87,7 @@ export default function CheckoutView() {
 
   const fetchCompany = async (companyId) => {
     try {
-      const response = await axios.get(`/companies/${companyId}`);
+      const response = await axios.get(`/health-units/${companyId}`);
       setCompanyInfo(response.data);
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
@@ -67,16 +102,18 @@ export default function CheckoutView() {
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/users/orders/${orderId}`);
+        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {
           auxWeekdays.push(item.week_day);
         });
         setSelectedWeekdays(auxWeekdays);
-        console.log('order info:', response.data);
-        fetchCompany(response.data.company._id);
+        fetchCompany(response.data.health_unit._id);
       } catch (error) {
+        if (error?.error?.type === 'FORBIDDEN') {
+          router.push('/404');
+        }
         console.log('error fetching order:', error);
       }
     };
@@ -132,11 +169,70 @@ export default function CheckoutView() {
     defaultValues,
   });
 
-  const { getValues } = methods;
-
-  const onCheckoutSubmit = () => {
-    console.log('Submit card:', selectedCard);
+  const onCheckoutSubmit = async () => {
+    const orderId = router.asPath.split('/').at(2);
+    try {
+      const response = await axios.post(`/payments/orders/home-care/${orderId}/subscription`, {
+        payment_method: selectedCard?.id,
+        promotion_code: discountCode,
+        billing_details: {
+          name: billingDetails?.name,
+          email: user?.email,
+          tax_id: billingDetails?.nif,
+          address: {
+            street: billingDetails?.address.street,
+            city: billingDetails?.address.city,
+            country: billingDetails?.address.country,
+            postal_code: billingDetails?.address.postal_code,
+          },
+        },
+      });
+      router.push(PATHS.orders.checkoutSucess(orderId || ''));
+    } catch (error) {
+      if (error?.error?.message === 'Order already has a subscription') {
+        setShowSnackbar({
+          show: true,
+          severity: 'error',
+          message: 'Já foi confirmado um pagamento para este pedido ',
+        });
+        return;
+      }
+      setShowSnackbar({
+        show: true,
+        severity: 'error',
+        message: 'Algo correu mal, tente de novo.',
+      });
+    }
   };
+
+  const handleBillingDetailsChange = (details) => {
+    setBillingDetails(details);
+  };
+
+  useEffect(() => {
+    const isNifValid = (value) => {
+      if (value.length === 11 && value[3] === ' ' && value[7] === ' ') return true;
+      return false;
+    };
+    const isPostalCodeValid = (value) => {
+      if (value.length === 8 && value[4] === '-') return true;
+      return false;
+    };
+
+    const disable =
+      !selectedCard ||
+      !billingDetails?.name ||
+      (billingDetails?.nif && !isNifValid(billingDetails?.nif)) ||
+      !billingDetails?.address.street ||
+      !billingDetails?.address.city ||
+      !billingDetails?.address.country ||
+      !isPostalCodeValid(billingDetails?.address.postal_code);
+    if (disable) {
+      setSubmitButtonDisabled(true);
+    } else {
+      setSubmitButtonDisabled(false);
+    }
+  }, [billingDetails, selectedCard]);
 
   return !loading && !relativesLoading ? (
     <Container
@@ -146,6 +242,32 @@ export default function CheckoutView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={3000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: 'success',
+            message: '',
+          })
+        }
+      >
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
       <Typography variant="h2" sx={{ mb: 5, mt: 10 }}>
         Checkout
       </Typography>
@@ -158,7 +280,7 @@ export default function CheckoutView() {
                 <CheckoutQuestionnaireInfo
                   onPaymentMethodSelect={(card) => setSelectedCard(card)}
                   relatives={userRelatives}
-                  selectedRelative={orderInfo?.relative}
+                  selectedRelative={orderInfo?.patient}
                   checkoutVersion
                   services={availableServices}
                   onValidChange={() => {}}
@@ -167,6 +289,7 @@ export default function CheckoutView() {
                   selectedRecurrency={orderInfo?.schedule_information?.recurrency}
                   schedule={orderInfo?.schedule_information?.schedule}
                   startDate={new Date(orderInfo?.schedule_information?.start_date)}
+                  onBillingDetailsChange={handleBillingDetailsChange}
                 />
               )}
             </Stack>
@@ -175,11 +298,14 @@ export default function CheckoutView() {
           <Grid xs={12} md={5}>
             {companyInfo && (
               <CheckoutSummary
+                hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
                 handleSubmit={onCheckoutSubmit}
-                disabled={!selectedCard}
+                disabled={submitButtonDisabled}
                 subtotal={orderInfo?.order_total}
                 company={companyInfo}
                 isSubmitting={isSubmitting}
+                onDiscountApplied={(code) => setDiscountCode(code)}
+                orderStatus={orderInfo.status}
               />
             )}
           </Grid>

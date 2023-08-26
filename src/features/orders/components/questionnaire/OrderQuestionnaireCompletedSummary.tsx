@@ -31,7 +31,6 @@ export default function OrderQuestionnaireCompletedSummary({
     : new Date();
   const isSmUp = useResponsive('up', 'sm');
   // const servicesLabels = getAvailableServices(services);
-  console.log(services);
 
   const getRecurrency = (value) => {
     let recurrencyLabel = '';

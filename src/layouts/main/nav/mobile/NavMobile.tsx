@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 // next
 import { useRouter } from 'next/router';
 // @mui
-import { List, Drawer, IconButton, Button, Stack, Box, Avatar, Typography } from '@mui/material';
+import { List, Drawer, Button, Stack, Box, Avatar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // config
 import { NAV } from 'src/layouts';
@@ -10,7 +10,6 @@ import { NAV } from 'src/layouts';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { Searchbar } from 'src/components/searchbar';
 import { useSnackbar } from 'src/components/snackbar';
 // paths
 import { PATHS } from 'src/routes';

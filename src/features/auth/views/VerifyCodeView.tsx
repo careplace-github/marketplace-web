@@ -17,14 +17,13 @@ export default function VerifyCodeView() {
     <>
       <Image
         alt="email inbox"
-        src="/assets/icons/undraw_mobile_phone.svg"
-        sx={{ mb: 5, mx: 'auto' }}
+        src="/assets/icons/undraw_email.svg"
+        sx={{ mb: 5, mx: 'auto', height: '92px' }}
       />
-
       <Typography variant="h3">Confirmar Conta</Typography>
 
       <Typography variant="body2" sx={{ mt: 2, mb: 5, color: 'text.secondary' }}>
-        Enviámos-lhe um código com 6 dígitos para o seu telemóvel. Por favor escreva o código abaixo
+        Enviámos-lhe um código com 6 dígitos para o seu email. Por favor escreva o código abaixo
         para confirmar a sua conta.
       </Typography>
 

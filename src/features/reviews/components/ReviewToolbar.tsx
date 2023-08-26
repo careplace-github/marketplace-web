@@ -55,8 +55,6 @@ export default function ReviewToolbar({ sort, onChangeSort }: Props) {
             MenuProps={MenuProps}
           >
             {SORT_OPTIONS.map((option) => {
-              console.log('option:', option);
-              console.log('sort:', sort);
               return (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}

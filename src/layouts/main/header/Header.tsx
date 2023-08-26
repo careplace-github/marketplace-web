@@ -1,13 +1,8 @@
-// react
-import { useState, useEffect } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box, Link, Stack, Button, AppBar, Toolbar, Container, Typography } from '@mui/material';
+import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/material';
 // hooks
-import useOffSetTop from 'src/hooks/useOffSetTop';
 import useResponsive from 'src/hooks/useResponsive';
-// utils
-import { bgBlur } from 'src/utils/cssStyles';
 // auth
 import { useAuthContext } from 'src/contexts';
 // config
@@ -15,14 +10,14 @@ import { HEADER } from 'src/layouts/config';
 // paths
 import { PATHS } from 'src/routes';
 // google maps api
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import { useJsApiLoader } from '@react-google-maps/api';
 // components
 import Logo from 'src/components/logo';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { Searchbar } from 'src/components/searchbar';
 import AccountPopover from './AccountPopover';
 //
-import { NavMobile, NavDesktop, navConfig, navConfigMobile } from '../nav';
+import { NavMobile, NavDesktop, navConfigMobile } from '../nav';
 import HeaderShadow from '../../components/HeaderShadow';
 
 // ----------------------------------------------------------------------
@@ -38,14 +33,11 @@ const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'vi
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
 export default function Header({ headerOnDark }: Props) {
-  const { user, isAuthenticated, isInitialized } = useAuthContext();
+  const { isAuthenticated, isInitialized } = useAuthContext();
 
   const theme = useTheme();
 
   const isMdUp = useResponsive('up', 'md');
-  const isSmUp = useResponsive('up', 'sm');
-
-  const isOffset = useOffSetTop();
 
   const isLoaded = useJsApiLoader({
     id: 'google-map-script',
@@ -54,7 +46,13 @@ export default function Header({ headerOnDark }: Props) {
   });
 
   return isInitialized && isLoaded.isLoaded ? (
-    <AppBar color="transparent" sx={{ boxShadow: '0px 1px 20px rgba(0,0,0,0.07)' }}>
+    <AppBar
+      color="transparent"
+      sx={{
+        boxShadow: '0px 1px 20px rgba(0,0,0,0.07)',
+        backgroundColor: 'white',
+      }}
+    >
       <Stack direction="column" sx={{ width: '100%' }}>
         <Toolbar
           disableGutters
