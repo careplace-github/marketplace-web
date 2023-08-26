@@ -9,7 +9,6 @@ export { default as CompaniesFilters } from './filters/CompaniesFilters';
 export * from './filters/components';
 
 // item
-export { default as CompanyDetailtem } from './item/CompanyDetailtem';
 export { default as CompanyDetailSkeleton } from './item/CompanyDetailSkeleton';
 export { default as CompanyListItem } from './item/CompanyListItem';
 export { default as CompanyListItemSkeleton } from './item/CompanyListItemSkeleton';

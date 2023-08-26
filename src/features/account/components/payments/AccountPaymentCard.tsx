@@ -2,9 +2,6 @@ import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Popover, MenuItem, Typography, IconButton } from '@mui/material';
-
-// next
-import { useRouter } from 'next/router';
 // contexts
 import { useAuthContext } from 'src/contexts';
 // components
@@ -36,7 +33,7 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
   const cardNumber = card.card.last4;
   const cardHolder = card.billing_details.name || user?.name;
   const expirationDate =
-    card.card.exp_month > 12
+    card.card.exp_month > 10
       ? `${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`
       : `0${card.card.exp_month}/${card.card.exp_year.toString().substring(2, 4)}`;
 

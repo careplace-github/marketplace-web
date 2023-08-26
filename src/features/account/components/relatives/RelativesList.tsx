@@ -1,5 +1,5 @@
 // @mui
-import { Stack, Box } from '@mui/material';
+import { Stack } from '@mui/material';
 // types
 import { IRelativeProps } from 'src/types/relative';
 // hooks

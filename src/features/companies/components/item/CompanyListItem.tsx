@@ -176,7 +176,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
                   variant="contained"
                   color="inherit"
                   onClick={() => {
-                    console.log('clicked ver mais');
                     router.push({
                       pathname: `/companies/${company._id}`,
                       query: { ...router.query },
@@ -259,7 +258,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
               variant="contained"
               color="inherit"
               onClick={() => {
-                console.log('clicked ver mais');
                 router.push({
                   pathname: `/companies/${company._id}`,
                   query: { ...router.query },

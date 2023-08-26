@@ -62,8 +62,7 @@ export default function ReviewPageView({ update }: Props) {
       setLoading(true);
       const companyId = router.asPath.split('/')[2];
       const fetchCompany = async () => {
-        const response = await axios.get(`/companies/${companyId}`);
-        console.log('company info:', response.data);
+        const response = await axios.get(`/health-units/${companyId}`);
         setCompanyInfo(response.data);
       };
 
@@ -91,7 +90,7 @@ export default function ReviewPageView({ update }: Props) {
           rating: reviewRating,
         });
       } else {
-        await axios.post(`/companies/${companyInfo?._id}/reviews`, {
+        await axios.post(`/health-units/${companyInfo?._id}/reviews`, {
           comment: reviewComment,
           rating: reviewRating,
         });

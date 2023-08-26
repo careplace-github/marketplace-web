@@ -30,7 +30,6 @@ export default function ReviewSummary({ reviewsNumber, ratingsNumber, countStars
 
   useEffect(() => {
     if (countStars) {
-      console.log('count stars:', countStars);
       const aux: CountStarsToSendItemsProps[] = [];
       Object.keys(countStars).forEach((key) => {
         const newObj: CountStarsToSendItemsProps = {
@@ -42,9 +41,6 @@ export default function ReviewSummary({ reviewsNumber, ratingsNumber, countStars
       setCountStarsToSend(aux);
     }
   }, [countStars]);
-  useEffect(() => {
-    console.log('count review:', countStarsToSend);
-  }, [countStarsToSend]);
 
   return (
     <Paper variant="outlined" sx={{ p: 4, pr: 3, borderRadius: 2 }}>

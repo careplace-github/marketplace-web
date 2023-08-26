@@ -7,7 +7,7 @@ export function descendingComparator<T extends ComparatorObject, Key extends key
   b: T,
   orderBy: Key
 ) {
-  if (orderBy === 'relative' || orderBy === 'services') {
+  if (orderBy === 'patient' || orderBy === 'services') {
     if (b[orderBy].name < a[orderBy].name) {
       return -1;
     }
@@ -44,7 +44,6 @@ export function getComparator<T extends ComparatorObject, Key extends keyof T>(
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
-
 
 // ----------------------------------------------------------------------
 

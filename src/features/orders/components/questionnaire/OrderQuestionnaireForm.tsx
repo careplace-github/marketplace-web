@@ -3,6 +3,8 @@ import { useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/router';
 import { IScheduleProps } from 'src/types/order';
 import { useResponsive } from 'src/hooks';
+// paths
+import { PATHS } from 'src/routes';
 // @mui
 import {
   Stack,
@@ -12,8 +14,8 @@ import {
   TextField,
   SelectChangeEvent,
   Checkbox,
+  Button,
 } from '@mui/material';
-import { useTheme } from '@emotion/react';
 // components
 import { Tooltip } from 'src/components/tooltip/Tooltip';
 import AvatarDropdown from 'src/components/avatar-dropdown';
@@ -27,7 +29,7 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
-import Iconify from 'src/components/iconify/Iconify';
+import EmptyState from 'src/components/empty-state/EmptyState';
 
 // ----------------------------------------------------------------------
 
@@ -35,9 +37,15 @@ type Props = {
   services: IServiceProps[];
   relatives: IRelativeProps[];
   onValidChange: Function;
+  orderInfo?: any;
 };
 
-export default function OrderQuestionnaireForm({ relatives, onValidChange, services }: Props) {
+export default function OrderQuestionnaireForm({
+  relatives,
+  onValidChange,
+  services,
+  orderInfo,
+}: Props) {
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
@@ -47,50 +55,50 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
   const [schedule, setSchedule] = useState<IScheduleProps[]>([
     {
       week_day: 1,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 2,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 3,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 4,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 5,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 6,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
     {
       week_day: 7,
-      start: null,
-      end: null,
+      start: undefined,
+      end: undefined,
       nightService: false,
       valid: null,
     },
@@ -99,6 +107,42 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
   const handleChangeServices = (keyword: IServiceProps[]) => {
     setFilterServices(keyword);
   };
+
+  function areDifferentDays(date1: Date, date2: Date): boolean {
+    return (
+      date1.getFullYear() !== date2.getFullYear() ||
+      date1.getMonth() !== date2.getMonth() ||
+      date1.getDate() !== date2.getDate()
+    );
+  }
+
+  const mapWeekdays = (schedule_info) => {
+    const auxWeekdays: number[] = [];
+    const auxSchedule: any[] = schedule;
+    schedule_info.forEach((day) => {
+      auxWeekdays.push(day.week_day);
+      const isNightService = areDifferentDays(new Date(day.start), new Date(day.end));
+      auxSchedule[day.week_day - 1] = {
+        week_day: day.week_day,
+        start: new Date(day.start),
+        end: new Date(day.end),
+        nightService: isNightService,
+        valid: true,
+      };
+    });
+    setSchedule(auxSchedule);
+    setFilterWeekdays(auxWeekdays);
+  };
+
+  useEffect(() => {
+    if (orderInfo) {
+      setSelectedRelative(orderInfo.patient);
+      setStartDate(new Date(orderInfo.schedule_information.start_date));
+      setFilterRecurrency(orderInfo.schedule_information.recurrency);
+      setFilterServices(orderInfo.services);
+      mapWeekdays(orderInfo.schedule_information.schedule);
+    }
+  }, [orderInfo]);
 
   useEffect(() => {
     let counter: number = 0;
@@ -152,7 +196,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
   useEffect(() => {
     // show pre selected values for weekdays and services
     if (router.isReady) {
-      const query = router.query;
+      const { query } = router;
       const weekdaysPreSelected: number[] = [];
       const weekdays = query.weekDay as string;
       if (weekdays) {
@@ -185,7 +229,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
 
   const removeFromSchedule = (weekdayId) => {
     const prevState = schedule[weekdayId - 1];
-    const newItem = { ...prevState, start: null, end: null, valid: null };
+    const newItem = { ...prevState, start: undefined, end: undefined, valid: null };
     const newSchedule = schedule;
     newSchedule[weekdayId - 1] = newItem;
     setSchedule([...newSchedule]);
@@ -211,8 +255,7 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
       target: { value },
     } = event;
     const newRelative = value as string;
-    console.log(newRelative);
-    console.log(JSON.parse(newRelative));
+
     setSelectedRelative(JSON.parse(newRelative));
   };
 
@@ -234,10 +277,6 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
     newDate.setDate(newDate.getDate() - 1);
     return newDate;
   }
-
-  useEffect(() => {
-    console.log(schedule);
-  }, [schedule]);
 
   return (
     <Stack spacing={5}>
@@ -343,9 +382,15 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                       />
                     </Stack>
                     <Stack gap="10px" direction="row">
+                      {/* Start time */}
                       <TimePicker
                         ampm={false}
                         sx={{ flex: 1 }}
+                        value={
+                          schedule[item - 1]?.start
+                            ? new Date(schedule[item - 1]?.start as Date)
+                            : ''
+                        }
                         onChange={(value) => {
                           const startHour = value as Date;
                           const prevState = schedule[weekdayItem.value - 1];
@@ -379,10 +424,14 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
                       >
                         -
                       </Typography>
+                      {/* End time */}
                       <TimePicker
                         skipDisabled
                         ampm={false}
                         sx={{ flex: 1 }}
+                        value={
+                          schedule[item - 1]?.end ? new Date(schedule[item - 1]?.end as Date) : ''
+                        }
                         onChange={(value) => {
                           const prevState = schedule[weekdayItem.value - 1];
 
@@ -454,12 +503,54 @@ export default function OrderQuestionnaireForm({ relatives, onValidChange, servi
 
       <StepLabel title="Escolha o Familiar" step="2" />
       <div>
-        <AvatarDropdown
-          onChange={handleChangeRelativeSelected}
-          selected={JSON.stringify(selectedRelative)}
-          options={relatives}
-          selectText="Escolha um familiar"
-        />
+        {relatives.length > 0 ? (
+          <>
+            <AvatarDropdown
+              onChange={handleChangeRelativeSelected}
+              selected={JSON.stringify(selectedRelative)}
+              options={relatives}
+              selectText="Escolha um familiar"
+            />
+            <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
+              <Button
+                variant="text"
+                sx={{
+                  mt: 2,
+                  color: 'primary.main',
+                }}
+                onClick={() => router.push(PATHS.account.relatives)}
+              >
+                Adicionar Familiar
+              </Button>
+            </Stack>
+          </>
+        ) : (
+          <EmptyState
+            icon="bi:person-x-fill"
+            title="Não tem nenhum familiar associado"
+            description="Todos os familiares que adicionar vão ser apresentados nesta página"
+            actionComponent={
+              <Button
+                variant="contained"
+                onClick={() => router.push(PATHS.account.relatives)}
+                sx={{
+                  mt: 3,
+                  px: 4,
+                  width: '90%',
+                  maxWidth: '300px',
+                  bgcolor: 'primary.main',
+                  color: 'common.white',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                    color: 'common.white',
+                  },
+                }}
+              >
+                Adicionar familiar
+              </Button>
+            }
+          />
+        )}
 
         <Collapse in={!!selectedRelative} unmountOnExit>
           <Stack spacing={2.5}>
@@ -545,7 +636,6 @@ type StepLabelProps = {
 };
 
 function StepLabel({ step, title }: StepLabelProps) {
-  const theme = useTheme();
   return (
     <Stack direction="row" alignItems="center" sx={{ mb: 3, typography: 'h5' }}>
       <Box

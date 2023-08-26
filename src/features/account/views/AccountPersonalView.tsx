@@ -2,6 +2,8 @@ import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
+import { PATHS } from 'src/routes';
+
 // auth
 import { useAuthContext } from 'src/contexts';
 // @mui
@@ -13,6 +15,7 @@ import { useTheme } from '@mui/material/styles';
 import { countries, genders } from 'src/data';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+import { useRouter } from 'next/router';
 // types
 import { ISnackbarProps } from 'src/types/snackbar';
 // components
@@ -25,10 +28,18 @@ import { AccountLayout } from '../components';
 
 // ----------------------------------------------------------------------
 
-export default function AccountPersonalView() {
+type props = {
+  updatedUser: Object;
+};
+
+export default function AccountPersonalView({ updatedUser }: props) {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
-  const { user, updateUser } = useAuthContext();
+  const { user, updateUser, sendConfirmEmailCode, sendConfirmPhoneCode } = useAuthContext();
+  const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
+  const [customIsValid, setCustomIsValid] = useState<boolean>(true);
+  const router = useRouter();
+
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
     severity: 'success',
@@ -42,8 +53,8 @@ export default function AccountPersonalView() {
     emailAddress: Yup.string().required('O email é obrigatório.'),
     birthdate: Yup.string().nullable(),
     gender: Yup.string().nullable(),
-    streetAddress: Yup.string().nullable(),
-    city: Yup.string().nullable(),
+    streetAddress: Yup.string().nullable().max(100, 'O número máximo de caracteres é 100'),
+    city: Yup.string().nullable().max(15, 'O número máximo de caracteres é 15'),
     zipCode: Yup.string()
       .nullable()
       .test('zipCode', 'Insira um código de postal válido (XXXX-XXX)', (value) => {
@@ -75,8 +86,6 @@ export default function AccountPersonalView() {
       }),
   });
 
-  console.log(user);
-
   const defaultValues = {
     firstName: user?.name ? user.name.split(' ')[0] : null,
     lastName: user?.name ? user.name.split(' ').pop() : null,
@@ -93,7 +102,6 @@ export default function AccountPersonalView() {
   const methods = useForm<typeof defaultValues>({
     mode: 'onChange',
     resolver: yupResolver(AccountPersonalSchema),
-
     defaultValues,
   });
 
@@ -102,28 +110,40 @@ export default function AccountPersonalView() {
     handleSubmit,
     setValue,
     getValues,
-    formState: { isSubmitting, isDirty, errors },
+    formState: { isSubmitting, isDirty, isValid },
   } = methods;
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
       if (user) {
-        user.name = `${data.firstName} ${data.lastName}`;
+        user.name = `${data.firstName.split(' ')[0]} ${data.lastName.split(' ')[0]}`;
         user.email = data.emailAddress;
         user.phone = data.phoneNumber;
         user.birthdate = data.birthdate;
-        user.gender = data.gender;
+        if (data.gender) {
+          user.gender = data.gender;
+        }
         user.address.street = data.streetAddress;
         user.address.postal_code = data.zipCode;
         user.address.city = data.city;
         user.address.country = data.country;
-        updateUser(user);
+
+        const status: boolean = await updateUser(user);
+        if (!status) {
+          setShowSnackbar({
+            show: true,
+            severity: 'error',
+            message: 'Algo correu mal, tente novamente.',
+          });
+          return;
+        }
         setShowSnackbar({
           show: true,
           severity: 'success',
           message: 'Os seus dados foram atualizados com sucesso.',
         });
         reset(data);
+        setCustomIsDirty(false);
       }
     } catch (error) {
       setShowSnackbar({
@@ -133,6 +153,24 @@ export default function AccountPersonalView() {
       });
       console.error(error);
     }
+  };
+
+  const handleConfirmEmailClick = async () => {
+    try {
+      await sendConfirmEmailCode(user?.email);
+    } catch (error) {
+      console.log(error);
+    }
+    router.push(PATHS.auth.verifyEmail);
+  };
+
+  const handleConfirmPhoneClick = async () => {
+    try {
+      await sendConfirmPhoneCode(user?.email);
+    } catch (error) {
+      console.log(error);
+    }
+    router.push(PATHS.auth.verifyPhone);
   };
 
   return (
@@ -212,42 +250,140 @@ export default function AccountPersonalView() {
               display="grid"
               gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             >
-              <RHFTextField name="firstName" label="Nome" />
+              <RHFTextField
+                name="firstName"
+                label="Nome"
+                onChange={(e) => {
+                  const { value } = e.target;
 
-              <RHFTextField name="lastName" label="Apelido" />
-
-              <RHFTextField name="emailAddress" label="Email" disabled />
-
-              <RHFPhoneField
-                name="phoneNumber"
-                label="Telemóvel"
-                defaultCountry="PT"
-                forceCallingCode
-                disabled
-                onChange={(value: string) => {
-                  /**
-                   * Portuguese Number Validation
-                   */
-
-                  // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
-                  if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
-                    // (eg: +351 9123456780 -> +351 912 345 678)
-                    const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
-                      11,
-                      14
-                    )}`;
-                    setValue('phoneNumber', newValue);
+                  if (!/^[a-zA-Z-]*$/.test(value)) {
                     return;
                   }
 
-                  // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
-                  if (value.length > 16) {
+                  if (value.length > 20) {
                     return;
                   }
 
-                  setValue('phoneNumber', value);
+                  setValue('firstName', value);
+                  setCustomIsDirty(true);
                 }}
               />
+
+              <RHFTextField
+                name="lastName"
+                label="Apelido"
+                onChange={(e) => {
+                  const { value } = e.target;
+
+                  if (!/^[a-zA-Z-]*$/.test(value)) {
+                    return;
+                  }
+                  if (value.length > 20) {
+                    return;
+                  }
+                  setValue('lastName', value);
+                  setCustomIsDirty(true);
+                }}
+              />
+
+              <Box>
+                <RHFTextField
+                  name="emailAddress"
+                  label="Email"
+                  disabled
+                  tooltip={{
+                    tooltipWidth: '200px',
+                    icon: user?.email_verified === true ? 'simple-line-icons:check' : 'ep:warning',
+                    text:
+                      user?.email_verified === true
+                        ? 'O seu email foi verificado com sucesso!'
+                        : 'O seu email não está verificado.',
+                    iconColor: user?.email_verified === true ? 'green' : 'orange',
+                  }}
+                />
+                {user?.email_verified !== true && (
+                  <Typography
+                    onClick={() => {
+                      handleConfirmEmailClick();
+                    }}
+                    sx={{
+                      color: 'text.disabled',
+                      width: 'fit-content',
+                      fontSize: '12px',
+                      pl: '5px',
+                      pt: '5px',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        color: 'primary.main',
+                      },
+                    }}
+                  >
+                    Confirmar email
+                  </Typography>
+                )}
+              </Box>
+              <Box>
+                <RHFPhoneField
+                  name="phoneNumber"
+                  label="Telemóvel"
+                  defaultCountry="PT"
+                  forceCallingCode
+                  disabled
+                  tooltip={{
+                    tooltipWidth: '200px',
+                    icon: user?.phone_verified === true ? 'simple-line-icons:check' : 'ep:warning',
+                    text:
+                      user?.phone_verified === true
+                        ? 'O seu telemóvel foi verificado com sucesso!'
+                        : 'O seu telemóvel não está verificado.',
+                    iconColor: user?.phone_verified === true ? 'green' : 'orange',
+                  }}
+                  onChange={(value: string) => {
+                    /**
+                     * Portuguese Number Validation
+                     */
+
+                    // If the value is +351 9123456780 -> 15 digits and has no spaces, add the spaces. (eg: +351 9123456780 -> +351 912 345 678)
+                    if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
+                      // (eg: +351 9123456780 -> +351 912 345 678)
+                      const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(
+                        11,
+                        14
+                      )}`;
+                      setValue('phoneNumber', newValue);
+                      return;
+                    }
+
+                    // Limit the phone to 16 digits. (eg: +351 912 345 678 -> 16 digits)
+                    if (value.length > 16) {
+                      return;
+                    }
+
+                    setValue('phoneNumber', value);
+                    setCustomIsDirty(true);
+                  }}
+                />
+                {user?.phone_verified !== true && (
+                  <Typography
+                    onClick={() => {
+                      handleConfirmPhoneClick();
+                    }}
+                    sx={{
+                      color: 'text.disabled',
+                      width: 'fit-content',
+                      fontSize: '12px',
+                      pl: '5px',
+                      pt: '5px',
+                      cursor: 'pointer',
+                      '&:hover': {
+                        color: 'primary.main',
+                      },
+                    }}
+                  >
+                    Confirmar telemóvel
+                  </Typography>
+                )}
+              </Box>
 
               <Controller
                 name="birthdate"
@@ -309,7 +445,13 @@ export default function AccountPersonalView() {
                     }
                   }
 
+                  if (value.length === 8 && value[4] === '-') {
+                    setCustomIsValid(true);
+                  } else {
+                    setCustomIsValid(false);
+                  }
                   setValue('zipCode', value);
+                  setCustomIsDirty(true);
                 }}
               />
 
@@ -337,7 +479,7 @@ export default function AccountPersonalView() {
                   },
                 }}
                 color="inherit"
-                disabled={!isDirty}
+                disabled={(!isDirty && !customIsDirty) || !isValid || !customIsValid}
                 size="large"
                 type="submit"
                 variant="contained"

@@ -1,5 +1,7 @@
 // form
-import { useFormContext, Controller } from 'react-hook-form';
+import { useFormContext, useForm, Controller } from 'react-hook-form';
+// react
+import { useEffect } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Radio, RadioGroup, FormControlLabel } from '@mui/material';
@@ -19,9 +21,14 @@ type OptionProps = {
 type Props = {
   options: OptionProps[];
   onPaymentMethodSelect: Function;
+  previousPaymentMethod?: string;
 };
 
-export default function CheckoutPaymentMethod({ options, onPaymentMethodSelect }: Props) {
+export default function CheckoutPaymentMethod({
+  options,
+  onPaymentMethodSelect,
+  previousPaymentMethod,
+}: Props) {
   const { control } = useFormContext();
 
   return options.length > 0 ? (
@@ -41,7 +48,10 @@ export default function CheckoutPaymentMethod({ options, onPaymentMethodSelect }
                 key={option.value}
                 option={option}
                 onPaymentMethodSelect={onPaymentMethodSelect}
-                selected={field.value === option.value}
+                selected={
+                  field.value === option.value ||
+                  previousPaymentMethod === JSON.parse(option.value).id
+                }
               />
             ))}
           </Box>
@@ -101,6 +111,7 @@ function OptionItem({ option, selected, onPaymentMethodSelect }: OptionItemProps
       value={value}
       control={
         <Radio
+          checked={selected}
           disableRipple
           checkedIcon={<Iconify color="primary.main" width={24} icon="carbon:checkmark-outline" />}
           sx={{ mx: 1, color: (theme) => alpha(theme.palette.grey[500], 0.24) }}

@@ -32,15 +32,12 @@ export const PATHS = {
 
   // Order
   orders: {
-    view: (id: string) => `/order/${id}`,
+    view: (id: string) => `/orders/${id}`,
+    edit: (id: string) => `/orders/${id}/edit`,
+    checkout: (id: string) => `/orders/${id}/checkout`,
+    checkoutSucess: (id: string) => `/orders/${id}/checkout/success`,
     questionnaire: (query: string) => `/orders/questionnaire/${query}`,
     questionnaireCompleted: (id: string) => `/orders/questionnaire/completed/${id}`,
-  },
-
-  // Payments
-  payments: {
-    checkout: (query: string) => `/payment/${query}/checkout`,
-    success: (query: string) => `/payment/${query}/success`,
   },
 
   // Auth
@@ -50,6 +47,8 @@ export const PATHS = {
     resetPassword: '/auth/reset-password',
     forgotPassword: '/auth/forgot-password',
     verifyCode: '/auth/verify-code',
+    verifyEmail: '/auth/verify-email',
+    verifyPhone: '/auth/verify-phone',
   },
 
   // Common
@@ -63,4 +62,5 @@ export const PATHS = {
   page500: '/500',
   privacyPolicy: '/privacy-policy',
   termsAndConditions: '/terms-and-conditions',
+  contactUs: '/caregivers',
 };

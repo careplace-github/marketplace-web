@@ -1,8 +1,9 @@
 // form
 import { useFormContext, Controller } from 'react-hook-form';
 // @mui
+import { Box } from '@mui/material';
 import { MuiTelInput, MuiTelInputProps } from 'mui-tel-input';
-
+import { Tooltip } from 'src/components/tooltip/Tooltip';
 import styled from 'styled-components';
 // ----------------------------------------------------------------------
 
@@ -14,6 +15,12 @@ type Props = MuiTelInputProps & {
   forceCallingCode?: boolean;
   helperText?: string;
   flagSize?: string;
+  tooltip?: {
+    icon?: string;
+    text: string;
+    iconColor?: string;
+    tooltipWidth?: string;
+  };
   onChange?: (value: string) => void;
 };
 
@@ -46,7 +53,7 @@ export default function RHFPhoneField({
   name,
   helperText,
   flagSize,
-
+  tooltip,
   ...other
 }: Props) {
   const { control } = useFormContext();
@@ -56,17 +63,28 @@ export default function RHFPhoneField({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <MuiTelInputStyled
-          {...field}
-          fullWidth
-          value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
-          error={!!error}
-          forceCallingCode={forceCallingCode}
-          defaultCountry={defaultCountry || 'PT'}
-          helperText={error ? error?.message : helperText}
-          onChange={field.onChange}
-          {...other}
-        />
+        <Box sx={{ position: 'relative', width: '100%' }}>
+          <MuiTelInputStyled
+            {...field}
+            fullWidth
+            value={typeof field.value === 'number' && field.value === 0 ? '' : field.value}
+            error={!!error}
+            forceCallingCode={forceCallingCode}
+            defaultCountry={defaultCountry || 'PT'}
+            helperText={error ? error?.message : helperText}
+            onChange={field.onChange}
+            {...other}
+          />
+          {tooltip && (
+            <Tooltip
+              sx={{ position: 'absolute', top: '10px', right: '10px' }}
+              text={tooltip.text}
+              tooltipWidth={tooltip.tooltipWidth}
+              icon={tooltip?.icon}
+              iconColor={tooltip?.iconColor}
+            />
+          )}
+        </Box>
       )}
     />
   );

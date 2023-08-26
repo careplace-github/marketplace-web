@@ -12,7 +12,7 @@ import useActiveLink from 'src/hooks/useActiveLink';
 import Image from 'src/components/image';
 import Label from 'src/components/label';
 //
-import { NavItemBaseProps, NavListProps } from '../types';
+import { NavItemBaseProps } from '../types';
 import { StyledMenu, StyledSubheader } from './styles';
 import { NavItem } from './NavItem';
 
@@ -111,7 +111,19 @@ export default function NavList({ item }: { item: NavItemBaseProps }) {
 
 // ----------------------------------------------------------------------
 
-function NavSubList({ subheader, isNew, cover, items, type }: { subheader: string, isNew?: boolean, cover?: string, items?: { title: string, path: string }[], type: string }) {
+function NavSubList({
+  subheader,
+  isNew,
+  cover,
+  items,
+  type,
+}: {
+  subheader: string;
+  isNew?: boolean;
+  cover?: string;
+  items?: { title: string; path: string }[];
+  type: string;
+}) {
   const { pathname } = useRouter();
   const { isAuthenticated } = useAuthContext();
 
@@ -153,7 +165,8 @@ function NavSubList({ subheader, isNew, cover, items, type }: { subheader: strin
 
       <Stack spacing={1.5} alignItems="flex-start">
         {items?.map((item) => {
-          if (isAuthenticated && (item.title === "Entrar" || item.title === "Registar")) return null;
+          if (isAuthenticated && (item.title === 'Entrar' || item.title === 'Registar'))
+            return null;
           return (
             <NavItem
               key={item.title}
@@ -166,7 +179,7 @@ function NavSubList({ subheader, isNew, cover, items, type }: { subheader: strin
                 },
               }}
             />
-          )
+          );
         })}
       </Stack>
     </Stack>

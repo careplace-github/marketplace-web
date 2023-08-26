@@ -1,6 +1,6 @@
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Card, Stack, Divider, Typography, Avatar, Box, Link } from '@mui/material';
+import { Card, Stack, Divider, Typography, Box, Link } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import { useTheme } from '@mui/material/styles';
@@ -21,22 +21,26 @@ type Props = {
   disabled: boolean;
   isSubmitting: boolean;
   handleSubmit: MouseEventHandler<HTMLButtonElement>;
+  updateVersion?: boolean;
 };
 
 export default function OrderQuestionnaireSummary({
   handleSubmit,
   company,
   disabled,
+  updateVersion,
   isSubmitting,
 }: Props) {
   const theme = useTheme();
   const { palette } = theme;
   const isSmUp = useResponsive('up', 'sm');
   const isMdUp = useResponsive('up', 'md');
+
   return (
     <Card>
       <Box
         sx={{
+          position: 'relative',
           p: 4,
           pb: 0,
           gap: 3,
@@ -87,52 +91,9 @@ export default function OrderQuestionnaireSummary({
           {/* <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} /> */}
         </Stack>
       </Box>
-      {/* <Stack sx={{ p: 4, pb: 3 }}>
-        <Stack
-          spacing={2.5}
-          direction={{ xs: 'column', sm: 'row' }}
-          sx={{
-            p: 2.5,
-            borderRadius: 2,
-            color: 'text.disabled',
-            bgcolor: 'background.neutral',
-          }}
-        >
-          <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
-            <Iconify icon="carbon:events" width={24} />
-            <Stack spacing={0.5}>
-              <Typography variant="caption">Departure day</Typography>
-              <FilterGuests
-                startAdornment={null}
-                guests={guests}
-                onDecreaseGuests={onDecreaseGuests}
-                onIncrementGuests={onIncrementGuests}
-                sx={{ height: 'unset', color: 'text.primary' }}
-              />
-            </Stack>
-          </Stack>
-          {isSmUp && <Divider flexItem orientation="vertical" sx={{ borderStyle: 'dashed' }} />}
-          <Stack direction="row" spacing={1.5} sx={{ width: 1 }}>
-            <Iconify icon="carbon:calendar" width={24} />
-            <Stack spacing={0.5}>
-              <Typography variant="caption">Guests</Typography>
-              <FilterTime
-                departureDay={departureDay}
-                onChangeDepartureDay={onChangeDepartureDay}
-                sx={{
-                  height: 'unset',
-                  color: 'text.primary',
-                  '& .MuiInputAdornment-root': { display: 'none' },
-                  }}
-              />
-            </Stack>
-          </Stack> */}
-      {/* </Stack> */}
-      {/* </Stack> */}
       <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
       <Stack spacing={3} sx={{ p: 3 }}>
         <LoadingButton
-          type="submit"
           disabled={disabled}
           size="large"
           variant="contained"
@@ -149,11 +110,13 @@ export default function OrderQuestionnaireSummary({
             },
           }}
         >
-          Pedir Orçamento
+          {updateVersion ? 'Atualizar Pedido' : 'Pedir Orçamento'}
         </LoadingButton>
+
         <Typography variant="caption" sx={{ opacity: 0.72 }}>
-          * Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendo
-          totalmente gratuíto.
+          {updateVersion
+            ? '* Ao atualizar o seu pedido será feita uma nova solicitação de orçamento.'
+            : '* Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendototalmente gratuíto.'}
         </Typography>
       </Stack>
     </Card>

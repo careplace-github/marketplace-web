@@ -22,7 +22,8 @@ import { useTheme } from '@mui/material/styles';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { ISnackbarProps } from 'src/types/snackbar';
-
+// axios
+import axios from 'src/lib/axios';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
@@ -32,22 +33,30 @@ import TextMaxLine from 'src/components/text-max-line';
 
 type Props = {
   company: ICompanyProps;
-  disabled: boolean;
+  orderStatus?: string;
+  disabled?: boolean;
   subtotal: number;
-  isSubmitting: boolean;
-  handleSubmit: MouseEventHandler<HTMLButtonElement>;
+  isSubmitting?: boolean;
+  handleSubmit?: MouseEventHandler<HTMLButtonElement>;
+  onDiscountApplied: Function;
+  isOrderView?: boolean;
+  hasSubsciptionId?: boolean;
 };
 
 export default function CheckoutSummary({
   handleSubmit,
   company,
+  orderStatus,
   subtotal,
   disabled,
   isSubmitting,
+  onDiscountApplied,
+  isOrderView,
+  hasSubsciptionId,
 }: Props) {
   const theme = useTheme();
   const { palette } = theme;
-  const [discount, setDiscount] = useState<number>();
+  const [discount, setDiscount] = useState<{ type: 'percentage' | 'amount'; value: number }>();
   const [discountCode, setDiscountCode] = useState<string>('');
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
@@ -55,11 +64,28 @@ export default function CheckoutSummary({
     message: '',
   });
 
+  let totalValueWithDiscount;
+
+  if (discount?.type === 'percentage' && discount.value) {
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - (subtotal / 100) * discount.value)} €`;
+  } else if (discount?.value) {
+    totalValueWithDiscount = `${fCurrency(subtotal / 100 - discount.value)} €`;
+  } else {
+    totalValueWithDiscount = subtotal;
+  }
   const handleSubmitDiscount = async () => {
     try {
       // TODO: check discount code that was submitted
-      setDiscountCode('');
-      setDiscount(10);
+      const response = await axios.post('/payments/promotion-code/eligibility', {
+        promotion_code: discountCode,
+      });
+      if (response.data.coupon.ammount_off) {
+        setDiscount({ type: 'amount', value: response.data.coupon.ammount_off });
+      }
+      if (response.data.coupon.percent_off) {
+        setDiscount({ type: 'percentage', value: response.data.coupon.percent_off });
+      }
+      onDiscountApplied(discountCode);
       setShowSnackbar({
         show: true,
         severity: 'success',
@@ -69,9 +95,10 @@ export default function CheckoutSummary({
       setShowSnackbar({
         show: true,
         severity: 'error',
-        message: 'Nºao foi possível aplicar o código introduzido.',
+        message: 'Não foi possível aplicar o código introduzido.',
       });
     }
+    setDiscountCode('');
   };
 
   return (
@@ -154,78 +181,91 @@ export default function CheckoutSummary({
             </Stack>
           </Stack>
         </Box>
-        <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
+        {(!isOrderView || orderStatus !== 'new') && (
+          <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
+        )}
         <Stack spacing={2} p={3}>
-          <Stack spacing={2}>
-            <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
-            {discount && (
-              <Row
-                label={`Desconto (${fPercent(discount)})`}
-                value={`- ${fCurrency((subtotal / 100) * (discount / 100))} €`}
+          {(!isOrderView || orderStatus !== 'new') && (
+            <>
+              <Stack spacing={2}>
+                <Row label="Subtotal" value={`${fCurrency(subtotal / 100)} €`} />
+                {discount?.value && (
+                  <Row
+                    label={
+                      discount?.type === 'percentage'
+                        ? `Desconto (${fPercent(discount?.value)})`
+                        : 'Desconto'
+                    }
+                    value={
+                      discount.type === 'percentage'
+                        ? `- ${fCurrency((subtotal / 100) * discount.value)} €`
+                        : `- ${fCurrency(discount.value)} €`
+                    }
+                  />
+                )}
+              </Stack>
+              <TextField
+                hiddenLabel
+                value={discountCode}
+                placeholder="Código promocional"
+                sx={{ width: '100%' }}
+                onChange={(e) => {
+                  setDiscountCode(e.target.value);
+                }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button disabled={!discountCode} onClick={handleSubmitDiscount}>
+                        Aplicar
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
               />
-            )}
-          </Stack>
-
-          <TextField
-            hiddenLabel
-            value={discountCode}
-            placeholder="Código promocional"
-            sx={{ width: '100%' }}
-            onChange={(e) => {
-              setDiscountCode(e.target.value);
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button disabled={!discountCode} onClick={handleSubmitDiscount}>
-                    Aplicar
-                  </Button>
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <Divider sx={{ borderStyle: 'dashed' }} />
-
-          <Row
-            label="Total"
-            value={
-              discount
-                ? `${fCurrency(subtotal / 100 - (subtotal / 100) * (discount / 100))} €`
-                : `${fCurrency(subtotal / 100)} €`
-            }
-            sx={{
-              typography: 'h6',
-              '& span': { typography: 'h6' },
-            }}
-          />
+              <Divider sx={{ borderStyle: 'dashed' }} />
+            </>
+          )}
+          {(!isOrderView || orderStatus !== 'new') && (
+            <Row
+              label="Total"
+              value={discount?.value ? totalValueWithDiscount : `${fCurrency(subtotal / 100)} €`}
+              sx={{
+                typography: 'h6',
+                '& span': { typography: 'h6' },
+              }}
+            />
+          )}
         </Stack>
 
-        <Stack spacing={3} sx={{ p: 3, pt: 0 }}>
-          <LoadingButton
-            disabled={disabled}
-            size="large"
-            variant="contained"
-            color="inherit"
-            onClick={handleSubmit}
-            loading={isSubmitting}
-            sx={{
-              px: 4,
-              bgcolor: 'primary.main',
-              color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-              '&:hover': {
-                bgcolor: 'primary.dark',
+        {(!isOrderView || orderStatus !== 'new') && (
+          <Stack spacing={3} sx={{ p: 3, pt: 0 }}>
+            <LoadingButton
+              disabled={disabled}
+              size="large"
+              variant="contained"
+              color="inherit"
+              onClick={handleSubmit}
+              loading={isSubmitting}
+              sx={{
+                px: 4,
+                bgcolor: 'primary.main',
                 color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-              },
-            }}
-          >
-            Confirmar Pagamento
-          </LoadingButton>
-          <Typography variant="caption" sx={{ opacity: 0.72 }}>
-            * Assim que efetuar o pagamento seu pedido, irá receber um email com do comprovativo
-            associado{' '}
-          </Typography>
-        </Stack>
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                  color: palette.mode === 'light' ? 'common.white' : 'grey.800',
+                },
+              }}
+            >
+              {orderStatus === 'pending_payment' && !hasSubsciptionId
+                ? 'Confirmar Pagamento'
+                : 'Atualizar Pagamento'}
+            </LoadingButton>
+            <Typography variant="caption" sx={{ opacity: 0.72 }}>
+              * Assim que efetuar o pagamento do seu pedido, irá receber um email com o comprovativo
+              associado{' '}
+            </Typography>
+          </Stack>
+        )}
       </Card>
     </>
   );

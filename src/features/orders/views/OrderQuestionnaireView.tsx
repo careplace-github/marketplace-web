@@ -7,7 +7,14 @@ import { useAuthContext } from 'src/contexts';
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // @mui
-import { Box, Stack, Divider, Container, Typography, Unstable_Grid2 as Grid } from '@mui/material';
+import {
+  Snackbar,
+  Alert,
+  Stack,
+  Container,
+  Typography,
+  Unstable_Grid2 as Grid,
+} from '@mui/material';
 // _mock
 import { _tours as _companies } from 'src/_mock';
 // axios
@@ -23,14 +30,14 @@ import { getAvailableServices } from 'src/utils/getAvailableServices';
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
+import { ISnackbarProps } from 'src/types/snackbar';
 import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components';
 
 // ----------------------------------------------------------------------
 
 type OrderRequestProps = {
-  company: string;
-  user: string;
-  relative: string;
+  health_unit: string;
+  patient: string;
   services: string[];
   schedule_information: {
     start_date: Date;
@@ -48,14 +55,19 @@ export default function OrderQuestionnaireView() {
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [formData, setFormData] = useState<OrderRequestProps>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
   const router = useRouter();
   const { user } = useAuthContext();
 
   const fetchUserRelatives = async () => {
-    const response = await axios.get('users/relatives');
-    setUserRelatives(response.data.data);
+    const response = await axios.get('customers/patients');
+    setUserRelatives(response.data.data || []);
+
     setRelativesLoading(false);
-    console.log(response.data.data);
   };
 
   useEffect(() => {
@@ -65,7 +77,7 @@ export default function OrderQuestionnaireView() {
   useEffect(() => {
     if (router.isReady) {
       const fetchCompany = async (companyId) => {
-        const response = await axios.get(`/companies/${companyId}`);
+        const response = await axios.get(`/health-units/${companyId}`);
         setCompanyInfo(response.data);
         const available = await getAvailableServices(response.data.services);
         setAvailableServices(available);
@@ -121,10 +133,22 @@ export default function OrderQuestionnaireView() {
   const { reset } = methods;
 
   const onSubmit = async (data) => {
-    if (companyInfo) {
+    const canPlaceAnOrder = user?.email_verified && user?.phone_verified;
+    if (!canPlaceAnOrder) {
+      setShowSnackbar({
+        show: true,
+        severity: 'warning',
+        message: 'Para fazer um pedido tem que ter o seu Email e Telémovel verificados.',
+      });
+      setIsSubmitting(false);
+      return;
+    }
+    if (companyInfo && canPlaceAnOrder) {
       setIsSubmitting(true);
       try {
-        const response = await axios.post(`/companies/${companyInfo._id}/orders`, { ...formData });
+        const response = await axios.post(`/customers/orders/home-care`, {
+          ...formData,
+        });
         reset();
         router.push(PATHS.orders.questionnaireCompleted(response.data._id));
       } catch (error) {
@@ -137,9 +161,8 @@ export default function OrderQuestionnaireView() {
   const handleValidChange = (valid, data) => {
     if (valid && companyInfo && user) {
       const dataToSubmit: OrderRequestProps = {
-        company: companyInfo._id,
-        user: user._id,
-        relative: data.relativeSelected,
+        health_unit: companyInfo._id,
+        patient: data.relativeSelected,
         services: data.servicesSelected,
         schedule_information: {
           start_date: data.startDateSelected,
@@ -152,10 +175,6 @@ export default function OrderQuestionnaireView() {
     setIsFormValid(valid);
   };
 
-  useEffect(() => {
-    console.log('data to submit:', formData);
-  }, [formData]);
-
   return !loading && !relativesLoading ? (
     <Container
       sx={{
@@ -164,6 +183,34 @@ export default function OrderQuestionnaireView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      {showSnackbar.show && (
+        <Snackbar
+          open={showSnackbar.show}
+          autoHideDuration={5000}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+        >
+          <Alert
+            onClose={() =>
+              setShowSnackbar({
+                show: false,
+                severity: 'success',
+                message: '',
+              })
+            }
+            severity={showSnackbar.severity}
+            sx={{ width: '100%' }}
+          >
+            {showSnackbar.message}
+          </Alert>
+        </Snackbar>
+      )}
       <Typography variant="h2" sx={{ mb: 5 }}>
         Orçamento
       </Typography>

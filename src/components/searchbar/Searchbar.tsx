@@ -28,6 +28,7 @@ type FiltersProps = {
   lat: string | null;
   lng: string | null;
   query?: string;
+  applied: boolean;
 };
 
 type SearchbarProps = {
@@ -41,17 +42,17 @@ type Location = {
 };
 
 export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
-  const { pathname, push, query } = useRouter();
+  const { push, query } = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const searchbarRef = useRef<HTMLDivElement | null>();
   const router = useRouter();
-  const [searchInputValue, setSearchInputValue] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState(null);
   const [openOptions, setOpenOptions] = useState<boolean>(false);
   const [filters, setFilters] = useState<FiltersProps>({
     lat: null,
     lng: null,
     query: '',
+    applied: false,
   });
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
@@ -182,6 +183,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       lat: location.lat,
       lng: location.lng,
       query: filterQuery,
+      applied: true,
     });
   };
 
@@ -196,10 +198,6 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       handleSelect(location, option.description);
     }
   };
-
-  useEffect(() => {
-    console.log('enhancedData:', enhancedData);
-  }, [enhancedData]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -219,17 +217,24 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   useEffect(() => {
     if (router.isReady) {
-      if (router.query) {
+      if (router.query.lat || router.query.lng || router.query.query) {
         setFilters({
           lat: router.query.lat as string,
           lng: router.query.lng as string,
           query: router.query.query as string,
+          applied: true,
         });
       }
     }
   }, [router.isReady]);
+
   useEffect(() => {
-    console.log('router path', router.asPath);
+    setFilters((prev) => {
+      return {
+        ...prev,
+        applied: false,
+      };
+    });
     const pathWithoutQueries = router.asPath.split('?')[0];
     if (pathWithoutQueries !== '/companies') {
       setValue('');
@@ -251,7 +256,9 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   };
 
   useEffect(() => {
-    handleSearch();
+    if (filters.applied) {
+      handleSearch();
+    }
   }, [filters]);
 
   const handleClearClick = () => {
@@ -260,6 +267,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       lat: null,
       lng: null,
       query: '',
+      applied: true,
     });
     setSelectedOption(null);
   };
