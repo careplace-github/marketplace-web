@@ -12,7 +12,13 @@ RUN npm config rm proxy
 
 RUN npm config rm https-proxy
 
-RUN yarn install --production --frozen-lockfile --network-timeout 100000
+ENV NODE_ENV="staging"
+ENV NEXT_PUBLIC_HOST_API="https://www.staging.api.careplace.pt/v1"
+ENV NEXT_PUBLIC_CLIENT_ID="7to5kns39p73mvd2qjqgdkb6qs"
+ENV NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="AIzaSyCtTH4EQQUKQRFtLmzRXnMIHJKp3XCRmek"
+
+# RUN yarn install --production --frozen-lockfile --network-timeout 100000
+RUN yarn install --frozen-lockfile --network-timeout 100000
 
 RUN yarn build
 
