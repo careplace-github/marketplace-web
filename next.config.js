@@ -19,4 +19,11 @@ module.exports = {
     ];
   },
 
+  env: {
+    // https://nextjs.org/docs/api-reference/next.config.js/environment-variables
+    NEXT_PUBLIC_HOST_API: process.env.NEXT_PUBLIC_HOST_API,
+    NEXT_PUBLIC_CLIENT_ID: process.env.NEXT_PUBLIC_CLIENT_ID,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  },
 };
