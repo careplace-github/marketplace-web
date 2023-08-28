@@ -20,13 +20,9 @@ export default function ServicesListView() {
   useEffect(() => {
     setServicesLoading(true);
     const fetchServices = async () => {
-      const response = await axios.get('/services', { params: { documentsPerPage: 6, page: 1 } });
+      const response = await axios.get('/services', { params: { documentsPerPage: 60, page: 1 } });
       const normalServices: IServiceProps[] = [];
-      response.data.data.forEach((service) => {
-        if (service.type === 'normal') {
-          normalServices.push(service);
-        }
-      });
+     console.log(response.data)
       setAvailableServices(response.data.data);
       setServicesLoading(false);
     };
