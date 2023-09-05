@@ -3,13 +3,17 @@ import NextLink from 'next/link';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { AppBar, Toolbar, Link, Stack, Container } from '@mui/material';
+import Badge, { badgeClasses } from '@mui/material/Badge';
+
 // config
 import { HEADER } from 'src/layouts';
 // components
 import Logo from 'src/components/logo';
 import { PATHS } from 'src/routes';
 
+
 //
+import Label from 'src/components/label';
 import HeaderShadow from '../components/HeaderShadow';
 
 // ----------------------------------------------------------------------
@@ -47,7 +51,24 @@ export default function Header({ isOffset }: Props) {
             justifyContent: 'space-between',
           }}
         >
-          <Logo />
+            <Badge
+                sx={{
+                  [`& .${badgeClasses.badge}`]: {
+                    top: 8,
+                    right: -16,
+                  },
+                }}
+                badgeContent={
+                  <Link href="" target="_blank" rel="noopener" underline="none" sx={{ ml: 1 }}>
+                    <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1
+                  }}>
+                      beta
+                    </Label>
+                  </Link>
+                }
+              >
+                <Logo logoHeight={33} />
+              </Badge>{' '}
 
           <Stack spacing={1} direction="row" alignItems="center">
             <Link href={PATHS.support} component={NextLink} variant="subtitle2" color="inherit">

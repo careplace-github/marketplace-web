@@ -34,7 +34,7 @@ export default function AccountPaymentView() {
       setCardsLoading(false);
       return response.data.data;
     } catch (error) {
-      console.log('error', error);
+      console.error('error', error);
     }
     setCardsLoading(false);
     return { error: true };

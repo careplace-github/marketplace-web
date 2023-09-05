@@ -85,7 +85,7 @@ export default function Footer() {
         message: 'Newsletter subscrita com sucesso.',
       });
     } catch (error) {
-      console.log(error?.error?.message);
+      console.log(error);
       if (error?.error?.message === 'Lead already exists') {
         setShowSnackbar({
           show: true,
@@ -164,7 +164,7 @@ export default function Footer() {
           <Grid xs={12} md={4}>
             <Stack spacing={{ xs: 3, md: 5 }}>
               <Stack alignItems="flex-start" spacing={0}>
-                <Logo />
+                <Logo logoHeight={33} />
               </Stack>
 
               <Stack spacing={2}>

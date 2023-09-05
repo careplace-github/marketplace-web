@@ -255,7 +255,7 @@ export default function CompanyDetailView() {
                 setFilterQueries({ weekdays: weekdaysQuery, services: servicesQuery })
               }
               services={companyAvailableServices}
-              price={companyInfo.pricing.minimum_hourly_rate}
+              price={companyInfo?.pricing.minimum_hourly_rate}
               companyId={companyInfo._id}
             />
           </Grid>

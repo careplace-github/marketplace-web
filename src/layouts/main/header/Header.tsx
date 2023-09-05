@@ -11,8 +11,10 @@ import { HEADER } from 'src/layouts/config';
 import { PATHS } from 'src/routes';
 // google maps api
 import { useJsApiLoader } from '@react-google-maps/api';
+import Badge, { badgeClasses } from '@mui/material/Badge';
 // components
 import Logo from 'src/components/logo';
+import Label from 'src/components/label';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { Searchbar } from 'src/components/searchbar';
 import AccountPopover from './AccountPopover';
@@ -86,7 +88,24 @@ export default function Header({ headerOnDark }: Props) {
                 position: 'relative',
               }}
             >
-              <Logo />
+              <Badge
+                sx={{
+                  [`& .${badgeClasses.badge}`]: {
+                    top: 8,
+                    right: -16,
+                  },
+                }}
+                badgeContent={
+                  <Link href="" target="_blank" rel="noopener" underline="none" sx={{ ml: 1 }}>
+                    <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1
+                  }}>
+                      beta
+                    </Label>
+                  </Link>
+                }
+              >
+                <Logo logoHeight={33} />
+              </Badge>{' '}
             </Box>
 
             {isMdUp && <NavDesktop />}

@@ -159,7 +159,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
     try {
       await sendConfirmEmailCode(user?.email);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     router.push(PATHS.auth.verifyEmail);
   };
@@ -168,7 +168,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
     try {
       await sendConfirmPhoneCode(user?.email);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     router.push(PATHS.auth.verifyPhone);
   };

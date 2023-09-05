@@ -59,7 +59,6 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
     router.push(PATHS.orders.view(order._id));
   };
 
-  console.log('status', order.status);
 
   return (
     <TableRow

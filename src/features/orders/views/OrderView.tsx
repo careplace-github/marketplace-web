@@ -95,9 +95,8 @@ export default function OrderView() {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
     } catch (error) {
-      console.log('error fetching relatives:', error);
+      setRelativesLoading(false);
     }
-    setRelativesLoading(false);
   };
 
   useEffect(() => {
@@ -133,7 +132,7 @@ export default function OrderView() {
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
     } catch (error) {
-      console.log('error fetching companies:', error);
+      console.log(error);
     }
     setLoading(false);
   };
@@ -261,7 +260,7 @@ export default function OrderView() {
         message: 'Informações de Pagamento atualizadas com sucesso.',
       });
     } catch (error) {
-      console.log('error', error);
+      console.log(error);
       setShowSnackbar({
         show: true,
         severity: 'error',
@@ -286,7 +285,7 @@ export default function OrderView() {
         },
       });
     } catch (error) {
-      console.log('error', error);
+      console.log(error);
     }
   };
 
@@ -308,7 +307,6 @@ export default function OrderView() {
           schedule: dataToSubmit?.schedule,
         },
       };
-      console.log('updated order', updatedOrder);
       await axios.put(`/customers/orders/home-care/${orderInfo._id}`, updatedOrder);
       setShowSnackbar({
         show: true,

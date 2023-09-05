@@ -1,5 +1,12 @@
 /** @type {import("next").NextConfig} */
 
+const dotenv = require('dotenv');
+
+if (process.env.ENV) {
+  // configure dotenv
+  dotenv.config({ path: `.env.${process.env.ENV}` });
+}
+
 module.exports = {
   swcMinify: false,
   trailingSlash: false,

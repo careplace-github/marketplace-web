@@ -4,7 +4,6 @@ import axios from 'axios';
 
 const HOST_API = process.env.NEXT_PUBLIC_HOST_API;
 
-console.log('HOST_API: ', process.env.NEXT_PUBLIC_HOST_API);
 
 const axiosInstance = axios.create({
   baseURL: HOST_API,

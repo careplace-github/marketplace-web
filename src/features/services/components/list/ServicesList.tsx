@@ -31,7 +31,7 @@ export default function ServicesList({ services }: Props) {
   const categories = [
     { text: 'Todos', value: 'all' },
     { text: 'Apoio Domiciliário', value: 'normal' },
-    { text: 'Adicionais', value: 'special' },
+    { text: 'Especializados', value: 'special' },
   ];
 
   const [filtered, setFiltered] = useState<IServiceProps[]>([]);

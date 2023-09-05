@@ -427,7 +427,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       });
     } catch (error) {
       return false;
-      console.log(error);
+      console.error(error);
     }
     return true;
   }, []);

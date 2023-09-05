@@ -89,7 +89,7 @@ function AddNewCardForm({ onAddCard }: Props) {
       onAddCard('success');
     } catch (error) {
       onAddCard('error');
-      console.log(error);
+      console.error(error);
     }
   };
 
