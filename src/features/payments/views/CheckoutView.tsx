@@ -76,8 +76,7 @@ export default function CheckoutView() {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
     } catch (error) {
-      console.log('error fetching relatives:', error);
-    }
+      console.log(error)    }
     setRelativesLoading(false);
   };
 
@@ -92,8 +91,7 @@ export default function CheckoutView() {
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
     } catch (error) {
-      console.log('error fetching companies:', error);
-    }
+      console.log(error)    }
     setLoading(false);
   };
 
@@ -114,8 +112,7 @@ export default function CheckoutView() {
         if (error?.error?.type === 'FORBIDDEN') {
           router.push('/404');
         }
-        console.log('error fetching order:', error);
-      }
+        console.log(error)      }
     };
     if (router.isReady) {
       fetchData();

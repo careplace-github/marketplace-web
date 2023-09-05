@@ -97,7 +97,7 @@ export default function ReviewPageView({ update }: Props) {
       }
       setSubmitted(true);
     } catch (error) {
-      console.log('error:', error.error.message);
+      console.error('error:', error.error.message);
       setShowSnackbar({
         show: true,
         severity: 'error',

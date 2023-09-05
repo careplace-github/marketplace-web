@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { ReviewList, ReviewToolbar, ReviewSummary } from 'src/features/reviews';
 import Iconify from 'src/components/iconify/Iconify';
 import { IReviewProps } from 'src/types/review';
+import { useAuthContext } from 'src/contexts';
 
 // ----------------------------------------------------------------------
 
@@ -38,16 +39,20 @@ export default function CompanyDetailReviews({
   const companyReviewUrl = `${router.asPath.split('?')[0]}/review`;
   const companyUpdateReviewUrl = `${router.asPath.split('?')[0]}/review/update`;
 
+  const { isAuthenticated, user } = useAuthContext();
+
   const fetchReviewEligibilty = async () => {
     const response = await axios.get(`/health-units/${companyId}/reviews/eligibility`);
-    if (response.data.eligible) {
-      setButtonType(response.data.type);
+    if (response?.data?.eligible) {
+      setButtonType(response?.data?.type || undefined);
     }
   };
 
-  useEffect(() => {
-    fetchReviewEligibilty();
-  }, []);
+  if (isAuthenticated) {
+    useEffect(() => {
+      fetchReviewEligibilty();
+    }, []);
+  }
 
   const handleChangeSort = (newValue: string) => {
     onChangeSort(newValue);

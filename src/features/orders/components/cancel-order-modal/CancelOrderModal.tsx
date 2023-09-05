@@ -31,7 +31,7 @@ function CancelOrderModal({ onClose, open, orderId }: Props) {
       });
       router.push(PATHS.account.orders);
     } catch (error) {
-      console.log('error cancelling order', error);
+      console.error('error cancelling order', error);
     }
     setIsSubmitting(false);
   };

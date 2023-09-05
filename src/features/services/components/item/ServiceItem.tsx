@@ -20,7 +20,7 @@ export default function ServiceItem({ service, selected, onItemSelect }: Props) 
 
   function mapServiceType(serviceType: string) {
     if (serviceType === 'normal') return 'Apoio Domociliário';
-    if (serviceType === 'special') return 'Adicional';
+    if (serviceType === 'special') return 'Especializado';
     return '';
   }
 

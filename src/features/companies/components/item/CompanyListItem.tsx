@@ -32,6 +32,8 @@ export default function CompanyListItem({ company, vertical }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const isSmUp = useResponsive('up', 'sm');
 
+ 
+
   return (
     <Card
       sx={{
@@ -168,7 +170,8 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         fontSize: '1rem',
                       }}
                     >
-                      {`Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
+                      {company?.pricing.minimum_hourly_rate > 0 &&
+                        `Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}{' '}
                     </Typography>
                   </Stack>
                 </Stack>
@@ -250,7 +253,8 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     fontSize: '1rem',
                   }}
                 >
-                  {`Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
+                  {company?.pricing.minimum_hourly_rate > 0 &&
+                    `Desde ${fCurrency(company.pricing.minimum_hourly_rate)}€ / Hora`}
                 </Typography>
               </Stack>
             </Stack>

@@ -91,7 +91,7 @@ export default function AccountSettingsChangePhone() {
         severity: 'error',
         message: 'Algo correu mal, tente novamente.',
       });
-      console.log('error', error);
+      console.error('error', error);
     }
   };
 

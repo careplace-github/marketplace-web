@@ -165,7 +165,7 @@ export default function CheckoutQuestionnaireInfo({
         });
         setCARDS(auxCards);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }, []);
 
   const handleAddCard = async (result: 'error' | 'success') => {
@@ -191,7 +191,7 @@ export default function CheckoutQuestionnaireInfo({
         });
         setCARDS(auxCards);
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   };
 
   return (

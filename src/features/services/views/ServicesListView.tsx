@@ -22,7 +22,6 @@ export default function ServicesListView() {
     const fetchServices = async () => {
       const response = await axios.get('/services', { params: { documentsPerPage: 60, page: 1 } });
       const normalServices: IServiceProps[] = [];
-     console.log(response.data)
       setAvailableServices(response.data.data);
       setServicesLoading(false);
     };

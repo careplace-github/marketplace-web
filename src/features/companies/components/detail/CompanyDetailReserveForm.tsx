@@ -106,12 +106,14 @@ export default function CompanyDetailReserveForm({
   return (
     <Card>
       <Stack spacing={3} sx={{ p: 3 }}>
-        <Stack spacing={1} direction="row" alignItems="center" sx={{ typography: 'h4' }}>
-          Desde {fCurrency(price)}€
-          <Typography variant="body2" component="span" sx={{ color: 'text.disabled', ml: 1 }}>
-            / Hora
-          </Typography>
-        </Stack>
+        {price > 0 && (
+          <Stack spacing={1} direction="row" alignItems="center" sx={{ typography: 'h4' }}>
+            Desde {fCurrency(price)}€
+            <Typography variant="body2" component="span" sx={{ color: 'text.disabled', ml: 1 }}>
+              / Hora
+            </Typography>
+          </Stack>
+        )}
         <Stack spacing={3}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             Serviços
