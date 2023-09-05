@@ -210,18 +210,18 @@ export default function CompaniesFilters({
         </Stack>
       )}
 
-      <Block title="Dias da semana">
-        <FilterWeekdays
-          filterWeekdays={filters.filterWeekdays}
-          onChangeWeekdays={handleChangeWeekdays}
-        />
-      </Block>
-
       <Block title="Serviços">
         <FilterServices
           services={services}
           filterServices={filters.filterServices}
           onChangeServices={handleChangeServices}
+        />
+      </Block>
+
+      <Block title="Dias da semana">
+        <FilterWeekdays
+          filterWeekdays={filters.filterWeekdays}
+          onChangeWeekdays={handleChangeWeekdays}
         />
       </Block>
 
