@@ -94,7 +94,9 @@ export default function OrderView() {
     try {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
+      setRelativesLoading(false);
     } catch (error) {
+      console.error(error);
       setRelativesLoading(false);
     }
   };
@@ -132,7 +134,7 @@ export default function OrderView() {
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     setLoading(false);
   };
@@ -174,11 +176,13 @@ export default function OrderView() {
         setSelectedCard(response.data.stripe_information?.payment_method || null);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
+        console.error(error);
         if (error.error.type === 'FORBIDDEN') {
           router.push('/404');
         }
       }
     };
+
     if (router.isReady) {
       fetchData();
     }
@@ -260,7 +264,7 @@ export default function OrderView() {
         message: 'Informações de Pagamento atualizadas com sucesso.',
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setShowSnackbar({
         show: true,
         severity: 'error',
@@ -285,7 +289,7 @@ export default function OrderView() {
         },
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -314,6 +318,7 @@ export default function OrderView() {
         message: 'O seu pedido foi atualizado com sucesso.',
       });
     } catch (error) {
+      console.error(error);
       setShowSnackbar({
         show: true,
         severity: 'error',
@@ -387,7 +392,7 @@ export default function OrderView() {
         Pedido
       </Typography>
       <CancelOrderModal
-        orderId={orderInfo._id}
+        orderId={orderInfo?._id}
         onClose={() => setShowCancelOrderModal(false)}
         open={showCancelOrderModal}
       />

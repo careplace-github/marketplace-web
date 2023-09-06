@@ -51,7 +51,7 @@ export default function FilterServices({
           {...params}
           hiddenLabel
           variant="filled"
-          placeholder={filterServices.length > 0 ? undefined : 'Todos os serviços'}
+          placeholder={filterServices.length > 0 ? undefined : 'Selecionar serviços'}
           InputProps={{
             ...params.InputProps,
             autoComplete: 'search',

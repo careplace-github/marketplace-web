@@ -71,12 +71,47 @@ export default function CheckoutView() {
 
   const { user } = useAuthContext();
 
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () => {
+      try {
+        const orderId = router.asPath.split('/').at(2);
+        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
+
+        const order = response.data;
+
+        if (order?.stripe_information?.subscription_id) {
+          setLoading(true);
+          router.push(PATHS.orders.view(order._id));
+        }
+
+        setOrderInfo(order);
+
+        const auxWeekdays: number[] = [];
+        response.data.schedule_information.schedule.forEach((item) => {
+          auxWeekdays.push(item.week_day);
+        });
+        setSelectedWeekdays(auxWeekdays);
+        fetchCompany(response.data.health_unit._id);
+      } catch (error) {
+        if (error?.error?.type === 'FORBIDDEN') {
+          router.push('/404');
+        }
+        console.log(error);
+      }
+    };
+    if (router.isReady) {
+      fetchData();
+    }
+  }, [router.isReady]);
+
   const fetchUserRelatives = async () => {
     try {
       const response = await axios.get('customers/patients');
       setUserRelatives(response.data.data);
     } catch (error) {
-      console.log(error)    }
+      console.log(error);
+    }
     setRelativesLoading(false);
   };
 
@@ -91,33 +126,10 @@ export default function CheckoutView() {
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
     } catch (error) {
-      console.log(error)    }
+      console.log(error);
+    }
     setLoading(false);
   };
-
-  useEffect(() => {
-    setLoading(true);
-    const fetchData = async () => {
-      try {
-        const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
-        setOrderInfo(response.data);
-        const auxWeekdays: number[] = [];
-        response.data.schedule_information.schedule.forEach((item) => {
-          auxWeekdays.push(item.week_day);
-        });
-        setSelectedWeekdays(auxWeekdays);
-        fetchCompany(response.data.health_unit._id);
-      } catch (error) {
-        if (error?.error?.type === 'FORBIDDEN') {
-          router.push('/404');
-        }
-        console.log(error)      }
-    };
-    if (router.isReady) {
-      fetchData();
-    }
-  }, [router.isReady]);
 
   const CheckoutSchema = Yup.object().shape({
     billingAddress: Yup.object().shape({

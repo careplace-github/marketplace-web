@@ -26,13 +26,14 @@ import { useRouter } from 'next/router';
 //
 import Weekdays from 'src/data/Weekdays';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
-import { FilterWeekdays, FilterServices } from './components';
+import { FilterWeekdays, FilterServices, FilterRecurrency } from './components';
 
 // ----------------------------------------------------------------------
 
 const defaultValues = {
   filterWeekdays: [],
   filterServices: [],
+  filterRecurrency: undefined,
 };
 
 type FiltersProps = {
@@ -139,6 +140,18 @@ export default function CompaniesFilters({
     });
   };
 
+  const handleChangeRecurrency = (event: SelectChangeEvent<number>) => {
+    const {
+      target: { value },
+    } = event;
+
+    const newFilter = value as number;
+    setFilters({
+      ...filters,
+      filterRecurrency: newFilter,
+    });
+  };
+
   const handleChangeServices = (keyword: IServiceProps[]) => {
     const auxId: any[] = [];
     keyword.forEach((item) => auxId.push(item._id));
@@ -222,6 +235,13 @@ export default function CompaniesFilters({
         <FilterWeekdays
           filterWeekdays={filters.filterWeekdays}
           onChangeWeekdays={handleChangeWeekdays}
+        />
+      </Block>
+
+      <Block title="Recorrência">
+        <FilterRecurrency
+          filterRecurrency={filters.filterRecurrency}
+          onChangeRecurrency={handleChangeRecurrency}
         />
       </Block>
 
