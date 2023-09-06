@@ -91,6 +91,7 @@ export default function CompanyDetailReviews({
         </Grid>
 
         <Grid xs={12} md={7} lg={8}>
+          
           <ReviewList
             reviews={reviews}
             currentPage={currentPage}
