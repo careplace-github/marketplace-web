@@ -27,8 +27,8 @@ export default function ReviewItem({ review }: Props) {
         }}
       >
         <Avatar
-          alt={user.name}
-          src={user.profile_picture}
+          alt={user?.name}
+          src={user?.profile_picture}
           sx={{ width: AVATAR_SIZE, height: AVATAR_SIZE, mr: 2.5 }}
         />
 
