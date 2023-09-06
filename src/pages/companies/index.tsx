@@ -1,3 +1,3 @@
-import CompaniesPage from "./companiesList";
+import CompaniesPage from './companiesList';
 
 export default CompaniesPage;

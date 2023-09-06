@@ -1,4 +1,3 @@
-
 import { useContext } from 'react';
 //
 import { SettingsContext } from 'src/features/settings/context/SettingsContext';

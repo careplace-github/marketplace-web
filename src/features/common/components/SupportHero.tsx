@@ -23,7 +23,7 @@ export default function SupportHero() {
   return (
     <StyledRoot>
       <Typography variant="h2" sx={{ textAlign: 'center', color: 'common.white', mb: 5 }}>
-        Bem-vindo ao suporte da  <br />
+        Bem-vindo ao suporte da <br />
         <Box component="span" sx={{ color: 'primary.main' }}>
           {`Careplace `}
         </Box>

@@ -1,4 +1,3 @@
- 
 import { useState } from 'react';
 // @mui
 import { Stack, Button, Divider, StackProps } from '@mui/material';
@@ -6,7 +5,6 @@ import { Stack, Button, Divider, StackProps } from '@mui/material';
 import Iconify from 'src/components/iconify';
 //
 import { FilterTime, FilterGuests, FilterLocation } from './components';
- 
 
 // ----------------------------------------------------------------------
 
@@ -50,19 +48,16 @@ export default function OrderQuestionnaireFilters({ sx, ...other }: StackProps) 
 
       <Divider flexItem orientation="vertical" />
 
-      <FilterTime
-        departureDay={departureDay}
-        onChangeDepartureDay={handleChangeDepartureDay}
-      />
+      <FilterTime departureDay={departureDay} onChangeDepartureDay={handleChangeDepartureDay} />
 
       <Divider flexItem orientation="vertical" />
 
       <FilterGuests
         guests={guests}
         onDecreaseGuests={handleDecreaseGuests}
-        onIncrementGuests={handleIncrementGuests} 
-        sx={undefined}      
-        />
+        onIncrementGuests={handleIncrementGuests}
+        sx={undefined}
+      />
 
       <Button
         size="large"

@@ -5,7 +5,6 @@ import { Box } from '@mui/material';
 import Image from 'src/components/image';
 import Lightbox, { useLightBox } from 'src/components/lightbox';
 import { varTranHover } from 'src/components/animate';
- 
 
 // ----------------------------------------------------------------------
 

@@ -113,7 +113,7 @@ export default function SupportNav({
           <StyledContactButton onClick={() => window.open('mailto:suporte@careplace.pt')}>
             <Iconify icon="carbon:email" width={24} />
             <Typography variant="subtitle2">
-              {`Email ` }
+              {`Email `}
               <br />
               <Box component="span" sx={{ color: 'primary.main' }}>
                 suporte@careplace.pt

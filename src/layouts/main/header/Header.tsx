@@ -97,8 +97,7 @@ export default function Header({ headerOnDark }: Props) {
                 }}
                 badgeContent={
                   <Link href="" target="_blank" rel="noopener" underline="none" sx={{ ml: 1 }}>
-                    <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1
-                  }}>
+                    <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1 }}>
                       beta
                     </Label>
                   </Link>

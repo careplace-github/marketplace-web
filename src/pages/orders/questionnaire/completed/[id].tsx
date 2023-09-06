@@ -1,6 +1,6 @@
 // next
 import Head from 'next/head';
- 
+
 // layouts
 import MainLayout from 'src/layouts/main';
 // features

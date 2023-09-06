@@ -152,9 +152,9 @@ export default function SupportView() {
         </Stack>
       </Container>
 
-        <Container sx={{ pb: { xs: 10, md: 15 } }}>
-            <SupportForm />
-        </Container>
+      <Container sx={{ pb: { xs: 10, md: 15 } }}>
+        <SupportForm />
+      </Container>
     </>
   );
 }

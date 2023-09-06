@@ -8,7 +8,6 @@ import Iconify from 'src/components/iconify';
 
 export default function PrivacyPolicyView() {
   return (
-    
     <Stack
       spacing={3}
       sx={{
@@ -30,7 +29,6 @@ export default function PrivacyPolicyView() {
         Política de Privacidade
       </Typography>
 
-    
       <Typography
         variant="h3"
         paragraph
@@ -53,15 +51,13 @@ export default function PrivacyPolicyView() {
           mb: 5,
         }}
       >
-        
-          {`A Careplace assume um firme compromisso com a privacidade e com os direitos das pessoas que utilizam a Careplace enquanto titulares de dados pessoais.
+        {`A Careplace assume um firme compromisso com a privacidade e com os direitos das pessoas que utilizam a Careplace enquanto titulares de dados pessoais.
 
 A Careplace concebeu a Careplace de acordo com os princípios da privacidade desde a sua conceção e por defeito, efetuando as atividades de tratamento de dados pessoais necessárias de acordo com o Regulamento Geral sobre a Proteção de Dados (“RGPD”) e com a Lei n.º 58/2019, de 8 agosto, que assegura a execução na ordem jurídica nacional do referido Regulamento, e demais legislação aplicável.
 
 A Careplace protege a privacidade, confidencialidade e segurança dos dados introduzidos por utilizadores particulares (os Profissionais de Saúde) e pelos representantes legais dos seus parceiros (as Instituições de Saúde).
 
 Este documento sistematiza todas as atividades de tratamento de dados realizadas pela Careplace bem como o respetivo enquadramento legal.`}
-        
       </Typography>
 
       <Typography
@@ -86,9 +82,11 @@ Este documento sistematiza todas as atividades de tratamento de dados realizadas
           mb: 5,
         }}
       >
-        
-          A Careplace (CAREPLACE LDA., pessoa coletiva com o NIPC 517083817, com sede na Rua Adriano Correia de Oliveira 4 A, 1600-312 Lisboa) entidade que explora a Careplace e é a responsável pelo tratamento dos dados pessoais dos utilizadores da Careplace, para as finalidades referidas na presente política de privacidade, nos termos e para os efeitos do disposto no artigo 24.º do RGPD.
-        
+        A Careplace (CAREPLACE LDA., pessoa coletiva com o NIPC 517083817, com sede na Rua Adriano
+        Correia de Oliveira 4 A, 1600-312 Lisboa) entidade que explora a Careplace e é a responsável
+        pelo tratamento dos dados pessoais dos utilizadores da Careplace, para as finalidades
+        referidas na presente política de privacidade, nos termos e para os efeitos do disposto no
+        artigo 24.º do RGPD.
       </Typography>
 
       <Typography
@@ -113,8 +111,7 @@ Este documento sistematiza todas as atividades de tratamento de dados realizadas
           mb: 5,
         }}
       >
-        
-          {`Para a prestação dos seus serviços, a Careplace trata os dados introduzidos por utilizadores particulares (os Profissionais de Saúde) e pelos representantes legais dos seus parceiros (as Instituições de Saúde).
+        {`Para a prestação dos seus serviços, a Careplace trata os dados introduzidos por utilizadores particulares (os Profissionais de Saúde) e pelos representantes legais dos seus parceiros (as Instituições de Saúde).
 
 Em momento algum a Careplace recolhe, acede ou por outra via trata quaisquer dados, incluindo de saúde, de pacientes ou utentes das Instituições de Saúde suas parceiras.
 
@@ -135,7 +132,6 @@ Para gestão e execução do mandato de cobrança do crédito da prestação dos
 B. Dos representantes legais das Instituições de Saúde
 
 Estes dados serão tratados na estrita medida da prossecução das necessárias diligências pré-contratuais bem como para execução do contrato entre as Instituições de Saúde e da Careplace.`}
-        
       </Typography>
 
       <Typography
@@ -160,8 +156,7 @@ Estes dados serão tratados na estrita medida da prossecução das necessárias 
           mb: 5,
         }}
       >
-        
-          {`Os dados dos Profissionais de Saúde poderão ser consultados e pesquisados por Instituições de Saúde inscritas na Careplace, exclusivamente para fins de recrutamento e seleção de candidatos.
+        {`Os dados dos Profissionais de Saúde poderão ser consultados e pesquisados por Instituições de Saúde inscritas na Careplace, exclusivamente para fins de recrutamento e seleção de candidatos.
 
 Os dados pessoais podem ainda ser transmitidos a entidades que prestem serviços à Careplace (“subcontratantes”) para que os tratem em nome e por conta da Careplace, por exemplo, fornecedores relacionados com o nosso sistema de e-mail marketing ou gestão contabilística.
 
@@ -170,7 +165,6 @@ No entanto, nestes casos, a Careplace tomará as medidas contratuais necessária
 Por força da lei, os dados poderão ainda ter de ser comunicados à Autoridade Tributária, autoridades judiciárias, órgãos de polícia criminal, entre outras.
 
 No entanto, sempre que tal seja necessário, implementaremos os mecanismos necessários para garantir que essa partilha, é realizada de acordo com a legislação aplicável em matéria de proteção de dados e dentro dos limites, finalidades e fundamentos definidos nesta Política.`}
-        
       </Typography>
 
       <Typography
@@ -195,11 +189,9 @@ No entanto, sempre que tal seja necessário, implementaremos os mecanismos neces
           mb: 5,
         }}
       >
-        
-          {`A Careplace não transferirá os seus dados pessoais para qualquer país fora do Espaço Económico Europeu.
+        {`A Careplace não transferirá os seus dados pessoais para qualquer país fora do Espaço Económico Europeu.
 
 Caso, no âmbito das suas relações comerciais com prestadores de serviços da Careplace, os subcontratantes necessitem de transferir os dados pessoais de Profissionais de Saúde ou representantes legais das Instituições de Saúde, a Careplace adotará as medidas contratuais necessárias para assegurar que os subcontratantes efetuam essa transferência nos termos legalmente exigidos.`}
-        
       </Typography>
 
       <Typography
@@ -224,9 +216,11 @@ Caso, no âmbito das suas relações comerciais com prestadores de serviços da 
           mb: 5,
         }}
       >
-        
-          A Careplace adota as medidas de segurança adequadas para proteger os dados pessoais dos Utilizadores para não sejam acedidos por pessoas não autorizadas. Para o efeito utiliza sistemas de segurança, regras e outros procedimentos, de modo a garantir a proteção dos dados pessoais, bem como para prevenir o acesso não autorizado aos dados, o uso impróprio, a sua divulgação, perda ou destruição.
-        
+        A Careplace adota as medidas de segurança adequadas para proteger os dados pessoais dos
+        Utilizadores para não sejam acedidos por pessoas não autorizadas. Para o efeito utiliza
+        sistemas de segurança, regras e outros procedimentos, de modo a garantir a proteção dos
+        dados pessoais, bem como para prevenir o acesso não autorizado aos dados, o uso impróprio, a
+        sua divulgação, perda ou destruição.
       </Typography>
 
       <Typography
@@ -251,8 +245,7 @@ Caso, no âmbito das suas relações comerciais com prestadores de serviços da 
           mb: 5,
         }}
       >
-        
-          {`A. Pela Careplace
+        {`A. Pela Careplace
 
 A Careplace trata e conserva os seus dados pessoais conforme as finalidades para que os mesmos são tratados e apenas pelo período de tempo necessário para o cumprimento das finalidades que motivaram a sua recolha e conservação, e sempre de acordo com a lei, as orientações e as decisões da CNPD, ou, consoante o que for aplicável, até que exerça o seu direito de oposição, eliminação ou retire o consentimento.
 
@@ -269,7 +262,6 @@ As Instituições de Saúde apenas poderão tratar os dados pessoais dos Profiss
 Caso contratem os serviços de certo Profissional de Saúde, deverão tratá-los e conservá-los de acordo com as suas próprias políticas de privacidade e reter os seus dados pelos prazos legalmente aplicáveis, nomeadamente só contatar para o telefone daquele única e exclusivamente para efeitos da execução do turno contratado.
 
 O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições de Saúde fora da Careplace não será oponível à Careplace.`}
-        
       </Typography>
 
       <Typography
@@ -294,9 +286,12 @@ O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições 
           mb: 5,
         }}
       >
-        
-          Os utilizadores podem actualizar, editar ou apagar os seus dados pessoais a qualquer momento bem como opor-se à utilização dos dados facultados para fins de marketing, para o envio de comunicações informativas ou outras, devendo para tal fazê-lo por e-mail para geral@careplace.pt. Os utilizadores podem também facilmente subscrever ou cancelar as diferentes campanhas de emails da Careplace clicando na opção “unsubscribe” em qualquer e-mail que receber da Careplace.
-        
+        Os utilizadores podem actualizar, editar ou apagar os seus dados pessoais a qualquer momento
+        bem como opor-se à utilização dos dados facultados para fins de marketing, para o envio de
+        comunicações informativas ou outras, devendo para tal fazê-lo por e-mail para
+        geral@careplace.pt. Os utilizadores podem também facilmente subscrever ou cancelar as
+        diferentes campanhas de emails da Careplace clicando na opção “unsubscribe” em qualquer
+        e-mail que receber da Careplace.
       </Typography>
 
       <Typography
@@ -321,8 +316,7 @@ O tratamento de dados pessoais dos Profissionais de Saúde pelas Instituições 
           mb: 5,
         }}
       >
-        
-          {`O titular dos dados pessoais, e sempre que se encontrem preenchidos os necessários requisitos legais para o efeito, poderá exercer junto da Careplace os seguintes direitos:
+        {`O titular dos dados pessoais, e sempre que se encontrem preenchidos os necessários requisitos legais para o efeito, poderá exercer junto da Careplace os seguintes direitos:
 
 - Direito de Acesso: direito de aceder aos seus dados pessoais, solicitando-nos informações sobre os concretos dados que a Careplace tem sobre o titular dos dados, bem como as características dos tratamentos de dados que realizamos;
 - Direito de Retificação: direito de retificar qualquer informação a seu respeito que entenda estar desatualizada ou incorreta;
@@ -339,7 +333,6 @@ Poderá ser-lhe pedido que faça prova da sua identidade de modo a assegurar que
 O titular dos dados deverá ter presente que em certos casos, por exigência legal, o seu pedido poderá não ser imediatamente satisfeito. De qualquer modo, será informado das medidas tomadas nesse sentido, no prazo de um mês a contar da data da sua receção.
 
 Tem ainda o direito de apresentar uma reclamação à Comissão Nacional de Proteção de Dados em https://www.cnpd.pt/.`}
-        
       </Typography>
 
       <Typography
@@ -364,11 +357,9 @@ Tem ainda o direito de apresentar uma reclamação à Comissão Nacional de Prot
           mb: 5,
         }}
       >
-        
-          {`Os nomes de utilizador e passwords definidas no registo no portal, são para uso exclusivo da pessoa a quem são emitidos. As passwords devem ser mantidas confidenciais e seguras.
+        {`Os nomes de utilizador e passwords definidas no registo no portal, são para uso exclusivo da pessoa a quem são emitidos. As passwords devem ser mantidas confidenciais e seguras.
 
 A Careplace pode negar o acesso a um nome de utilizador, se acreditar que ele está a ser utilizado por uma pessoa não autorizada ou que o utilizador está a violar os Termos e Condições da Careplace.`}
-        
       </Typography>
 
       <Typography
@@ -394,21 +385,19 @@ A Careplace pode negar o acesso a um nome de utilizador, se acreditar que ele es
           pb: 10,
         }}
       >
-        
-          {`A Careplace poderá ter a necessidade de alterar a presente Política de Privacidade, caso em que, se legalmente exigido, as respetivas alterações serão notificadas aos titulares dos dados, por email. As alterações deverão entrar em vigor no prazo de 15 dias após a referida notificação.
+        {`A Careplace poderá ter a necessidade de alterar a presente Política de Privacidade, caso em que, se legalmente exigido, as respetivas alterações serão notificadas aos titulares dos dados, por email. As alterações deverão entrar em vigor no prazo de 15 dias após a referida notificação.
 
 A versão atualizada será publicada no website da Careplace, de forma acessível aos titulares dos dados.`}
-        
       </Typography>
 
-      
-
       <Typography
-      sx={{
-        pb: 50,
-      }}
-      > Política revista e atualizada a 1 de Setembro de 2023. </Typography> 
-
+        sx={{
+          pb: 50,
+        }}
+      >
+        {' '}
+        Política revista e atualizada a 1 de Setembro de 2023.{' '}
+      </Typography>
     </Stack>
   );
 }

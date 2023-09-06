@@ -5,12 +5,9 @@ import SimpleLayout from 'src/layouts/simple';
 // features
 import { GuestGuard, RegisterView } from 'src/features/auth';
 
-
 // ----------------------------------------------------------------------
 
-RegisterPage.getLayout = (page: React.ReactElement) => (
-  <SimpleLayout>{page}</SimpleLayout>
-);
+RegisterPage.getLayout = (page: React.ReactElement) => <SimpleLayout>{page}</SimpleLayout>;
 
 // ----------------------------------------------------------------------
 

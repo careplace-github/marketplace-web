@@ -77,10 +77,6 @@ export const _courses = [...Array(12)].map((_, index) => ({
   ],
   shareLinks: _mock.shareLinks,
 
-
-
-
-
   heroImg: [
     '/assets/images/travel/travel_post_hero.jpg',
     '/assets/images/travel/travel_post_01.jpg',
@@ -125,11 +121,7 @@ export const _courses = [...Array(12)].map((_, index) => ({
     label: `Day ${itemIndex + 1}`,
     text: _mock.text.description(itemIndex),
   })),
- 
-
-
 }));
-
 
 // ----------------------------------------------------------------------
 

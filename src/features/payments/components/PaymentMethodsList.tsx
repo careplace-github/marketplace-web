@@ -1,4 +1,3 @@
- 
 import { useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -16,7 +15,6 @@ import {
 import Iconify from 'src/components/iconify';
 //
 import PaymentNewCardForm from './PaymentNewCardForm';
-
 
 // ----------------------------------------------------------------------
 

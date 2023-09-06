@@ -1,13 +1,5 @@
- 
 // @mui
-import {
-  Stack,
-  Button,
-  TextField,
-  Typography,
-  IconButton,
-  InputAdornment,
-} from '@mui/material';
+import { Stack, Button, TextField, Typography, IconButton, InputAdornment } from '@mui/material';
 // _mock
 import { _socials } from 'src/_mock';
 // components
@@ -17,7 +9,6 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export default function ComingSoonView() {
-
   return (
     <>
       <Typography variant="h3" paragraph>
@@ -37,8 +28,6 @@ export default function ComingSoonView() {
           maxWidth: 320,
         }}
       />
-
-     
 
       <TextField
         fullWidth
@@ -67,4 +56,3 @@ export default function ComingSoonView() {
     </>
   );
 }
-

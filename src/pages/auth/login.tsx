@@ -4,13 +4,10 @@ import Head from 'next/head';
 import SimpleLayout from 'src/layouts/simple';
 // features
 import { GuestGuard, LoginView } from 'src/features/auth';
- 
 
 // ----------------------------------------------------------------------
 
-LoginPage.getLayout = (page: React.ReactElement) => (
-  <SimpleLayout>{page}</SimpleLayout>
-);
+LoginPage.getLayout = (page: React.ReactElement) => <SimpleLayout>{page}</SimpleLayout>;
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +21,6 @@ export default function LoginPage() {
       <GuestGuard>
         <LoginView />
       </GuestGuard>
-  
     </>
   );
 }
