@@ -28,7 +28,7 @@ export default function ReviewList({
     <>
       {reviews.map((review) => {
         return (
-          <Box key={review._id}>
+          <Box key={review?._id}>
             <ReviewItem review={review} />
           </Box>
         );

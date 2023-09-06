@@ -39,7 +39,7 @@ export default function ReviewItem({ review }: Props) {
             direction={{ xs: 'column', sm: 'row' }}
             justifyContent={{ sm: 'space-between' }}
           >
-            <Typography variant="subtitle2">{user.name}</Typography>
+            <Typography variant="subtitle2">{user?.name}</Typography>
             <Rating size="small" value={rating} precision={0.5} readOnly />
           </Stack>
 
