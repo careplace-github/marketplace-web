@@ -42,7 +42,7 @@ export default function FilterWeekdays({
           if (items.length === 0) {
             return (
               <Typography variant="body2" sx={{ color: 'text.disabled' }}>
-                Todos os dias
+                Selecionar dias da semana
               </Typography>
             );
           }

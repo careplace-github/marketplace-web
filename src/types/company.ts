@@ -76,4 +76,5 @@ export type ICompanyProps = {
 export type ICompanyFiltersProps = {
   filterWeekdays: number[];
   filterServices: IServiceProps[];
+  filterRecurrency: number | undefined;
 };
