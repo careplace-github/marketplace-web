@@ -13,12 +13,11 @@ export default function useActiveLink(path?: string | undefined, deep = true): R
     return {
       active: false,
       isExternalLink: false,
-    }
+    };
   }
   const { pathname, asPath } = useRouter();
 
   const checkPath = path?.startsWith('#');
-
 
   const currentPath = path === '/' ? '/' : `${path}/`;
   const normalActive =
@@ -31,7 +30,4 @@ export default function useActiveLink(path?: string | undefined, deep = true): R
     active: deep ? deepActive : normalActive,
     isExternalLink: path.includes('http'),
   };
-
-
-
 }

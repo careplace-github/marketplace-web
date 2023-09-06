@@ -4,13 +4,10 @@ import Head from 'next/head';
 import CompactLayout from 'src/layouts/compact';
 // features
 import { ResetPasswordView } from 'src/features/auth';
- 
 
 // ----------------------------------------------------------------------
 
-ResetPasswordPage.getLayout = (page: React.ReactElement) => (
-  <CompactLayout>{page}</CompactLayout>
-);
+ResetPasswordPage.getLayout = (page: React.ReactElement) => <CompactLayout>{page}</CompactLayout>;
 
 // ----------------------------------------------------------------------
 

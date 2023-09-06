@@ -76,7 +76,7 @@ export const getScheduleText = (order: IOrderProps) => {
 
 export const getStatusText = (order: IOrderProps) => {
   let text = '';
-  const {status} = order;
+  const { status } = order;
 
   if (status === 'new') {
     text = 'Novo';

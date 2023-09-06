@@ -15,7 +15,4 @@ export type IRelativeProps = {
   };
   gender: string;
   medical_conditions: string;
-  };
-  
-  
-  
+};

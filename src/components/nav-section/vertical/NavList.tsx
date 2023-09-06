@@ -39,7 +39,6 @@ export default function NavList({ data, depth, hasChild }: NavListRootProps) {
     setOpen(false);
   };
 
-
   return (
     <>
       <NavItem
@@ -70,16 +69,14 @@ type NavListSubProps = {
 function NavSubList({ data, depth }: NavListSubProps) {
   return (
     <>
-      {data.map((list) =>
-      (
+      {data.map((list) => (
         <NavList
           key={list.title + list.path}
           data={list}
           depth={depth + 1}
           hasChild={!!list.children}
         />
-      )
-      )}
+      ))}
     </>
   );
 }

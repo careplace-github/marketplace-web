@@ -32,8 +32,6 @@ export default function CompanyListItem({ company, vertical }: Props) {
   const isMdUp = useResponsive('up', 'md');
   const isSmUp = useResponsive('up', 'sm');
 
- 
-
   return (
     <Card
       sx={{

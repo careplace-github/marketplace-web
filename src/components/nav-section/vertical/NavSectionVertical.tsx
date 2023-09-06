@@ -7,8 +7,6 @@ import { NavSectionProps } from 'src/components/nav-section/types';
 import { StyledSubheader } from './styles';
 import NavList from './NavList';
 
-
-
 // ----------------------------------------------------------------------
 
 export default function NavSectionVertical({ data, sx, ...other }: NavSectionProps) {
@@ -23,7 +21,8 @@ export default function NavSectionVertical({ data, sx, ...other }: NavSectionPro
             {group.subheader && <StyledSubheader disableSticky>{group.subheader}</StyledSubheader>}
 
             {group.items.map((list) => {
-              if (isAuthenticated && (list.title === "Entrar" || list.title === "Registar")) return null;
+              if (isAuthenticated && (list.title === 'Entrar' || list.title === 'Registar'))
+                return null;
               return (
                 <NavList
                   key={list.title + list.path}
@@ -31,7 +30,7 @@ export default function NavSectionVertical({ data, sx, ...other }: NavSectionPro
                   depth={1}
                   hasChild={!!list.children}
                 />
-              )
+              );
             })}
           </List>
         );

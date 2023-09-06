@@ -26,7 +26,6 @@ export default function CompaniesFiltersHead({
 }: Prop) {
   const isSmUp = useResponsive('up', 'sm');
 
-
   return (
     <TableHead
       sx={{

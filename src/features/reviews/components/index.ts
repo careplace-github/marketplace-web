@@ -12,9 +12,3 @@ export { default as ReviewProgressItem } from './item/ReviewProgressItem';
 
 // List
 export { default as ReviewList } from './list/ReviewsList';
-
-
-
-
-
-

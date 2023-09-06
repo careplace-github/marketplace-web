@@ -13,9 +13,9 @@ export default function FaqsForm() {
   const [message, setMessage] = useState('');
 
   const handleSubmit = () => {
-    const mailtoLink = `mailto:${encodeURIComponent("suporte@careplace.pt")}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(message)}`;
+    const mailtoLink = `mailto:${encodeURIComponent(
+      'suporte@careplace.pt'
+    )}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
     // Open mail client with the mailto link in a new tab
     window.open(mailtoLink, '_blank');
   };
@@ -30,7 +30,7 @@ export default function FaqsForm() {
         <TextField
           fullWidth
           label="Nome"
-          onChange={event => {
+          onChange={(event) => {
             setName(event.target.value);
           }}
         />
@@ -40,7 +40,7 @@ export default function FaqsForm() {
         <TextField
           fullWidth
           label="Email"
-          onChange={event => {
+          onChange={(event) => {
             setRecipientEmail(event.target.value);
           }}
         />
@@ -50,7 +50,7 @@ export default function FaqsForm() {
         <TextField
           fullWidth
           label="Assunto"
-          onChange={event => {
+          onChange={(event) => {
             setSubject(event.target.value);
           }}
         />
@@ -62,7 +62,7 @@ export default function FaqsForm() {
           label="Mensagem"
           multiline
           rows={4}
-          onChange={event => {
+          onChange={(event) => {
             setMessage(event.target.value);
           }}
         />
@@ -76,7 +76,8 @@ export default function FaqsForm() {
             onClick={handleSubmit}
             sx={{
               marginLeft: 'auto', // Align the button to the right
-            }}>
+            }}
+          >
             Submeter
           </Button>
         </div>

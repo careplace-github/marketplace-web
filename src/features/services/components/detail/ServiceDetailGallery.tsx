@@ -8,7 +8,6 @@ import Image from 'src/components/image';
 import Lightbox, { useLightBox } from 'src/components/lightbox';
 import Carousel, { CarouselArrows } from 'src/components/carousel';
 import { varHover, varTranHover } from 'src/components/animate';
- 
 
 // ----------------------------------------------------------------------
 

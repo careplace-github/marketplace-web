@@ -67,7 +67,7 @@ export default function CheckoutSummary({
   let totalValueWithDiscount;
 
   if (discount?.type === 'percentage' && discount.value) {
-    totalValueWithDiscount = `${fCurrency(subtotal - (subtotal ) * discount.value)} €`;
+    totalValueWithDiscount = `${fCurrency(subtotal - subtotal * discount.value)} €`;
   } else if (discount?.value) {
     totalValueWithDiscount = `${fCurrency(subtotal - discount.value)} €`;
   } else {
@@ -188,7 +188,7 @@ export default function CheckoutSummary({
           {(!isOrderView || orderStatus !== 'new') && (
             <>
               <Stack spacing={2}>
-                <Row label="Subtotal" value={`${fCurrency(subtotal )} €`} />
+                <Row label="Subtotal" value={`${fCurrency(subtotal)} €`} />
                 {discount?.value && (
                   <Row
                     label={
@@ -198,7 +198,7 @@ export default function CheckoutSummary({
                     }
                     value={
                       discount.type === 'percentage'
-                        ? `- ${fCurrency((subtotal) * discount.value)} €`
+                        ? `- ${fCurrency(subtotal * discount.value)} €`
                         : `- ${fCurrency(discount.value)} €`
                     }
                   />

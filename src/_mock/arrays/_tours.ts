@@ -100,10 +100,6 @@ export const _tours = [...Array(12)].map((_, index) => ({
   })),
   shareLinks: _mock.shareLinks,
 
-
-
-
- 
   category: _mock.text.jobCategories(index),
   lessons,
   quizzes: 100,
@@ -125,10 +121,4 @@ export const _tours = [...Array(12)].map((_, index) => ({
     'Fusce neque. Nulla neque dolor, sagittis eget, iaculis quis, molestie non, velit.',
     'Curabitur a felis in nunc fringilla tristique. Praesent congue erat at massa.',
   ],
- 
-
-
 }));
-
-
-

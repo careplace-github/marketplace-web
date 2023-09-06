@@ -7,7 +7,6 @@ import CompactLayout from 'src/layouts/compact';
 // features
 import { Error500View } from 'src/features/common';
 
-
 // ----------------------------------------------------------------------
 
 Page500.getLayout = (page: React.ReactElement) => <CompactLayout>{page}</CompactLayout>;

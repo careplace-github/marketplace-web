@@ -19,22 +19,22 @@ import {
 const initialState: SettingsContextProps = {
   ...defaultSettings,
   // Mode
-  onToggleMode: () => { },
+  onToggleMode: () => {},
   // Direction
-  onToggleDirection: () => { },
+  onToggleDirection: () => {},
   // Color
-  onChangeColorPresets: () => { },
+  onChangeColorPresets: () => {},
   presetsColor: defaultPreset,
   presetsOption: [],
-  onChangeDirectionByLang: () => { },
-  onChangeDirection: () => { },
+  onChangeDirectionByLang: () => {},
+  onChangeDirection: () => {},
   // Reset
-  onResetSetting: () => { },
+  onResetSetting: () => {},
   // Open
   open: false,
-  onToggle: () => { },
-  onOpen: () => { },
-  onClose: () => { },
+  onToggle: () => {},
+  onOpen: () => {},
+  onClose: () => {},
   // Not default
   notDefault: false,
 };
@@ -50,7 +50,6 @@ type SettingsProviderProps = {
 };
 
 export function SettingsProvider({ children }: SettingsProviderProps) {
-
   const [settings, setSettings] = useLocalStorage('settings', defaultSettings);
 
   const storageAvailable = localStorageAvailable();

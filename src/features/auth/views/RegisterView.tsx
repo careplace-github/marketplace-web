@@ -8,7 +8,7 @@ import { PATHS } from 'src/routes/paths';
 // utils
 import { bgGradient } from 'src/utils/cssStyles';
 //
-import AuthRegisterForm  from '../components/AuthRegisterForm';
+import AuthRegisterForm from '../components/AuthRegisterForm';
 
 // ----------------------------------------------------------------------
 
@@ -50,19 +50,13 @@ export default function RegisterView() {
 
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {`Já tem conta? `}
-            <Link
-              component={NextLink}
-              href={PATHS.auth.login}
-              variant="subtitle2"
-              color="primary"
-            >
+            <Link component={NextLink} href={PATHS.auth.login} variant="subtitle2" color="primary">
               Entrar
             </Link>
           </Typography>
         </div>
 
         <AuthRegisterForm />
-        
       </Stack>
     </StyledRoot>
   );

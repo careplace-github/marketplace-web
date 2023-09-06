@@ -6,4 +6,4 @@ export const setItem = (key: string, value: string | null) => {
   }
 };
 
-export const getItem = (key: string) => localStorage.getItem(key)
+export const getItem = (key: string) => localStorage.getItem(key);
