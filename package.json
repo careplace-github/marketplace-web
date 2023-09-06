@@ -17,7 +17,7 @@
     "test": "jest",
     "coverage": "jest --coverage",
     "e2e": "cypress open",
-    "prettier": "prettier --write 'src/**/*.{js,jsx}'",
+    "prettier": "prettier --write 'src/**/*.{js,jsx,ts,tsx}'",
     "clear-all": "rm -rf .next _static node_modules",
     "re-start": "rm -rf .next _static node_modules && yarn install && yarn dev",
     "re-build": "rm -rf .next _static node_modules && yarn install && yarn build",
