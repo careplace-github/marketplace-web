@@ -70,6 +70,9 @@ export default function OrderView() {
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [firstBillingDetailsData, setFirstBillingDetailsData] = useState<
+    BillingDetailsProps | 'not fetched'
+  >('not fetched');
   const [billingDetails, setBillingDetails] = useState<BillingDetailsProps>();
   const [selectedCard, setSelectedCard] = useState<CardProps>();
   const [orderInfo, setOrderInfo] = useState<any>();
@@ -106,11 +109,15 @@ export default function OrderView() {
   }, []);
 
   useEffect(() => {
+    console.log('custom is dirty:', customIsDirty);
+  }, [customIsDirty]);
+
+  useEffect(() => {
     if (billingDetails) {
       const { address, nif } = billingDetails;
       const { city, country, postal_code, street } = address;
       if (
-        !customIsDirty ||
+        // !customIsDirty ||
         !city ||
         !country ||
         !postal_code ||
@@ -161,7 +168,7 @@ export default function OrderView() {
           auxWeekdays.push(item.week_day);
         });
         if (!isObjectEmpty(response.data.billing_details)) {
-          setBillingDetails({
+          const auxBillingDetails = {
             name: response.data.billing_details.name || '',
             nif: response.data.billing_details.tax_id || '',
             address: {
@@ -170,11 +177,12 @@ export default function OrderView() {
               city: response.data.billing_details.address.city || '',
               country: response.data.billing_details.address.country || '',
             },
-          });
+          };
+          setFirstBillingDetailsData(auxBillingDetails);
+          setBillingDetails(auxBillingDetails);
         }
         setSelectedWeekdays(auxWeekdays);
         setPreviousPaymentMethod(response.data.stripe_information?.payment_method || null);
-        setSelectedCard(response.data.stripe_information?.payment_method || null);
         fetchCompany(response.data.health_unit._id);
       } catch (error) {
         console.error(error);
@@ -236,15 +244,29 @@ export default function OrderView() {
     defaultValues,
   });
 
+  useEffect(() => {
+    console.log('first', previousPaymentMethod);
+    console.log('current', selectedCard);
+    if (
+      (JSON.stringify(firstBillingDetailsData) === JSON.stringify(billingDetails) &&
+        selectedCard?.id === previousPaymentMethod) ||
+      !selectedCard
+    ) {
+      setCustomIsDirty(false);
+    } else {
+      setCustomIsDirty(true);
+    }
+  }, [billingDetails, firstBillingDetailsData, previousPaymentMethod, selectedCard]);
+
   const handleBillingDetailsChange = (details) => {
     setBillingDetails(details);
-    setCustomIsDirty(true);
   };
 
   const updateOrderPayments = async () => {
+    setIsSubmitting(true);
     try {
       await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
-        payment_method: selectedCard?.id,
+        payment_method: selectedCard?.id || previousPaymentMethod,
       });
       await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`, {
         billing_details: {
@@ -265,6 +287,7 @@ export default function OrderView() {
         message: 'Informações de Pagamento atualizadas com sucesso.',
       });
     } catch (error) {
+      setIsSubmitting(false);
       console.error(error);
       setShowSnackbar({
         show: true,
@@ -292,6 +315,7 @@ export default function OrderView() {
     } catch (error) {
       console.error(error);
     }
+    setIsSubmitting(false);
   };
 
   const handleValidChange = (valid, data) => {
@@ -412,7 +436,7 @@ export default function OrderView() {
                   onPaymentMethodSelect={(card) => {
                     setSelectedCard(card);
                     setCustomIsDirty(true);
-                    setPreviousPaymentMethod(undefined);
+                    // setPreviousPaymentMethod(undefined);
                   }}
                   relatives={userRelatives}
                   selectedRelative={orderInfo?.patient}
@@ -451,6 +475,7 @@ export default function OrderView() {
                 disabled={disableSubmitButton}
                 orderStatus={orderInfo.status}
                 subtotal={orderInfo?.order_total}
+                isSubmitting={isSubmitting}
                 company={companyInfo}
                 onDiscountApplied={(code) => setDiscountCode(code)}
                 hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}

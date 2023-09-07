@@ -62,6 +62,7 @@ export default function CheckoutView() {
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
   const [selectedWeekdays, setSelectedWeekdays] = useState<number[]>([]);
   const [discountCode, setDiscountCode] = useState<string>();
+  const [invalidCardAlreadySubmitted, setInvalidCardAlreadySubmitted] = useState<boolean>(false);
   const router = useRouter();
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
@@ -197,8 +198,32 @@ export default function CheckoutView() {
           },
         },
       });
+      if (invalidCardAlreadySubmitted) {
+        await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
+          payment_method: selectedCard?.id,
+        });
+        await axios.put(
+          `/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`,
+          {
+            billing_details: {
+              name: billingDetails?.name,
+              email: user?.email,
+              tax_id: billingDetails?.nif,
+              address: {
+                street: billingDetails?.address.street,
+                city: billingDetails?.address.city,
+                country: billingDetails?.address.country,
+                postal_code: billingDetails?.address.postal_code,
+              },
+            },
+          }
+        );
+      }
       router.push(PATHS.orders.checkoutSucess(orderId || ''));
     } catch (error) {
+      if (error?.error?.type === 'PAYMENT_REQUIRED') {
+        setInvalidCardAlreadySubmitted(true);
+      }
       if (error?.error?.message === 'Order already has a subscription') {
         setShowSnackbar({
           show: true,
