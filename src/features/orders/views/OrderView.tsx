@@ -330,7 +330,11 @@ export default function OrderView() {
     setIsSubmitting(false);
   };
 
-  if (!loading && !relativesLoading && orderInfo?.status === 'cancelled') {
+  if (
+    !loading &&
+    !relativesLoading &&
+    (orderInfo?.status === 'cancelled' || orderInfo.status === 'declined')
+  ) {
     return (
       <Stack direction="column" alignItems="center" justifyContent="center">
         <Typography
@@ -344,7 +348,7 @@ export default function OrderView() {
             pb: '0px',
           }}
         >
-          Este pedido foi cancelado.
+          {`Este pedido foi ${orderInfo.status === 'cancelled' ? 'cancelado' : 'recusado'}.`}
         </Typography>
         <Typography sx={{ color: 'text.secondary', mb: 10, textAlign: 'center' }}>
           <br />
