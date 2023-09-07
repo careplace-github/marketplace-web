@@ -19,6 +19,7 @@ import { FilterGuests, FilterTime } from '../filters/components';
 type Props = {
   company: ICompanyProps;
   disabled: boolean;
+  orderStatus?: string;
   isSubmitting: boolean;
   handleSubmit: MouseEventHandler<HTMLButtonElement>;
   updateVersion?: boolean;
@@ -27,6 +28,7 @@ type Props = {
 export default function OrderQuestionnaireSummary({
   handleSubmit,
   company,
+  orderStatus,
   disabled,
   updateVersion,
   isSubmitting,
@@ -42,7 +44,7 @@ export default function OrderQuestionnaireSummary({
         sx={{
           position: 'relative',
           p: 4,
-          pb: 0,
+          pb: orderStatus === 'accepted' ? 4 : 0,
           gap: 3,
           display: 'grid',
           gridTemplateColumns: {
@@ -91,34 +93,38 @@ export default function OrderQuestionnaireSummary({
           {/* <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} /> */}
         </Stack>
       </Box>
-      <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
-      <Stack spacing={3} sx={{ p: 3 }}>
-        <LoadingButton
-          disabled={disabled}
-          size="large"
-          variant="contained"
-          color="inherit"
-          onClick={handleSubmit}
-          loading={isSubmitting}
-          sx={{
-            px: 4,
-            bgcolor: 'primary.main',
-            color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-            '&:hover': {
-              bgcolor: 'primary.dark',
-              color: palette.mode === 'light' ? 'common.white' : 'grey.800',
-            },
-          }}
-        >
-          {updateVersion ? 'Atualizar Pedido' : 'Pedir Orçamento'}
-        </LoadingButton>
+      {orderStatus !== 'accepted' && (
+        <>
+          <Divider sx={{ mt: '20px', borderStyle: 'dashed' }} />
+          <Stack spacing={3} sx={{ p: 3 }}>
+            <LoadingButton
+              disabled={disabled}
+              size="large"
+              variant="contained"
+              color="inherit"
+              onClick={handleSubmit}
+              loading={isSubmitting}
+              sx={{
+                px: 4,
+                bgcolor: 'primary.main',
+                color: palette.mode === 'light' ? 'common.white' : 'grey.800',
+                '&:hover': {
+                  bgcolor: 'primary.dark',
+                  color: palette.mode === 'light' ? 'common.white' : 'grey.800',
+                },
+              }}
+            >
+              {updateVersion ? 'Atualizar Pedido' : 'Pedir Orçamento'}
+            </LoadingButton>
 
-        <Typography variant="caption" sx={{ opacity: 0.72 }}>
-          {updateVersion
-            ? '* Ao atualizar o seu pedido será feita uma nova solicitação de orçamento.'
-            : '* Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendototalmente gratuíto.'}
-        </Typography>
-      </Stack>
+            <Typography variant="caption" sx={{ opacity: 0.72 }}>
+              {updateVersion
+                ? '* Ao atualizar o seu pedido será feita uma nova solicitação de orçamento.'
+                : '* Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendototalmente gratuíto.'}
+            </Typography>
+          </Stack>
+        </>
+      )}
     </Card>
   );
 }

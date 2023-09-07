@@ -38,6 +38,7 @@ type Props = {
   relatives: IRelativeProps[];
   onValidChange: Function;
   orderInfo?: any;
+  disableAllFields?: boolean;
 };
 
 export default function OrderQuestionnaireForm({
@@ -45,6 +46,7 @@ export default function OrderQuestionnaireForm({
   onValidChange,
   services,
   orderInfo,
+  disableAllFields,
 }: Props) {
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
@@ -308,6 +310,7 @@ export default function OrderQuestionnaireForm({
                 Serviços
               </Typography>
               <FilterServices
+                readOnly={disableAllFields}
                 services={services}
                 filterServices={filterServices}
                 onChangeServices={handleChangeServices}
@@ -326,6 +329,7 @@ export default function OrderQuestionnaireForm({
                 Dias da semana
               </Typography>
               <FilterWeekdays
+                readOnly={disableAllFields}
                 filterWeekdays={filterWeekdays}
                 onChangeWeekdays={handleChangeWeekdays}
               />
@@ -337,6 +341,7 @@ export default function OrderQuestionnaireForm({
                 Recorrência
               </Typography>
               <FilterRecurrency
+                readOnly={disableAllFields}
                 filterRecurrency={filterRecurrency}
                 onChangeRecurrency={handleChangeRecurrency}
               />
@@ -346,6 +351,7 @@ export default function OrderQuestionnaireForm({
                 Data de ínicio
               </Typography>
               <DatePicker
+                disabled={disableAllFields}
                 slotProps={{
                   textField: {
                     hiddenLabel: true,
@@ -394,6 +400,7 @@ export default function OrderQuestionnaireForm({
                     <Stack gap="10px" direction="row">
                       {/* Start time */}
                       <TimePicker
+                        disabled={disableAllFields}
                         ampm={false}
                         sx={{ flex: 1 }}
                         value={
@@ -436,6 +443,7 @@ export default function OrderQuestionnaireForm({
                       </Typography>
                       {/* End time */}
                       <TimePicker
+                        disabled={disableAllFields}
                         skipDisabled
                         ampm={false}
                         sx={{ flex: 1 }}
@@ -473,6 +481,7 @@ export default function OrderQuestionnaireForm({
                     )}
                     <Stack direction="row" alignItems="center" justifyContent="flex-start">
                       <Checkbox
+                        disabled={disableAllFields}
                         checked={schedule[weekdayItem.value - 1].nightService}
                         size="small"
                         sx={{
@@ -519,6 +528,7 @@ export default function OrderQuestionnaireForm({
               onChange={handleChangeRelativeSelected}
               selected={JSON.stringify(selectedRelative)}
               options={relatives}
+              readOnly={disableAllFields}
               selectText="Escolha um familiar"
             />
             <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
