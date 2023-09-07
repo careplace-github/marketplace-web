@@ -38,6 +38,7 @@ export default function CompanyDetailReviews({
   const [buttonType, setButtonType] = useState<'create' | 'update'>();
   const companyReviewUrl = `${router.asPath.split('?')[0]}/review`;
   const companyUpdateReviewUrl = `${router.asPath.split('?')[0]}/review/update`;
+  const [userReview, setUserReview] = useState<any>();
 
   const { isAuthenticated, user } = useAuthContext();
 
@@ -45,6 +46,12 @@ export default function CompanyDetailReviews({
     const response = await axios.get(`/health-units/${companyId}/reviews/eligibility`);
     if (response?.data?.eligible) {
       setButtonType(response?.data?.type || undefined);
+      const userReviewResponse: any = await axios.get(
+        `/customers/health-units/${companyId}/reviews`
+      );
+      if (userReviewResponse?.data) {
+        setUserReview(userReviewResponse?.data);
+      }
     }
   };
 
@@ -91,8 +98,8 @@ export default function CompanyDetailReviews({
         </Grid>
 
         <Grid xs={12} md={7} lg={8}>
-          
           <ReviewList
+            userReview={userReview}
             reviews={reviews}
             currentPage={currentPage}
             numberOfPages={numberOfPages}

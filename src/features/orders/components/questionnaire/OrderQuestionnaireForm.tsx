@@ -208,6 +208,10 @@ export default function OrderQuestionnaireForm({
       const servicesPreSelected: IServiceProps[] = [];
       const queryServices = query?.services as string;
 
+      const recurrencyPreSelected: number | string | undefined = query.recurrency as
+        | string
+        | undefined;
+
       if (queryServices) {
         services.forEach((service) => {
           queryServices.split(',').forEach((id) => {
@@ -223,6 +227,12 @@ export default function OrderQuestionnaireForm({
       }
       if (servicesPreSelected.length > 0) {
         setFilterServices(servicesPreSelected);
+      }
+
+      if (recurrencyPreSelected) {
+        setFilterRecurrency(
+          recurrencyPreSelected ? parseInt(recurrencyPreSelected, 10) : undefined
+        );
       }
     }
   }, [router.isReady]);
