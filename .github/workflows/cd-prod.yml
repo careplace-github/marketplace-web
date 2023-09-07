@@ -1,5 +1,5 @@
 # This workflow will build and push a new container image to Amazon ECR,
-# and then will deploy a new task definition to Amazon ECS, when there is a push to the "Master" branch.
+# and then will deploy a new task definition to Amazon ECS, when there is a push to the "Main" branch.
 #
 # To use this workflow, you will need to complete the following set-up steps:
 #
@@ -28,24 +28,73 @@ name: '[PRODUCTION] Continuous Deployment (CD)'
 
 on:
   push:
-    branches: ['Master']
+    branches: ['Main']
 
 env:
   AWS_REGION: eu-west-3 # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: careplace-staging-ecr-repository-marketplace # set this to your Amazon ECR repository name
-  ECS_SERVICE: careplace-staging-ecs-service-marketplace # set this to your Amazon ECS service name
-  ECS_CLUSTER: careplace-staging-ecs-cluster-marketplace # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/task-definition.staging.json # set this to the path to your Amazon ECS task definition file, e.g. .aws/task-definition.json
+  ECR_REPOSITORY: careplace-production-ecr-repository-marketplace # set this to your Amazon ECR repository name
+  ECS_SERVICE: careplace-production-ecs-service-marketplace # set this to your Amazon ECS service name
+  ECS_CLUSTER: careplace-production-ecs-cluster-marketplace # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: .aws/task-definition.production.json # set this to the path to your Amazon ECS task definition file, e.g. .aws/task-definition.json
   CONTAINER_NAME: marketplace # set this to the name of the container in the containerDefinitions section of your task definition
 
 permissions:
   contents: read
 
 jobs:
+  release:
+    name: Tag & Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Configure git
+        run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "admin@careplace.pt"
+
+      - name: Generate changelog and version
+        run: npx standard-version
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch:  Main
+
+      - name: Get latest tag
+        id: get_latest_tag
+        run: echo "::set-output name=tag::$(git describe --tags --abbrev=0)"
+
+      - name: Create release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ steps.get_latest_tag.outputs.tag }}
+          name: Release ${{ steps.get_latest_tag.outputs.tag }}
+          bodyFile: CHANGELOG.md
+          draft: false
+          prerelease: true
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: staging
+    environment: production
 
     steps:
       - name: Checkout
@@ -71,7 +120,7 @@ jobs:
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
-          docker build -f .docker/frontend/Dockerfile.stag -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker build -f .docker/frontend/Dockerfile.prod -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:latest" >> $GITHUB_OUTPUT
       - name: Fill in the new image ID in the Amazon ECS task definition
