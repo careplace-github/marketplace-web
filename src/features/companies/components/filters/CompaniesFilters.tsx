@@ -59,7 +59,6 @@ export default function CompaniesFilters({
   const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
   const [isLoading, setIsLoading] = useState(true);
   const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
-  const { pathname, push, query } = useRouter();
   const router = useRouter();
   const [filterQuerys, setFilterQuerys] = useState<FiltersProps>({
     lat: null,
@@ -145,10 +144,21 @@ export default function CompaniesFilters({
       target: { value },
     } = event;
 
+    console.log('changed recurrency');
+
     const newFilter = value as number;
     setFilters({
       ...filters,
       filterRecurrency: newFilter,
+    });
+    const currentQuery = router.query;
+    router.push({
+      pathname: '/companies',
+      query: {
+        ...currentQuery,
+        recurrency: newFilter,
+        page: 1,
+      },
     });
   };
 

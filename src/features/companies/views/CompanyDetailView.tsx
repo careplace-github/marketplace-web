@@ -41,12 +41,14 @@ import {
 type IFilterQueryProps = {
   weekdays: string | undefined;
   services: string | undefined;
+  recurrency: number | string | undefined;
 };
 export default function CompanyDetailView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [companiesLoading, setCompaniesLoading] = useState<boolean>(true);
   const [servicesLoading, setServicesLoading] = useState<boolean>(true);
   const [filterQueries, setFilterQueries] = useState<IFilterQueryProps>({
+    recurrency: undefined,
     weekdays: undefined,
     services: undefined,
   });
@@ -252,7 +254,11 @@ export default function CompanyDetailView() {
           <Grid xs={12} md={5} lg={4}>
             <CompanyDetailReserveForm
               onReserveFiltersChange={(weekdaysQuery, servicesQuery) =>
-                setFilterQueries({ weekdays: weekdaysQuery, services: servicesQuery })
+                setFilterQueries({
+                  recurrency: router?.query?.recurrency as string | undefined,
+                  weekdays: weekdaysQuery,
+                  services: servicesQuery,
+                })
               }
               services={companyAvailableServices}
               price={companyInfo?.pricing.minimum_hourly_rate}

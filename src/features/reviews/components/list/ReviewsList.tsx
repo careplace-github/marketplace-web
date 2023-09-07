@@ -1,3 +1,5 @@
+// react
+import { useEffect, useState } from 'react';
 // @mui
 import { Box, Pagination } from '@mui/material';
 // types
@@ -15,6 +17,7 @@ type Props = {
   numberOfPages: number;
   currentPage: number;
   onChangeReviewsPage: Function;
+  userReview?: any;
 };
 
 export default function ReviewList({
@@ -22,14 +25,27 @@ export default function ReviewList({
   numberOfPages,
   currentPage,
   onChangeReviewsPage,
+  userReview,
 }: Props) {
   const isSmUp = useResponsive('up', 'sm');
-  return reviews?.length > 0 ? (
+  const [orderedReviews, setOrderedReviews] = useState<any>(reviews);
+  useEffect(() => {
+    if (userReview) {
+      const auxReviews = reviews.filter((review) => review._id !== userReview._id);
+      console.log('aux', auxReviews);
+      auxReviews.unshift(userReview);
+      console.log('aux ordered', auxReviews);
+      setOrderedReviews(auxReviews);
+    }
+  }, [reviews, userReview]);
+
+  return orderedReviews?.length > 0 ? (
     <>
-      {reviews.map((review) => {
+      {console.log('user review', userReview)}
+      {orderedReviews.map((review) => {
         return (
           <Box key={review?._id}>
-            <ReviewItem review={review} />
+            <ReviewItem review={review} isUserReview={review._id === userReview?._id} />
           </Box>
         );
       })}
@@ -39,7 +55,9 @@ export default function ReviewList({
         color="primary"
         size={isSmUp ? 'large' : 'small'}
         page={currentPage}
-        onChange={(e, newValue) => onChangeReviewsPage(newValue)}
+        onChange={(e, newValue) => {
+          if (currentPage !== newValue) onChangeReviewsPage(newValue);
+        }}
         sx={{
           mt: 5,
           mb: 10,

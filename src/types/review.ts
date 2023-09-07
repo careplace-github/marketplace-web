@@ -23,7 +23,7 @@ export type IReviewProps = {
   createdAt: string;
   rating: number;
   updatedAt: string;
-  user: {
+  customer: {
     name: string;
     _id: string;
     profile_picture?: string;

@@ -17,9 +17,9 @@ export default function ResetPasswordView() {
   return (
     <>
       <Image
-        alt="reset password"
-        src="/assets/icons/undraw_mobile_phone.svg"
-        sx={{ mb: 5, mx: 'auto' }}
+        alt="email inbox"
+        src="/assets/icons/undraw_email.svg"
+        sx={{ mb: 5, mx: 'auto', height: '92px' }}
       />
 
       <Typography variant="h3" paragraph>
@@ -27,7 +27,7 @@ export default function ResetPasswordView() {
       </Typography>
 
       <Typography sx={{ color: 'text.secondary', mb: 5 }}>
-        Enviámos-lhe um código com 6 dígitos para o seu telemóvel.
+        Enviámos-lhe um código com 6 dígitos para o seu email.
         <br />
         Por favor escreva o código abaixo para definir a sua nova password.
       </Typography>
