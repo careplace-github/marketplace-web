@@ -72,7 +72,10 @@ export default function OrderQuestionnaireSummary({
               (company.rating.count === 0 && (
                 <Link variant="body2" sx={{ color: 'text.secondary' }}>
                   {`${company.rating.count} ${
-                    company.rating.count === 1 ? 'avaliação' : 'avaliações'
+                    (company?.rating?.count && company.rating.count > 1) ||
+                    company.rating.count === 0
+                      ? 'avaliações'
+                      : 'avaliação'
                   }`}
                 </Link>
               ))}
