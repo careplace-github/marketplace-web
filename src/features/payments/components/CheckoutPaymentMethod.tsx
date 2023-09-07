@@ -16,6 +16,7 @@ type OptionProps = {
   value: string;
   description: string;
   brand: string;
+  id?: string;
 };
 
 type Props = {
