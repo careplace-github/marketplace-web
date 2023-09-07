@@ -159,7 +159,9 @@ export default function CheckoutSummary({
               <Box sx={{ typography: 'h6' }}>{company.rating.average.toFixed(1)}</Box>
               {company.rating.count && (
                 <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                  ({company.rating.count} avaliações)
+                  {`${company.rating.count} ${
+                    company.rating.count === 1 ? 'avaliação' : 'avaliações'
+                  }`}
                 </Link>
               )}
             </Stack>
