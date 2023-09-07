@@ -20,11 +20,6 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
-// react
-import { useEffect } from 'react';
-// routes
-import { useRouter } from 'next/router';
-import { PATHS } from 'src/routes';
 // @mui
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -53,15 +48,8 @@ export interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
-  const router = useRouter();
-  const getLayout = Component.getLayout ?? ((page) => page);
 
-  useEffect(() => {
-    console.log('helo from app');
-    if (router.isReady && router.asPath.startsWith(PATHS.support)) {
-      router.push(PATHS.comingsoon);
-    }
-  }, [router.isReady, router.asPath]);
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
     <CacheProvider value={emotionCache}>
