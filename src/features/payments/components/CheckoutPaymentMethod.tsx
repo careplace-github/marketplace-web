@@ -1,7 +1,7 @@
 // form
 import { useFormContext, useForm, Controller } from 'react-hook-form';
 // react
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Radio, RadioGroup, FormControlLabel } from '@mui/material';
@@ -30,6 +30,14 @@ export default function CheckoutPaymentMethod({
   previousPaymentMethod,
 }: Props) {
   const { control } = useFormContext();
+  const [isCardSelected, setIsCardSelected] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (previousPaymentMethod) {
+      const selectedCardAux = options.filter((item) => item.id === previousPaymentMethod);
+      onPaymentMethodSelect(selectedCardAux[0]);
+    }
+  }, [previousPaymentMethod]);
 
   return options.length > 0 ? (
     <Controller
@@ -47,10 +55,13 @@ export default function CheckoutPaymentMethod({
               <OptionItem
                 key={option.value}
                 option={option}
-                onPaymentMethodSelect={onPaymentMethodSelect}
+                onPaymentMethodSelect={(value) => {
+                  onPaymentMethodSelect(value);
+                  setIsCardSelected(true);
+                }}
                 selected={
                   field.value === option.value ||
-                  previousPaymentMethod === JSON.parse(option.value).id
+                  (!isCardSelected && previousPaymentMethod === JSON.parse(option.value).id)
                 }
               />
             ))}
