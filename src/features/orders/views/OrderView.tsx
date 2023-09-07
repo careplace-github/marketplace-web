@@ -154,6 +154,7 @@ export default function OrderView() {
           router.push(PATHS.orders.checkout(orderId));
           return;
         }
+        console.log('order:', response.data);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {
@@ -401,7 +402,7 @@ export default function OrderView() {
         <Grid container spacing={{ xs: 5, md: 8 }}>
           <Grid xs={12} md={7}>
             <Stack>
-              {userRelatives && orderInfo.status !== 'new' && (
+              {userRelatives && orderInfo.status !== 'new' && orderInfo.status !== 'accepted' && (
                 <CheckoutQuestionnaireInfo
                   isOrderView
                   onPaymentMethodSelect={(card) => {
@@ -426,9 +427,10 @@ export default function OrderView() {
                 />
               )}
 
-              {userRelatives && orderInfo.status === 'new' && (
+              {userRelatives && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
                 <OrderQuestionnaireForm
                   relatives={userRelatives}
+                  disableAllFields={orderInfo.status === 'accepted'}
                   orderInfo={orderInfo || null}
                   services={availableServices}
                   onValidChange={handleValidChange}
@@ -438,7 +440,7 @@ export default function OrderView() {
           </Grid>
 
           <Grid xs={12} md={5}>
-            {companyInfo && orderInfo.status !== 'new' && (
+            {companyInfo && orderInfo.status !== 'new' && orderInfo.status !== 'accepted' && (
               <CheckoutSummary
                 handleSubmit={updateOrderPayments}
                 isOrderView
@@ -450,10 +452,11 @@ export default function OrderView() {
                 hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
               />
             )}
-            {companyInfo && orderInfo.status === 'new' && (
+            {companyInfo && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
               <OrderQuestionnaireSummary
                 handleSubmit={handleUpdateOrder}
                 disabled={disableSubmitButton}
+                orderStatus={orderInfo.status}
                 company={companyInfo}
                 updateVersion
                 isSubmitting={isSubmitting}
