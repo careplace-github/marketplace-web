@@ -45,9 +45,15 @@ const Meta = () => (
     <meta name="msapplication-TileColor" content="#ffffff" />
 
     <meta name="title" content="Careplace" />
-    <meta name="description" content="Careplace Description" />
-    <meta name="keywords" content="react,material,kit,application,landing & corporate,template" />
-    <meta name="author" content="Careplace Kit" />
+    <meta
+      name="description"
+      content="Careplace: Simplificando o Apoio Domiciliário. Encontrar e contratar cuidadores domiciliários nunca foi tão fácil. Na Careplace, conectamos pessoas a profissionais de apoio domiciliário e Empresas de Apoio Domiciliário de forma rápida, segura e sem burocracias. Através da Careplace poderá encontrar um cuidador domiciliário para o seu familiar! Além disso, oferecemos disponibilizamos também aluger de equipamentos médicos, incluindo camas articuladas, gruas de transferência, cadeiras de rodas e muito mais. O futuro do apoio ao domicílio e geriatria está a um clique de distância com a Careplace. Registe-se gratuitamente em www.careplace.pt e transforme a maneira como cuidamos dos nossos entes queridos."
+    />
+    <meta
+      name="keywords"
+      content="careplace,apoio domiciliário,apoio ao domicílio,cuidadores domiciliários,cuidadores,empresas sad,empresas de apoio domiciliário,empresas de apoio ao domicílio,empresas de cuidados domiciliários,empresas de cuidados ao domicílio,empresas de apoio domiciliário lisboa,empresas de apoio domiciliário porto,empresas de apoio domiciliário coimbra,empresas de apoio domiciliário braga,empresas de apoio domiciliário aveiro,empresas de apoio domiciliário faro,empresas de apoio domiciliário algarve,empresas de apoio domiciliário madeira,empresas de apoio domiciliário açores,empresas de apoio domiciliário viseu,empresas de apoio domiciliário leiria,empresas de apoio domiciliário santarém,empresas de apoio domiciliário évora,empresas de apoio domiciliário setúbal,empresas de apoio domiciliário beja,empresas de apoio domiciliário castelo branco,empresas de apoio domiciliário guarda,empresas de apoio domiciliário vila real,empresas de apoio domiciliário bragança,empresas de apoio domiciliário portalegre, geriatria"
+    />
+    <meta name="author" content="Careplace" />
   </>
 );
 
