@@ -1,16 +1,16 @@
-name: '[DEVELOPMENT] Continuous Integration (CI)'
+name: '[PRODUCTION] Continuous Integration (CI)'
 
 on:
   push:
-    branches: ['development']
+    branches: ['Main']
   pull_request:
-    branches: ['development']
+    branches: ['Main']
 
 jobs:
   dependencies:
     name: Dependency Management
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Git checkout
@@ -25,7 +25,7 @@ jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Git checkout
@@ -42,7 +42,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Git checkout
@@ -50,12 +50,12 @@ jobs:
       - name: Branch name
         run: echo running on branch '${GITHUB_REF##*/}'
       - name: Build the Docker image
-        run: docker build . --file .docker/frontend/Dockerfile.dev --tag careplace-marketplace-build-development:$(date +%s)
+        run: docker build . --file .docker/frontend/Dockerfile.prod --tag careplace-marketplace-build-production:$(date +%s)
 
   test:
     name: Test
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Git checkout
@@ -64,7 +64,7 @@ jobs:
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
 
     steps:
       - name: Git checkout
@@ -73,7 +73,7 @@ jobs:
   security:
     name: Security
     runs-on: ubuntu-latest
-    environment: development
+    environment: production
     steps:
       - name: Git checkout
         uses: actions/checkout@v3
@@ -88,6 +88,6 @@ jobs:
       - name: Snyk Test Code
         run: npx snyk test --severity-threshold=high
       - name: Build the Docker image
-        run: docker build . --file .docker/frontend/Dockerfile.dev --tag careplace/marketplace-web:dev
+        run: docker build . --file .docker/frontend/Dockerfile.prod --tag careplace/marketplace-web:prod
       - name: Snyk Test Docker Image
-        run: npx snyk container test careplace/marketplace-web:dev --file=.docker/frontend/Dockerfile.dev --severity-threshold=high
+        run: npx snyk container test careplace/marketplace-web:prod --file=.docker/frontend/Dockerfile.prod --severity-threshold=high
