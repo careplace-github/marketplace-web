@@ -28,7 +28,6 @@ export default function CompanyDetailReserveForm({
   services,
   companyId,
 }: Props) {
-  const { push } = useRouter();
   const router = useRouter();
   const theme = useTheme();
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
@@ -77,6 +76,7 @@ export default function CompanyDetailReserveForm({
     router.push({
       pathname: '/orders/questionnaire',
       query: {
+        ...router.query,
         weekDay: filterWeekdays.join(','),
         services: servicesIds.join(','),
         id: companyId,

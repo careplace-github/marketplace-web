@@ -13,10 +13,12 @@ const WIDTH = `calc(100% - ${AVATAR_SIZE + 20}px)`;
 
 type Props = {
   review: IReviewProps;
+  isUserReview?: boolean;
 };
 
-export default function ReviewItem({ review }: Props) {
-  const { user, rating, comment, updatedAt } = review;
+export default function ReviewItem({ review, isUserReview }: Props) {
+  const { customer, rating, comment, updatedAt } = review;
+  console.log('Review:', review);
   return (
     <>
       <Stack
@@ -27,8 +29,8 @@ export default function ReviewItem({ review }: Props) {
         }}
       >
         <Avatar
-          alt={user?.name}
-          src={user?.profile_picture}
+          alt={customer?.name}
+          src={customer?.profile_picture}
           sx={{ width: AVATAR_SIZE, height: AVATAR_SIZE, mr: 2.5 }}
         />
 
@@ -39,7 +41,7 @@ export default function ReviewItem({ review }: Props) {
             direction={{ xs: 'column', sm: 'row' }}
             justifyContent={{ sm: 'space-between' }}
           >
-            <Typography variant="subtitle2">{user?.name}</Typography>
+            <Typography variant="subtitle2">{customer?.name || 'Você'}</Typography>
             <Rating size="small" value={rating} precision={0.5} readOnly />
           </Stack>
 
@@ -56,7 +58,9 @@ export default function ReviewItem({ review }: Props) {
             </Typography>
           )}
 
-          <Typography variant="body2">{comment}</Typography>
+          <Typography variant="body2" sx={{ width: '90%' }}>
+            {comment}
+          </Typography>
         </Stack>
       </Stack>
 

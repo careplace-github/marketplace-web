@@ -179,6 +179,7 @@ export default function CheckoutView() {
   });
 
   const onCheckoutSubmit = async () => {
+    setIsSubmitting(true);
     const orderId = router.asPath.split('/').at(2);
     try {
       const response = await axios.post(`/payments/orders/home-care/${orderId}/subscription`, {
@@ -212,6 +213,7 @@ export default function CheckoutView() {
         message: 'Algo correu mal, tente de novo.',
       });
     }
+    setIsSubmitting(false);
   };
 
   const handleBillingDetailsChange = (details) => {

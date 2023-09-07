@@ -69,7 +69,8 @@ export default function ReviewPageView({ update }: Props) {
       fetchCompany();
       if (update) {
         const fetchPrevReview = async () => {
-          const response = await axios.get(`/users/reviews/companies/${companyId}`);
+          const response = await axios.get(`/customers/health-units/${companyId}/reviews`);
+          console.log('Prev review', response.data);
           setPrevReview({
             id: response.data._id,
           });
@@ -85,7 +86,7 @@ export default function ReviewPageView({ update }: Props) {
   const handleSubmitReview = async () => {
     try {
       if (update) {
-        await axios.put(`/reviews/${prevReview?.id}`, {
+        await axios.put(`/health-units/reviews/${prevReview?.id}`, {
           comment: reviewComment,
           rating: reviewRating,
         });
@@ -97,7 +98,7 @@ export default function ReviewPageView({ update }: Props) {
       }
       setSubmitted(true);
     } catch (error) {
-      console.error('error:', error.error.message);
+      console.error('error:', error?.error?.message);
       setShowSnackbar({
         show: true,
         severity: 'error',
