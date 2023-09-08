@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 // @mui
 import { Container, Stack, Typography, IconButton } from '@mui/material';
-// _mock
 // components
 import Iconify from 'src/components/iconify';
 //

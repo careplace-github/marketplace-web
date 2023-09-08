@@ -1,6 +1,5 @@
 // @mui
 import { Typography } from '@mui/material';
-// _mock
 // components
 import Image from 'src/components/image';
 
