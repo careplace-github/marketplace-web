@@ -109,10 +109,6 @@ export default function OrderView() {
   }, []);
 
   useEffect(() => {
-    console.log('custom is dirty:', customIsDirty);
-  }, [customIsDirty]);
-
-  useEffect(() => {
     if (billingDetails) {
       const { address, nif } = billingDetails;
       const { city, country, postal_code, street } = address;
@@ -161,7 +157,6 @@ export default function OrderView() {
           router.push(PATHS.orders.checkout(orderId));
           return;
         }
-        console.log('order:', response.data);
         setOrderInfo(response.data);
         const auxWeekdays: number[] = [];
         response.data.schedule_information.schedule.forEach((item) => {
@@ -245,8 +240,6 @@ export default function OrderView() {
   });
 
   useEffect(() => {
-    console.log('first', previousPaymentMethod);
-    console.log('current', selectedCard);
     if (
       (JSON.stringify(firstBillingDetailsData) === JSON.stringify(billingDetails) &&
         selectedCard?.id === previousPaymentMethod) ||

@@ -32,16 +32,13 @@ export default function ReviewList({
   useEffect(() => {
     if (userReview) {
       const auxReviews = reviews.filter((review) => review._id !== userReview._id);
-      console.log('aux', auxReviews);
       auxReviews.unshift(userReview);
-      console.log('aux ordered', auxReviews);
       setOrderedReviews(auxReviews);
     }
   }, [reviews, userReview]);
 
   return orderedReviews?.length > 0 ? (
     <>
-      {console.log('user review', userReview)}
       {orderedReviews.map((review) => {
         return (
           <Box key={review?._id}>

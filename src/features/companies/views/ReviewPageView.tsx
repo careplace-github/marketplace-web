@@ -70,7 +70,6 @@ export default function ReviewPageView({ update }: Props) {
       if (update) {
         const fetchPrevReview = async () => {
           const response = await axios.get(`/customers/health-units/${companyId}/reviews`);
-          console.log('Prev review', response.data);
           setPrevReview({
             id: response.data._id,
           });
