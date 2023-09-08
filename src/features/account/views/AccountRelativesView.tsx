@@ -186,14 +186,14 @@ export default function AccountRelativesView() {
               />
             </Box>
           )}
-          {userRelatives?.length === 0 && !isLoading && (
+          {(userRelatives?.length === 0 || !userRelatives) && !isLoading && (
             <EmptyState
               icon="bi:person-x-fill"
               title="Não tem nenhum familiar associado"
               description="Todos os familiares que adicionar vão ser apresentados nesta página"
             />
           )}
-          {userRelatives?.length === 0 && isLoading && (
+          {(userRelatives?.length === 0 || !userRelatives) && isLoading && (
             <Box
               sx={{
                 display: 'flex',
