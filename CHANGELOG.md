@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.9 (2023-09-08)
+
+
+### Features
+
+* **analytics:** add Microsoft Clarity tracking ([922baf9](https://github.com/careplace-github/marketplace-web/commit/922baf92b7c34785b8d2cc5b96f9671571dfedd3))
+
 ### 0.1.8 (2023-09-08)
 
 
