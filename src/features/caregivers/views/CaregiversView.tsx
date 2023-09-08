@@ -166,7 +166,10 @@ const CaregiversView = () => {
 
         <FormProvider methods={methods}>
           <Stack direction="column" gap="20px">
-            <Grid container sx={{ justifyContent: 'space-between' }}>
+            <Grid
+              container
+              sx={{ justifyContent: 'space-between', gap: { xs: '20px', sm: '0px' } }}
+            >
               <Grid sm={5.8} xs={12}>
                 <RHFTextField name="firstName" label="Nome" />
               </Grid>
