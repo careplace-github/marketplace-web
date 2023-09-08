@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 // @mui
 import { LoadingButton } from '@mui/lab';
-import { Typography, Stack, Alert, Link, IconButton, InputAdornment } from '@mui/material';
+import { Typography, Stack, Alert, Link, IconButton, InputAdornment, Tooltip } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // components
 import Iconify from 'src/components/iconify';
@@ -45,6 +45,16 @@ export default function AuthRegisterForm() {
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  //   Password minimum length
+  // 8 character(s)
+
+  // Password requirements
+  // Contains at least 1 number
+  // Contains at least 1 uppercase letter
+  // Contains at least 1 lowercase letter
+  const passwordRequirements =
+    'A sua Password deve conter pelo menos: 1 número, 1 letra maiúscula e 1 letra minúscula';
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -158,6 +168,11 @@ export default function AuthRegisterForm() {
       setIsSubmitting(false);
 
       enqueueSnackbar('Erro ao criar conta. Por favor tente novamente', { variant: 'error' });
+
+      if (error?.error?.message.includes('Password did not conform with policy:')) {
+        setErrorMessage('A password inserida não cumpre todos os requisitos.');
+        return;
+      }
       switch (error?.error?.type) {
         case 'UNAUTHORIZED':
           setErrorMessage('O email ou a password estão incorretos.');
@@ -209,36 +224,46 @@ export default function AuthRegisterForm() {
             setValue('phoneNumber', value);
           }}
         />
+        <Tooltip arrow title={passwordRequirements}>
+          <div>
+            <RHFTextField
+              name="password"
+              label="Password"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                      <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+        </Tooltip>
 
-        <RHFTextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'carbon:view' : 'carbon:view-off'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-
-        <RHFTextField
-          name="confirmPassword"
-          label="Confirmar Password"
-          type={showConfirmPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} edge="end">
-                  <Iconify icon={showConfirmPassword ? 'carbon:view' : 'carbon:view-off'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <Tooltip arrow title={passwordRequirements}>
+          <div>
+            <RHFTextField
+              name="confirmPassword"
+              label="Confirmar Password"
+              type={showConfirmPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      edge="end"
+                    >
+                      <Iconify icon={showConfirmPassword ? 'carbon:view' : 'carbon:view-off'} />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+        </Tooltip>
 
         <LoadingButton
           fullWidth
