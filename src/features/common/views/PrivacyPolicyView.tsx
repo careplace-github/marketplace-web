@@ -12,7 +12,7 @@ export default function PrivacyPolicyView() {
       spacing={3}
       sx={{
         my: 25,
-
+        p: { xs: 4 },
         mx: 'auto',
         maxWidth: 1000,
         textAlign: { xs: 'center', md: 'left' },

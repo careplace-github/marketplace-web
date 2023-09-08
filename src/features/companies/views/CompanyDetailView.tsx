@@ -94,6 +94,11 @@ export default function CompanyDetailView() {
       });
       const allCompanies = response.data.data;
       const randomIndex: number[] = [];
+      if (allCompanies?.length < 3) {
+        setSimilarCompanies([]);
+        setCompaniesLoading(false);
+        return;
+      }
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < allCompanies.length - 1; i++) {
         let randomNumber = getRandomNumber(allCompanies.length - 1);
@@ -326,7 +331,7 @@ export default function CompanyDetailView() {
         />
       )}
       <Divider sx={{ mt: 10 }} />
-      <SimilarCompaniesList companies={similarCompanies} />
+      {similarCompanies?.length >= 3 && <SimilarCompaniesList companies={similarCompanies} />}
     </>
   ) : (
     <LoadingScreen />

@@ -16,6 +16,7 @@ export default function TermsAndConditionsView() {
           my: 25,
           mx: 'auto',
           maxWidth: 1000,
+          p: { xs: 4 },
           textAlign: { xs: 'center', md: 'left' },
         }}
       >
