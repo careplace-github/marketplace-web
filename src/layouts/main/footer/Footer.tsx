@@ -28,7 +28,6 @@ import { useState, useEffect } from 'react';
 // components
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-// _mock
 import { socials } from 'src/data';
 // axios
 import axios from 'src/lib/axios';

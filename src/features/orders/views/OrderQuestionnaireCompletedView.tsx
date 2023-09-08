@@ -14,9 +14,6 @@ import Image from 'src/components/image';
 
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
-
-// _mock
-import { _tours as _companies } from 'src/_mock';
 //
 import CompanyPicture from 'src/features/orders/components/questionnaire/completed/CompanyPicture';
 import { OrderQuestionnaireCompletedSummary } from '../components';
