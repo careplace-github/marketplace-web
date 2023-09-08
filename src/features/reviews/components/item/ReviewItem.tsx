@@ -18,7 +18,6 @@ type Props = {
 
 export default function ReviewItem({ review, isUserReview }: Props) {
   const { customer, rating, comment, updatedAt } = review;
-  console.log('Review:', review);
   return (
     <>
       <Stack
