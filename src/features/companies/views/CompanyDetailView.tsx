@@ -71,7 +71,7 @@ export default function CompanyDetailView() {
   useEffect(() => {
     const fetchServices = async () => {
       setServicesLoading(true);
-      const response = await axios.get('/services');
+      const response = await axios.get('/services', { params: { documentsPerPage: 30 } });
       setAvailableServices(response.data.data);
       setServicesLoading(false);
     };
