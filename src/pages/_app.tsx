@@ -20,6 +20,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
+import Script from 'next/script';
 // @mui
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -51,10 +52,34 @@ export default function MyApp(props: MyAppProps) {
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
+  const trackingID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+        {/*<!-- Google tag (gtag.js) -->*/}
+        {trackingID && (
+          <>
+            <Script
+              strategy="afterInteractive" // Do not block page rendering while loading Google Tag Manager
+              src={`https://www.googletagmanager.com/gtag/js?id=${trackingID}`}
+            />
+            <Script
+              id="google-analytics"
+              strategy="afterInteractive" // Do not block page rendering while loading Google Tag Manager
+            >
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', '${trackingID}');
+          `}
+            </Script>
+          </>
+        )}
       </Head>
 
       <AuthProvider>
