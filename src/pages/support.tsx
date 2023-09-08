@@ -2,6 +2,8 @@
 import Head from 'next/head';
 // layouts
 import MainLayout from 'src/layouts/main';
+// PATHS
+import { PATHS } from 'src/routes';
 // sections
 import SupportView from 'src/features/common/views/SupportView';
 
@@ -12,13 +14,21 @@ SupportPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLa
 // ----------------------------------------------------------------------
 
 export default function SupportPage() {
-  return (
-    <>
-      <Head>
-        <title>Suporte | Careplace</title>
-      </Head>
+  return;
+  <>
+    <Head>
+      <title>Suporte | Careplace</title>
+    </Head>
 
-      <SupportView />
-    </>
-  );
+    <SupportView />
+  </>;
+}
+
+export async function getServerSideProps(context) {
+  return {
+    redirect: {
+      destination: PATHS.comingsoon,
+      permanent: false,
+    },
+  };
 }

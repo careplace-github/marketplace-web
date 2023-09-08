@@ -51,7 +51,9 @@ export default function ReviewSummary({ reviewsNumber, ratingsNumber, countStars
           <Stack spacing={0.5}>
             <Rating value={ratingsNumber} readOnly precision={0.1} />
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {reviewsNumber ? fShortenNumber(reviewsNumber) : 'sem '} avaliações
+              {`${reviewsNumber ? fShortenNumber(reviewsNumber) : 'sem '} ${
+                reviewsNumber === 1 ? 'avaliação' : 'avaliações'
+              }`}
             </Typography>
           </Stack>
         </Stack>

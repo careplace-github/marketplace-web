@@ -18,7 +18,14 @@ export default function VerifyCodeView() {
       <Image
         alt="email inbox"
         src="/assets/icons/undraw_email.svg"
-        sx={{ mb: 5, mx: 'auto', height: '92px' }}
+        sx={{
+          mb: 5,
+          mx: 'auto',
+          height: '92px',
+          '& > span > img': {
+            width: 'auto',
+          },
+        }}
       />
       <Typography variant="h3">Confirmar Conta</Typography>
 
