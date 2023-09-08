@@ -15,8 +15,6 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-// _mock
-import { _tours as _companies } from 'src/_mock';
 // axios
 import axios from 'src/lib/axios';
 // types
