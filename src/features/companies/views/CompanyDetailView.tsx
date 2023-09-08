@@ -4,7 +4,6 @@ import { useResponsive } from 'src/hooks';
 // axios
 import axios from 'src/lib/axios';
 // mock
-import { _socials, _courses as _companies } from 'src/_mock';
 // @mui
 import { alpha } from '@mui/material/styles';
 import {
@@ -43,6 +42,34 @@ type IFilterQueryProps = {
   services: string | undefined;
   recurrency: number | string | undefined;
 };
+
+const _socials = [
+  {
+    value: 'facebook',
+    label: 'Facebook',
+    icon: 'carbon:logo-facebook',
+    color: '#1877F2',
+  },
+  {
+    value: 'instagram',
+    label: 'Instagram',
+    icon: 'carbon:logo-instagram',
+    color: '#E02D69',
+  },
+  {
+    value: 'linkedin',
+    label: 'Linkedin',
+    icon: 'carbon:logo-linkedin',
+    color: '#007EBB',
+  },
+  {
+    value: 'twitter',
+    label: 'Twitter',
+    icon: 'carbon:logo-twitter',
+    color: '#00AAEC',
+  },
+];
+
 export default function CompanyDetailView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [companiesLoading, setCompaniesLoading] = useState<boolean>(true);
