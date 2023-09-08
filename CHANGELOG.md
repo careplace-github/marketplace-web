@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.11 (2023-09-08)
+
+
+### Bug Fixes
+
+* **analytics:** ensure correct loading of analytics scripts ([0087b73](https://github.com/careplace-github/marketplace-web/commit/0087b731f9a1ab13f3887136e8a20d40501997d6))
+
 ### 0.1.10 (2023-09-08)
 
 
