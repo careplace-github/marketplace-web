@@ -15,7 +15,7 @@ RUN npm config rm https-proxy
 # RUN yarn install --production --frozen-lockfile --network-timeout 100000
 RUN yarn install --frozen-lockfile --network-timeout 100000
 
-RUN yarn build
+RUN yarn build:staging
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:staging" ]
 
