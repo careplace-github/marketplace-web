@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.10 (2023-09-08)
+
+
+### Bug Fixes
+
+* **analytics:** change google analytics tracking id ([4a948f4](https://github.com/careplace-github/marketplace-web/commit/4a948f42e387c9c506536670819e2478ec1e1613))
+
 ### 0.1.9 (2023-09-08)
 
 
