@@ -15,6 +15,8 @@ import createEmotionServer from '@emotion/server/create-instance';
 import createEmotionCache from 'src/utils/createEmotionCache';
 // theme
 import { primaryFont } from 'src/theme/typography';
+// components
+import Analytics from 'src/components/analytics';
 //
 import { MyAppProps } from './_app';
 
@@ -74,6 +76,11 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
       <body>
         <Main />
         <NextScript />
+        {/* 
+          We are using the analytics component on the _document.tsx file to reduce potential redundancy and improving page load times.
+          By including the analytics component on the _document.tsx file, we are ensuring that the analytics component is only loaded once for the entire application as it will be included on every page on the HTML document.
+        */}
+        <Analytics />
       </body>
     </Html>
   );

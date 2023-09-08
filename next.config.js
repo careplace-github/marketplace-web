@@ -19,7 +19,7 @@ module.exports = {
     return [
       {
         source: '/',
-        // Only use while home page is under construction
+        // FIX: Only use while home page is under construction
         destination: '/companies',
         permanent: true,
       },
