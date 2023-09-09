@@ -2,6 +2,16 @@
 import React, { useEffect, useState } from 'react';
 // Form
 import { useForm } from 'react-hook-form';
+// stripe
+import {
+  useStripe,
+  useElements,
+  CardNumberElement,
+  CardCvcElement,
+  CardExpiryElement,
+  CardElement,
+} from '@stripe/react-stripe-js';
+
 // components
 import { Box, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -20,72 +30,71 @@ type Props = {
   onAddCard: (result: 'success' | 'error') => void;
 };
 
-type FormValuesProps = {
-  cardHolder: string;
-  cardNumber: string;
-  cardExpirationDate: string;
-  cardCVV: string;
+const CARD_ELEMENT_OPTIONS = {
+  style: {
+    base: {
+      color: '#000',
+      fontSize: '16px',
+      '::placeholder': {
+        color: '#000',
+      },
+    },
+    invalid: {
+      color: '#fa755a',
+      iconColor: '#fa755a',
+    },
+  },
+
+  hidePostalCode: true,
 };
 
 function AddNewCardForm({ onAddCard }: Props) {
   const theme = useTheme();
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { user } = useAuthContext();
-  const CardSchema = Yup.object().shape({
-    cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
-    cardNumber: Yup.string()
-      .required('Número do cartão é obrigatório.')
-      .test('cardNumber', 'Insira um número de cartão válido.', (value) => value.length === 19),
-    cardExpirationDate: Yup.string().required('Data de validade é obrigatória.'),
-    cardCVV: Yup.string().required('CVV é obrigatório.'),
-  });
 
-  const defaultValues = {
-    cardHolder: user?.name || undefined,
-    cardNumber: undefined,
-    cardExpirationDate: undefined,
-    cardCVV: undefined,
-  };
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const methods = useForm<FormValuesProps>({
-    mode: 'onChange',
-    resolver: yupResolver(CardSchema),
-    defaultValues,
-  });
+  const stripe = useStripe();
+  const elements = useElements();
 
-  const {
-    setValue,
-    reset,
-    getValues,
-    formState: { errors, isDirty, isValid },
-  } = methods;
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the default form submission behavior
 
-  const handleSaveNewCard = async () => {
     try {
-      setIsSubmitting(true);
-      const data = getValues();
-      const cardData = {
-        number: data.cardNumber,
-        // first 2 digits of the expiration month
-        exp_month: data.cardExpirationDate.substring(0, 2),
-        exp_year: data.cardExpirationDate.substring(3, 5),
-        cvc: data.cardCVV,
-      };
+      setIsLoading(true);
 
-      const card_token = (
-        await axios.post('/payments/tokens/card', {
-          card_number: cardData.number,
-          exp_month: cardData.exp_month,
-          exp_year: cardData.exp_year,
-          cvc: cardData.cvc,
-        })
-      ).data;
+      if (!stripe || !elements) {
+        // Stripe has not yet loaded.
+        console.log('Stripe has not yet loaded.');
+        setIsLoading(false);
+        return;
+      }
+
+      const cardNumber = elements.getElement(CardNumberElement);
+      const cardExpiry = elements.getElement(CardExpiryElement);
+      const cardCvc = elements.getElement(CardCvcElement);
+
+      const cardElement = elements.getElement(CardNumberElement);
+
+      if (!cardElement) {
+        console.log('cardElement is null');
+        setIsLoading(false);
+        return;
+      }
+
+      // create token
+      const { token, error } = await stripe.createToken(cardElement);
+
+      if (error) {
+        // Handle error, perhaps show it to the user
+        console.error('Error creating card token: ', error);
+        setIsLoading(false);
+      }
+
+      const card_token = token?.id;
 
       await axios.post('/payments/payment-methods', {
-        payment_method_token: card_token.id,
+        payment_method_token: card_token,
       });
-      setIsSubmitting(false);
-      reset();
       onAddCard('success');
     } catch (error) {
       onAddCard('error');
@@ -112,115 +121,24 @@ function AddNewCardForm({ onAddCard }: Props) {
         },
       }}
     >
-      <FormProvider key="checkout_add_new_card" methods={methods}>
-        <Stack direction="column" spacing={2} sx={{ pb: 2 }}>
-          <RHFTextField
-            name="cardHolder"
-            label="Nome do Titular"
-            placeholder="Nome"
-            InputLabelProps={{ shrink: true }}
-          />
-
-          <RHFTextField
-            name="cardNumber"
-            label="Número do Cartão"
-            placeholder="XXXX XXXX XXXX XXXX"
-            InputLabelProps={{ shrink: true }}
-            // Max 19 characters
-            inputProps={{ maxLength: 19 }}
-            onChange={(e) => {
-              // Only allow 0-9
-              // After typing 4 characters, add a space
-
-              const { value } = e.target;
-              const onlyNums = value.replace(/[^0-9]/g, '');
-              const cardNumber = onlyNums
-                .split('')
-                .reduce((acc, curr, i) => acc + curr + (i % 4 === 3 ? ' ' : ''), '')
-                .trim();
-
-              setValue('cardNumber', cardNumber);
-            }}
-          />
-        </Stack>
-        <Stack direction="row" spacing={2}>
-          <RHFTextField
-            name="cardExpirationDate"
-            fullWidth
-            label="Validade"
-            placeholder="MM/YY"
-            InputLabelProps={{ shrink: true }}
-            onChange={(e) => {
-              // Only allow 0-9
-              // After typing 2 characters, add a slash
-
-              const { value } = e.target;
-              const onlyNums = value.replace(/[^0-9]/g, '');
-              const month = onlyNums.slice(0, 2);
-              const year = onlyNums.slice(2, 4);
-
-              if (onlyNums.length <= 2) {
-                setValue('cardExpirationDate', month);
-
-                // convert onlyNums to a number
-                // if it's greater than 12, set the value to 12
-                // otherwise, set the value to the onlyNums
-
-                if (Number(onlyNums) > 12) {
-                  setValue('cardExpirationDate', '12');
-                }
-              } else {
-                setValue('cardExpirationDate', `${month}/${year}`);
-              }
-            }}
-          />
-          <RHFTextField
-            name="cardCVV"
-            fullWidth
-            label="CVV/CVC"
-            placeholder="***"
-            InputLabelProps={{ shrink: true }}
-            inputProps={{ maxLength: 3 }}
-            onChange={(e) => {
-              const { value } = e.target;
-              const onlyNums = value.replace(/[^0-9]/g, '');
-              setValue('cardCVV', onlyNums);
-            }}
-          />
-        </Stack>
+      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <CardElement options={CARD_ELEMENT_OPTIONS} />
         <Stack
           direction="row"
+          justifyContent="space-between"
           alignItems="center"
-          sx={{ typography: 'caption', color: 'text.disabled', mt: 2 }}
+          sx={{ mt: 3, width: '100%' }}
         >
-          <Iconify icon="carbon:locked" sx={{ mr: 0.5 }} />
-          Transações seguras com encriptação SSL
-        </Stack>
-
-        <Stack direction="row" justifyContent="flex-end" sx={{ mt: 2 }}>
           <LoadingButton
+            type="submit"
             variant="contained"
-            onClick={handleSaveNewCard}
-            loading={isSubmitting}
-            disabled={!isValid}
-            sx={{
-              width: '100%',
-              pt: 1.5,
-              pb: 1.5,
-              mt: 2,
-              alignSelf: 'center',
-              bgcolor: 'primary.main',
-              color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-              '&:hover': {
-                bgcolor: 'primary.dark',
-                color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-              },
-            }}
+            loading={isLoading}
+            sx={{ width: '100%' }}
           >
-            Guardar
+            Adicionar
           </LoadingButton>
         </Stack>
-      </FormProvider>
+      </form>
     </Box>
   );
 }
