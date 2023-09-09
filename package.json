@@ -1,7 +1,7 @@
 {
   "name": "careplace-marketplace",
   "author": "Careplace",
-  "version": "0.1.15",
+  "version": "0.1.17",
   "description": "Careplace - Marketplace de Cuidadores Domiciliários. A Careplace conecta Empresas de que prestam Serviços de Apoio Domiciliário às pessoas que precisam de encontrar um Cuidador Domiciliário.",
   "private": true,
   "scripts": {
