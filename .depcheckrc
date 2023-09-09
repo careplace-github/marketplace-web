@@ -6,7 +6,8 @@
     "jenkins",
     "@snyk/protect",
     "standard-version",
-    "typescript"
+    "typescript",
+    "src"
     
 
   ]
