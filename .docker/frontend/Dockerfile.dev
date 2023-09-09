@@ -1,4 +1,4 @@
-FROM node:16.17.0-bullseye-slim
+FROM node:20.5.1-bookworm-slim
 
 WORKDIR /usr/src/app
 
@@ -14,7 +14,7 @@ RUN npm config rm https-proxy
 
 RUN yarn --network-timeout 100000
 
-RUN yarn build
+RUN yarn build:development
 
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "start:development" ]
 

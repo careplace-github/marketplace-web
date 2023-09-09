@@ -62,6 +62,10 @@ export default function CompanyProfileCover({ name, image, location }: ICompanyD
             width: { xs: 80, md: 128 },
             height: { xs: 80, md: 128 },
             backgroundColor: 'white',
+            '& > img': {
+              width: '100%',
+              height: 'auto',
+            },
           }}
         />
 
