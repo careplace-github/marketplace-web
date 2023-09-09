@@ -68,7 +68,7 @@ export default function CompanyDetailSummary({
       {extraServices?.length > 0 && (
         <div>
           <Typography variant="h5" sx={{ mb: 3 }}>
-            Serviços Adicionais
+            Serviços Especializados
           </Typography>
           <Box
             sx={{
