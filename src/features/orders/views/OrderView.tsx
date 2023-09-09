@@ -95,7 +95,7 @@ export default function OrderView() {
 
   const fetchUserRelatives = async () => {
     try {
-      const response = await axios.get('customers/patients');
+      const response = await axios.get('/customers/patients');
       setUserRelatives(response.data.data);
       setRelativesLoading(false);
     } catch (error) {
