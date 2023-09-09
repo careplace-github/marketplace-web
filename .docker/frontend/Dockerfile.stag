@@ -1,4 +1,4 @@
-FROM node:16.17.0-bullseye-slim
+FROM node:20.5.1-bookworm-slim
 
 WORKDIR /usr/src/app
 
@@ -11,8 +11,6 @@ RUN yarn config delete proxy
 RUN npm config rm proxy
 
 RUN npm config rm https-proxy
-
-ENV ENV="staging"
 
 # RUN yarn install --production --frozen-lockfile --network-timeout 100000
 RUN yarn install --frozen-lockfile --network-timeout 100000
