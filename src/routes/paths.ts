@@ -5,7 +5,6 @@ export const PATHS = {
   home: `/`,
 
   // Info
-  healthUnits: `/health-units`,
   caregivers: `/caregivers`,
 
   // Services
