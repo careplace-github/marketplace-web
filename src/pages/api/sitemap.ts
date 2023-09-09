@@ -12,31 +12,30 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
     // Add all your paths to the sitemap, including dynamically generated ones.
     const addPathsToSitemap = (paths) => {
-      paths.forEach((path) => {
+      Object.values(paths).forEach((path) => {
         if (typeof path === 'string') {
           smStream.write({ url: path, changefreq: 'daily', priority: 0.7 });
         } else if (typeof path === 'function') {
           // If it's a function, execute it to get the dynamic URL.
           const dynamicUrl = path();
           smStream.write({ url: dynamicUrl, changefreq: 'daily', priority: 0.7 });
+        } else if (typeof path === 'object' && path !== null) {
+          // Handle nested paths within the object
+          Object.values(path).forEach((nestedPath) => {
+            if (typeof nestedPath === 'string') {
+              smStream.write({ url: nestedPath, changefreq: 'daily', priority: 0.7 });
+            } else if (typeof nestedPath === 'function') {
+              // If it's a function, execute it to get the dynamic URL.
+              const dynamicUrl = nestedPath(":id");
+              smStream.write({ url: dynamicUrl, changefreq: 'daily', priority: 0.7 });
+            }
+          });
         }
       });
     };
 
     // Add static paths
     addPathsToSitemap(Object.values(PATHS).flat());
-
-    // Add dynamic paths
-    addPathsToSitemap([
-      PATHS.services.view(':id'),
-      PATHS.companies.view(':id'),
-      PATHS.orders.view(':id'),
-      PATHS.orders.edit(':id'),
-      PATHS.orders.checkout(':id'),
-      PATHS.orders.checkoutSucess(':id'),
-      PATHS.orders.questionnaire(':query'),
-      PATHS.orders.questionnaireCompleted(':id'),
-    ]);
 
     smStream.end();
 
