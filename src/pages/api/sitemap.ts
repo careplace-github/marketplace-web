@@ -26,7 +26,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               smStream.write({ url: nestedPath, changefreq: 'daily', priority: 0.7 });
             } else if (typeof nestedPath === 'function') {
               // If it's a function, execute it to get the dynamic URL.
-              const dynamicUrl = nestedPath(":id");
+              const dynamicUrl = nestedPath(':id');
               smStream.write({ url: dynamicUrl, changefreq: 'daily', priority: 0.7 });
             }
           });
