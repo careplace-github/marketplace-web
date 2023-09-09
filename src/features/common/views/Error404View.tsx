@@ -14,8 +14,7 @@ import { PATHS } from 'src/routes/paths';
 
 export default function Error404View() {
   return (
-    <>
-      <MotionContainer>
+    <MotionContainer>
         <m.div variants={varBounce().in}>
           <Typography variant="h3" paragraph>
             404 - Página Não Encontrada
@@ -48,6 +47,5 @@ export default function Error404View() {
           Início
         </Button>
       </MotionContainer>
-    </>
   );
 }
