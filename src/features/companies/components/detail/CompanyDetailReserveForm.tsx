@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Typography, Stack, Box, Button, Divider, Card , SelectChangeEvent } from '@mui/material';
+import { Typography, Stack, Box, Button, Divider, Card, SelectChangeEvent } from '@mui/material';
 // utils
 import { fCurrency } from 'src/utils/formatNumber';
 
