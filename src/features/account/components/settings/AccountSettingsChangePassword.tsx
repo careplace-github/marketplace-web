@@ -29,11 +29,16 @@ export default function AccountPersonalView() {
     message: '',
   });
 
+  const passwordRequirements =
+    'A sua Password deve conter pelo menos: 8 caracteres, 1 número, 1 letra maiúscula e 1 letra minúscula';
+
   const { changePassword } = useAuthContext();
 
   const ChangePasswordSchema = Yup.object().shape({
     oldPassword: Yup.string().required('A Password Antiga é obrigatória.'),
-    newPassword: Yup.string().required('A Nova Password  é obrigatória.'),
+    newPassword: Yup.string()
+      .required('A Nova Password  é obrigatória.')
+      .min(8, 'A password deve ter pelo menos 8 caracteres.'),
     confirmNewPassword: Yup.string()
       .oneOf([Yup.ref('newPassword')], 'As Passwords não coincidem.')
       .required('A Confirmação de Password é obrigatória.'),
@@ -62,7 +67,7 @@ export default function AccountPersonalView() {
   };
 
   const methods = useForm<typeof defaultValues>({
-    mode: 'onChange',
+    mode: 'onBlur',
     resolver: yupResolver(ChangePasswordSchema),
     defaultValues,
   });
@@ -70,8 +75,13 @@ export default function AccountPersonalView() {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting, isDirty },
+    watch,
+    formState: { isSubmitting, isDirty, isValid },
   } = methods;
+
+  const oldPassword = watch('oldPassword');
+  const newPassword = watch('newPassword');
+  const confirmNewPassword = watch('confirmNewPassword');
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
@@ -150,12 +160,6 @@ export default function AccountPersonalView() {
             name="newPassword"
             label="Nova Password"
             type={showNewPassword ? 'text' : 'password'}
-            helperText={
-              <Stack component="span" direction="row" alignItems="center">
-                <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} /> A password tem de ter
-                6+ caracteres
-              </Stack>
-            }
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -181,6 +185,15 @@ export default function AccountPersonalView() {
               ),
             }}
           />
+
+          <Stack
+            component="span"
+            direction="row"
+            alignItems="center"
+            sx={{ fontSize: '12px', color: 'text.secondary', width: '100%' }}
+          >
+            <Iconify icon="eva:info-fill" width={16} sx={{ mr: 0.5 }} /> {passwordRequirements}
+          </Stack>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
           <LoadingButton
@@ -195,7 +208,7 @@ export default function AccountPersonalView() {
               },
             }}
             color="inherit"
-            disabled={!isDirty}
+            disabled={!isDirty || !isValid}
             size="large"
             type="submit"
             variant="contained"
