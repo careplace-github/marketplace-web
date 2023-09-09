@@ -2,9 +2,9 @@ name: '[DEVELOPMENT] Continuous Integration (CI)'
 
 on:
   push:
-    branches: ['development']
+    branches: ['develop']
   pull_request:
-    branches: ['development']
+    branches: ['develop']
 
 jobs:
   dependencies:
