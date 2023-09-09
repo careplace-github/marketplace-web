@@ -54,7 +54,7 @@ export default function AuthRegisterForm() {
   // Contains at least 1 uppercase letter
   // Contains at least 1 lowercase letter
   const passwordRequirements =
-    'A sua Password deve conter pelo menos: 1 número, 1 letra maiúscula e 1 letra minúscula';
+    'A sua Password deve conter pelo menos: 8 caracteres, 1 número, 1 letra maiúscula e 1 letra minúscula';
 
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -70,7 +70,7 @@ export default function AuthRegisterForm() {
       .email('O email introduzido não é válido.'),
     password: Yup.string()
       .required('A password é obrigatória.')
-      .min(6, 'A password deve ter pelo menos 6 caracteres.')
+      .min(8, 'A password deve ter pelo menos 8 caracteres.')
       .max(50, 'A password deve ter no máximo 50 caracteres.'),
     confirmPassword: Yup.string()
       .required('A confirmação da password é obrigatória.')
@@ -224,6 +224,7 @@ export default function AuthRegisterForm() {
             setValue('phoneNumber', value);
           }}
         />
+
         <Tooltip arrow title={passwordRequirements}>
           <div>
             <RHFTextField
@@ -264,7 +265,6 @@ export default function AuthRegisterForm() {
             />
           </div>
         </Tooltip>
-
         <LoadingButton
           fullWidth
           color="inherit"
