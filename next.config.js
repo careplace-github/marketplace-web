@@ -19,7 +19,7 @@ module.exports = {
     return [
       {
         source: '/',
-        // Only use while home page is under construction
+        // FIX: Only use while home page is under construction
         destination: '/companies',
         permanent: true,
       },
@@ -32,5 +32,7 @@ module.exports = {
     NEXT_PUBLIC_HOST_API: process.env.NEXT_PUBLIC_HOST_API,
     NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     NEXT_PUBLIC_CLIENT_ID: process.env.NEXT_PUBLIC_CLIENT_ID,
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID,
+    NEXT_PUBLIC_MICROSOFT_CLARITY_ID: process.env.NEXT_PUBLIC_MICROSOFT_CLARITY_ID,
   },
 };

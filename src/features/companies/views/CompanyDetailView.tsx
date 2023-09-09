@@ -4,7 +4,6 @@ import { useResponsive } from 'src/hooks';
 // axios
 import axios from 'src/lib/axios';
 // mock
-import { _socials, _courses as _companies } from 'src/_mock';
 // @mui
 import { alpha } from '@mui/material/styles';
 import {
@@ -43,6 +42,69 @@ type IFilterQueryProps = {
   services: string | undefined;
   recurrency: number | string | undefined;
 };
+
+const _socials = [
+  {
+    value: 'facebook',
+    label: 'Facebook',
+    icon: 'carbon:logo-facebook',
+    color: '#1877F2',
+    share(url: string) {
+      window.open(
+        `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+        '_blank'
+      );
+    },
+  },
+
+  {
+    value: 'linkedin',
+    label: 'Linkedin',
+    icon: 'carbon:logo-linkedin',
+    color: '#007EBB',
+    share(url: string) {
+      window.open(
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+        '_blank'
+      );
+    },
+  },
+  {
+    value: 'twitter',
+    label: 'Twitter',
+    icon: 'carbon:logo-twitter',
+    color: '#00AAEC',
+    share(url: string) {
+      window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`, '_blank');
+    },
+  },
+  {
+    value: 'whatsapp',
+    label: 'Whatsapp',
+    icon: 'ri:whatsapp-fill',
+    color: '#25D366',
+    share(url: string) {
+      window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`, '_blank');
+    },
+  },
+  {
+    value: 'email',
+    label: 'Email',
+    icon: 'carbon:email',
+    color: '#212B36',
+    share(url: string) {
+      window.open(
+        `mailto:?subject=${'Careplace: Simplificando o Apoio Domiciliário'}&body=${encodeURIComponent(
+          `Encontrei esta empresa de apoio domiciliário na Careplace! 
+          ${url}`
+        )}`,
+
+        '_blank'
+      );
+    },
+  },
+];
+
 export default function CompanyDetailView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [companiesLoading, setCompaniesLoading] = useState<boolean>(true);
@@ -291,6 +353,7 @@ export default function CompanyDetailView() {
                     size="small"
                     variant="outlined"
                     startIcon={<Iconify icon={social.icon} />}
+                    onClick={() => social.share(window.location.href)}
                     sx={{
                       m: 0.5,
                       flexShrink: 0,

@@ -20,6 +20,7 @@ import { CacheProvider, EmotionCache } from '@emotion/react';
 import Head from 'next/head';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
+import Script from 'next/script';
 // @mui
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';

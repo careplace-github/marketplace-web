@@ -4,22 +4,11 @@
     "rimraf",
     "ngrok",
     "jenkins",
-    "concurrently",
     "@snyk/protect",
-    "os",
-    "child_process",
-    "@commitlint/config-angular",
-    "@packages/middlewares",
-    "@packages/services",
-    "@packages/utils",
-    "@packages/helpers",
-    "@packages/models",
-    "@packages/database",
-    "@packages/interfaces",
-    "@packages/routes",
-    "@api/v1",
-    "@api/files",
-    "@api/admin",
+    "standard-version",
+    "typescript",
     "src"
+    
+
   ]
 }
