@@ -14,8 +14,7 @@ import { PATHS } from 'src/routes/paths';
 
 export default function Error500View() {
   return (
-    <>
-      <MotionContainer>
+    <MotionContainer>
         <m.div variants={varBounce().in}>
           <Typography variant="h3" paragraph>
             500 - Erro de Servidor
@@ -42,6 +41,5 @@ export default function Error500View() {
           Início
         </Button>
       </MotionContainer>
-    </>
   );
 }

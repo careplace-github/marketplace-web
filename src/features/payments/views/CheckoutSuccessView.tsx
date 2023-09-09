@@ -13,8 +13,7 @@ import { MotionContainer, varBounce } from 'src/components/animate';
 
 export default function CheckoutSuccessView() {
   return (
-    <>
-      <Container
+    <Container
         component={MotionContainer}
         sx={{
           textAlign: 'center',
@@ -45,6 +44,5 @@ export default function CheckoutSuccessView() {
           Voltar
         </Button>
       </Container>
-    </>
   );
 }
