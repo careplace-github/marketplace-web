@@ -43,6 +43,13 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
     setOpen(event.currentTarget);
   };
 
+  const validateExpirationDate = (date) => {
+    if (date.length > 5) {
+      return date.slice(1);
+    }
+    return date;
+  };
+
   const handleClose = () => {
     setOpen(null);
   };
@@ -94,7 +101,7 @@ export default function AccountPaymentCard({ card, handleDelete }: Props) {
             <Typography variant="caption" sx={{ color: 'text.disabled' }}>
               Expiração
             </Typography>
-            <Typography variant="subtitle2"> {expirationDate} </Typography>
+            <Typography variant="subtitle2"> {validateExpirationDate(expirationDate)} </Typography>
           </Stack>
         </Box>
       </Stack>

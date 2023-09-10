@@ -14,21 +14,13 @@ SupportPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}</MainLa
 // ----------------------------------------------------------------------
 
 export default function SupportPage() {
-  return;
-  <>
-    <Head>
-      <title>Suporte | Careplace</title>
-    </Head>
+  return (
+    <>
+      <Head>
+        <title>Suporte | Careplace</title>
+      </Head>
 
-    <SupportView />
-  </>;
-}
-
-export async function getServerSideProps(context) {
-  return {
-    redirect: {
-      destination: PATHS.comingsoon,
-      permanent: false,
-    },
-  };
+      <SupportView />
+    </>
+  );
 }
