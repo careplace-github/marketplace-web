@@ -10,7 +10,7 @@ type SupportContentProps = {
   contents: {
     id: string;
     question: string;
-    answer: string;
+    answer: string | React.ReactNode;
   }[];
 };
 
