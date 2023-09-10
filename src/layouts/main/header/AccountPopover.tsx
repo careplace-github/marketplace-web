@@ -69,7 +69,8 @@ export default function AccountPopover() {
     try {
       logout();
       handleClosePopover();
-      router.push(PATHS.home);
+      const prevUrl = localStorage.getItem('prevUrl');
+      routes.push(prevUrl || PATHS.home);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });

@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-// next
-import { useRouter } from 'next/router';
 // @mui
 import { List, Drawer, Button, Stack, Box, Avatar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -11,7 +9,8 @@ import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { useSnackbar } from 'src/components/snackbar';
-// paths
+// routes
+import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // auth
 import { useAuthContext } from 'src/contexts';
@@ -27,7 +26,6 @@ export default function NavMobile({ data }: NavProps) {
   const router = useRouter();
   const theme = useTheme();
   const { isAuthenticated, user, logout } = useAuthContext();
-
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
 
@@ -50,7 +48,9 @@ export default function NavMobile({ data }: NavProps) {
     try {
       logout();
       handleClose();
-      router.push(PATHS.home);
+      const prevUrl = localStorage.getItem('prevUrl');
+      routes.push(prevUrl || PATHS.home);
+      s;
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
@@ -154,7 +154,10 @@ export default function NavMobile({ data }: NavProps) {
 
                     color: 'primary.main',
                   }}
-                  href={PATHS.auth.register}
+                  onClick={() => {
+                    localStorage.setItem('prevUrl', router.asPath);
+                    router.push(PATHS.auth.register);
+                  }}
                 >
                   Registar
                 </Button>
@@ -162,6 +165,10 @@ export default function NavMobile({ data }: NavProps) {
                   fullWidth
                   variant="contained"
                   color="inherit"
+                  onClick={() => {
+                    localStorage.setItem('prevUrl', router.asPath);
+                    router.push(PATHS.auth.login);
+                  }}
                   sx={{
                     mt: '10px',
                     px: 4,
@@ -172,7 +179,6 @@ export default function NavMobile({ data }: NavProps) {
                       color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                     },
                   }}
-                  href={PATHS.auth.login}
                 >
                   Entrar
                 </Button>
