@@ -59,8 +59,18 @@ export default function OrderQuestionnaireSummary({
           alt={company.business_profile.name}
           src={company.business_profile.logo}
           ratio="1/1"
-          sx={{ borderRadius: 2 }}
+          sx={{
+            borderRadius: 2,
+            backgroundColor: 'white',
+            width: '100%',
+            height: 'auto',
+            '& > span > img': {
+              width: '100%',
+              height: 'auto',
+            },
+          }}
         />
+
         <Stack>
           <TextMaxLine variant="h5" sx={{ mb: 2 }}>
             {company.business_profile.name}
@@ -71,12 +81,12 @@ export default function OrderQuestionnaireSummary({
             {company.rating.count ||
               (company.rating.count === 0 && (
                 <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                  {`${company.rating.count} ${
+                  {`(${company.rating.count === 0 ? 'sem' : company.rating.count} ${
                     (company?.rating?.count && company.rating.count > 1) ||
                     company.rating.count === 0
                       ? 'avaliações'
                       : 'avaliação'
-                  }`}
+                  })`}
                 </Link>
               ))}
           </Stack>
