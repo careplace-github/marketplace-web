@@ -21,6 +21,12 @@ export type AuthStateType = {
   user: AuthUserType;
 };
 
+export type SessionType = {
+  isAuthenticated: boolean;
+  accessToken: string;
+  refreshToken?: string;
+};
+
 // ----------------------------------------------------------------------
 
 export type JWTContextType = {

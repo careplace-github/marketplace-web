@@ -32,11 +32,18 @@ import createEmotionCache from 'src/utils/createEmotionCache';
 import ProgressBar from 'src/components/progress-bar';
 import { ThemeSettings, SettingsProvider } from 'src/features/settings';
 import MotionLazyContainer from 'src/components/animate/MotionLazyContainer';
-import { AuthProvider } from 'src/features/auth';
+import { SessionProvider } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
 const clientSideEmotionCache = createEmotionCache();
+
+const AuthSession = ({ children, pageProps }) => {
+  const router = useRouter();
+
+  return <SessionProvider session={pageProps.session?.user}>{children}</SessionProvider>;
+};
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -58,20 +65,20 @@ export default function MyApp(props: MyAppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </Head>
 
-      <AuthProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <SettingsProvider>
-            <ThemeProvider>
-              <ThemeSettings>
-                <MotionLazyContainer>
-                  <ProgressBar />
-                  {getLayout(<Component {...pageProps} />)}
-                </MotionLazyContainer>
-              </ThemeSettings>
-            </ThemeProvider>
-          </SettingsProvider>
-        </LocalizationProvider>
-      </AuthProvider>
+      <AuthSession pageProps={pageProps}>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <SettingsProvider>
+              <ThemeProvider>
+                <ThemeSettings>
+                  <MotionLazyContainer>
+                    <ProgressBar />
+                    {getLayout(<Component {...pageProps} />)}
+                  </MotionLazyContainer>
+                </ThemeSettings>
+              </ThemeProvider>
+            </SettingsProvider>
+          </LocalizationProvider>
+      </AuthSession>
     </CacheProvider>
   );
 }

@@ -15,6 +15,7 @@ import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // auth
 import { useAuthContext } from 'src/contexts/useAuthContext';
+import { signIn } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
 
@@ -65,9 +66,24 @@ export default function AuthLoginForm() {
   };
 
   const onSubmit = async (data: FormValuesProps) => {
+    const { email, password } = data;
+
     try {
       setIsSubmitting(true);
-      await login(data.email, data.password);
+      await login(email, password);
+
+      const result = await signIn('credentials', {
+        email,
+        password,
+        redirect: false, // Disable the default redirect behavior
+      });
+
+      if (result?.ok) {
+        push(PATHS.companies.root);
+      } else {
+        setErrorMessage('O email ou a password estão incorretos.');
+      }
+
       setErrorMessage(undefined);
     } catch (error) {
       if (error.error.message === 'User is not confirmed.') {
