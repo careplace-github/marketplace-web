@@ -166,7 +166,7 @@ export default function AccountRelativesView() {
                   variant="contained"
                   startIcon={<Iconify icon="material-symbols:add" />}
                 >
-                  Adiconar Familiar
+                  Adicionar Familiar
                 </Button>
               </Stack>
             )}
@@ -225,7 +225,7 @@ export default function AccountRelativesView() {
                   variant="contained"
                   startIcon={<Iconify icon="material-symbols:add" />}
                 >
-                  Adiconar Familiar
+                  Adicionar Familiar
                 </Button>
               </Stack>
             </Stack>
