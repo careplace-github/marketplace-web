@@ -82,19 +82,13 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
 
       if (!stripe || !elements) {
         // Stripe has not yet loaded.
-        console.log('Stripe has not yet loaded.');
         setIsLoading(false);
         return;
       }
 
-      const cardNumber = elements.getElement(CardNumberElement);
-      const cardExpiry = elements.getElement(CardExpiryElement);
-      const cardCvc = elements.getElement(CardCvcElement);
-
       const cardElement = elements.getElement(CardNumberElement);
 
       if (!cardElement) {
-        console.log('cardElement is null');
         setIsLoading(false);
         return;
       }

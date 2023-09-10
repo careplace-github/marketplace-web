@@ -19,6 +19,7 @@ import kinshipDegrees from 'src/data/kinshipDegrees';
 type Props = {
   row: IOrderProps;
   selected: boolean;
+  key: any;
 };
 
 const statusOptions = [
@@ -61,6 +62,7 @@ export default function AccountOrdersTableRow({ row, selected }: Props) {
 
   return (
     <TableRow
+      key={row._id}
       hover
       selected={selected}
       sx={{ cursor: order?.status !== 'cancelled' ? 'pointer' : 'not-allowed' }}
