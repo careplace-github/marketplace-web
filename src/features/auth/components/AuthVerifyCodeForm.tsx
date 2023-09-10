@@ -89,7 +89,6 @@ export default function AuthVerifyCodeForm() {
         getValues('code6');
 
       await confirmUser(getValues('email'), code);
-
       push(PATHS.auth.login);
     } catch (error) {
       console.error(error);
