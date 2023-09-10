@@ -33,19 +33,34 @@
 
 .StripeElement {
     display: block;
-    margin: 10px 0 20px 0;
+    height: 53px;
+    background-color: rgba(145, 158, 171, 0.08);
+    padding: 25px 12px 8px;
+    border-radius: 8px;
+    cursor: text;
+   /* margin: 10px 0 20px 0;
     background-color: #fafafa;
     padding: 10px 14px;
     font-size: 1em;
     font-family: "Source Code Pro", monospace;
     border-bottom: 2px solid #e2e8f0;
-    outline: 0;
+    outline: 0; */
+}
+
+.CardNumberField-input-wrapper{
+    font-size: 12px;
+    color: blue
+}
+
+.ElementsApp .InputElement{
+    font-size: 12px;
 }
 
 .StripeElement--focus {
-    border-bottom: 2px solid #01896a;
+    background-color: rgba(145, 158, 171, 0.16);
+    /* border-bottom: 2px solid #01896a;
     -webkit-transition: all 150ms ease;
-    transition: all 150ms ease;
+    transition: all 150ms ease; */
 }
 
 .StripeElement.IdealBankElement,

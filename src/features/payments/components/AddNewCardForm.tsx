@@ -25,6 +25,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useAuthContext } from 'src/contexts';
 // axios
 import axios from 'src/lib/axios';
+// styles
+import styles from './AddNewCardForm.module.css';
 
 type Props = {
   onAddCard: (result: 'success' | 'error') => void;
@@ -121,12 +123,24 @@ function AddNewCardForm({ onAddCard }: Props) {
         },
       }}
     >
-      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
+      <form
+        onSubmit={handleSubmit}
+        style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}
+      >
+        <div className={styles.cardElement__container}>
+          <p className={styles.cardElement__label}>Número do Cartão</p>
+          <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
+        </div>
 
-        <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
+        <div className={styles.cardElement__container}>
+          <p className={styles.cardElement__label}>Validade</p>
+          <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
+        </div>
 
-        <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
+        <div className={styles.cardElement__container}>
+          <p className={styles.cardElement__label}>CVV/CVC</p>
+          <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
+        </div>
 
         <Stack
           direction="row"
