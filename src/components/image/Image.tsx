@@ -16,7 +16,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         wrapperClassName="wrapper"
         effect={disabledEffect ? undefined : effect}
         placeholderSrc={disabledEffect ? '/assets/transparent.png' : '/assets/placeholder.svg'}
-        sx={{ width: 1, height: 1, objectFit: 'cover' }}
+        sx={{ width: 1, height: 1, objectFit: 'cover', display: 'flex', alignItems: 'center' }}
         {...other}
       />
     );
@@ -29,12 +29,15 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
           sx={{
             width: 1,
             lineHeight: 1,
-            display: 'block',
+            display: 'flex',
+            alignItems: 'center',
             overflow: 'hidden',
             position: 'relative',
             pt: getRatio(ratio),
             '& .wrapper': {
               top: 0,
+              display: 'flex !important',
+              alignItems: 'center',
               left: 0,
               width: 1,
               height: 1,
@@ -55,7 +58,8 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         component="span"
         sx={{
           lineHeight: 1,
-          display: 'block',
+          display: 'flex',
+          alignItems: 'center',
           overflow: 'hidden',
           position: 'relative',
           '& .wrapper': {
