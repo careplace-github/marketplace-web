@@ -163,7 +163,7 @@ export default function AccountPaymentView() {
                     variant="contained"
                     startIcon={<Iconify icon="material-symbols:add" />}
                   >
-                    Adiconar Cartão
+                    Adicionar Cartão
                   </Button>
                 </Stack>
               )}
@@ -224,7 +224,7 @@ export default function AccountPaymentView() {
                     variant="contained"
                     startIcon={<Iconify icon="material-symbols:add" />}
                   >
-                    Adiconar Cartão
+                    Adicionar Cartão
                   </Button>
                 </Stack>
               )}

@@ -9,6 +9,7 @@ import { useTheme } from '@mui/material/styles';
 import { NAV } from 'src/layouts/config';
 // axios
 import axios from 'src/lib/axios';
+import fetch from 'src/lib/fetch';
 // components
 import Iconify from 'src/components/iconify';
 import EmptyState from 'src/components/empty-state/EmptyState';
@@ -48,8 +49,13 @@ export default function CompaniesListView() {
   useEffect(() => {
     const fetchServices = async () => {
       setServicesLoading(true);
-      const response = await axios.get('/services', { params: { documentsPerPage: 30 } });
-      setAvailableServices(response.data.data);
+      // const response = await axios.get('/services', { params: { documentsPerPage: 30 } });
+      const response = await fetch('/api/services', {
+        method: 'GET',
+        params: JSON.stringify({ documentsPerPage: 30 }),
+      });
+      console.log('Services', response);
+      setAvailableServices(response.data);
       setServicesLoading(false);
     };
 
@@ -62,17 +68,16 @@ export default function CompaniesListView() {
       if (!router.isReady) return;
       const currentQuery = router.query;
 
-      const response = await axios.get('/health-units/agencies/search', {
+      const response = await fetch('/api/health-units/agencies/search', {
+        method: 'GET',
+
         params: {
           ...currentQuery,
-          documentsPerPage: 5,
-          headers: {
-            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-          },
         },
       });
-      setCompanies(response.data.data);
-      setTotalPages(response.data.totalPages);
+      console.log('companie', response);
+      setCompanies(response.data);
+      setTotalPages(response.totalPages);
       setLoading(false);
     };
     fetchCompanies();
