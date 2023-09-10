@@ -14,8 +14,9 @@ import {
   Alert,
   Button,
 } from '@mui/material';
-// axios
+// fetch
 import axios from 'src/lib/axios';
+import fetch from 'src/lib/fetch';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
@@ -24,7 +25,7 @@ import { ISnackbarProps } from 'src/types/snackbar';
 import { IScheduleProps } from 'src/types/order';
 //
 import isObjectEmpty from 'src/utils/functions';
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
 import { PATHS } from 'src/routes';
@@ -91,11 +92,13 @@ export default function OrderView() {
   });
   const router = useRouter();
 
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
 
   const fetchUserRelatives = async () => {
     try {
-      const response = await axios.get('customers/patients');
+      const response = await fetch(`/api/patients`, {
+        method: 'GET',
+      });
       setUserRelatives(response.data.data);
       setRelativesLoading(false);
     } catch (error) {
@@ -132,7 +135,9 @@ export default function OrderView() {
 
   const fetchCompany = async (companyId) => {
     try {
-      const response = await axios.get(`/health-units/${companyId}`);
+      const response = await fetch(`/api/health-units/${companyId}`, {
+        method: 'GET',
+      });
       setCompanyInfo(response.data);
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
@@ -147,7 +152,9 @@ export default function OrderView() {
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
+        const response = await fetch(`/api/orders/home-care/${orderId}`, {
+          method: 'GET',
+        });
 
         if (
           response.data.status === 'pending_payment' &&
@@ -258,22 +265,28 @@ export default function OrderView() {
   const updateOrderPayments = async () => {
     setIsSubmitting(true);
     try {
-      await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
-        payment_method: selectedCard?.id || previousPaymentMethod,
+      await fetch(`/api/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
+        method: 'PUT',
+        body: JSON.stringify({ payment_method: selectedCard?.id || previousPaymentMethod }),
       });
-      await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`, {
-        billing_details: {
-          name: billingDetails?.name,
-          email: user?.email,
-          tax_id: billingDetails?.nif,
-          address: {
-            street: billingDetails?.address.street,
-            city: billingDetails?.address.city,
-            country: billingDetails?.address.country,
-            postal_code: billingDetails?.address.postal_code,
+
+      await fetch(`/api/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          billing_details: {
+            name: billingDetails?.name,
+            email: user?.email,
+            tax_id: billingDetails?.nif,
+            address: {
+              street: billingDetails?.address.street,
+              city: billingDetails?.address.city,
+              country: billingDetails?.address.country,
+              postal_code: billingDetails?.address.postal_code,
+            },
           },
-        },
+        }),
       });
+
       setShowSnackbar({
         show: true,
         severity: 'success',
@@ -290,20 +303,23 @@ export default function OrderView() {
       return;
     }
     try {
-      await axios.post(`payments/orders/home-care/${orderInfo._id}/subscription/charge`, {
-        payment_method: selectedCard?.id,
-        promotion_code: discountCode,
-        billing_details: {
-          name: billingDetails?.name,
-          email: user?.email,
-          tax_id: billingDetails?.nif,
-          address: {
-            street: billingDetails?.address.street,
-            city: billingDetails?.address.city,
-            country: billingDetails?.address.country,
-            postal_code: billingDetails?.address.postal_code,
+      await fetch(`/api/payments/orders/home-care/${orderInfo._id}/subscription/charge`, {
+        method: 'POST',
+        body: JSON.stringify({
+          payment_method: selectedCard?.id,
+          promotion_code: discountCode,
+          billing_details: {
+            name: billingDetails?.name,
+            email: user?.email,
+            tax_id: billingDetails?.nif,
+            address: {
+              street: billingDetails?.address.street,
+              city: billingDetails?.address.city,
+              country: billingDetails?.address.country,
+              postal_code: billingDetails?.address.postal_code,
+            },
           },
-        },
+        }),
       });
     } catch (error) {
       console.error(error);
@@ -329,7 +345,12 @@ export default function OrderView() {
           schedule: dataToSubmit?.schedule,
         },
       };
-      await axios.put(`/customers/orders/home-care/${orderInfo._id}`, updatedOrder);
+
+      await fetch(`/api/orders/home-care/${orderInfo._id}`, {
+        method: 'PUT',
+        body: JSON.stringify(updatedOrder),
+      });
+
       setShowSnackbar({
         show: true,
         severity: 'success',

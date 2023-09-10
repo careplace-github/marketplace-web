@@ -13,6 +13,8 @@ import EmptyState from 'src/components/empty-state/EmptyState';
 // Types
 import { IRelativeProps } from 'src/types/relative';
 import { ISnackbarProps } from 'src/types/snackbar';
+// lib
+import fetch from 'src/lib/fetch';
 //
 import { AccountLayout, RelativesList } from '../components';
 import RelativeInformationModal from '../components/relatives/RelativeInformationModal';
@@ -41,7 +43,9 @@ export default function AccountRelativesView() {
   const isMdUp = useResponsive('up', 'md');
 
   const fetchUserRelatives = async () => {
-    const response = await axios.get('customers/patients');
+    const response = await fetch('/api/patients', {
+      method: 'GET',
+    });
     setUserRelatives(response.data.data);
     setIsLoading(false);
   };
@@ -52,7 +56,9 @@ export default function AccountRelativesView() {
 
   const handleDeleteRelative = async (relativeToDelete: IRelativeProps) => {
     try {
-      const response = await axios.delete(`/customers/patients/${relativeToDelete._id}`);
+      await fetch(`/api/customers/patients/${relativeToDelete._id}`, {
+        method: 'DELETE',
+      });
       setShowSnackbar({
         show: true,
         severity: 'success',

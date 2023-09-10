@@ -5,12 +5,13 @@ import { useCallback, useState } from 'react';
 import { Divider, Button, Box, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // components
 import { useSnackbar } from 'src/components/snackbar';
+import fetch from 'src/lib/fetch';
 
 type UploadPictureModalProps = {
   open: boolean;
@@ -24,7 +25,7 @@ type FormValuesProps = {
 
 const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
   const { enqueueSnackbar } = useSnackbar();
-  const { user, updateUser } = useAuthContext();
+  const { data: user } = useSession();
   const isMdUp = useResponsive('up', 'md');
   const [fileData, setFileData] = useState<FormData>();
   const defaultValues = {
@@ -54,13 +55,29 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
         return;
       }
 
-      const response = await axios.post('/files', fileData);
-      const uploadedFileURL = response.data.url;
-      if (user) {
-        user.profile_picture = uploadedFileURL;
-        setValue('profile_picture', uploadedFileURL);
+      let fileURL;
 
-        updateUser(user);
+      const response = await fetch('/api/files', {
+        method: 'POST',
+        body: fileData,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      if (response?.fileURL) {
+        const uploadedFileURL = response.fileURL;
+
+        fileURL = uploadedFileURL;
+      }
+      if (user) {
+        user.profile_picture = fileURL;
+        setValue('profile_picture', fileURL);
+
+        await fetch('/api/account', {
+          method: 'PUT',
+          body: JSON.stringify(user),
+        });
 
         enqueueSnackbar('Imagem de perfil alterada com sucesso', {
           variant: 'success',

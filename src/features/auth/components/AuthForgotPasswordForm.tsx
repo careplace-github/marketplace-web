@@ -13,7 +13,6 @@ import { PATHS } from 'src/routes/paths';
 // components
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // auth
-import { useAuthContext } from 'src/contexts/useAuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +22,6 @@ type FormValuesProps = {
 };
 
 export default function AuthResetPasswordForm() {
-  const { forgotPassword } = useAuthContext();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState(router.query.email as string);
@@ -48,7 +46,12 @@ export default function AuthResetPasswordForm() {
   const onSubmit = async (data: FormValuesProps) => {
     try {
       setIsSubmitting(true);
-      await forgotPassword(data.email);
+      const response = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: methods.getValues('email'),
+        }), // Convert data to JSON format
+      });
       const path = methods.getValues('email')
         ? `${PATHS.auth.resetPassword}?email=${methods.getValues('email')}`
         : PATHS.auth.resetPassword;

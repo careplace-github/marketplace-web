@@ -11,6 +11,8 @@ import axios from 'src/lib/axios';
 // components
 import EmptyState from 'src/components/empty-state/EmptyState';
 import Iconify from 'src/components/iconify';
+// lib
+import fetch from 'src/lib/fetch';
 //
 import { AccountLayout, AccountPaymentCard, AccountNewCardModal } from '../components';
 
@@ -30,7 +32,9 @@ export default function AccountPaymentView() {
 
   async function getCards() {
     try {
-      const response = await axios.get('/payments/payment-methods');
+      const response = await fetch('/api/payments/payment-methods', {
+        method: 'GET',
+      });
       setCardsLoading(false);
       return response.data.data;
     } catch (error) {
@@ -53,10 +57,13 @@ export default function AccountPaymentView() {
 
   const handleDeleteCard = async (card) => {
     try {
-      await axios.delete(`/payments/payment-methods/${card.id}`).then(() => {
+      await fetch(`/api/payments/payment-methods/${card.id}`, {
+        method: 'DELETE',
+      }).then(() => {
         getCards().then((data) => {
           setCARDS(data);
         });
+
         setShowSnackbar({
           show: true,
           severity: 'success',

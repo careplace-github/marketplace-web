@@ -33,6 +33,7 @@ import ProgressBar from 'src/components/progress-bar';
 import { ThemeSettings, SettingsProvider } from 'src/features/settings';
 import MotionLazyContainer from 'src/components/animate/MotionLazyContainer';
 import { SessionProvider } from 'next-auth/react';
+
 import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
@@ -66,18 +67,18 @@ export default function MyApp(props: MyAppProps) {
       </Head>
 
       <AuthSession pageProps={pageProps}>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <SettingsProvider>
-              <ThemeProvider>
-                <ThemeSettings>
-                  <MotionLazyContainer>
-                    <ProgressBar />
-                    {getLayout(<Component {...pageProps} />)}
-                  </MotionLazyContainer>
-                </ThemeSettings>
-              </ThemeProvider>
-            </SettingsProvider>
-          </LocalizationProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <SettingsProvider>
+            <ThemeProvider>
+              <ThemeSettings>
+                <MotionLazyContainer>
+                  <ProgressBar />
+                  {getLayout(<Component {...pageProps} />)}
+                </MotionLazyContainer>
+              </ThemeSettings>
+            </ThemeProvider>
+          </SettingsProvider>
+        </LocalizationProvider>
       </AuthSession>
     </CacheProvider>
   );

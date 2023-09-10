@@ -4,7 +4,7 @@ import { Container, Stack, Typography, Box } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // config
 import { NAV } from 'src/layouts';
 // components
@@ -20,14 +20,17 @@ type Props = {
 
 export default function AccountLayout({ children }: Props) {
   const isMdUp = useResponsive('up', 'md');
-  const { isInitialized } = useAuthContext();
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const { status } = useSession();
+
+  const isAuthenticated = status === 'authenticated'; // This will be a boolean value (true/false)
 
   const handleMenuClose = () => {
     setMenuOpen(false);
   };
 
-  return !isInitialized ? (
+  return !isAuthenticated ? (
     <LoadingScreen />
   ) : (
     <>

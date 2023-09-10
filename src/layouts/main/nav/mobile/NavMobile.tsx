@@ -14,7 +14,7 @@ import { useSnackbar } from 'src/components/snackbar';
 // paths
 import { PATHS } from 'src/routes';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession, signOut } from 'next-auth/react';
 // types
 import { NavProps } from '../types';
 //
@@ -26,7 +26,10 @@ export default function NavMobile({ data }: NavProps) {
   const { pathname } = useRouter();
   const router = useRouter();
   const theme = useTheme();
-  const { isAuthenticated, user, logout } = useAuthContext();
+
+  const { data: user, status } = useSession();
+
+  const isAuthenticated = status === 'authenticated';
 
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
@@ -48,7 +51,7 @@ export default function NavMobile({ data }: NavProps) {
 
   const handleLogout = async () => {
     try {
-      logout();
+      await signOut();
       handleClose();
       router.push(PATHS.home);
     } catch (error) {

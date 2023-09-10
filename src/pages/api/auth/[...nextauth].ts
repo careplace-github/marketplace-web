@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import { User as AdapterUser, Session } from 'next-auth';
-import type { NextAuthOptions } from 'next-auth';
+import type { NextAuthOptions, User } from 'next-auth';
 
 import NextAuth from 'next-auth';
 
@@ -46,6 +46,8 @@ export const authOptions: NextAuthOptions = {
           );
 
           const accessToken = response.data.accessToken;
+          const refreshToken = response.data.refreshToken;
+          const exp = response.data.exp;
           let userDB;
 
           if (response) {
@@ -61,16 +63,25 @@ export const authOptions: NextAuthOptions = {
 
           if (userDB._id) {
             // Add the user object and access token to the session
-            const user = {
-              accessToken,
+            const user: User = {
               id: userDB._id,
+              _id: userDB._id,
+
               name: userDB.name,
               email: userDB.email,
-              image: userDB.profile_picture,
-              _id: userDB._id,
-              role: userDB.role,
+              profile_picture: userDB.profile_picture,
+
               permissions: userDB.permissions,
-              health_unit: userDB.health_unit,
+              phone: userDB.phone,
+              birthdate: userDB.birthdate,
+              gender: userDB.gender,
+              email_verified: userDB.email_verified,
+              phone_verified: userDB.phone_verified,
+              address: userDB.address,
+
+              accessToken,
+              refreshToken,
+              exp,
             };
 
             // Return the user object if authentication is successful
@@ -99,13 +110,19 @@ export const authOptions: NextAuthOptions = {
           exp: user?.exp,
 
           user: {
-            _id: user.id,
+            _id: user._id,
+
             name: user.name,
             email: user.email,
             profile_picture: user.profile_picture,
-            role: user.role,
-            permissions: user.profile_picture,
-            health_unit: user.health_unit,
+
+            permissions: user.permissions,
+            phone: user.phone,
+            birthdate: user.birthdate,
+            gender: user.gender,
+            email_verified: user.email_verified,
+            phone_verified: user.phone_verified,
+            address: user.address,
           },
         };
 
@@ -119,13 +136,19 @@ export const authOptions: NextAuthOptions = {
           exp: token?.exp,
 
           user: {
-            _id: token.user._id,
-            name: token.user.name,
-            email: token.user.email,
-            profile_picture: token.user.profile_picture,
-            role: token.user.role,
-            permissions: token.user.permissions,
-            health_unit: token.user.health_unit,
+            _id: token._id,
+
+            name: token.name,
+            email: token.email,
+            profile_picture: token.profile_picture,
+
+            permissions: token.permissions,
+            phone: token.phone,
+            birthdate: token.birthdate,
+            gender: token.gender,
+            email_verified: token.email_verified,
+            phone_verified: token.phone_verified,
+            address: token.address,
           },
         };
 
@@ -169,12 +192,18 @@ export const authOptions: NextAuthOptions = {
         id: updateSession._id,
 
         _id: updateSession._id,
+
         name: updateSession.name,
         email: updateSession.email,
         profile_picture: updateSession.profile_picture,
-        role: updateSession.role,
+
         permissions: updateSession.permissions,
-        health_unit: updateSession.health_unit,
+        phone: updateSession.phone,
+        birthdate: updateSession.birthdate,
+        gender: updateSession.gender,
+        email_verified: updateSession.email_verified,
+        phone_verified: updateSession.phone_verified,
+        address: updateSession.address,
       };
 
       // Send properties to the client, like an access_token from a provider.

@@ -6,8 +6,8 @@ import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { Container, Typography, Stack } from '@mui/material';
 // types
 import { IServiceProps } from 'src/types/utils';
-// axios
-import axios from 'src/lib/axios';
+// lib
+import fetch from 'src/lib/fetch';
 //
 import { ServicesList } from '../components';
 
@@ -20,7 +20,14 @@ export default function ServicesListView() {
   useEffect(() => {
     setServicesLoading(true);
     const fetchServices = async () => {
-      const response = await axios.get('/services', { params: { documentsPerPage: 60, page: 1 } });
+      const response = await fetch(
+        `/api/services${new URLSearchParams({
+          documentsPerPage: '30',
+        })}`,
+        {
+          method: 'GET',
+        }
+      );
       const normalServices: IServiceProps[] = [];
       setAvailableServices(response.data.data);
       setServicesLoading(false);

@@ -11,9 +11,11 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Typography, Stack, InputAdornment, IconButton, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+// lib
+import fetch from 'src/lib/fetch';
 // components
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
@@ -29,10 +31,10 @@ export default function AccountPersonalView() {
     message: '',
   });
 
+  const { data: user } = useSession();
+
   const passwordRequirements =
     'A sua Password deve conter pelo menos: 8 caracteres, 1 número, 1 letra maiúscula e 1 letra minúscula';
-
-  const { changePassword } = useAuthContext();
 
   const ChangePasswordSchema = Yup.object().shape({
     oldPassword: Yup.string().required('A Password Antiga é obrigatória.'),
@@ -85,7 +87,14 @@ export default function AccountPersonalView() {
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
-      await changePassword(data.oldPassword, data.newPassword);
+      await fetch(`/api/auth/change-password`, {
+        method: 'POST',
+        body: JSON.stringify({
+          oldPassword: data.oldPassword,
+          newPassword: data.newPassword,
+        }),
+      });
+
       setShowSnackbar({
         show: true,
         severity: 'success',

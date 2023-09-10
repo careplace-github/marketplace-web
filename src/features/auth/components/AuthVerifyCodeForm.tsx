@@ -16,7 +16,7 @@ import FormProvider, { RHFCodes, RHFTextField } from 'src/components/hook-form';
 import useCountdown from 'src/hooks/useCountdown';
 import { useSnackbar } from 'src/components/snackbar';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // routes
 import { PATHS } from 'src/routes/paths';
 
@@ -35,7 +35,6 @@ export default function AuthVerifyCodeForm() {
   const theme = useTheme();
   const { push } = useRouter();
   const router = useRouter();
-  const { confirmationCode, confirmUser } = useAuthContext();
   const [emailRecovery, setEmailRecovery] = useState(router.query.email as string | null);
   const [resendAvailable, setResendAvailable] = useState(false);
   // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
@@ -88,7 +87,12 @@ export default function AuthVerifyCodeForm() {
         getValues('code5') +
         getValues('code6');
 
-      await confirmUser(getValues('email'), code);
+      await fetch('/api/auth/confirm-user', {
+        method: 'POST',
+        body: JSON.stringify({
+          code,
+        }),
+      });
 
       push(PATHS.auth.login);
     } catch (error) {
@@ -109,7 +113,9 @@ export default function AuthVerifyCodeForm() {
         setResendAvailable(false);
       }, 1000);
 
-      await confirmationCode(email);
+      await fetch('/api/auth/send/confirm-user', {
+        method: 'POST',
+      });
 
       // Reset the code inputs
       setValue('code1', '');

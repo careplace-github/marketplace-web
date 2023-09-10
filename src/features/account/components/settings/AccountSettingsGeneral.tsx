@@ -1,6 +1,6 @@
 import { useForm } from 'react-hook-form';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { Box, Typography } from '@mui/material';
@@ -14,11 +14,11 @@ import FormProvider, { RHFSwitch } from 'src/components/hook-form';
 
 export default function AccountSettingsGeneral() {
   const isMdUp = useResponsive('up', 'md');
-  const { user } = useAuthContext();
+
   const theme = useTheme();
 
   const defaultValues = {
-    marketing_notifications: user?.notifications?.email,
+    marketing_notifications: false,
   };
 
   const methods = useForm<typeof defaultValues>({

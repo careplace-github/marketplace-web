@@ -6,7 +6,7 @@ import { countries } from 'src/data';
 // react
 
 // lib
-import axios from 'src/lib/axios';
+import fetch from 'src/lib/fetch';
 
 // @mui
 import {
@@ -35,7 +35,7 @@ import {
 import { IServiceProps } from 'src/types/utils';
 import Weekdays from 'src/data/Weekdays';
 import { IRelativeProps } from 'src/types/relative';
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 import AddNewCardForm from './AddNewCardForm';
 import CheckoutPaymentMethod from './CheckoutPaymentMethod';
 
@@ -118,7 +118,7 @@ export default function CheckoutQuestionnaireInfo({
     severity: 'success',
     message: '',
   });
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
   useEffect(() => {
     if (user && !isOrderView) {
       let countryLabel = '';
@@ -147,7 +147,9 @@ export default function CheckoutQuestionnaireInfo({
   }, [billingDetails]);
 
   async function getCards() {
-    const response = await axios.get('/payments/payment-methods');
+    const response = await fetch(`/api/payments/payment-methods`, {
+      method: 'GET',
+    });
     return response.data.data;
   }
 

@@ -21,6 +21,8 @@ import { useRouter } from 'next/router';
 import { IServiceProps } from 'src/types/utils';
 import { ICompanyProps } from 'src/types/company';
 import { IReviewProps, IReviewsPaginationProps } from 'src/types/review';
+// lib
+import fetch from 'src/lib/fetch';
 // components
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
@@ -133,7 +135,14 @@ export default function CompanyDetailView() {
   useEffect(() => {
     const fetchServices = async () => {
       setServicesLoading(true);
-      const response = await axios.get('/services', { params: { documentsPerPage: 30 } });
+      const response = await fetch(
+        `/api/services${new URLSearchParams({
+          documentsPerPage: '30',
+        })}`,
+        {
+          method: 'GET',
+        }
+      );
       setAvailableServices(response.data.data);
       setServicesLoading(false);
     };
@@ -149,10 +158,8 @@ export default function CompanyDetailView() {
 
     const fetchCompanies = async () => {
       const companyId = router.asPath.split('/')[2].split('?')[0];
-      const response = await axios.get('/health-units/agencies/search', {
-        headers: {
-          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-        },
+      const response = await fetch('/api/health-units/agencies/search', {
+        method: 'GET',
       });
       const allCompanies = response.data.data;
       const randomIndex: number[] = [];
@@ -187,17 +194,19 @@ export default function CompanyDetailView() {
   }, [router.asPath, router.isReady]);
 
   const fetchReviews = async (current, sortSelected, companyId) => {
-    const responseCompanyReviews = await axios.get(`/health-units/${companyId}/reviews`, {
-      params: {
-        documentsPerPage: reviewsPerPage,
+    const responseCompanyReviews = await fetch(
+      `/api/reviews/health-units/${companyId}
+      ${new URLSearchParams({
+        documentsPerPage: reviewsPerPage.toString(),
         page: current,
         sortBy: sortSelected.sortBy,
         sortOrder: sortSelected.sortOrder,
-        headers: {
-          'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-        },
-      },
-    });
+      })}`,
+      {
+        method: 'GET',
+      }
+    );
+
     const reviewsInfo = responseCompanyReviews.data;
     setCompanyReviews(reviewsInfo.data);
     setReviewsPaginationInfo({
@@ -211,10 +220,8 @@ export default function CompanyDetailView() {
       setLoading(true);
       const companyId = router.asPath.split('/')[2].split('?')[0];
       const fetchInfo = async () => {
-        const responseCompanyInfo = await axios.get(`/health-units/${companyId}`, {
-          headers: {
-            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-          },
+        const responseCompanyInfo = await fetch(`/api/health-units/${companyId}`, {
+          method: 'GET',
         });
         setCompanyInfo(responseCompanyInfo.data);
         await fetchReviews(1, reviewSort, companyId);

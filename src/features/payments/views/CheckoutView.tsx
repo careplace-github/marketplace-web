@@ -13,8 +13,8 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
-// axios
-import axios from 'src/lib/axios';
+// lib
+import fetch from 'src/lib/fetch';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
@@ -28,7 +28,7 @@ import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import Page404 from 'src/pages/404';
 //
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 import CheckoutSummary from '../components/CheckoutSummary';
 import CheckoutQuestionnaireInfo from '../components/CheckoutQuestionnaireInfo';
 
@@ -70,14 +70,16 @@ export default function CheckoutView() {
     message: '',
   });
 
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
 
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
       try {
         const orderId = router.asPath.split('/').at(2);
-        const response = await axios.get(`/customers/orders/home-care/${orderId}`);
+        const response = await fetch(`/api/orders/home-care/${orderId}`, {
+          method: 'GET',
+        });
 
         const order = response.data;
 
@@ -98,7 +100,7 @@ export default function CheckoutView() {
         if (error?.error?.type === 'FORBIDDEN') {
           router.push('/404');
         }
-        console.log(error);
+        console.error(error);
       }
     };
     if (router.isReady) {
@@ -108,10 +110,12 @@ export default function CheckoutView() {
 
   const fetchUserRelatives = async () => {
     try {
-      const response = await axios.get('customers/patients');
+      const response = await fetch(`/api/patients`, {
+        method: 'GET',
+      });
       setUserRelatives(response.data.data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     setRelativesLoading(false);
   };
@@ -122,12 +126,14 @@ export default function CheckoutView() {
 
   const fetchCompany = async (companyId) => {
     try {
-      const response = await axios.get(`/health-units/${companyId}`);
+      const response = await fetch(`/api/health-units/${companyId}`, {
+        method: 'GET',
+      });
       setCompanyInfo(response.data);
       const available = await getAvailableServices(response.data.services);
       setAvailableServices(available);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
     setLoading(false);
   };
@@ -183,39 +189,48 @@ export default function CheckoutView() {
     setIsSubmitting(true);
     const orderId = router.asPath.split('/').at(2);
     try {
-      const response = await axios.post(`/payments/orders/home-care/${orderId}/subscription`, {
-        payment_method: selectedCard?.id,
-        promotion_code: discountCode,
-        billing_details: {
-          name: billingDetails?.name,
-          email: user?.email,
-          tax_id: billingDetails?.nif,
-          address: {
-            street: billingDetails?.address.street,
-            city: billingDetails?.address.city,
-            country: billingDetails?.address.country,
-            postal_code: billingDetails?.address.postal_code,
-          },
-        },
-      });
-      if (invalidCardAlreadySubmitted) {
-        await axios.put(`/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
+      const response = await fetch(`/api/payments/orders/home-care/${orderId}/subscription`, {
+        method: 'POST',
+        body: JSON.stringify({
           payment_method: selectedCard?.id,
-        });
-        await axios.put(
-          `/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`,
-          {
-            billing_details: {
-              name: billingDetails?.name,
-              email: user?.email,
-              tax_id: billingDetails?.nif,
-              address: {
-                street: billingDetails?.address.street,
-                city: billingDetails?.address.city,
-                country: billingDetails?.address.country,
-                postal_code: billingDetails?.address.postal_code,
-              },
+          promotion_code: discountCode,
+          billing_details: {
+            name: billingDetails?.name,
+            email: user?.email,
+            tax_id: billingDetails?.nif,
+            address: {
+              street: billingDetails?.address.street,
+              city: billingDetails?.address.city,
+              country: billingDetails?.address.country,
+              postal_code: billingDetails?.address.postal_code,
             },
+          },
+        }),
+      });
+
+      if (invalidCardAlreadySubmitted) {
+        await fetch(`/api/payments/orders/home-care/${orderInfo._id}/subscription/payment-method`, {
+          method: 'PUT',
+          body: JSON.stringify({ payment_method: selectedCard?.id }),
+        });
+
+        await fetch(
+          `/api/payments/orders/home-care/${orderInfo._id}/subscription/billing-details`,
+          {
+            method: 'PUT',
+            body: JSON.stringify({
+              billing_details: {
+                name: billingDetails?.name,
+                email: user?.email,
+                tax_id: billingDetails?.nif,
+                address: {
+                  street: billingDetails?.address.street,
+                  city: billingDetails?.address.city,
+                  country: billingDetails?.address.country,
+                  postal_code: billingDetails?.address.postal_code,
+                },
+              },
+            }),
           }
         );
       }

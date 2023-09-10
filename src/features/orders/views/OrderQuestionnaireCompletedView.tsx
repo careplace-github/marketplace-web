@@ -7,11 +7,9 @@ import { useRouter } from 'next/router';
 import { Container, Typography, Stack, Button, Card, Avatar, Box } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
-// axios
-import axios from 'src/lib/axios';
+// lib
+import fetch from 'src/lib/fetch';
 // components
-import Image from 'src/components/image';
-
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 //
@@ -30,7 +28,10 @@ export default function OrderQuestionnaireCompletedView() {
     setLoading(true);
     const fetchData = async () => {
       const orderId = router.asPath.split('/').at(-1);
-      const response = await axios.get(`/customers/orders/home-care/${orderId}`);
+      const response = await fetch(`/api/orders/home-care${orderId}`, {
+        method: 'GET',
+      });
+
       setData(response.data);
       setLoading(false);
     };

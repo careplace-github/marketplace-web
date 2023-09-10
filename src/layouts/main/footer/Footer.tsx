@@ -32,7 +32,7 @@ import { socials } from 'src/data';
 // axios
 import axios from 'src/lib/axios';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 //
 import { ISnackbarProps } from 'src/types/snackbar';
 import { footerLinksLoggedIn, footerLinksLoggedOut } from '../nav/config-navigation';
@@ -56,7 +56,7 @@ const StyledAppStoreButton = styled(Button)(({ theme }) => ({
 
 export default function Footer() {
   const isMdUp = useResponsive('up', 'md');
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
   const { pathname } = useRouter();
   const [email, setEmail] = useState<string>('');
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
@@ -84,7 +84,6 @@ export default function Footer() {
         message: 'Newsletter subscrita com sucesso.',
       });
     } catch (error) {
-      console.log(error);
       if (error?.error?.message === 'Lead already exists') {
         setShowSnackbar({
           show: true,
@@ -92,6 +91,8 @@ export default function Footer() {
           message: 'Já subscreveu a newsletter.',
         });
       } else {
+        console.error(error);
+
         setShowSnackbar({
           show: true,
           severity: 'error',

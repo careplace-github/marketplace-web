@@ -12,7 +12,8 @@ import axios from 'src/lib/axios';
 // components
 import Iconify from 'src/components/iconify';
 import EmptyState from 'src/components/empty-state/EmptyState';
-
+// lib
+import fetch from 'src/lib/fetch';
 //
 import { animateScroll } from 'react-scroll';
 //
@@ -48,7 +49,16 @@ export default function CompaniesListView() {
   useEffect(() => {
     const fetchServices = async () => {
       setServicesLoading(true);
-      const response = await axios.get('/services', { params: { documentsPerPage: 30 } });
+      const response = await fetch(
+        `/api/services${new URLSearchParams({
+          documentsPerPage: '30',
+        })}
+          `,
+        {
+          method: 'GET',
+        }
+      );
+
       setAvailableServices(response.data.data);
       setServicesLoading(false);
     };
@@ -60,17 +70,19 @@ export default function CompaniesListView() {
     const fetchCompanies = async () => {
       setLoading(true);
       if (!router.isReady) return;
-      const currentQuery = router.query;
 
-      const response = await axios.get('/health-units/agencies/search', {
-        params: {
-          ...currentQuery,
-          documentsPerPage: 5,
-          headers: {
-            'x-client-id': process.env.NEXT_PUBLIC_CLIENT_ID,
-          },
-        },
+      const currentQuery = Object.fromEntries(
+        Object.entries(router.query).map(([key, value]) => [key, String(value)])
+      );
+
+      currentQuery.documentsPerPage = '5';
+
+      const queryString = new URLSearchParams(currentQuery).toString();
+
+      const response = await fetch(`/api/health-units/agencies/search?${queryString}`, {
+        method: 'GET',
       });
+
       setCompanies(response.data.data);
       setTotalPages(response.data.totalPages);
       setLoading(false);

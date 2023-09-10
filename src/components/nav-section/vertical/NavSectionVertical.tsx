@@ -1,7 +1,7 @@
 // @mui
 import { List, Stack } from '@mui/material';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 //
 import { NavSectionProps } from 'src/components/nav-section/types';
 import { StyledSubheader } from './styles';
@@ -10,7 +10,10 @@ import NavList from './NavList';
 // ----------------------------------------------------------------------
 
 export default function NavSectionVertical({ data, sx, ...other }: NavSectionProps) {
-  const { isAuthenticated } = useAuthContext();
+  const { status } = useSession();
+
+  const isAuthenticated = status === 'authenticated';
+
   return (
     <Stack sx={sx} {...other}>
       {data.map((group) => {

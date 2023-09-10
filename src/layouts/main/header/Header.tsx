@@ -4,7 +4,7 @@ import { Box, Link, Stack, Button, AppBar, Toolbar, Container } from '@mui/mater
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // config
 import { HEADER } from 'src/layouts/config';
 // paths
@@ -35,7 +35,9 @@ const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'vi
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
 export default function Header({ headerOnDark }: Props) {
-  const { isAuthenticated, isInitialized } = useAuthContext();
+  const { status } = useSession();
+
+  const isAuthenticated = status === 'authenticated';
 
   const theme = useTheme();
 
@@ -47,7 +49,7 @@ export default function Header({ headerOnDark }: Props) {
     libraries: googleLibraries,
   });
 
-  return isInitialized && isLoaded.isLoaded ? (
+  return isLoaded.isLoaded ? (
     <AppBar
       color="transparent"
       sx={{

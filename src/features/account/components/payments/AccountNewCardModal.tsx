@@ -14,7 +14,7 @@ import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // lib
 import axios from 'src/lib/axios';
 
@@ -38,7 +38,7 @@ type FormValuesProps = {
 export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCardModalProps) {
   const theme = useTheme();
 
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
 
   const isMdUp = useResponsive('up', 'md');
 

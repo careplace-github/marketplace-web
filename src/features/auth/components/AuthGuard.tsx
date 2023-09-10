@@ -4,8 +4,8 @@ import { useRouter } from 'next/router';
 // components
 import LoadingScreen from 'src/components/loading-screen';
 //
-import { useAuthContext } from 'src/contexts/useAuthContext';
 import { PATHS } from 'src/routes/paths';
+import { useSession } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
 type AuthGuardProps = {
@@ -13,10 +13,14 @@ type AuthGuardProps = {
 };
 
 export default function AuthGuard({ children }: AuthGuardProps) {
-  const { isAuthenticated, user, isInitialized } = useAuthContext();
+  const { data: user, status } = useSession();
+
+  const isAuthenticated = status === 'authenticated';
+
+  const isLoading = status === 'loading';
 
   // Return loading screen if auth context is not initialized
-  if (!isInitialized) {
+  if (isLoading) {
     return <LoadingScreen />;
   }
 

@@ -8,11 +8,6 @@ export { default as ForgotPasswordView } from './views/ForgotPasswordView';
 export { default as VerifyCodeView } from './views/VerifyCodeView';
 
 /**
- * Context
- */
-export { JwtAuthContext, AuthProvider } from './context/JwtContext';
-
-/**
  * Components
  */
 export { default as GuestGuard } from './components/GuestGuard';

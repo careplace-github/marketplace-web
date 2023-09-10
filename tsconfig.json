@@ -28,6 +28,7 @@
     "src/pages/api/auth/[...nextauth].ts"
   ],
   "include": [
+    "src/types/next-auth.d.ts",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",

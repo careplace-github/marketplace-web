@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { alpha } from '@mui/material/styles';
 import { Box, Stack, Popover, MenuItem, Typography, IconButton } from '@mui/material';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // components
 import Iconify from 'src/components/iconify';
 
@@ -25,7 +25,7 @@ type Props = {
 };
 
 export default function AccountPaymentCard({ card, handleDelete }: Props) {
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
 
   const value = card.card.brand;
   // First character should be uppercase

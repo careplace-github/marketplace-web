@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // @mui
 import { Fade, Portal, Stack, Box, Link, Unstable_Grid2 as Grid } from '@mui/material';
 // hooks
@@ -125,7 +125,9 @@ function NavSubList({
   type: string;
 }) {
   const { pathname } = useRouter();
-  const { isAuthenticated } = useAuthContext();
+  const { status } = useSession();
+
+  const isAuthenticated = status === 'authenticated';
 
   const coverPath = items?.length ? items[0].path : '';
 

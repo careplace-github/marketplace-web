@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 import { PATHS } from 'src/routes/paths';
 // components
 import LoadingScreen from 'src/components/loading-screen';
+import { useSession } from 'next-auth/react';
 //
-import { useAuthContext } from 'src/contexts/useAuthContext';
 
 // ----------------------------------------------------------------------
 
@@ -16,9 +16,13 @@ type GuestGuardProps = {
 };
 
 export default function GuestGuard({ children }: GuestGuardProps) {
-  const { isAuthenticated, isInitialized } = useAuthContext();
+  const { data: user, status } = useSession();
 
-  if (!isInitialized) {
+  const isAuthenticated = status === 'authenticated';
+
+  const isLoading = status === 'loading';
+
+  if (isLoading) {
     return <LoadingScreen />;
   }
 

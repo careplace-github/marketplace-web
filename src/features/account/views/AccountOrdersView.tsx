@@ -19,8 +19,7 @@ import { IOrderProps } from 'src/types/order';
 import Scrollbar from 'src/components/scrollbar';
 import EmptyState from 'src/components/empty-state/EmptyState';
 // lib
-import axios from 'src/lib/axios';
-//
+import fetch from 'src/lib/fetch';
 import {
   AccountLayout,
   stableSort,
@@ -98,7 +97,9 @@ export default function AccountOrdersView() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get('/customers/orders/home-care');
+        const response = await fetch('/api/orders/home-care', {
+          method: 'GET',
+        });
         const auxFilteredOrders = response.data.data.filter((order: IOrderProps) => {
           if (tab === 'all') {
             return order.status !== 'cancelled';

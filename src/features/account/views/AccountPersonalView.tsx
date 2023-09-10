@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { PATHS } from 'src/routes';
 
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // @mui
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -35,7 +35,7 @@ type props = {
 export default function AccountPersonalView({ updatedUser }: props) {
   const [openModal, setOpenModal] = useState(false);
   const isMdUp = useResponsive('up', 'md');
-  const { user, updateUser, sendConfirmEmailCode, sendConfirmPhoneCode } = useAuthContext();
+  const { data: user } = useSession();
   const [customIsDirty, setCustomIsDirty] = useState<boolean>(false);
   const [customIsValid, setCustomIsValid] = useState<boolean>(true);
   const router = useRouter();
@@ -87,16 +87,16 @@ export default function AccountPersonalView({ updatedUser }: props) {
   });
 
   const defaultValues = {
-    firstName: user?.name ? user.name.split(' ')[0] : null,
-    lastName: user?.name ? user.name.split(' ').pop() : null,
-    emailAddress: user?.email ? user.email : null,
-    phoneNumber: user?.phone ? user.phone : null,
+    firstName: user?.name ? user.name.split(' ')[0] : '',
+    lastName: user?.name ? user.name.split(' ').pop() : '',
+    emailAddress: user?.email ? user.email : '',
+    phoneNumber: user?.phone ? user.phone : '',
     birthdate: user?.birthdate ? user.birthdate : '',
-    gender: user?.gender ? user.gender : null,
-    streetAddress: user && user.address && user.address.street ? user.address.street : null,
-    zipCode: user && user.address && user.address.postal_code ? user.address.postal_code : null,
-    city: user && user.address && user.address.city ? user.address.city : null,
-    country: user && user.address && user.address.country ? user.address.country : null,
+    gender: user?.gender ? user.gender : '',
+    streetAddress: user && user.address && user.address.street ? user.address.street : '',
+    zipCode: user && user.address && user.address.postal_code ? user.address.postal_code : '',
+    city: user && user.address && user.address.city ? user.address.city : '',
+    country: user && user.address && user.address.country ? user.address.country : '',
   };
 
   const methods = useForm<typeof defaultValues>({
@@ -116,7 +116,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
   const onSubmit = async (data: typeof defaultValues) => {
     try {
       if (user) {
-        user.name = `${data.firstName.split(' ')[0]} ${data.lastName.split(' ')[0]}`;
+        user.name = `${data.firstName.split(' ')[0]} ${data?.lastName?.split(' ')[0]}`;
         user.email = data.emailAddress;
         user.phone = data.phoneNumber;
         user.birthdate = data.birthdate;
@@ -128,15 +128,11 @@ export default function AccountPersonalView({ updatedUser }: props) {
         user.address.city = data.city;
         user.address.country = data.country;
 
-        const status: boolean = await updateUser(user);
-        if (!status) {
-          setShowSnackbar({
-            show: true,
-            severity: 'error',
-            message: 'Algo correu mal, tente novamente.',
-          });
-          return;
-        }
+        await fetch('/api/account', {
+          method: 'PUT',
+          body: JSON.stringify(user),
+        });
+
         setShowSnackbar({
           show: true,
           severity: 'success',
@@ -155,18 +151,11 @@ export default function AccountPersonalView({ updatedUser }: props) {
     }
   };
 
-  const handleConfirmEmailClick = async () => {
-    try {
-      await sendConfirmEmailCode(user?.email);
-    } catch (error) {
-      console.error(error);
-    }
-    router.push(PATHS.auth.verifyEmail);
-  };
-
   const handleConfirmPhoneClick = async () => {
     try {
-      await sendConfirmPhoneCode(user?.email);
+      await fetch('/api/account/phone/verify', {
+        method: 'POST',
+      });
     } catch (error) {
       console.error(error);
     }
@@ -303,9 +292,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                 />
                 {user?.email_verified !== true && (
                   <Typography
-                    onClick={() => {
-                      handleConfirmEmailClick();
-                    }}
+                    onClick={() => {}}
                     sx={{
                       color: 'text.disabled',
                       width: 'fit-content',

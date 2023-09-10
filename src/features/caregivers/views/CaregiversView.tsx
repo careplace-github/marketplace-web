@@ -94,7 +94,12 @@ const CaregiversView = () => {
         email: values.email,
         phone: values.phoneNumber,
       };
-      await axios.post('/leads/caregiver', data);
+
+      await fetch('/api/leads/caregiver', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      });
+
       setShowSnackbar({
         show: true,
         severity: 'success',

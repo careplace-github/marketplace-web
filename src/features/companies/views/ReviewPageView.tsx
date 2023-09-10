@@ -23,6 +23,8 @@ import {
   Alert,
   FormControl as Form,
 } from '@mui/material';
+// lib
+import fetch from 'src/lib/fetch';
 // hooks
 import { useResponsive } from 'src/hooks';
 // components
@@ -62,14 +64,19 @@ export default function ReviewPageView({ update }: Props) {
       setLoading(true);
       const companyId = router.asPath.split('/')[2];
       const fetchCompany = async () => {
-        const response = await axios.get(`/health-units/${companyId}`);
+        const response = await fetch(`/api/health-units/${companyId}`, {
+          method: 'GET',
+        });
         setCompanyInfo(response.data);
       };
 
       fetchCompany();
       if (update) {
         const fetchPrevReview = async () => {
-          const response = await axios.get(`/customers/health-units/${companyId}/reviews`);
+          const response = await fetch(`/api/reviews/health-units/${companyId}`, {
+            method: 'GET',
+          });
+
           setPrevReview({
             id: response.data._id,
           });
@@ -85,14 +92,21 @@ export default function ReviewPageView({ update }: Props) {
   const handleSubmitReview = async () => {
     try {
       if (update) {
-        await axios.put(`/health-units/reviews/${prevReview?.id}`, {
-          comment: reviewComment,
-          rating: reviewRating,
+        await fetch(`/api/reviews/customer/${prevReview?.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            comment: reviewComment,
+            rating: reviewRating,
+          }),
         });
       } else {
-        await axios.post(`/health-units/${companyInfo?._id}/reviews`, {
-          comment: reviewComment,
-          rating: reviewRating,
+        await fetch(`/api/reviews/customer`, {
+          method: 'POST',
+          body: JSON.stringify({
+            comment: reviewComment,
+            rating: reviewRating,
+            health_unit: companyInfo?._id,
+          }),
         });
       }
       setSubmitted(true);

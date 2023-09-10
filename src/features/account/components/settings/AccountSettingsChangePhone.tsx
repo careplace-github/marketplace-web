@@ -14,7 +14,7 @@ import { LoadingButton } from '@mui/lab';
 import { Box, Typography, Snackbar, Alert } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // data
@@ -36,8 +36,6 @@ export default function AccountSettingsChangePhone() {
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-
-  const { fetchUser } = useAuthContext();
 
   const ChangePhoneSchema = Yup.object().shape({
     phoneNumber: Yup.string()
@@ -80,10 +78,12 @@ export default function AccountSettingsChangePhone() {
 
   const changeUserPhoneNumber = async (newPhone) => {
     try {
-      await axios.post('/auth/account/change-phone', {
-        phone: newPhone,
+      await fetch('/api/account/change-phone', {
+        method: 'POST',
+        body: JSON.stringify({ phone: newPhone }),
       });
-      fetchUser();
+
+      // TODO: review this fetchUser();
       router.push(PATHS.auth.verifyPhone);
     } catch (error) {
       setShowSnackbar({

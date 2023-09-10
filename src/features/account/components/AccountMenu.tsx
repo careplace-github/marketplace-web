@@ -2,8 +2,6 @@
 import NextLink from 'next/link';
 // react
 import { useState } from 'react';
-// auth
-import { useAuthContext } from 'src/contexts';
 // @mui
 import {
   Link,
@@ -17,6 +15,7 @@ import {
 } from '@mui/material';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
+import { signOut, useSession } from 'next-auth/react';
 
 // config
 import { NAV } from 'src/layouts';
@@ -69,15 +68,15 @@ type FormValuesProps = {
 
 export default function AccountMenu({ open, onClose }: FormValuesProps) {
   const isMdUp = useResponsive('up', 'md');
-  const { user, logout } = useAuthContext();
+  const { data: user } = useSession();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   // Form Data State
   const routes = useRouter();
 
-  const handleLogoutClick = () => {
+  const handleLogoutClick = async () => {
     setIsLoading(true);
-    logout();
+    await signOut();
     routes.push(PATHS.home);
   };
 

@@ -5,11 +5,13 @@ import { Container, Button, Unstable_Grid2 as Grid, SelectChangeEvent } from '@m
 import axios from 'src/lib/axios';
 // next
 import { useRouter } from 'next/router';
+// lib
+import fetch from 'src/lib/fetch';
 //
 import { ReviewList, ReviewToolbar, ReviewSummary } from 'src/features/reviews';
 import Iconify from 'src/components/iconify/Iconify';
 import { IReviewProps } from 'src/types/review';
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
 
@@ -40,15 +42,26 @@ export default function CompanyDetailReviews({
   const companyUpdateReviewUrl = `${router.asPath.split('?')[0]}/review/update`;
   const [userReview, setUserReview] = useState<any>();
 
-  const { isAuthenticated, user } = useAuthContext();
+  const { data: session, status } = useSession();
+
+  const isAuthenticated = status === 'authenticated';
 
   const fetchReviewEligibilty = async () => {
-    const response = await axios.get(`/health-units/${companyId}/reviews/eligibility`);
+    const response = await fetch('/api/reviews/eligibility', {
+      method: 'GET',
+      body: JSON.stringify({
+        health_unit: companyId,
+      }),
+    });
     if (response?.data?.eligible) {
       setButtonType(response?.data?.type || undefined);
-      const userReviewResponse: any = await axios.get(
-        `/customers/health-units/${companyId}/reviews`
-      );
+      const userReviewResponse = await fetch('/api/customer/reviews', {
+        method: 'GET',
+        body: JSON.stringify({
+          health_unit: companyId,
+        }),
+      });
+
       if (userReviewResponse?.data) {
         setUserReview(userReviewResponse?.data);
       }

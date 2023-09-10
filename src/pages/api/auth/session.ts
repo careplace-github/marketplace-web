@@ -12,8 +12,6 @@ export default async function sessionRoute(req: NextApiRequest, res: NextApiResp
     // const session = req.session;
     const session = (await getServerSession(req, res, authOptions)) as Session | null;
 
-
-
     // const accessToken = req.headers.authorization?.split(' ')[1];
     const accessToken = session?.accessToken;
 

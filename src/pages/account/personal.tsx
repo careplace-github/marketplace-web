@@ -7,7 +7,7 @@ import MainLayout from 'src/layouts/main';
 import { AccountPersonalView } from 'src/features/account';
 import { AuthGuard } from 'src/features/auth';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ AccountPersonalPage.getLayout = (page: React.ReactElement) => <MainLayout>{page}
 // ----------------------------------------------------------------------
 
 export default function AccountPersonalPage() {
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
   return (
     <>
       <Head>

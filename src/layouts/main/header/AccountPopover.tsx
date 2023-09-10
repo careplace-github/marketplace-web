@@ -2,7 +2,7 @@ import { useState } from 'react';
 // next
 import { useRouter } from 'next/router';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { signOut, useSession } from 'next-auth/react';
 // @mui
 import { Box, Divider, Typography, Stack, MenuItem } from '@mui/material';
 import Iconify from 'src/components/iconify';
@@ -50,7 +50,8 @@ const OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const { user, logout } = useAuthContext();
+  const { data: user } = useSession();
+
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -67,7 +68,7 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      logout();
+      signOut();
       handleClosePopover();
       router.push(PATHS.home);
     } catch (error) {
@@ -105,7 +106,7 @@ export default function AccountPopover() {
         >
           <CustomAvatar src={user?.profile_picture} type="normal" />
           <Typography sx={{ color: 'text.primary', fontSize: '1rem', fontWeight: '600' }} noWrap>
-            {truncateString(user?.name, 20)}
+            {truncateString(user?.name as string, 20)}
           </Typography>
           <Iconify
             icon="ic:baseline-keyboard-arrow-down"
@@ -122,7 +123,7 @@ export default function AccountPopover() {
       <MenuPopover open={openPopover} onClose={handleClosePopover} sx={{ width: '300px', p: 0 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
+            {user?.name}
           </Typography>
 
           <Typography variant="body2" sx={{ color: '#212B36' }} noWrap>

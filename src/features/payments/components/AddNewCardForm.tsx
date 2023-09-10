@@ -12,9 +12,9 @@ import Iconify from 'src/components/iconify/Iconify';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 // auth
-import { useAuthContext } from 'src/contexts';
-// axios
-import axios from 'src/lib/axios';
+import { useSession } from 'next-auth/react';
+// lib
+import fetch from 'src/lib/fetch';
 
 type Props = {
   onAddCard: (result: 'success' | 'error') => void;
@@ -30,7 +30,7 @@ type FormValuesProps = {
 function AddNewCardForm({ onAddCard }: Props) {
   const theme = useTheme();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
   const CardSchema = Yup.object().shape({
     cardHolder: Yup.string().required('Nome do titular é obrigatório.'),
     cardNumber: Yup.string()
@@ -73,17 +73,24 @@ function AddNewCardForm({ onAddCard }: Props) {
       };
 
       const card_token = (
-        await axios.post('/payments/tokens/card', {
-          card_number: cardData.number,
-          exp_month: cardData.exp_month,
-          exp_year: cardData.exp_year,
-          cvc: cardData.cvc,
+        await fetch('/api/payments/tokens/card', {
+          method: 'POST',
+          body: JSON.stringify({
+            card_number: cardData.number,
+            exp_month: cardData.exp_month,
+            exp_year: cardData.exp_year,
+            cvc: cardData.cvc,
+          }),
         })
       ).data;
 
-      await axios.post('/payments/payment-methods', {
-        payment_method_token: card_token.id,
+      await fetch('/api/payments/payment-methods', {
+        method: 'POST',
+        body: JSON.stringify({
+          payment_method_token: card_token.id,
+        }),
       });
+
       setIsSubmitting(false);
       reset();
       onAddCard('success');

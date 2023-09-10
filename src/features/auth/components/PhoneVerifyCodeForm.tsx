@@ -15,8 +15,10 @@ import { LoadingButton } from '@mui/lab';
 import FormProvider, { RHFCodes, RHFTextField } from 'src/components/hook-form';
 import useCountdown from 'src/hooks/useCountdown';
 import { useSnackbar } from 'src/components/snackbar';
+// lib
+import fetch from 'src/lib/fetch';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // routes
 import { PATHS } from 'src/routes/paths';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
@@ -36,7 +38,7 @@ function EmailVerifyCodeForm() {
   const theme = useTheme();
   const { push } = useRouter();
   const router = useRouter();
-  const { sendConfirmPhoneCode, verifyPhoneCode, user } = useAuthContext();
+  const { data: user } = useSession();
   const [resendAvailable, setResendAvailable] = useState(false);
   // The component takes around 2 seconds to initialize so we need to set the countdown to 47 seconds for it to start at 45
   const countdown = useCountdown(new Date(Date.now() + 47000));
@@ -81,7 +83,10 @@ function EmailVerifyCodeForm() {
         getValues('code5') +
         getValues('code6');
 
-      await verifyPhoneCode(user?.email, code);
+      await fetch(`/api/account/verify-phone-code`, {
+        method: 'POST',
+        body: JSON.stringify({ email: user?.email, code }),
+      });
 
       push(PATHS.account.personal);
     } catch (error) {
@@ -102,7 +107,9 @@ function EmailVerifyCodeForm() {
         setResendAvailable(false);
       }, 1000);
 
-      await sendConfirmPhoneCode(email);
+      await fetch(`/api/account/send-confirm-phone-code`, {
+        method: 'POST',
+      });
 
       // Reset the code inputs
       setValue('code1', '');

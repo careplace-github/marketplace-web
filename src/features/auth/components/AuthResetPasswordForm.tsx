@@ -28,7 +28,7 @@ import useCountdown from 'src/hooks/useCountdown';
 // lib
 import axios from 'src/lib/axios';
 // contexts
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
 
@@ -85,7 +85,6 @@ export default function AuthNewPasswordForm() {
     password: '',
     confirmPassword: '',
   };
-  const { forgotPassword, resetPassword } = useAuthContext();
 
   const methods = useForm({
     mode: 'onChange',
@@ -111,8 +110,14 @@ export default function AuthNewPasswordForm() {
         getValues('code5') +
         getValues('code6');
 
-      await resetPassword(data.email, code, data.password);
-
+      await fetch('/api/auth/reset-password', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: data.email,
+          code,
+          newPassword: data.password,
+        }), // Convert data to JSON format
+      });
       // Show success message popup
       enqueueSnackbar('Change password success!');
 
@@ -142,7 +147,12 @@ export default function AuthNewPasswordForm() {
         setResendAvailable(false);
       }, 1000);
 
-      await forgotPassword(email);
+      await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+        }), // Convert data to JSON format
+      });
 
       // Show success message popup
       enqueueSnackbar('Code sent successfully!');

@@ -26,9 +26,11 @@ function CancelOrderModal({ onClose, open, orderId }: Props) {
   const onCancelOrder = async (message: string) => {
     setIsSubmitting(true);
     try {
-      await axios.post(`/customers/orders/home-care/${orderId}/cancel`, {
-        cancellation_reason: message,
+      await fetch(`/api/orders/${orderId}/cancel`, {
+        method: 'POST',
+        body: JSON.stringify({ cancellation_reason: message }),
       });
+
       router.push(PATHS.account.orders);
     } catch (error) {
       console.error('error cancelling order', error);

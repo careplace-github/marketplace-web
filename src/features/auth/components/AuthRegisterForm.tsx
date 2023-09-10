@@ -14,8 +14,10 @@ import FormProvider, { RHFTextField, RHFPhoneField } from 'src/components/hook-f
 import { useSnackbar } from 'src/components/snackbar';
 // routes
 import { PATHS } from 'src/routes/paths';
+// lib
+import fetch from 'src/lib/fetch';
 // auth
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // data
 import { countries } from 'src/data';
 // types
@@ -36,8 +38,6 @@ export default function AuthRegisterForm() {
   const { push } = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const { register } = useAuthContext();
 
   const theme = useTheme();
 
@@ -152,7 +152,10 @@ export default function AuthRegisterForm() {
         password: data.password,
       };
 
-      await register(payload);
+      await fetch(`/api/auth/register`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
 
       enqueueSnackbar('Conta criada com sucesso.', { variant: 'success' });
 

@@ -2,7 +2,7 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useAuthContext } from 'src/contexts';
+import { useSession } from 'next-auth/react';
 // router
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
@@ -15,8 +15,8 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-// axios
-import axios from 'src/lib/axios';
+// lib
+import fetch from 'src/lib/fetch';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { IServiceProps } from 'src/types/utils';
@@ -59,10 +59,12 @@ export default function OrderQuestionnaireView() {
     message: '',
   });
   const router = useRouter();
-  const { user } = useAuthContext();
+  const { data: user } = useSession();
 
   const fetchUserRelatives = async () => {
-    const response = await axios.get('customers/patients');
+    const response = await fetch(`/api/patients`, {
+      method: 'GET',
+    });
     setUserRelatives(response.data.data || []);
 
     setRelativesLoading(false);
@@ -75,7 +77,9 @@ export default function OrderQuestionnaireView() {
   useEffect(() => {
     if (router.isReady) {
       const fetchCompany = async (companyId) => {
-        const response = await axios.get(`/health-units/${companyId}`);
+        const response = await fetch(`/api/health-units${companyId}`, {
+          method: 'GET',
+        });
         setCompanyInfo(response.data);
         const available = await getAvailableServices(response.data.services);
         setAvailableServices(available);
@@ -144,9 +148,13 @@ export default function OrderQuestionnaireView() {
     if (companyInfo && canPlaceAnOrder) {
       setIsSubmitting(true);
       try {
-        const response = await axios.post(`/customers/orders/home-care`, {
-          ...formData,
+        const response = await fetch(`/api/orders/home-care`, {
+          method: 'POST',
+          body: JSON.stringify({
+            ...formData,
+          }),
         });
+
         reset();
         router.push(PATHS.orders.questionnaireCompleted(response.data._id));
       } catch (error) {

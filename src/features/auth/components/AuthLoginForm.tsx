@@ -14,7 +14,6 @@ import { PATHS } from 'src/routes/paths';
 import Iconify from 'src/components/iconify';
 import FormProvider, { RHFTextField } from 'src/components/hook-form';
 // auth
-import { useAuthContext } from 'src/contexts/useAuthContext';
 import { signIn } from 'next-auth/react';
 
 // ----------------------------------------------------------------------
@@ -31,8 +30,6 @@ export default function AuthLoginForm() {
   const [errorMessage, setErrorMessage] = useState<string | undefined>();
 
   const theme = useTheme();
-
-  const { login, confirmationCode } = useAuthContext();
 
   const { push } = useRouter();
   const router = useRouter();
@@ -70,7 +67,6 @@ export default function AuthLoginForm() {
 
     try {
       setIsSubmitting(true);
-      await login(email, password);
 
       const result = await signIn('credentials', {
         email,
@@ -88,7 +84,7 @@ export default function AuthLoginForm() {
     } catch (error) {
       if (error.error.message === 'User is not confirmed.') {
         setIsSubmitting(false);
-        await confirmationCode(data.email);
+        // TODO - send confirmation code
         router.push({
           pathname: PATHS.auth.verifyCode,
           query: {

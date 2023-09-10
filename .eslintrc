@@ -34,8 +34,16 @@
         "alwaysTryTypes": true
       },
       "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx"],
-        "moduleDirectory": ["node_modules", "src/"]
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ],
+        "moduleDirectory": [
+          "node_modules",
+          "src/"
+        ]
       }
     }
   },
@@ -44,6 +52,7 @@
     "react-hooks/exhaustive-deps": 0, // Remove
     "import/no-unresolved": 0, // Remove
     "react-hooks/rules-of-hooks": 0, // Remove
+    "import/no-extraneous-dependencies": 0, // Remove
     "prefer-regex-literals": 0, // Remove
     "import/no-named-as-default-member": 0, // Remove
     "import/no-named-as-default": 0, // Remove
@@ -51,10 +60,7 @@
     "jsx-a11y/no-noninteractive-element-interactions": 0, // Remove
     "jsx-a11y/click-events-have-key-events": 0, // Remove
     "arrow-body-style": 0, // Remove
-
-
     "react/jsx-no-constructed-context-values": 0,
-
     "no-alert": 0,
     "camelcase": 0,
     "no-console": 0,

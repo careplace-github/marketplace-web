@@ -22,8 +22,8 @@ import { useTheme } from '@mui/material/styles';
 // types
 import { ICompanyProps } from 'src/types/company';
 import { ISnackbarProps } from 'src/types/snackbar';
-// axios
-import axios from 'src/lib/axios';
+// lib
+import fetch from 'src/lib/fetch';
 // components
 import Image from 'src/components/image';
 import Iconify from 'src/components/iconify';
@@ -76,9 +76,12 @@ export default function CheckoutSummary({
   const handleSubmitDiscount = async () => {
     try {
       // TODO: check discount code that was submitted
-      const response = await axios.post('/payments/promotion-code/eligibility', {
-        promotion_code: discountCode,
+
+      const response = await fetch('/api/payments/promotion-code/eligibility', {
+        method: 'POST',
+        body: JSON.stringify({ promotion_code: discountCode }),
       });
+
       if (response.data.coupon.ammount_off) {
         setDiscount({ type: 'amount', value: response.data.coupon.ammount_off });
       }

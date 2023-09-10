@@ -21,6 +21,8 @@ import { useCallback, useState } from 'react';
 import { countries, genders, kinshipDegrees } from 'src/data';
 // types
 import { IRelativeProps } from 'src/types/relative';
+// lib
+import fetch from 'src/lib/fetch';
 
 type Props = {
   action: 'add' | 'edit';
@@ -182,7 +184,13 @@ export default function RelativeInformationModal({
       if (relative && relative._id) {
         let uploadedFileURL = data.profile_picture;
         if (fileData) {
-          const response = await axios.post('/files', fileData);
+          const response = await fetch('/api/files', {
+            method: 'POST',
+            body: fileData,
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
           uploadedFileURL = response.data.url;
         }
         try {
@@ -203,8 +211,11 @@ export default function RelativeInformationModal({
             gender: data.gender,
             medical_conditions: data.medicalConditions,
           };
+          await fetch(`/api/patients/${relative._id}`, {
+            method: 'PUT',
+            body: JSON.stringify(updateRelative),
+          });
 
-          await axios.put(`/customers/patients/${relative._id}`, updateRelative);
           onActionMade(action, 'success');
         } catch (error) {
           setIsSubmiting(false);
@@ -216,7 +227,13 @@ export default function RelativeInformationModal({
     if (action === 'add') {
       let uploadedFileURL = '';
       if (fileData) {
-        const response = await axios.post('/files', fileData);
+        const response = await fetch('/api/files', {
+          method: 'POST',
+          body: fileData,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
         uploadedFileURL = response.data.url;
       }
       try {
@@ -236,7 +253,11 @@ export default function RelativeInformationModal({
           gender: data.gender,
         };
 
-        await axios.post(`/customers/patients/`, createRelative);
+        await fetch(`/api/patients`, {
+          method: 'POST',
+          body: JSON.stringify(createRelative),
+        });
+
         onActionMade(action, 'success');
       } catch (error) {
         setIsSubmiting(false);

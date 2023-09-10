@@ -144,8 +144,6 @@ export default function CompaniesFilters({
       target: { value },
     } = event;
 
-    console.log('changed recurrency');
-
     const newFilter = value as number;
     setFilters({
       ...filters,
