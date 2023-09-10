@@ -46,7 +46,7 @@ export default function AccountRelativesView() {
     const response = await fetch('/api/patients', {
       method: 'GET',
     });
-    setUserRelatives(response.data.data);
+    setUserRelatives(response.data);
     setIsLoading(false);
   };
 

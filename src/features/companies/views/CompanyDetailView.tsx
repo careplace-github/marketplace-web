@@ -136,14 +136,17 @@ export default function CompanyDetailView() {
     const fetchServices = async () => {
       setServicesLoading(true);
       const response = await fetch(
-        `/api/services${new URLSearchParams({
+        `/api/services?${new URLSearchParams({
           documentsPerPage: '30',
         })}`,
         {
           method: 'GET',
         }
       );
-      setAvailableServices(response.data.data);
+
+      console.log('response', response);
+
+      setAvailableServices(response.data);
       setServicesLoading(false);
     };
 
@@ -161,7 +164,7 @@ export default function CompanyDetailView() {
       const response = await fetch('/api/health-units/agencies/search', {
         method: 'GET',
       });
-      const allCompanies = response.data.data;
+      const allCompanies = response.data;
       const randomIndex: number[] = [];
       if (allCompanies?.length < 3) {
         setSimilarCompanies([]);
@@ -195,7 +198,7 @@ export default function CompanyDetailView() {
 
   const fetchReviews = async (current, sortSelected, companyId) => {
     const responseCompanyReviews = await fetch(
-      `/api/reviews/health-units/${companyId}
+      `/api/reviews/health-units/${companyId}?
       ${new URLSearchParams({
         documentsPerPage: reviewsPerPage.toString(),
         page: current,
@@ -208,7 +211,10 @@ export default function CompanyDetailView() {
     );
 
     const reviewsInfo = responseCompanyReviews.data;
-    setCompanyReviews(reviewsInfo.data);
+
+    console.log('reviewsInfo', reviewsInfo);
+
+    setCompanyReviews(reviewsInfo);
     setReviewsPaginationInfo({
       currentPage: reviewsInfo.page,
       pages: reviewsInfo.totalPages,
@@ -223,7 +229,10 @@ export default function CompanyDetailView() {
         const responseCompanyInfo = await fetch(`/api/health-units/${companyId}`, {
           method: 'GET',
         });
-        setCompanyInfo(responseCompanyInfo.data);
+
+        console.log('responseCompanyInfo', responseCompanyInfo);
+
+        setCompanyInfo(responseCompanyInfo);
         await fetchReviews(1, reviewSort, companyId);
         setLoading(false);
       };

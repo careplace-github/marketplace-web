@@ -100,14 +100,14 @@ export default function AccountOrdersView() {
         const response = await fetch('/api/orders/home-care', {
           method: 'GET',
         });
-        const auxFilteredOrders = response.data.data.filter((order: IOrderProps) => {
+        const auxFilteredOrders = response.data.filter((order: IOrderProps) => {
           if (tab === 'all') {
             return order.status !== 'cancelled';
           }
           return order.status === tab;
         });
         setOrders(auxFilteredOrders);
-        setOrdersFetched(response.data.data);
+        setOrdersFetched(response.data);
       } catch (error) {
         console.error(error);
       }

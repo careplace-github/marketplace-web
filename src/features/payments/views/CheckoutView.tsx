@@ -113,7 +113,7 @@ export default function CheckoutView() {
       const response = await fetch(`/api/patients`, {
         method: 'GET',
       });
-      setUserRelatives(response.data.data);
+      setUserRelatives(response.data);
     } catch (error) {
       console.error(error);
     }

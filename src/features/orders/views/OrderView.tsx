@@ -99,7 +99,7 @@ export default function OrderView() {
       const response = await fetch(`/api/patients`, {
         method: 'GET',
       });
-      setUserRelatives(response.data.data);
+      setUserRelatives(response.data);
       setRelativesLoading(false);
     } catch (error) {
       console.error(error);

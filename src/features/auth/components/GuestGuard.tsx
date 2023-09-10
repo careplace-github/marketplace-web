@@ -22,10 +22,6 @@ export default function GuestGuard({ children }: GuestGuardProps) {
 
   const isLoading = status === 'loading';
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
-
   if (isAuthenticated) {
     const { pathname, push } = useRouter();
 

@@ -47,20 +47,13 @@ export default function CompanyDetailReviews({
   const isAuthenticated = status === 'authenticated';
 
   const fetchReviewEligibilty = async () => {
-    const response = await fetch('/api/reviews/eligibility', {
+    const response = await fetch(`/api/reviews/customer/health-unit/${companyId}/eligibility`, {
       method: 'GET',
-      body: JSON.stringify({
-        health_unit: companyId,
-      }),
     });
-    if (response?.data?.eligible) {
-      setButtonType(response?.data?.type || undefined);
-      const userReviewResponse = await fetch('/api/customer/reviews', {
-        method: 'GET',
-        body: JSON.stringify({
-          health_unit: companyId,
-        }),
-      });
+
+    if (response?.eligible) {
+      setButtonType(response?.type || undefined);
+      const userReviewResponse = await fetch(`/api/reviews/customer/health-unit/${companyId}`);
 
       if (userReviewResponse?.data) {
         setUserReview(userReviewResponse?.data);

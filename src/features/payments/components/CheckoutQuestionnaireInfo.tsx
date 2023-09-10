@@ -150,7 +150,7 @@ export default function CheckoutQuestionnaireInfo({
     const response = await fetch(`/api/payments/payment-methods`, {
       method: 'GET',
     });
-    return response.data.data;
+    return response.data;
   }
 
   useEffect(() => {

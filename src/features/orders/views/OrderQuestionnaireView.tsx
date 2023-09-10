@@ -65,7 +65,7 @@ export default function OrderQuestionnaireView() {
     const response = await fetch(`/api/patients`, {
       method: 'GET',
     });
-    setUserRelatives(response.data.data || []);
+    setUserRelatives(response.data || []);
 
     setRelativesLoading(false);
   };

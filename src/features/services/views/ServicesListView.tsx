@@ -21,7 +21,7 @@ export default function ServicesListView() {
     setServicesLoading(true);
     const fetchServices = async () => {
       const response = await fetch(
-        `/api/services${new URLSearchParams({
+        `/api/services?${new URLSearchParams({
           documentsPerPage: '30',
         })}`,
         {
@@ -29,7 +29,7 @@ export default function ServicesListView() {
         }
       );
       const normalServices: IServiceProps[] = [];
-      setAvailableServices(response.data.data);
+      setAvailableServices(response.data);
       setServicesLoading(false);
     };
 

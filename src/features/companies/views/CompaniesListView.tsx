@@ -50,7 +50,7 @@ export default function CompaniesListView() {
     const fetchServices = async () => {
       setServicesLoading(true);
       const response = await fetch(
-        `/api/services${new URLSearchParams({
+        `/api/services?${new URLSearchParams({
           documentsPerPage: '30',
         })}
           `,
@@ -59,7 +59,7 @@ export default function CompaniesListView() {
         }
       );
 
-      setAvailableServices(response.data.data);
+      setAvailableServices(response.data);
       setServicesLoading(false);
     };
 
@@ -83,8 +83,8 @@ export default function CompaniesListView() {
         method: 'GET',
       });
 
-      setCompanies(response.data.data);
-      setTotalPages(response.data.totalPages);
+      setCompanies(response.data);
+      setTotalPages(response.totalPages);
       setLoading(false);
     };
     fetchCompanies();
@@ -221,7 +221,7 @@ export default function CompaniesListView() {
             onSort={handleSort}
             headCells={sortHead}
           />
-          {companies.length > 0 ? (
+          {companies?.length > 0 ? (
             <CompaniesList
               onPageChange={handlePageChange}
               totalPages={totalPages}
