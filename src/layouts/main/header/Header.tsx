@@ -7,7 +7,8 @@ import useResponsive from 'src/hooks/useResponsive';
 import { useAuthContext } from 'src/contexts';
 // config
 import { HEADER } from 'src/layouts/config';
-// paths
+// routes
+import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // google maps api
 import { useJsApiLoader } from '@react-google-maps/api';
@@ -36,7 +37,7 @@ const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as strin
 
 export default function Header({ headerOnDark }: Props) {
   const { isAuthenticated, isInitialized } = useAuthContext();
-
+  const router = useRouter();
   const theme = useTheme();
 
   const isMdUp = useResponsive('up', 'md');
@@ -112,7 +113,10 @@ export default function Header({ headerOnDark }: Props) {
             <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
               {!isAuthenticated && isMdUp && (
                 <Link
-                  href={PATHS.auth.register}
+                  onClick={() => {
+                    localStorage.setItem('prevUrl', router.asPath);
+                    router.push(PATHS.auth.register);
+                  }}
                   variant="subtitle1"
                   underline="none"
                   sx={{
@@ -135,7 +139,10 @@ export default function Header({ headerOnDark }: Props) {
                   <Button
                     variant="contained"
                     color="inherit"
-                    href={PATHS.auth.login}
+                    onClick={() => {
+                      localStorage.setItem('prevUrl', router.asPath);
+                      router.push(PATHS.auth.login);
+                    }}
                     rel="noopener"
                     sx={{
                       px: 4,
