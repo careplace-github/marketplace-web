@@ -9,7 +9,6 @@ import {
   CardExpiryElement,
   CardElement,
 } from '@stripe/react-stripe-js';
-
 // @mui
 import { Box, Stack, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -29,7 +28,8 @@ import { useAuthContext } from 'src/contexts';
 import axios from 'src/lib/axios';
 import Card from 'src/theme/overrides/Card';
 import { useState } from 'react';
-// import css
+// styles
+import styles from './AccountNewCardModal.module.css';
 
 // ----------------------------------------------------------------------
 
@@ -173,17 +173,25 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
           Adicionar Cartão
         </Typography>
 
-        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '20px' }}
+        >
           {/**
            * <CardElement options={CARD_ELEMENT_OPTIONS}/>
            */}
-
-          <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
-
-          <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
-
-          <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
-
+          <div className={styles.cardElement__container}>
+            <p className={styles.cardElement__label}>Número do Cartão</p>
+            <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
+          </div>
+          <div className={styles.cardElement__container}>
+            <p className={styles.cardElement__label}>Validade</p>
+            <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
+          </div>
+          <div className={styles.cardElement__container}>
+            <p className={styles.cardElement__label}>CVV/CVC</p>
+            <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
+          </div>
           <Stack
             direction="row"
             justifyContent="space-between"
