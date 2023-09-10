@@ -143,7 +143,6 @@ export default function Header({ headerOnDark }: Props) {
                       localStorage.setItem('prevUrl', router.asPath);
                       router.push(PATHS.auth.login);
                     }}
-                    rel="noopener"
                     sx={{
                       px: 4,
                       bgcolor: 'primary.main',

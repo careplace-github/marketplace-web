@@ -49,8 +49,7 @@ export default function NavMobile({ data }: NavProps) {
       logout();
       handleClose();
       const prevUrl = localStorage.getItem('prevUrl');
-      routes.push(prevUrl || PATHS.home);
-      s;
+      router.push(prevUrl || PATHS.home);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });

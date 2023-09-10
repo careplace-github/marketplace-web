@@ -132,15 +132,15 @@ export default function OrderQuestionnaireView() {
 
   const onSubmit = async (data) => {
     const canPlaceAnOrder = user?.email_verified && user?.phone_verified;
-    // if (!canPlaceAnOrder) {
-    //   setShowSnackbar({
-    //     show: true,
-    //     severity: 'warning',
-    //     message: 'Para fazer um pedido tem que ter o seu Email e Telémovel verificados.',
-    //   });
-    //   setIsSubmitting(false);
-    //   return;
-    // }
+    if (!canPlaceAnOrder) {
+      setShowSnackbar({
+        show: true,
+        severity: 'warning',
+        message: 'Para fazer um pedido tem que ter o seu Email e Telémovel verificados.',
+      });
+      setIsSubmitting(false);
+      return;
+    }
     if (companyInfo && canPlaceAnOrder) {
       setIsSubmitting(true);
       try {
