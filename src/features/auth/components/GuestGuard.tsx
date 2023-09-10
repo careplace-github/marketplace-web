@@ -24,9 +24,10 @@ export default function GuestGuard({ children }: GuestGuardProps) {
 
   if (isAuthenticated) {
     const { pathname, push } = useRouter();
+    const prevUrl = localStorage.getItem('prevUrl');
 
     useEffect(() => {
-      push(PATHS.companies.root);
+      push(prevUrl || PATHS.companies.root);
     }, [pathname, push]);
 
     return <LoadingScreen />;

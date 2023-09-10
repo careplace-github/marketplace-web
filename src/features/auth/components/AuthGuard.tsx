@@ -22,10 +22,11 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   // Redirect to login page if user is not authenticated
   if (!isAuthenticated && !user?.email) {
-    const { push } = useRouter();
+    const { push, pathname } = useRouter();
 
     // Redirect to login page
     useEffect(() => {
+      localStorage.setItem('prevUrl', pathname);
       push(PATHS.auth.login);
     }, [push]);
 
