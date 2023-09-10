@@ -122,7 +122,12 @@ function AddNewCardForm({ onAddCard }: Props) {
       }}
     >
       <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <CardElement options={CARD_ELEMENT_OPTIONS} />
+        <CardNumberElement options={CARD_ELEMENT_OPTIONS} />
+
+        <CardExpiryElement options={CARD_ELEMENT_OPTIONS} />
+
+        <CardCvcElement options={CARD_ELEMENT_OPTIONS} />
+
         <Stack
           direction="row"
           justifyContent="space-between"
