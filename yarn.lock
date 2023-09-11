@@ -1186,6 +1186,18 @@
   dependencies:
     "@sinonjs/commons" "^2.0.0"
 
+"@stripe/react-stripe-js@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.npmjs.org/@stripe/react-stripe-js/-/react-stripe-js-2.2.0.tgz"
+  integrity sha512-Nvqexxh6uu/qfLrmLJNdWERUXWWL3LhCJMc7vKofBKbF1IOh4/dSLYqYrycJYpVF5ApCUJvAYJRGw68y+JPx2Q==
+  dependencies:
+    prop-types "^15.7.2"
+
+"@stripe/stripe-js@^2.1.2":
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/@stripe/stripe-js/-/stripe-js-2.1.2.tgz"
+  integrity sha512-xyB/oVoFBPLCVGRUGQphzMnfCVfWGqKLb2+v/sIJAwYlVMrS2uF4iyZHpE7Lg1DtDL5qsPxSTpUGs0kRtMdbRA==
+
 "@swc/helpers@0.4.14":
   version "0.4.14"
   resolved "https://registry.npmjs.org/@swc/helpers/-/helpers-0.4.14.tgz"
@@ -5743,6 +5755,15 @@ prompts@2.4.2, prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
+prop-types@15.7.2:
+  version "15.7.2"
+  resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
+  integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.8.1"
+
 prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
@@ -5860,7 +5881,7 @@ react-i18next@^12.2.0:
     "@babel/runtime" "^7.20.6"
     html-parse-stringify "^3.0.1"
 
-react-is@^16.13.1, react-is@^16.7.0:
+react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
@@ -5919,6 +5940,13 @@ react-slick@^0.29.0:
     json2mq "^0.2.0"
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
+
+react-stripe-elements@^6.1.2:
+  version "6.1.2"
+  resolved "https://registry.npmjs.org/react-stripe-elements/-/react-stripe-elements-6.1.2.tgz"
+  integrity sha512-gYbYhVVJm3Woc84TgmuiqUj44rI/BZGUVUTTmS0U6kZyZa5fYMPlKKIsVZdQZufQ7Ab4BXLO2LSxBlGY0s2jew==
+  dependencies:
+    prop-types "15.7.2"
 
 react-transition-group@^4.4.5:
   version "4.4.5"

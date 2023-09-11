@@ -26,6 +26,7 @@ import {
 import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import FormProvider from 'src/components/hook-form';
 import Iconify from 'src/components/iconify/Iconify';
 import {
   FilterServices,
@@ -69,6 +70,7 @@ type Props = {
   orderBillingDetails?: BillingDetailsProps;
   orderStatus?: string;
   previousPaymentMethod?: string;
+  methods?: any;
 };
 
 type PaymentMethodProps = {
@@ -81,7 +83,7 @@ type PaymentMethodProps = {
 export default function CheckoutQuestionnaireInfo({
   relatives,
   onValidChange,
-
+  methods,
   orderBillingDetails,
   services,
   checkoutVersion = false,
@@ -623,11 +625,13 @@ export default function CheckoutQuestionnaireInfo({
             />
             <Collapse sx={{ mt: '0px' }} in={openPaymentInfo} unmountOnExit>
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <CheckoutPaymentMethod
-                  options={CARDS}
-                  previousPaymentMethod={previousPaymentMethod}
-                  onPaymentMethodSelect={onPaymentMethodSelect}
-                />
+                <FormProvider key="checkout_view_form" methods={methods}>
+                  <CheckoutPaymentMethod
+                    options={CARDS}
+                    previousPaymentMethod={previousPaymentMethod}
+                    onPaymentMethodSelect={onPaymentMethodSelect}
+                  />
+                </FormProvider>
                 <Divider sx={{ mt: '20px', mb: '20px' }} />
                 <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
                   <Button

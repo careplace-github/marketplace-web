@@ -192,7 +192,6 @@ export default function AccountOrdersView() {
                     .map((order: IOrderProps) => {
                       return (
                         <AccountOrdersTableRow
-                          key={order._id}
                           row={order}
                           selected={selected.includes(order._id)}
                         />
