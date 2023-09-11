@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.1.21 (2023-09-11)
+
+
+### Bug Fixes
+
+* resolve merge errors ([c0db3ce](https://github.com/careplace-github/marketplace-web/commit/c0db3ce03b51b106d231d168d96407509583252a))
+
 ### 0.1.20 (2023-09-11)
 
 ### 0.1.19 (2023-09-09)
