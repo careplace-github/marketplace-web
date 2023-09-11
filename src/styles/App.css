@@ -1,0 +1,74 @@
+.DemoPicker {
+    font-size: 18px;
+    border-radius: 3px;
+    background-color: white;
+    height: 48px;
+    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    border: 0;
+    width: 100%;
+    color: #6772e5;
+    outline: none;
+    background: transparent;
+
+    -webkit-appearance: none;
+}
+
+.DemoWrapper {
+    margin: 0 auto;
+    max-width: 500px;
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.Demo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 40%;
+}
+
+
+.StripeElement {
+    display: block;
+    height: 53px;
+    background-color: rgba(145, 158, 171, 0.08);
+    padding: 25px 12px 8px;
+    border-radius: 8px;
+    cursor: text;
+   /* margin: 10px 0 20px 0;
+    background-color: #fafafa;
+    padding: 10px 14px;
+    font-size: 1em;
+    font-family: "Source Code Pro", monospace;
+    border-bottom: 2px solid #e2e8f0;
+    outline: 0; */
+}
+
+.CardNumberField-input-wrapper{
+    font-size: 12px;
+    color: blue
+}
+
+.ElementsApp .InputElement{
+    font-size: 12px;
+}
+
+.StripeElement--focus {
+    background-color: rgba(145, 158, 171, 0.16);
+    /* border-bottom: 2px solid #01896a;
+    -webkit-transition: all 150ms ease;
+    transition: all 150ms ease; */
+}
+
+.StripeElement.IdealBankElement,
+.StripeElement.FpxBankElement,
+.StripeElement.PaymentRequestButton {
+    padding: 0;
+}
+
+.StripeElement.PaymentRequestButton {
+    height: 40px;
+}
