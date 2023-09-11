@@ -19,7 +19,6 @@ import kinshipDegrees from 'src/data/kinshipDegrees';
 type Props = {
   row: IOrderProps;
   selected: boolean;
-  key: any;
 };
 
 const statusOptions = [
