@@ -30,6 +30,7 @@ import { getAvailableServices } from 'src/utils/getAvailableServices';
 import { PATHS } from 'src/routes';
 // components
 import CheckoutSummary from 'src/features/payments/components/CheckoutSummary';
+import ConfirmPhoneModal from 'src/components/confirm-phone-modal/ConfirmPhoneModal';
 import CheckoutQuestionnaireInfo from 'src/features/payments/components/CheckoutQuestionnaireInfo';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { OrderQuestionnaireForm, OrderQuestionnaireSummary } from '../components';
@@ -69,6 +70,7 @@ export default function OrderView() {
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [showConfirmPhoneModal, setShowConfirmPhoneModal] = useState<boolean>(false);
   const [firstBillingDetailsData, setFirstBillingDetailsData] = useState<
     BillingDetailsProps | 'not fetched'
   >('not fetched');
@@ -90,7 +92,7 @@ export default function OrderView() {
   });
   const router = useRouter();
 
-  const { user } = useAuthContext();
+  const { user, sendConfirmPhoneCode } = useAuthContext();
 
   const fetchUserRelatives = async () => {
     try {
@@ -317,6 +319,18 @@ export default function OrderView() {
 
   const handleUpdateOrder = async () => {
     setIsSubmitting(true);
+    console.log('User phone confirmed', user?.phone_verified);
+    if (!user?.phone_verified) {
+      console.log('User phone inside', user?.phone_verified);
+      setIsSubmitting(false);
+      try {
+        await sendConfirmPhoneCode(user?.email);
+      } catch (error) {
+        console.error(error);
+      }
+      setShowConfirmPhoneModal(true);
+      return;
+    }
     try {
       const updatedOrder: OrderRequestProps = {
         health_unit: companyInfo?._id as string,
@@ -383,6 +397,12 @@ export default function OrderView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      <ConfirmPhoneModal
+        setShowSnackbar={setShowSnackbar}
+        open={showConfirmPhoneModal}
+        onClose={() => setShowConfirmPhoneModal(false)}
+        updateOrder
+      />
       <Snackbar
         open={showSnackbar.show}
         autoHideDuration={5000}
@@ -449,6 +469,10 @@ export default function OrderView() {
 
             {userRelatives && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
               <OrderQuestionnaireForm
+                fetchUserRelatives={() => {
+                  fetchUserRelatives();
+                }}
+                setShowSnackbar={setShowSnackbar}
                 relatives={userRelatives}
                 disableAllFields={orderInfo.status === 'accepted'}
                 orderInfo={orderInfo || null}

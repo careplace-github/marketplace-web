@@ -28,6 +28,7 @@ type Props = {
   open: boolean;
   onActionMade: Function;
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+  onNewRelativeCreated?: (relative: any) => void;
 };
 
 type FormProps = {
@@ -51,6 +52,7 @@ export default function RelativeInformationModal({
   open,
   onClose,
   onActionMade,
+  onNewRelativeCreated,
 }: Props) {
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
@@ -152,6 +154,7 @@ export default function RelativeInformationModal({
     setValue,
     getValues,
     handleSubmit,
+    reset,
     formState: { isDirty, isValid },
   } = methods;
 
@@ -236,7 +239,8 @@ export default function RelativeInformationModal({
           gender: data.gender,
         };
 
-        await axios.post(`/customers/patients/`, createRelative);
+        const newRelative = await axios.post(`/customers/patients/`, createRelative);
+        if (onNewRelativeCreated) onNewRelativeCreated(newRelative.data);
         onActionMade(action, 'success');
       } catch (error) {
         setIsSubmiting(false);
@@ -245,12 +249,19 @@ export default function RelativeInformationModal({
       }
     }
     setIsSubmiting(false);
+    reset();
     onClose({}, 'backdropClick');
     return true;
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal
+      open={open}
+      onClose={() => {
+        reset();
+        onClose({}, 'backdropClick');
+      }}
+    >
       <Box
         sx={{
           width: isMdUp ? 'auto' : '100vw',
@@ -287,7 +298,10 @@ export default function RelativeInformationModal({
               color: theme.palette.mode === 'light' ? 'grey.400' : 'white',
             },
           }}
-          onClick={() => onClose({}, 'backdropClick')}
+          onClick={() => {
+            reset();
+            onClose({}, 'backdropClick');
+          }}
         />
         <Typography variant="h5" sx={{ mb: 3, width: '100%', alignText: 'left' }}>
           {action === 'edit' ? 'Editar Familiar' : 'Adicionar Familiar'}
