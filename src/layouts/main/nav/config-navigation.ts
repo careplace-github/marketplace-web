@@ -12,6 +12,10 @@ export const footerLinksLoggedOut = [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
       { title: 'Torne-se Cuidador', path: PATHS.contactUs },
+      {
+        title: 'Instituições de Saúde',
+        path: (process.env.NEXT_PUBLIC_BUSINESS_URL as string) || '/',
+      },
       { title: 'Suporte', path: PATHS.support },
     ],
   },
@@ -33,6 +37,10 @@ export const footerLinksLoggedIn = [
     subheader: 'Careplace',
     items: [
       { title: 'Torne-se Cuidador', path: PATHS.contactUs },
+      {
+        title: 'Instituições de Saúde',
+        path: (process.env.NEXT_PUBLIC_BUSINESS_URL as string) || '/',
+      },
       { title: 'Suporte', path: PATHS.support },
     ],
   },
