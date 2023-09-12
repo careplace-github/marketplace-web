@@ -27,6 +27,7 @@ import { getAvailableServices } from 'src/utils/getAvailableServices';
 // components
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import RelativeInformationModal from 'src/features/account/components/relatives/RelativeInformationModal';
 //
 import { ISnackbarProps } from 'src/types/snackbar';
 import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components';
@@ -52,6 +53,7 @@ export default function OrderQuestionnaireView() {
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
   const [formData, setFormData] = useState<OrderRequestProps>();
+  const [openAddNewRelative, setOpenAddNewRelative] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
     show: false,
@@ -181,6 +183,16 @@ export default function OrderQuestionnaireView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      <RelativeInformationModal
+        action="add"
+        open={openAddNewRelative}
+        onActionMade={(action, status) => {
+          if (status === 'success') {
+            fetchUserRelatives();
+          }
+        }}
+        onClose={() => setOpenAddNewRelative(false)}
+      />
       {showSnackbar.show && (
         <Snackbar
           open={showSnackbar.show}
@@ -219,6 +231,7 @@ export default function OrderQuestionnaireView() {
             <Stack>
               {userRelatives && (
                 <OrderQuestionnaireForm
+                  onAddNewRelative={() => setOpenAddNewRelative(true)}
                   relatives={userRelatives}
                   services={availableServices}
                   onValidChange={handleValidChange}

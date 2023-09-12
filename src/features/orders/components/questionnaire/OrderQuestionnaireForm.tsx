@@ -39,6 +39,7 @@ type Props = {
   onValidChange: Function;
   orderInfo?: any;
   disableAllFields?: boolean;
+  onAddNewRelative?: () => void;
 };
 
 export default function OrderQuestionnaireForm({
@@ -47,6 +48,7 @@ export default function OrderQuestionnaireForm({
   services,
   orderInfo,
   disableAllFields,
+  onAddNewRelative,
 }: Props) {
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
@@ -531,18 +533,23 @@ export default function OrderQuestionnaireForm({
               readOnly={disableAllFields}
               selectText="Escolha um familiar"
             />
-            <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
-              <Button
-                variant="text"
-                sx={{
-                  mt: 2,
-                  color: 'primary.main',
-                }}
-                onClick={() => router.push(PATHS.account.relatives)}
-              >
-                Adicionar Familiar
-              </Button>
-            </Stack>
+            {!disableAllFields && (
+              <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
+                <Button
+                  variant="text"
+                  sx={{
+                    mt: 2,
+                    color: 'primary.main',
+                  }}
+                  onClick={() => {
+                    if (onAddNewRelative) onAddNewRelative();
+                    // router.push(PATHS.account.relatives);
+                  }}
+                >
+                  Adicionar Familiar
+                </Button>
+              </Stack>
+            )}
           </>
         ) : (
           <EmptyState

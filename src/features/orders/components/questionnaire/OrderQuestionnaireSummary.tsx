@@ -136,7 +136,7 @@ export default function OrderQuestionnaireSummary({
             <Typography variant="caption" sx={{ opacity: 0.72 }}>
               {updateVersion
                 ? '* Ao atualizar o seu pedido será feita uma nova solicitação de orçamento.'
-                : '* Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendototalmente gratuíto.'}
+                : '* Efetuar um pedido de orçamento não terá quaisquer tipos de custos associados, sendo totalmente gratuíto.'}
             </Typography>
           </Stack>
         </>
