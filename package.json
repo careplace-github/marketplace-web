@@ -39,7 +39,7 @@
     "@mui/lab": "^5.0.0-alpha.124",
     "@mui/material": "^5.11.15",
     "@mui/system": "^5.11.15",
-    "@mui/x-date-pickers": "^6.0.3",
+    "@mui/x-date-pickers": "^6.11.2",
     "@react-google-maps/api": "^2.18.1",
     "@reduxjs/toolkit": "^1.9.3",
     "@stripe/react-stripe-js": "^2.2.0",
