@@ -26,7 +26,9 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
     // Redirect to login page
     useEffect(() => {
-      localStorage.setItem('prevUrl', asPath);
+      if (!asPath.includes('/auth')) {
+        localStorage.setItem('prevUrl', asPath);
+      }
       push(PATHS.auth.login);
     }, [push]);
 
