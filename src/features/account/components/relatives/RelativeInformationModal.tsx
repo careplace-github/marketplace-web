@@ -28,6 +28,7 @@ type Props = {
   open: boolean;
   onActionMade: Function;
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+  onNewRelativeCreated?: (relative: any) => void;
 };
 
 type FormProps = {
@@ -51,6 +52,7 @@ export default function RelativeInformationModal({
   open,
   onClose,
   onActionMade,
+  onNewRelativeCreated,
 }: Props) {
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
@@ -237,7 +239,8 @@ export default function RelativeInformationModal({
           gender: data.gender,
         };
 
-        await axios.post(`/customers/patients/`, createRelative);
+        const newRelative = await axios.post(`/customers/patients/`, createRelative);
+        if (onNewRelativeCreated) onNewRelativeCreated(newRelative.data);
         onActionMade(action, 'success');
       } catch (error) {
         setIsSubmiting(false);
