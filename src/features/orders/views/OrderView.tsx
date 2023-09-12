@@ -449,6 +449,10 @@ export default function OrderView() {
 
             {userRelatives && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
               <OrderQuestionnaireForm
+                fetchUserRelatives={() => {
+                  fetchUserRelatives();
+                }}
+                setShowSnackbar={setShowSnackbar}
                 relatives={userRelatives}
                 disableAllFields={orderInfo.status === 'accepted'}
                 orderInfo={orderInfo || null}
