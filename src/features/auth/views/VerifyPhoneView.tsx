@@ -1,7 +1,7 @@
 // next
 import NextLink from 'next/link';
 // @mui
-import { Link, Typography, Container, Stack } from '@mui/material';
+import { Link, Typography, Container, Stack, Box } from '@mui/material';
 // routes
 import { PATHS } from 'src/routes/paths';
 // components
@@ -38,7 +38,16 @@ const VerifyPhoneView = () => {
           abaixo para confirmar o número associado.
         </Typography>
 
-        <PhoneVerifyCodeForm />
+        <Box
+          sx={{
+            width: '100%',
+            '& > form': {
+              width: '100%',
+            },
+          }}
+        >
+          <PhoneVerifyCodeForm redirectToAccount />
+        </Box>
       </Stack>
     </Container>
   );

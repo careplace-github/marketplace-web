@@ -17,6 +17,7 @@ import {
   Button,
 } from '@mui/material';
 // components
+import RelativeInformationModal from 'src/features/account/components/relatives/RelativeInformationModal';
 import { Tooltip } from 'src/components/tooltip/Tooltip';
 import AvatarDropdown from 'src/components/avatar-dropdown';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -39,6 +40,8 @@ type Props = {
   onValidChange: Function;
   orderInfo?: any;
   disableAllFields?: boolean;
+  fetchUserRelatives?: () => void;
+  setShowSnackbar?: (obj: any) => void;
 };
 
 export default function OrderQuestionnaireForm({
@@ -46,11 +49,14 @@ export default function OrderQuestionnaireForm({
   onValidChange,
   services,
   orderInfo,
+  setShowSnackbar,
   disableAllFields,
+  fetchUserRelatives,
 }: Props) {
   const router = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const [filterServices, setFilterServices] = useState<IServiceProps[]>([]);
+  const [openAddNewRelative, setOpenAddNewRelative] = useState<boolean>(false);
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
   const [filterRecurrency, setFilterRecurrency] = useState<number>();
   const [selectedRelative, setSelectedRelative] = useState<IRelativeProps>();
@@ -292,6 +298,31 @@ export default function OrderQuestionnaireForm({
 
   return (
     <Stack spacing={5}>
+      <RelativeInformationModal
+        action="add"
+        onNewRelativeCreated={(relative) => setSelectedRelative(relative)}
+        open={openAddNewRelative}
+        onActionMade={(action, status) => {
+          if (status === 'success') {
+            if (fetchUserRelatives) fetchUserRelatives();
+            if (setShowSnackbar)
+              setShowSnackbar({
+                show: true,
+                message: 'O seu Familiar foi adicionado com sucesso.',
+                severity: 'success',
+              });
+          }
+          if (status === 'error') {
+            if (setShowSnackbar)
+              setShowSnackbar({
+                show: true,
+                message: 'Algo correu mal, tente novamente.',
+                severity: 'error',
+              });
+          }
+        }}
+        onClose={() => setOpenAddNewRelative(false)}
+      />
       <StepLabel title="Informação do Pedido" step="1" />
       <div>
         <Stack spacing={2.5} sx={{ mb: '24px' }}>
@@ -531,18 +562,23 @@ export default function OrderQuestionnaireForm({
               readOnly={disableAllFields}
               selectText="Escolha um familiar"
             />
-            <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
-              <Button
-                variant="text"
-                sx={{
-                  mt: 2,
-                  color: 'primary.main',
-                }}
-                onClick={() => router.push(PATHS.account.relatives)}
-              >
-                Adicionar Familiar
-              </Button>
-            </Stack>
+            {!disableAllFields && (
+              <Stack width="100%" alignItems="flex-end" justifyContent="flex-start">
+                <Button
+                  variant="text"
+                  sx={{
+                    mt: 2,
+                    color: 'primary.main',
+                  }}
+                  onClick={() => {
+                    setOpenAddNewRelative(true);
+                    // router.push(PATHS.account.relatives);
+                  }}
+                >
+                  Adicionar Familiar
+                </Button>
+              </Stack>
+            )}
           </>
         ) : (
           <EmptyState
@@ -552,7 +588,10 @@ export default function OrderQuestionnaireForm({
             actionComponent={
               <Button
                 variant="contained"
-                onClick={() => router.push(PATHS.account.relatives)}
+                onClick={() => {
+                  setOpenAddNewRelative(true);
+                  // router.push(PATHS.account.relatives);
+                }}
                 sx={{
                   mt: 3,
                   px: 4,

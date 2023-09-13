@@ -150,8 +150,9 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     </Box>
 
                     <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                      ({company.rating.count ? fShortenNumber(company.rating.count) : 'sem'}{' '}
-                      avaliações)
+                      {`(${company.rating.count ? fShortenNumber(company.rating.count) : 'sem'} ${
+                        company.rating.count === 1 ? 'avaliação' : 'avaliações'
+                      })`}
                     </Link>
                   </Stack>
                   <Stack
@@ -236,7 +237,9 @@ export default function CompanyListItem({ company, vertical }: Props) {
                 </Box>
 
                 <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                  ({company.rating.count ? fShortenNumber(company.rating.count) : 'sem'} avaliações)
+                  {`(${company.rating.count ? fShortenNumber(company.rating.count) : 'sem'} ${
+                    company.rating.count === 1 ? 'avaliação' : 'avaliações'
+                  })`}
                 </Link>
               </Stack>
               <Stack
