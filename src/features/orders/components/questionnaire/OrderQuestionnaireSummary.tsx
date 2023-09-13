@@ -78,17 +78,15 @@ export default function OrderQuestionnaireSummary({
           <Stack spacing={0.5} direction="row" alignItems="center">
             <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
             <Box sx={{ typography: 'h6' }}>{company.rating.average.toFixed(1)}</Box>
-            {company.rating.count ||
-              (company.rating.count === 0 && (
-                <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                  {`(${company.rating.count === 0 ? 'sem' : company.rating.count} ${
-                    (company?.rating?.count && company.rating.count > 1) ||
-                    company.rating.count === 0
-                      ? 'avaliações'
-                      : 'avaliação'
-                  })`}
-                </Link>
-              ))}
+            {(company.rating.count || company.rating.count === 0) && (
+              <Link variant="body2" sx={{ color: 'text.secondary' }}>
+                {`(${company.rating.count === 0 ? 'sem' : company.rating.count} ${
+                  (company?.rating?.count && company.rating.count > 1) || company.rating.count === 0
+                    ? 'avaliações'
+                    : 'avaliação'
+                })`}
+              </Link>
+            )}
           </Stack>
           <Stack
             direction="row"
