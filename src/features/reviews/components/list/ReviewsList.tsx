@@ -66,8 +66,8 @@ export default function ReviewList({
     </>
   ) : (
     <EmptyState
-      title="A empresa ainda não contém comentários"
-      description="Todos os comentários feitos a esta empresa serão apresentados aqui"
+      title="A empresa ainda não contém avaliações"
+      description="Todos as avaliações feitas a esta empresa serão apresentados aqui"
       icon="material-symbols:comments-disabled"
     />
   );

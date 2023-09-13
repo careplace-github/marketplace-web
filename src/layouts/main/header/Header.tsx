@@ -120,6 +120,7 @@ export default function Header({ headerOnDark }: Props) {
                   variant="subtitle1"
                   underline="none"
                   sx={{
+                    cursor: 'pointer',
                     color: theme.palette.mode === 'light' ? 'grey.800' : 'common.white',
                     '&:hover': {
                       color: theme.palette.mode === 'light' ? 'primary.main' : 'grey.800',
