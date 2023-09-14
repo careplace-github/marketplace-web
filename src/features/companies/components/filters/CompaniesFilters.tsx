@@ -34,6 +34,7 @@ const defaultValues = {
   filterWeekdays: [],
   filterServices: [],
   filterRecurrency: undefined,
+  name: undefined,
 };
 
 type FiltersProps = {
@@ -59,7 +60,9 @@ export default function CompaniesFilters({
   const [filters, setFilters] = useState<ICompanyFiltersProps>(defaultValues);
   const [isLoading, setIsLoading] = useState(true);
   const [sliderValue, setSliderValue] = useState<number[]>([0, 50]);
+  const [searchInput, setSeachInput] = useState<string>();
   const router = useRouter();
+  const [filtersDirty, setFiltersDirty] = useState<boolean>(false);
   const [filterQuerys, setFilterQuerys] = useState<FiltersProps>({
     lat: null,
     lng: null,
@@ -78,6 +81,9 @@ export default function CompaniesFilters({
           labels.push(item);
         }
       });
+    }
+    if (queryValues.name) {
+      setSeachInput(queryValues.name as string);
     }
     if (queryValues.weekDay) {
       const idArray = queryValues.weekDay.split(',');
@@ -127,6 +133,7 @@ export default function CompaniesFilters({
       ...filters,
       filterWeekdays: newFilter,
     });
+    setFiltersDirty(true);
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
@@ -151,6 +158,7 @@ export default function CompaniesFilters({
       ...filters,
       filterRecurrency: newFilter,
     });
+    setFiltersDirty(true);
     const currentQuery = router.query;
     router.push({
       pathname: '/companies',
@@ -169,6 +177,7 @@ export default function CompaniesFilters({
       ...filters,
       filterServices: keyword,
     });
+    setFiltersDirty(true);
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
@@ -183,26 +192,30 @@ export default function CompaniesFilters({
 
   useEffect(() => {
     const delay = 700;
+    let timeoutId;
 
-    const timeoutId = setTimeout(() => {
-      const currentQuery = router.query;
-      whenLoading(true);
-      router.push({
-        pathname: '/companies',
-        query: {
-          ...currentQuery,
-          minPrice: sliderValue[0],
-          maxPrice: sliderValue[1],
-          page: 1,
-        },
-      });
-    }, delay);
+    if (filtersDirty || router?.query?.minPrice || router?.query?.maxPrice) {
+      timeoutId = setTimeout(() => {
+        const currentQuery = router.query;
+        whenLoading(true);
+        router.push({
+          pathname: '/companies',
+          query: {
+            ...currentQuery,
+            minPrice: sliderValue[0],
+            maxPrice: sliderValue[1],
+            page: 1,
+          },
+        });
+      }, delay);
+    }
 
     return () => clearTimeout(timeoutId);
   }, [sliderValue]);
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue);
+    setFiltersDirty(true);
   };
 
   function valuetext(value: number) {
@@ -218,6 +231,51 @@ export default function CompaniesFilters({
     return `${value}€/h`;
   }
 
+  useEffect(() => {
+    let typingTimeout;
+    if (searchInput && filtersDirty) {
+      // Clear the previous timeout (if any)
+      clearTimeout(typingTimeout);
+
+      // Set a new timeout
+      typingTimeout = setTimeout(() => {
+        // Call your desired function here
+        // This function will execute only after the user stops typing for 0.5 seconds
+        setFilters({ ...filters, name: searchInput });
+        const currentQuery = router.query;
+        whenLoading(true);
+        router.push({
+          pathname: '/companies',
+          query: {
+            ...currentQuery,
+            page: 1,
+            name: searchInput,
+          },
+        });
+      }, 500); // Adjust the delay (in milliseconds) as needed
+
+      // Cleanup: Clear the timeout when the component unmounts
+    }
+    return () => {
+      clearTimeout(typingTimeout);
+    };
+  }, [searchInput]);
+
+  const handleClearInput = () => {
+    setSeachInput('');
+    setFilters({ ...filters, name: '' });
+    const currentQuery = router.query;
+    whenLoading(true);
+    router.push({
+      pathname: '/companies',
+      query: {
+        ...currentQuery,
+        page: 1,
+        name: '',
+      },
+    });
+  };
+
   const renderContent = (
     <Stack
       spacing={2.5}
@@ -232,6 +290,36 @@ export default function CompaniesFilters({
           <Iconify icon="carbon:close" width="30px" height="30px" onClick={onMobileClose} />
         </Stack>
       )}
+      <Block title="Pesquisa">
+        <TextField
+          hiddenLabel
+          placeholder="Pesquise uma Empresa"
+          value={searchInput}
+          onChange={(e) => {
+            setSeachInput(e.target.value);
+            setFiltersDirty(true);
+          }}
+          InputProps={{
+            startAdornment: (
+              <Iconify icon="carbon:search" width={15} sx={{ color: 'text.secondary', mr: 1 }} />
+            ),
+            endAdornment: (
+              <>
+                {searchInput && searchInput?.length > 0 && (
+                  <Iconify
+                    icon="carbon:close"
+                    width={20}
+                    onClick={() => {
+                      handleClearInput();
+                    }}
+                    sx={{ color: 'text.secondary', ml: 1, cursor: 'pointer' }}
+                  />
+                )}
+              </>
+            ),
+          }}
+        />
+      </Block>
 
       <Block title="Serviços">
         <FilterServices

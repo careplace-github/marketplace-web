@@ -32,7 +32,7 @@ export default function CompaniesListView() {
   const [totalPages, setTotalPages] = useState();
   const [servicesLoading, setServicesLoading] = useState(true);
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [sortBy, setSortBy] = useState('relative');
   const router = useRouter();
   const isMdUp = useResponsive('up', 'md');
@@ -95,6 +95,7 @@ export default function CompaniesListView() {
   useEffect(() => {
     if (router.isReady) {
       if (router.query) {
+        console.log('hello', router.query);
         setLoading(true);
         setDefaultFilterValues(router.query);
       }
