@@ -7,7 +7,7 @@ import Iconify from '../iconify/Iconify';
 
 type TooltipProps = {
   text: string;
-  sx?: SxProps;
+  sx?: any;
   icon?: string;
   placement?:
     | 'top'

@@ -155,8 +155,10 @@ export default function RelativeInformationModal({
     getValues,
     handleSubmit,
     reset,
+    watch,
     formState: { isDirty, isValid },
   } = methods;
+  const medicalConditions = watch('medicalConditions');
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -373,6 +375,8 @@ export default function RelativeInformationModal({
                 <DatePicker
                   format="dd-MM-yyyy"
                   label="Data de nascimento *"
+                  maxDate={new Date()}
+                  minDate={new Date('01-01-1900')}
                   slotProps={{
                     textField: {
                       helperText: error?.message,
@@ -461,12 +465,33 @@ export default function RelativeInformationModal({
                 gridColumn: isMdUp ? 'span 2' : null,
               }}
             >
-              <RHFTextField
-                name="medicalConditions"
-                label="Condições Médicas (opcional)"
-                multiline
-                minRows={isMdUp ? 3 : 5}
-              />
+              <Box sx={{ position: 'relative', width: '100%' }}>
+                <RHFTextField
+                  name="medicalConditions"
+                  label="Condições Médicas (opcional)"
+                  value={medicalConditions}
+                  inputProps={{
+                    sx: { pb: '20px' },
+                  }}
+                  onChange={(event) => {
+                    if (event.target.value.length <= 500)
+                      setValue('medicalConditions', event.target.value);
+                  }}
+                  multiline
+                  minRows={isMdUp ? 3 : 5}
+                />
+                <Typography
+                  sx={{
+                    fontSize: '14px',
+                    color: 'text.secondary',
+                    width: '100%',
+                    textAlign: 'right',
+                    position: 'absolute',
+                    bottom: '5px',
+                    right: '10px',
+                  }}
+                >{`${medicalConditions?.length}/500`}</Typography>
+              </Box>
             </Box>
           </Box>
           <Typography sx={{ fontSize: '12px', color: '#91A0AD', marginTop: '20px' }}>
