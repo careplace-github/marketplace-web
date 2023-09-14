@@ -15,9 +15,16 @@ type Props = {
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
   setShowSnackbar?: (obj: any) => void;
   updateOrder?: boolean;
+  onSuccess: () => void;
 };
 
-export default function ConfirmPhoneModal({ open, onClose, setShowSnackbar, updateOrder }: Props) {
+export default function ConfirmPhoneModal({
+  open,
+  onSuccess,
+  onClose,
+  setShowSnackbar,
+  updateOrder,
+}: Props) {
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
 
@@ -89,7 +96,8 @@ export default function ConfirmPhoneModal({ open, onClose, setShowSnackbar, upda
         <PhoneVerifyCodeForm
           setShowSnackbar={setShowSnackbar}
           onPhoneConfirm={() => {
-            if (setShowSnackbar) onClose({}, 'backdropClick');
+            onSuccess();
+            onClose({}, 'backdropClick');
           }}
         />
       </Box>
