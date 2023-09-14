@@ -60,6 +60,8 @@ export default function OrderQuestionnaireForm({
   const [filterWeekdays, setFilterWeekdays] = useState<number[]>([]);
   const [filterRecurrency, setFilterRecurrency] = useState<number>();
   const [selectedRelative, setSelectedRelative] = useState<IRelativeProps>();
+  const today = new Date();
+  const oneYearLater = today.setFullYear(today.getFullYear() + 1);
   const [schedule, setSchedule] = useState<IScheduleProps[]>([
     {
       week_day: 1,
@@ -164,12 +166,14 @@ export default function OrderQuestionnaireForm({
     const dateDay = auxDate.getDate();
     const dateMonth = auxDate.getMonth() + 1;
     const dateYear = auxDate.getFullYear();
-    const today = new Date(`${dateYear}-${dateMonth}-${dateDay}`);
+    const orderDate = new Date(`${dateYear}-${dateMonth}-${dateDay}`);
     const isInvalid =
       !(filterRecurrency || filterRecurrency === 0) ||
       filterServices.length === 0 ||
       filterWeekdays.length === 0 ||
-      (startDate && startDate.getTime() < today.getTime()) ||
+      (startDate && startDate.getTime() < orderDate.getTime()) ||
+      (startDate && startDate > new Date(oneYearLater)) ||
+      !startDate ||
       !isScheduleValid ||
       !selectedRelative;
     if (isInvalid) {
@@ -383,12 +387,20 @@ export default function OrderQuestionnaireForm({
               </Typography>
               <DatePicker
                 disabled={disableAllFields}
+                maxDate={
+                  orderInfo?.status === 'new' || !orderInfo ? new Date(oneYearLater) : undefined
+                }
                 slotProps={{
                   textField: {
                     hiddenLabel: true,
                   },
                 }}
-                onChange={(newDate) => setStartDate(newDate)}
+                onChange={(newDate) => {
+                  setStartDate(newDate);
+                  if (newDate && newDate > new Date(oneYearLater)) {
+                    setStartDate(null);
+                  }
+                }}
                 format="dd-MM-yyyy"
                 value={startDate}
                 minDate={new Date()}

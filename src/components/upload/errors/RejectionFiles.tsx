@@ -38,11 +38,11 @@ export default function RejectionFiles({ fileRejections }: Props) {
               {path} - {size ? fData(size) : ''}
             </Typography>
 
-            {errors.map((error) => (
-              <Box key={error.code} component="span" sx={{ typography: 'caption' }}>
-                - {error.message}
+            {!!errors && (
+              <Box component="span" sx={{ typography: 'caption' }}>
+                - O tamanaho da imagem introduzida é superior a 5MB.
               </Box>
-            ))}
+            )}
           </Box>
         );
       })}

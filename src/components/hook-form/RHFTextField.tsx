@@ -41,6 +41,7 @@ export default function RHFTextField({ name, helperText, tooltip, multiline, ...
               tooltipWidth={tooltip.tooltipWidth}
               icon={tooltip?.icon}
               iconColor={tooltip?.iconColor}
+              {...other}
             />
           )}
         </Box>
