@@ -319,9 +319,7 @@ export default function OrderView() {
 
   const handleUpdateOrder = async () => {
     setIsSubmitting(true);
-    console.log('User phone confirmed', user?.phone_verified);
     if (!user?.phone_verified) {
-      console.log('User phone inside', user?.phone_verified);
       setIsSubmitting(false);
       try {
         await sendConfirmPhoneCode(user?.email);
@@ -400,6 +398,10 @@ export default function OrderView() {
       <ConfirmPhoneModal
         setShowSnackbar={setShowSnackbar}
         open={showConfirmPhoneModal}
+        onSuccess={() => {
+          if (user) user.phone_verified = true;
+          handleUpdateOrder();
+        }}
         onClose={() => setShowConfirmPhoneModal(false)}
         updateOrder
       />

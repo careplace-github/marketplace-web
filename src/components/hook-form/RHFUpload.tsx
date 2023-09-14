@@ -31,7 +31,6 @@ export function RHFUploadAvatar({ name, ...other }: Props) {
             file={field.value}
             {...other}
           />
-
           {!!error && (
             <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
               {error.message}
