@@ -214,6 +214,10 @@ export default function OrderQuestionnaireView() {
         </Snackbar>
       )}
       <ConfirmPhoneModal
+        onSuccess={() => {
+          if (user) user.phone_verified = true;
+          onSubmit(formData);
+        }}
         setShowSnackbar={setShowSnackbar}
         open={showConfirmPhoneModal}
         onClose={() => setShowConfirmPhoneModal(false)}
