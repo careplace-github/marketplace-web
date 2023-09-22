@@ -5,6 +5,8 @@ import Head from 'next/head';
 import MainLayout from 'src/layouts/main';
 // features
 import { CompanyDetailView } from 'src/features/companies';
+import { useAuthContext } from 'src/contexts';
+import axios from 'src/lib/axios';
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +18,7 @@ export default function CompanyDetailPage() {
   return (
     <>
       <Head>
-        <title>Empresa de Serviço de Apoio Domiciliário | Careplace</title>
+        <title>Empresa de Apoio Domiciliário: Lisboa | Careplace</title>
       </Head>
 
       <CompanyDetailView />
