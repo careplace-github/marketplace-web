@@ -102,7 +102,7 @@ export default function OrderQuestionnaireSummary({
                 color: 'text.disabled',
               }}
             />
-            <Typography sx={{ opacity: 0.72 }}>{company.addresses[0].city}</Typography>
+            <Typography sx={{ opacity: 0.72 }}>{company.business_profile.address.city}</Typography>
           </Stack>
           {/* <Divider sx={{ borderStyle: 'dashed', my: 2.5 }} /> */}
         </Stack>

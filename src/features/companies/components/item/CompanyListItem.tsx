@@ -139,7 +139,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         color: 'text.disabled',
                       }}
                     />
-                    <Typography>{company.addresses[0].city}</Typography>
+                    <Typography>{company?.business_profile.address?.city}</Typography>
                   </Stack>
                   <Stack spacing={0.5} direction="row" alignItems="center">
                     <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
@@ -226,7 +226,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     color: 'text.disabled',
                   }}
                 />
-                <Typography>{company.addresses[0].city}</Typography>
+                <Typography>{company?.business_profile.address?.city}</Typography>
               </Stack>
               <Stack spacing={0.5} direction="row" alignItems="center">
                 <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />

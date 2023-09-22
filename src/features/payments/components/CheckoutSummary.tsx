@@ -188,7 +188,7 @@ export default function CheckoutSummary({
                   color: 'text.disabled',
                 }}
               />
-              <Typography sx={{ opacity: 0.72 }}>{company.addresses[0].city}</Typography>
+              <Typography sx={{ opacity: 0.72 }}>{company.business_profile.address.city}</Typography>
             </Stack>
           </Stack>
         </Box>
