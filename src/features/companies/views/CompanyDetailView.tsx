@@ -313,7 +313,7 @@ export default function CompanyDetailView() {
           <CompanyProfileCover
             name={companyInfo.business_profile.name}
             image={companyInfo.business_profile.logo}
-            location={companyInfo.addresses[0].city}
+            location={companyInfo.business_profile.address.city}
           />
         </Card>
 

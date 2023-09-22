@@ -69,7 +69,7 @@ export default function OrderQuestionnaireCompletedView() {
           <CompanyPicture
             name={data?.health_unit.business_profile.name}
             image={data?.health_unit.business_profile.logo}
-            location={data?.health_unit.addresses[0].city}
+            location={data?.health_unit.business_profile.address.city}
           />
         </Card>
       )}
