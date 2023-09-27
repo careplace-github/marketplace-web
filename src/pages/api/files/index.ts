@@ -2,10 +2,12 @@ import { NextApiHandler, NextApiRequest } from 'next';
 import formidable from 'formidable';
 import path from 'path';
 import fs from 'fs';
-import axios from 'src/lib/axios';
+
 import FormData from 'form-data';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from 'src/pages/api/auth/[...nextauth]';
+// lib
+import axios from 'src/lib/axios';
 // Types
 import { Session } from 'next-auth';
 

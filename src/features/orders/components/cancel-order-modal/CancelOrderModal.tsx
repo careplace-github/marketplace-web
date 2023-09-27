@@ -7,8 +7,6 @@ import { useResponsive } from 'src/hooks';
 // routes
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
-// axios
-import axios from 'src/lib/axios';
 
 type Props = {
   onClose: () => void;

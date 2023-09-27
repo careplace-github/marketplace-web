@@ -15,7 +15,7 @@ import {
   Button,
 } from '@mui/material';
 // fetch
-import axios from 'src/lib/axios';
+
 import fetch from 'src/lib/fetch';
 // types
 import { ICompanyProps } from 'src/types/company';

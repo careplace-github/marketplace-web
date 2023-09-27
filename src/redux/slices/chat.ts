@@ -1,7 +1,8 @@
 import keyBy from 'lodash/keyBy';
 import { createSlice, Dispatch } from '@reduxjs/toolkit';
+import fetch from 'src/lib/fetch';
 // utils
-import axios from 'src/lib/axios';
+
 // @types
 import { IChatState } from 'src/types/chat';
 
@@ -119,7 +120,7 @@ export function getContacts() {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/chat/contacts');
+      const response = await fetch('/api/chat/contacts');
       dispatch(slice.actions.getContactsSuccess(response.data.contacts));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -133,7 +134,7 @@ export function getConversations() {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/chat/conversations');
+      const response = await fetch('/api/chat/conversations');
       dispatch(slice.actions.getConversationsSuccess(response.data.conversations));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -147,9 +148,8 @@ export function getConversation(conversationKey: string) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/chat/conversation', {
-        params: { conversationKey },
-      });
+      const response = await fetch('/api/chat/conversation');
+
       dispatch(slice.actions.getConversationSuccess(response.data.conversation));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -163,9 +163,7 @@ export function markConversationAsRead(conversationId: string) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      await axios.get('/api/chat/conversation/mark-as-seen', {
-        params: { conversationId },
-      });
+      // await fetch('/api/chat/mark-conversation-as-read')
       dispatch(slice.actions.markConversationAsReadSuccess({ conversationId }));
     } catch (error) {
       dispatch(slice.actions.hasError(error));
@@ -179,9 +177,7 @@ export function getParticipants(conversationKey: string) {
   return async (dispatch: Dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const response = await axios.get('/api/chat/participants', {
-        params: { conversationKey },
-      });
+      const response = await fetch('/api/chat/participants');
       dispatch(slice.actions.getParticipantsSuccess(response.data.participants));
     } catch (error) {
       dispatch(slice.actions.hasError(error));

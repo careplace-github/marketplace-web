@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Typography, Container, Stack, Grid, Snackbar, Alert } from '@mui/material';
-// axios
-import axios from 'src/lib/axios';
+
 // components
 import LoadingButton from 'src/components/loading-button/LoadingButton';
 import FormProvider, { RHFTextField, RHFPhoneField } from 'src/components/hook-form';

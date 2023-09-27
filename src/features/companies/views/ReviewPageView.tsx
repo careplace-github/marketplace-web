@@ -6,8 +6,7 @@ import { m } from 'framer-motion';
 import NextLink from 'next/link';
 // react
 import { useState, useEffect } from 'react';
-// axios
-import axios from 'src/lib/axios';
+
 // @mui
 import {
   Box,

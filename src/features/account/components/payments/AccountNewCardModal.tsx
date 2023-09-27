@@ -25,7 +25,7 @@ import useResponsive from 'src/hooks/useResponsive';
 // contexts
 import { useSession } from 'next-auth/react';
 // lib
-import axios from 'src/lib/axios';
+
 import Card from 'src/theme/overrides/Card';
 import { useState } from 'react';
 // styles
@@ -105,9 +105,16 @@ export default function AccountNewCardModal({ open, onClose, onAddCard }: NewCar
 
       const card_token = token?.id;
 
-      await axios.post('/payments/payment-methods', {
-        payment_method_token: card_token,
+      await fetch('/api/payments/payment-methods', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          payment_method_token: card_token,
+        }),
       });
+
       onAddCard('success');
       close();
     } catch (error) {

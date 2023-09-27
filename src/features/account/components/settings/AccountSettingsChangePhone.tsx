@@ -19,8 +19,7 @@ import { useSession } from 'next-auth/react';
 import useResponsive from 'src/hooks/useResponsive';
 // data
 import { countries } from 'src/data';
-// axios
-import axios from 'src/lib/axios';
+
 // components
 import FormProvider, { RHFPhoneField } from 'src/components/hook-form';
 

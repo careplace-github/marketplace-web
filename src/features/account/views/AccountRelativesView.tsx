@@ -1,8 +1,7 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Box, Typography, Button, Stack, Snackbar, Alert, CircularProgress } from '@mui/material';
-// axios
-import axios from 'src/lib/axios';
+
 // hooks
 import { useEffect, useState } from 'react';
 import { useResponsive } from 'src/hooks';

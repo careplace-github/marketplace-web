@@ -12,8 +12,6 @@ import Iconify from 'src/components/iconify';
 import RHFPhoneField from 'src/components/hook-form/RHFPhoneField';
 import FormProvider, { RHFTextField, RHFSelect, RHFUploadAvatar } from 'src/components/hook-form';
 
-// axios
-import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import { useCallback, useState } from 'react';

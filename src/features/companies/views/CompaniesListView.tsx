@@ -7,8 +7,7 @@ import { Container, Stack, Typography, Button, Box } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // config
 import { NAV } from 'src/layouts/config';
-// axios
-import axios from 'src/lib/axios';
+
 // components
 import Iconify from 'src/components/iconify';
 import EmptyState from 'src/components/empty-state/EmptyState';

@@ -29,8 +29,8 @@ import { useState, useEffect } from 'react';
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import { socials } from 'src/data';
-// axios
-import axios from 'src/lib/axios';
+// lib
+import fetch from 'src/lib/fetch';
 // auth
 import { useSession } from 'next-auth/react';
 //
@@ -74,10 +74,14 @@ export default function Footer() {
 
   const handleSubscribeNewsletter = async () => {
     try {
-      await axios.post('/leads/newsletter/customer', {
-        email,
-        name: user?.name || null,
+      await fetch('/api/leads/newsletter/customer', {
+        method: 'POST',
+        body: JSON.stringify({
+          email,
+          name: user?.name || null,
+        }),
       });
+
       setShowSnackbar({
         show: true,
         severity: 'success',

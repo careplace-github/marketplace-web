@@ -1,5 +1,6 @@
 // next
 import { NextApiRequest, NextApiResponse } from 'next';
+// lib
 import axios from 'src/lib/axios';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from 'src/pages/api/auth/[...nextauth]';

@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 // @mui
 import { Container, Button, Unstable_Grid2 as Grid, SelectChangeEvent } from '@mui/material';
-// axios
-import axios from 'src/lib/axios';
+
 // next
 import { useRouter } from 'next/router';
 // lib

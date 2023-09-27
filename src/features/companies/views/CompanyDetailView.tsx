@@ -1,8 +1,7 @@
 // hooks
 import { useState, useEffect } from 'react';
 import { useResponsive } from 'src/hooks';
-// axios
-import axios from 'src/lib/axios';
+
 // mock
 // @mui
 import { alpha } from '@mui/material/styles';

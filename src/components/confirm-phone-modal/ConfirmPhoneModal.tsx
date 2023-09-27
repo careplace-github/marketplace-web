@@ -4,8 +4,6 @@ import { useTheme } from '@mui/material/styles';
 // components
 import Iconify from 'src/components/iconify';
 
-// axios
-import axios from 'src/lib/axios';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 import PhoneVerifyCodeForm from 'src/features/auth/components/PhoneVerifyCodeForm';

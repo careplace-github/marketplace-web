@@ -6,7 +6,7 @@ import { Divider, Button, Box, Typography } from '@mui/material';
 import Modal from '@mui/material/Modal';
 import { LoadingButton } from '@mui/lab';
 import { useSession } from 'next-auth/react';
-import axios from 'src/lib/axios';
+
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // components

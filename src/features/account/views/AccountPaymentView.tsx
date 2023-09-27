@@ -7,7 +7,7 @@ import { ISnackbarProps } from 'src/types/snackbar';
 // hooks
 import { useResponsive } from 'src/hooks';
 // lib
-import axios from 'src/lib/axios';
+
 // components
 import EmptyState from 'src/components/empty-state/EmptyState';
 import Iconify from 'src/components/iconify';

@@ -26,7 +26,7 @@ import { useSnackbar } from 'src/components/snackbar';
 import FormProvider, { RHFTextField, RHFCodes } from 'src/components/hook-form';
 import useCountdown from 'src/hooks/useCountdown';
 // lib
-import axios from 'src/lib/axios';
+
 // contexts
 import { useSession } from 'next-auth/react';
 
