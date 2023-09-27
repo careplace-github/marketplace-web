@@ -41,22 +41,22 @@ export default async function RelativesRoute(
     }
 
     if (req.method === 'GET') {
-        try {
-            const response = await axios.get(`/health-units/patients`, {
-            // Set authorization header bearer token
-            headers: {
-                'Content-Type': 'application/json',
-                'x-access-token': accessToken,
-    
-                Authorization: `Bearer ${accessToken}`,
-            },
-            withCredentials: true,
-            });
-            return res.status(200).json(response.data);
-        } catch (error) {
-            console.log(error)
-            return res.status(500).json({ error: 'Internal server error' });
-        }
+      try {
+        const response = await axios.get(`/health-units/patients`, {
+          // Set authorization header bearer token
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': accessToken,
+
+            Authorization: `Bearer ${accessToken}`,
+          },
+          withCredentials: true,
+        });
+        return res.status(200).json(response.data);
+      } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+      }
     }
 
     // This will be returned if the method doesn't match the ones above

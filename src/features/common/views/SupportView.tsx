@@ -14,14 +14,14 @@ const _generalFaqs = [
     question: 'Como funciona a Careplace?',
     answer: (
       <p>
-        A Careplace é uma plataforma inovadora que simplifica a procura por apoio domiciliário
-        de alta qualidade e confiança. Ligamos indivíduos que necessitam de cuidados a prestadores
-        de serviços altamente qualificados, incluindo empresas especializadas em cuidados
-        domiciliários e cuidadores individuais dedicados.
-        <br /> <br />A nossa missão é tornar o processo de encontrar e contratar serviços de
-        apoio domiciliário mais simples e transparente. Facilitamos a comparação de diferentes
-        prestadores de serviços, assegurando que tenha acesso a uma seleção criteriosamente avaliada
-        de profissionais de cuidados que correspondam às suas necessidades específicas.
+        A Careplace é uma plataforma inovadora que simplifica a procura por apoio domiciliário de
+        alta qualidade e confiança. Ligamos indivíduos que necessitam de cuidados a prestadores de
+        serviços altamente qualificados, incluindo empresas especializadas em cuidados domiciliários
+        e cuidadores individuais dedicados.
+        <br /> <br />A nossa missão é tornar o processo de encontrar e contratar serviços de apoio
+        domiciliário mais simples e transparente. Facilitamos a comparação de diferentes prestadores
+        de serviços, assegurando que tenha acesso a uma seleção criteriosamente avaliada de
+        profissionais de cuidados que correspondam às suas necessidades específicas.
       </p>
     ),
   },
@@ -34,9 +34,9 @@ const _generalFaqs = [
         Escolher a Careplace torna-se uma decisão fácil pelos seguintes motivos: <br /> <br />{' '}
         <br />
         <b>1. Transparência e Confiança</b>: A Careplace é dedicada a fornecer um ambiente
-        transparente e confiável para encontrar serviços de apoio domiciliário. Todos os
-        prestadores de serviços são criteriosamente avaliados e verificados, garantindo que você
-        receba cuidados de alta qualidade. <br /> <br />
+        transparente e confiável para encontrar serviços de apoio domiciliário. Todos os prestadores
+        de serviços são criteriosamente avaliados e verificados, garantindo que você receba cuidados
+        de alta qualidade. <br /> <br />
         <b>2. Variedade de Opções</b>: Nossa plataforma oferece uma ampla variedade de opções de
         cuidados, desde empresas especializadas até cuidadores individuais, para atender às suas
         necessidades específicas. Você pode escolher o prestador que melhor se adapte às suas
@@ -70,9 +70,9 @@ const _generalFaqs = [
         significa que o preço mensal não depende apenas da quantidade de serviços necessários, mas
         também do número de horas e dos dias em que um cuidador está programado para cuidar do seu
         familiar. <br /> <br />
-        Cada empresa de apoio domiciliário pode ter a sua própria estrutura de preços e políticas
-        de faturação. Portanto, ao avaliar as opções, é importante discutir os detalhes dos custos
-        com a empresa escolhida para garantir que compreenda completamente como os preços são
+        Cada empresa de apoio domiciliário pode ter a sua própria estrutura de preços e políticas de
+        faturação. Portanto, ao avaliar as opções, é importante discutir os detalhes dos custos com
+        a empresa escolhida para garantir que compreenda completamente como os preços são
         calculados. <br /> <br />
         Na Careplace, esforçamo-nos por fornecer informações transparentes sobre preços e políticas
         de faturação dos prestadores de serviços. Ao solicitar orçamentos e falar diretamente com as
@@ -90,17 +90,17 @@ const _generalFaqs = [
         Contratar um serviço através da Careplace é simples e conveniente. Aqui estão os passos a
         seguir: <br /> <br /> <br />
         <b>Pesquisa e Exploração</b>: Comece por navegar na nossa plataforma para encontrar os
-        serviços de apoio domiciliário que melhor correspondem às necessidades do seu familiar.
-        Pode utilizar os filtros de pesquisa para refinar os resultados com base em critérios como
+        serviços de apoio domiciliário que melhor correspondem às necessidades do seu familiar. Pode
+        utilizar os filtros de pesquisa para refinar os resultados com base em critérios como
         localização, tipo de serviço e muito mais.
         <br /> <br />
         <b>Obtenção de Orçamentos</b>: Depois de identificar as opções que lhe interessam, pode
-        solicitar orçamentos diretamente a empresas de apoio domiciliário. Esta é uma forma de
-        obter informações detalhadas sobre os serviços oferecidos e os custos associados.
+        solicitar orçamentos diretamente a empresas de apoio domiciliário. Esta é uma forma de obter
+        informações detalhadas sobre os serviços oferecidos e os custos associados.
         <br /> <br />
         <b>Escolha e Reserva</b>: Com base nos orçamentos recebidos e nas suas preferências, pode
-        escolher a empresa de apoio domiciliário que melhor se adapte às suas necessidades. Uma
-        vez feita a seleção, pode proceder à reserva dos serviços diretamente através da nossa
+        escolher a empresa de apoio domiciliário que melhor se adapte às suas necessidades. Uma vez
+        feita a seleção, pode proceder à reserva dos serviços diretamente através da nossa
         plataforma.
         <br /> <br />
         <b>Acompanhamento e Assistência</b>: Após a reserva, a empresa de apoio domiciliário

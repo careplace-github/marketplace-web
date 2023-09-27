@@ -29,7 +29,7 @@ export default async function ServicesRoutes(
           },
           withCredentials: true,
         });
-        
+
         return res.status(200).json(response.data);
       } catch (error) {
         console.log(error);

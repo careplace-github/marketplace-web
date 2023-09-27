@@ -89,13 +89,12 @@ function PhoneVerifyCodeForm({ redirectToAccount, onPhoneConfirm, setShowSnackba
         getValues('code5') +
         getValues('code6');
 
-    
       try {
         await fetch(`/api/account/verify-phone-code`, {
           method: 'POST',
           body: JSON.stringify({ email: user?.email, code }),
         });
-          if (setShowSnackbar)
+        if (setShowSnackbar)
           setShowSnackbar({
             show: true,
             message: 'O seu telemóvel foi confirmado com sucesso.',

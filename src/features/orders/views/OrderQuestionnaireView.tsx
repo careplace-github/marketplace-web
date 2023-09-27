@@ -142,7 +142,7 @@ export default function OrderQuestionnaireView() {
     if (!user?.phone_verified) {
       setIsSubmitting(false);
       try {
-          await fetch(`/api/account/send-confirm-phone-code`, {
+        await fetch(`/api/account/send-confirm-phone-code`, {
           method: 'POST',
           body: JSON.stringify({ email: user?.email }),
         });

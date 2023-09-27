@@ -338,7 +338,10 @@ export default function OrderView() {
     if (!user?.phone_verified) {
       setIsSubmitting(false);
       try {
-        await sendConfirmPhoneCode(user?.email);
+        await fetch(`/api/account/send-confirm-phone-code`, {
+          method: 'POST',
+          body: JSON.stringify({ email: user?.email }),
+        });
       } catch (error) {
         console.error(error);
       }
