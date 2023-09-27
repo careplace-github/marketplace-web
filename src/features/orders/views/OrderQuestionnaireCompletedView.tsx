@@ -70,7 +70,7 @@ export default function OrderQuestionnaireCompletedView() {
           <CompanyPicture
             name={data?.health_unit.business_profile.name}
             image={data?.health_unit.business_profile.logo}
-            location={data?.health_unit.addresses[0].city}
+            location={data?.health_unit.business_profile.address.city}
           />
         </Card>
       )}
@@ -88,11 +88,21 @@ export default function OrderQuestionnaireCompletedView() {
             }}
           >
             <Avatar
-              src={data?.company.business_profile.logo}
-              sx={{ width: '160px', height: '160px' }}
+              src={data?.health_unit.business_profile.logo}
+              alt={data?.health_unit.business_profile.name}
+              sx={{
+                width: '160px',
+                height: '160px',
+                backgroundColor: 'white',
+                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px;',
+                '& > img': {
+                  width: '100%',
+                  height: 'auto',
+                },
+              }}
             />
             <Typography variant="h3" sx={{ fontSize: '26px', fontWeight: '600' }}>
-              {data?.company.business_profile.name}
+              {data?.health_unit.business_profile.name}
             </Typography>
           </Box>
         )}

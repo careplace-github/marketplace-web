@@ -30,6 +30,7 @@ type Props = {
   open: boolean;
   onActionMade: Function;
   onClose: (event: {}, reason: 'backdropClick' | 'escapeKeyDown') => void;
+  onNewRelativeCreated?: (relative: any) => void;
 };
 
 type FormProps = {
@@ -53,6 +54,7 @@ export default function RelativeInformationModal({
   open,
   onClose,
   onActionMade,
+  onNewRelativeCreated,
 }: Props) {
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
@@ -154,8 +156,11 @@ export default function RelativeInformationModal({
     setValue,
     getValues,
     handleSubmit,
+    reset,
+    watch,
     formState: { isDirty, isValid },
   } = methods;
+  const medicalConditions = watch('medicalConditions');
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
@@ -253,11 +258,12 @@ export default function RelativeInformationModal({
           gender: data.gender,
         };
 
-        await fetch(`/api/patients`, {
+        const newRelative = await fetch(`/api/patients`, {
           method: 'POST',
           body: JSON.stringify(createRelative),
         });
 
+        if (onNewRelativeCreated) onNewRelativeCreated(newRelative.data);
         onActionMade(action, 'success');
       } catch (error) {
         setIsSubmiting(false);
@@ -266,12 +272,19 @@ export default function RelativeInformationModal({
       }
     }
     setIsSubmiting(false);
+    reset();
     onClose({}, 'backdropClick');
     return true;
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal
+      open={open}
+      onClose={() => {
+        reset();
+        onClose({}, 'backdropClick');
+      }}
+    >
       <Box
         sx={{
           width: isMdUp ? 'auto' : '100vw',
@@ -308,7 +321,10 @@ export default function RelativeInformationModal({
               color: theme.palette.mode === 'light' ? 'grey.400' : 'white',
             },
           }}
-          onClick={() => onClose({}, 'backdropClick')}
+          onClick={() => {
+            reset();
+            onClose({}, 'backdropClick');
+          }}
         />
         <Typography variant="h5" sx={{ mb: 3, width: '100%', alignText: 'left' }}>
           {action === 'edit' ? 'Editar Familiar' : 'Adicionar Familiar'}
@@ -341,12 +357,12 @@ export default function RelativeInformationModal({
             gridTemplateColumns={{ xs: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)' }}
             sx={{ mt: '40px' }}
           >
-            <RHFTextField name="firstName" label="Nome*" />
-            <RHFTextField name="lastName" label="Apelido*" />
+            <RHFTextField name="firstName" label="Nome *" />
+            <RHFTextField name="lastName" label="Apelido *" />
 
             <RHFPhoneField
               name="phoneNumber"
-              label="Telemóvel*"
+              label="Telemóvel *"
               defaultCountry="PT"
               forceCallingCode
               onChange={(value: string) => {
@@ -379,7 +395,9 @@ export default function RelativeInformationModal({
               render={({ field, fieldState: { error } }) => (
                 <DatePicker
                   format="dd-MM-yyyy"
-                  label="Data de nascimento*"
+                  label="Data de nascimento *"
+                  maxDate={new Date()}
+                  minDate={new Date('01-01-1900')}
                   slotProps={{
                     textField: {
                       helperText: error?.message,
@@ -392,7 +410,7 @@ export default function RelativeInformationModal({
               )}
             />
 
-            <RHFSelect native name="gender" label="Género*">
+            <RHFSelect native name="gender" label="Género *">
               {genders.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
@@ -403,7 +421,7 @@ export default function RelativeInformationModal({
             <RHFSelect
               native
               name="kinshipDegree"
-              label="Grau de Parentesco*"
+              label="Grau de Parentesco *"
               onChange={(e) => {
                 const { value } = e.target;
                 setValue('kinshipDegree', value);
@@ -417,11 +435,11 @@ export default function RelativeInformationModal({
               ))}
             </RHFSelect>
 
-            <RHFTextField name="streetAddress" label="Morada*" />
+            <RHFTextField name="streetAddress" label="Morada *" />
 
             <RHFTextField
               name="zipCode"
-              label="Código Postal*"
+              label="Código Postal *"
               onChange={(e) => {
                 const { value } = e.target;
 
@@ -453,9 +471,9 @@ export default function RelativeInformationModal({
               }}
             />
 
-            <RHFTextField name="city" label="Cidade*" />
+            <RHFTextField name="city" label="Cidade *" />
 
-            <RHFSelect native name="country" label="País*">
+            <RHFSelect native name="country" label="País *">
               <option value="" />
               {countries.map((country) => (
                 <option key={country.code} value={country.code}>
@@ -468,16 +486,37 @@ export default function RelativeInformationModal({
                 gridColumn: isMdUp ? 'span 2' : null,
               }}
             >
-              <RHFTextField
-                name="medicalConditions"
-                label="Condições Médicas (opcional)"
-                multiline
-                minRows={isMdUp ? 3 : 5}
-              />
+              <Box sx={{ position: 'relative', width: '100%' }}>
+                <RHFTextField
+                  name="medicalConditions"
+                  label="Condições Médicas (opcional)"
+                  value={medicalConditions}
+                  inputProps={{
+                    sx: { pb: '20px' },
+                  }}
+                  onChange={(event) => {
+                    if (event.target.value.length <= 500)
+                      setValue('medicalConditions', event.target.value);
+                  }}
+                  multiline
+                  minRows={isMdUp ? 3 : 5}
+                />
+                <Typography
+                  sx={{
+                    fontSize: '14px',
+                    color: 'text.secondary',
+                    width: '100%',
+                    textAlign: 'right',
+                    position: 'absolute',
+                    bottom: '5px',
+                    right: '10px',
+                  }}
+                >{`${medicalConditions?.length}/500`}</Typography>
+              </Box>
             </Box>
           </Box>
           <Typography sx={{ fontSize: '12px', color: '#91A0AD', marginTop: '20px' }}>
-            *Campo obrigatório
+            * Campo obrigatório
           </Typography>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
             <LoadingButton

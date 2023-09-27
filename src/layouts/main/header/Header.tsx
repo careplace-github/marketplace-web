@@ -7,7 +7,8 @@ import useResponsive from 'src/hooks/useResponsive';
 import { useSession } from 'next-auth/react';
 // config
 import { HEADER } from 'src/layouts/config';
-// paths
+// routes
+import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // google maps api
 import { useJsApiLoader } from '@react-google-maps/api';
@@ -42,6 +43,8 @@ export default function Header({ headerOnDark }: Props) {
   const theme = useTheme();
 
   const isMdUp = useResponsive('up', 'md');
+
+  const router = useRouter();
 
   const isLoaded = useJsApiLoader({
     id: 'google-map-script',
@@ -114,7 +117,10 @@ export default function Header({ headerOnDark }: Props) {
             <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
               {!isAuthenticated && isMdUp && (
                 <Link
-                  href={PATHS.auth.register}
+                  onClick={() => {
+                    localStorage.setItem('prevUrl', router.asPath);
+                    router.push(PATHS.auth.register);
+                  }}
                   variant="subtitle1"
                   underline="none"
                   sx={{
@@ -137,8 +143,10 @@ export default function Header({ headerOnDark }: Props) {
                   <Button
                     variant="contained"
                     color="inherit"
-                    href={PATHS.auth.login}
-                    rel="noopener"
+                    onClick={() => {
+                      localStorage.setItem('prevUrl', router.asPath);
+                      router.push(PATHS.auth.login);
+                    }}
                     sx={{
                       px: 4,
                       bgcolor: 'primary.main',

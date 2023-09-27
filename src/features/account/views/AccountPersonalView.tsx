@@ -378,6 +378,8 @@ export default function AccountPersonalView({ updatedUser }: props) {
                   <DatePicker
                     format="dd-MM-yyyy"
                     label="Data de nascimento"
+                    maxDate={new Date()}
+                    minDate={new Date('01-01-1900')}
                     slotProps={{
                       textField: {
                         helperText: error?.message,

@@ -12,7 +12,7 @@ import { Stack, FormHelperText, Typography, Link } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
 // components
-import FormProvider, { RHFCodes, RHFTextField } from 'src/components/hook-form';
+import FormProvider, { RHFCodes, RHFTextField, RHFPhoneField } from 'src/components/hook-form';
 import useCountdown from 'src/hooks/useCountdown';
 import { useSnackbar } from 'src/components/snackbar';
 // lib
@@ -34,7 +34,13 @@ type FormValuesProps = {
   code6: string;
 };
 
-function EmailVerifyCodeForm() {
+type props = {
+  redirectToAccount?: boolean;
+  onPhoneConfirm?: () => void;
+  setShowSnackbar?: (obj: any) => void;
+};
+
+function PhoneVerifyCodeForm({ redirectToAccount, onPhoneConfirm, setShowSnackbar }: props) {
   const theme = useTheme();
   const { push } = useRouter();
   const router = useRouter();
@@ -83,12 +89,30 @@ function EmailVerifyCodeForm() {
         getValues('code5') +
         getValues('code6');
 
-      await fetch(`/api/account/verify-phone-code`, {
-        method: 'POST',
-        body: JSON.stringify({ email: user?.email, code }),
-      });
-
-      push(PATHS.account.personal);
+    
+      try {
+        await fetch(`/api/account/verify-phone-code`, {
+          method: 'POST',
+          body: JSON.stringify({ email: user?.email, code }),
+        });
+          if (setShowSnackbar)
+          setShowSnackbar({
+            show: true,
+            message: 'O seu telemóvel foi confirmado com sucesso.',
+            severity: 'success',
+          });
+        if (onPhoneConfirm) onPhoneConfirm();
+        if (redirectToAccount) {
+          push(PATHS.account.personal);
+        }
+      } catch (error) {
+        if (setShowSnackbar)
+          setShowSnackbar({
+            show: true,
+            message: 'Algo correu mal, tente novamente.',
+            severity: 'error',
+          });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -141,8 +165,37 @@ function EmailVerifyCodeForm() {
 
   return user?.phone ? (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Stack spacing={3}>
-        <RHFTextField name="phone" label="Telemóvel" disabled value={user?.phone} />
+      <Stack spacing={3} sx={{ alignItems: 'center', justifyContent: 'center' }}>
+        <RHFPhoneField
+          name="phone"
+          disabled
+          label="Telemóvel"
+          defaultCountry="PT"
+          forceCallingCode
+          value={user?.phone}
+          onChange={(value: string) => {
+            // not applicable in this case
+          }}
+        />
+        <Stack width="100%" alignItems="flex-end">
+          <Typography
+            onClick={() => {
+              router.push(PATHS.account.settings);
+            }}
+            sx={{
+              color: 'text.disabled',
+              width: 'fit-content',
+              fontSize: '12px',
+              pl: '5px',
+              cursor: 'pointer',
+              '&:hover': {
+                color: 'primary.main',
+              },
+            }}
+          >
+            Alterar Telemóvel
+          </Typography>
+        </Stack>
 
         <RHFCodes keyName="code" inputs={['code1', 'code2', 'code3', 'code4', 'code5', 'code6']} />
 
@@ -220,4 +273,4 @@ function EmailVerifyCodeForm() {
   );
 }
 
-export default EmailVerifyCodeForm;
+export default PhoneVerifyCodeForm;

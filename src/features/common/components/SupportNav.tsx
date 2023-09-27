@@ -64,7 +64,7 @@ export default function SupportNav({
         py: { xs: 3, md: 0 },
       }}
     >
-      <Tabs
+      {/**  <Tabs
         value={topic}
         onChange={onChangeTopic}
         orientation="vertical"
@@ -72,6 +72,8 @@ export default function SupportNav({
           pl: { xs: 2.5, md: 0 },
         }}
       >
+
+       
         {sidebarConfig.map((item) => (
           <Tab
             key={item.title}
@@ -94,6 +96,7 @@ export default function SupportNav({
           />
         ))}
       </Tabs>
+*/}
 
       <Box
         sx={{

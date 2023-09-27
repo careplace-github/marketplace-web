@@ -323,45 +323,44 @@ export default function CheckoutView() {
         Checkout
       </Typography>
 
-      <FormProvider key="checkout_view_form" methods={methods}>
-        <Grid container spacing={{ xs: 5, md: 8 }}>
-          <Grid xs={12} md={7}>
-            <Stack>
-              {userRelatives && (
-                <CheckoutQuestionnaireInfo
-                  onPaymentMethodSelect={(card) => setSelectedCard(card)}
-                  relatives={userRelatives}
-                  selectedRelative={orderInfo?.patient}
-                  checkoutVersion
-                  services={availableServices}
-                  onValidChange={() => {}}
-                  selectedWeekdays={selectedWeekdays}
-                  selectedServices={orderInfo?.services}
-                  selectedRecurrency={orderInfo?.schedule_information?.recurrency}
-                  schedule={orderInfo?.schedule_information?.schedule}
-                  startDate={new Date(orderInfo?.schedule_information?.start_date)}
-                  onBillingDetailsChange={handleBillingDetailsChange}
-                />
-              )}
-            </Stack>
-          </Grid>
-
-          <Grid xs={12} md={5}>
-            {companyInfo && (
-              <CheckoutSummary
-                hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
-                handleSubmit={onCheckoutSubmit}
-                disabled={submitButtonDisabled}
-                subtotal={orderInfo?.order_total}
-                company={companyInfo}
-                isSubmitting={isSubmitting}
-                onDiscountApplied={(code) => setDiscountCode(code)}
-                orderStatus={orderInfo.status}
+      <Grid container spacing={{ xs: 5, md: 8 }}>
+        <Grid xs={12} md={7}>
+          <Stack>
+            {userRelatives && (
+              <CheckoutQuestionnaireInfo
+                methods={methods}
+                onPaymentMethodSelect={(card) => setSelectedCard(card)}
+                relatives={userRelatives}
+                selectedRelative={orderInfo?.patient}
+                checkoutVersion
+                services={availableServices}
+                onValidChange={() => {}}
+                selectedWeekdays={selectedWeekdays}
+                selectedServices={orderInfo?.services}
+                selectedRecurrency={orderInfo?.schedule_information?.recurrency}
+                schedule={orderInfo?.schedule_information?.schedule}
+                startDate={new Date(orderInfo?.schedule_information?.start_date)}
+                onBillingDetailsChange={handleBillingDetailsChange}
               />
             )}
-          </Grid>
+          </Stack>
         </Grid>
-      </FormProvider>
+
+        <Grid xs={12} md={5}>
+          {companyInfo && (
+            <CheckoutSummary
+              hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
+              handleSubmit={onCheckoutSubmit}
+              disabled={submitButtonDisabled}
+              subtotal={orderInfo?.order_total}
+              company={companyInfo}
+              isSubmitting={isSubmitting}
+              onDiscountApplied={(code) => setDiscountCode(code)}
+              orderStatus={orderInfo.status}
+            />
+          )}
+        </Grid>
+      </Grid>
     </Container>
   ) : (
     <LoadingScreen />

@@ -35,6 +35,7 @@ import CompanyPicture from 'src/features/orders/components/questionnaire/complet
 import { ICompanyProps } from 'src/types/company';
 import { ISnackbarProps } from 'src/types/snackbar';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import { PATHS } from 'src/routes';
 
 //
 
@@ -172,7 +173,7 @@ export default function ReviewPageView({ update }: Props) {
               <CompanyPicture
                 name={companyInfo.business_profile.name}
                 image={companyInfo.business_profile.logo}
-                location={companyInfo.addresses[0].city}
+                location={companyInfo.business_profile.address.city}
               />
             )}
           </Card>
@@ -223,17 +224,36 @@ export default function ReviewPageView({ update }: Props) {
                 >
                   Comentários
                 </Typography>
-                <TextField
-                  multiline
-                  minRows={5}
-                  hiddenLabel
-                  value={reviewComment}
-                  onChange={(event) => setReviewComment(event.target.value)}
-                />
+                <Box sx={{ position: 'relative', width: '100%' }}>
+                  <TextField
+                    multiline
+                    minRows={5}
+                    hiddenLabel
+                    sx={{ width: '100%' }}
+                    value={reviewComment}
+                    onChange={(event) => {
+                      if (event.target.value.length <= 500) setReviewComment(event.target.value);
+                    }}
+                    inputProps={{
+                      sx: { pb: '20px' },
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      fontSize: '14px',
+                      color: 'text.secondary',
+                      width: '100%',
+                      textAlign: 'right',
+                      position: 'absolute',
+                      bottom: '5px',
+                      right: '10px',
+                    }}
+                  >{`${reviewComment?.length}/500`}</Typography>
+                </Box>
                 <Button
                   onClick={handleSubmitReview}
                   size="large"
-                  sx={{ bgColor: 'primary.main', width: '100%', mt: 4 }}
+                  sx={{ bgColor: 'primary.main', width: '100%' }}
                   variant="contained"
                   disabled={
                     reviewRating < 1 ||
@@ -267,7 +287,7 @@ export default function ReviewPageView({ update }: Props) {
                 </Stack>
                 <Button
                   component={NextLink}
-                  href="/"
+                  href={PATHS.companies.view(companyInfo?._id as string)}
                   size="large"
                   color="inherit"
                   variant="contained"

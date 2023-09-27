@@ -24,9 +24,11 @@ import { IRelativeProps } from 'src/types/relative';
 import { IScheduleProps } from 'src/types/order';
 // utils
 import { getAvailableServices } from 'src/utils/getAvailableServices';
+
 // components
 import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
+import ConfirmPhoneModal from 'src/components/confirm-phone-modal/ConfirmPhoneModal';
 //
 import { ISnackbarProps } from 'src/types/snackbar';
 import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components';
@@ -51,6 +53,7 @@ export default function OrderQuestionnaireView() {
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [showConfirmPhoneModal, setShowConfirmPhoneModal] = useState<boolean>(false);
   const [formData, setFormData] = useState<OrderRequestProps>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
@@ -136,15 +139,19 @@ export default function OrderQuestionnaireView() {
 
   const onSubmit = async (data) => {
     const canPlaceAnOrder = user?.email_verified && user?.phone_verified;
-    if (!canPlaceAnOrder) {
-      setShowSnackbar({
-        show: true,
-        severity: 'warning',
-        message: 'Para fazer um pedido tem que ter o seu Email e Telémovel verificados.',
-      });
+    if (!user?.phone_verified) {
       setIsSubmitting(false);
-      return;
+      try {
+          await fetch(`/api/account/send-confirm-phone-code`, {
+          method: 'POST',
+          body: JSON.stringify({ email: user?.email }),
+        });
+      } catch (error) {
+        console.error(error);
+      }
+      setShowConfirmPhoneModal(true);
     }
+
     if (companyInfo && canPlaceAnOrder) {
       setIsSubmitting(true);
       try {
@@ -217,6 +224,15 @@ export default function OrderQuestionnaireView() {
           </Alert>
         </Snackbar>
       )}
+      <ConfirmPhoneModal
+        onSuccess={() => {
+          if (user) user.phone_verified = true;
+          onSubmit(formData);
+        }}
+        setShowSnackbar={setShowSnackbar}
+        open={showConfirmPhoneModal}
+        onClose={() => setShowConfirmPhoneModal(false)}
+      />
       <Typography variant="h2" sx={{ mb: 5 }}>
         Orçamento
       </Typography>
@@ -227,6 +243,10 @@ export default function OrderQuestionnaireView() {
             <Stack>
               {userRelatives && (
                 <OrderQuestionnaireForm
+                  fetchUserRelatives={() => {
+                    fetchUserRelatives();
+                  }}
+                  setShowSnackbar={setShowSnackbar}
                   relatives={userRelatives}
                   services={availableServices}
                   onValidChange={handleValidChange}

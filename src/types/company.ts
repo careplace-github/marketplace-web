@@ -42,7 +42,6 @@ type IAddressProps = {
 
 export type ICompanyProps = {
   _id: string;
-  addresses: IAddressProps[];
   createdAt: string;
   business_profile: {
     about: string;
@@ -55,6 +54,7 @@ export type ICompanyProps = {
       instagram?: string;
       linkedin?: string;
     };
+    address: IAddressProps;
     website?: string;
   };
   pricing: {
@@ -77,4 +77,5 @@ export type ICompanyFiltersProps = {
   filterWeekdays: number[];
   filterServices: IServiceProps[];
   filterRecurrency: number | undefined;
+  name: string | undefined;
 };

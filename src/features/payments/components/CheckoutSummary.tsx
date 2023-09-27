@@ -151,7 +151,16 @@ export default function CheckoutSummary({
             alt={company.business_profile.name}
             src={company.business_profile.logo}
             ratio="1/1"
-            sx={{ borderRadius: 2 }}
+            sx={{
+              borderRadius: 2,
+              backgroundColor: 'white',
+              width: '100%',
+              height: 'auto',
+              '& > span > img': {
+                width: '100%',
+                height: 'auto',
+              },
+            }}
           />
           <Stack>
             <TextMaxLine variant="h5" sx={{ mb: 2 }}>
@@ -160,13 +169,13 @@ export default function CheckoutSummary({
             <Stack spacing={0.5} direction="row" alignItems="center">
               <Iconify icon="carbon:star-filled" sx={{ color: 'warning.main' }} />
               <Box sx={{ typography: 'h6' }}>{company.rating.average.toFixed(1)}</Box>
-              {company.rating.count && (
-                <Link variant="body2" sx={{ color: 'text.secondary' }}>
-                  {`(${company.rating.count} ${
-                    company.rating.count === 1 ? 'avaliação' : 'avaliações'
-                  })`}
-                </Link>
-              )}
+              <Link variant="body2" sx={{ color: 'text.secondary' }}>
+                {`(${company.rating.count === 0 ? 'sem' : company.rating.count} ${
+                  (company?.rating?.count && company.rating.count > 1) || company.rating.count === 0
+                    ? 'avaliações'
+                    : 'avaliação'
+                })`}
+              </Link>
             </Stack>
             <Stack
               direction="row"
@@ -182,7 +191,7 @@ export default function CheckoutSummary({
                   color: 'text.disabled',
                 }}
               />
-              <Typography sx={{ opacity: 0.72 }}>{company.addresses[0].city}</Typography>
+              <Typography sx={{ opacity: 0.72 }}>{company.business_profile.address.city}</Typography>
             </Stack>
           </Stack>
         </Box>

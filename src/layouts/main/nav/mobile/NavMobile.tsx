@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-// next
-import { useRouter } from 'next/router';
 // @mui
 import { List, Drawer, Button, Stack, Box, Avatar, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -11,7 +9,8 @@ import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { useSnackbar } from 'src/components/snackbar';
-// paths
+// routes
+import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 // auth
 import { useSession, signOut } from 'next-auth/react';
@@ -53,7 +52,8 @@ export default function NavMobile({ data }: NavProps) {
     try {
       await signOut();
       handleClose();
-      router.push(PATHS.home);
+      const prevUrl = localStorage.getItem('prevUrl');
+      router.push(prevUrl || PATHS.home);
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
@@ -157,7 +157,10 @@ export default function NavMobile({ data }: NavProps) {
 
                     color: 'primary.main',
                   }}
-                  href={PATHS.auth.register}
+                  onClick={() => {
+                    localStorage.setItem('prevUrl', router.asPath);
+                    router.push(PATHS.auth.register);
+                  }}
                 >
                   Registar
                 </Button>
@@ -165,6 +168,10 @@ export default function NavMobile({ data }: NavProps) {
                   fullWidth
                   variant="contained"
                   color="inherit"
+                  onClick={() => {
+                    localStorage.setItem('prevUrl', router.asPath);
+                    router.push(PATHS.auth.login);
+                  }}
                   sx={{
                     mt: '10px',
                     px: 4,
@@ -175,7 +182,6 @@ export default function NavMobile({ data }: NavProps) {
                       color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
                     },
                   }}
-                  href={PATHS.auth.login}
                 >
                   Entrar
                 </Button>

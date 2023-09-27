@@ -31,8 +31,8 @@ import { getAvailableServices } from 'src/utils/getAvailableServices';
 import { PATHS } from 'src/routes';
 // components
 import CheckoutSummary from 'src/features/payments/components/CheckoutSummary';
+import ConfirmPhoneModal from 'src/components/confirm-phone-modal/ConfirmPhoneModal';
 import CheckoutQuestionnaireInfo from 'src/features/payments/components/CheckoutQuestionnaireInfo';
-import FormProvider from 'src/components/hook-form';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { OrderQuestionnaireForm, OrderQuestionnaireSummary } from '../components';
 import CancelOrderModal from '../components/cancel-order-modal/CancelOrderModal';
@@ -71,6 +71,7 @@ export default function OrderView() {
   const [userRelatives, setUserRelatives] = useState<IRelativeProps[]>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [showConfirmPhoneModal, setShowConfirmPhoneModal] = useState<boolean>(false);
   const [firstBillingDetailsData, setFirstBillingDetailsData] = useState<
     BillingDetailsProps | 'not fetched'
   >('not fetched');
@@ -334,6 +335,16 @@ export default function OrderView() {
 
   const handleUpdateOrder = async () => {
     setIsSubmitting(true);
+    if (!user?.phone_verified) {
+      setIsSubmitting(false);
+      try {
+        await sendConfirmPhoneCode(user?.email);
+      } catch (error) {
+        console.error(error);
+      }
+      setShowConfirmPhoneModal(true);
+      return;
+    }
     try {
       const updatedOrder: OrderRequestProps = {
         health_unit: companyInfo?._id as string,
@@ -405,6 +416,16 @@ export default function OrderView() {
         pb: { xs: 8, md: 15 },
       }}
     >
+      <ConfirmPhoneModal
+        setShowSnackbar={setShowSnackbar}
+        open={showConfirmPhoneModal}
+        onSuccess={() => {
+          if (user) user.phone_verified = true;
+          handleUpdateOrder();
+        }}
+        onClose={() => setShowConfirmPhoneModal(false)}
+        updateOrder
+      />
       <Snackbar
         open={showSnackbar.show}
         autoHideDuration={5000}
@@ -440,74 +461,77 @@ export default function OrderView() {
         open={showCancelOrderModal}
       />
 
-      <FormProvider key="checkout_view_form" methods={methods}>
-        <Grid container spacing={{ xs: 5, md: 8 }}>
-          <Grid xs={12} md={7}>
-            <Stack>
-              {userRelatives && orderInfo.status !== 'new' && orderInfo.status !== 'accepted' && (
-                <CheckoutQuestionnaireInfo
-                  isOrderView
-                  onPaymentMethodSelect={(card) => {
-                    setSelectedCard(card);
-                    setCustomIsDirty(true);
-                    // setPreviousPaymentMethod(undefined);
-                  }}
-                  relatives={userRelatives}
-                  selectedRelative={orderInfo?.patient}
-                  checkoutVersion
-                  orderBillingDetails={billingDetails}
-                  services={availableServices}
-                  onValidChange={() => {}}
-                  selectedWeekdays={selectedWeekdays}
-                  selectedServices={orderInfo?.services}
-                  selectedRecurrency={orderInfo?.schedule_information?.recurrency}
-                  schedule={orderInfo?.schedule_information?.schedule}
-                  startDate={new Date(orderInfo?.schedule_information?.start_date)}
-                  onBillingDetailsChange={handleBillingDetailsChange}
-                  orderStatus={orderInfo.status}
-                  previousPaymentMethod={previousPaymentMethod}
-                />
-              )}
-
-              {userRelatives && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
-                <OrderQuestionnaireForm
-                  relatives={userRelatives}
-                  disableAllFields={orderInfo.status === 'accepted'}
-                  orderInfo={orderInfo || null}
-                  services={availableServices}
-                  onValidChange={handleValidChange}
-                />
-              )}
-            </Stack>
-          </Grid>
-
-          <Grid xs={12} md={5}>
-            {companyInfo && orderInfo.status !== 'new' && orderInfo.status !== 'accepted' && (
-              <CheckoutSummary
-                handleSubmit={updateOrderPayments}
+      <Grid container spacing={{ xs: 5, md: 8 }}>
+        <Grid xs={12} md={7}>
+          <Stack>
+            {userRelatives && orderInfo.status !== 'new' && orderInfo.status !== 'accepted' && (
+              <CheckoutQuestionnaireInfo
+                methods={methods}
                 isOrderView
-                disabled={disableSubmitButton}
+                onPaymentMethodSelect={(card) => {
+                  setSelectedCard(card);
+                  setCustomIsDirty(true);
+                  // setPreviousPaymentMethod(undefined);
+                }}
+                relatives={userRelatives}
+                selectedRelative={orderInfo?.patient}
+                checkoutVersion
+                orderBillingDetails={billingDetails}
+                services={availableServices}
+                onValidChange={() => {}}
+                selectedWeekdays={selectedWeekdays}
+                selectedServices={orderInfo?.services}
+                selectedRecurrency={orderInfo?.schedule_information?.recurrency}
+                schedule={orderInfo?.schedule_information?.schedule}
+                startDate={new Date(orderInfo?.schedule_information?.start_date)}
+                onBillingDetailsChange={handleBillingDetailsChange}
                 orderStatus={orderInfo.status}
-                subtotal={orderInfo?.order_total}
-                isSubmitting={isSubmitting}
-                company={companyInfo}
-                onDiscountApplied={(code) => setDiscountCode(code)}
-                hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
+                previousPaymentMethod={previousPaymentMethod}
               />
             )}
-            {companyInfo && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
-              <OrderQuestionnaireSummary
-                handleSubmit={handleUpdateOrder}
-                disabled={disableSubmitButton}
-                orderStatus={orderInfo.status}
-                company={companyInfo}
-                updateVersion
-                isSubmitting={isSubmitting}
+
+            {userRelatives && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
+              <OrderQuestionnaireForm
+                fetchUserRelatives={() => {
+                  fetchUserRelatives();
+                }}
+                setShowSnackbar={setShowSnackbar}
+                relatives={userRelatives}
+                disableAllFields={orderInfo.status === 'accepted'}
+                orderInfo={orderInfo || null}
+                services={availableServices}
+                onValidChange={handleValidChange}
               />
             )}
-          </Grid>
+          </Stack>
         </Grid>
-      </FormProvider>
+
+        <Grid xs={12} md={5}>
+          {companyInfo && orderInfo.status !== 'new' && orderInfo.status !== 'accepted' && (
+            <CheckoutSummary
+              handleSubmit={updateOrderPayments}
+              isOrderView
+              disabled={disableSubmitButton}
+              orderStatus={orderInfo.status}
+              subtotal={orderInfo?.order_total}
+              isSubmitting={isSubmitting}
+              company={companyInfo}
+              onDiscountApplied={(code) => setDiscountCode(code)}
+              hasSubsciptionId={!!orderInfo?.stripe_information?.subscription_id}
+            />
+          )}
+          {companyInfo && (orderInfo.status === 'new' || orderInfo.status === 'accepted') && (
+            <OrderQuestionnaireSummary
+              handleSubmit={handleUpdateOrder}
+              disabled={disableSubmitButton}
+              orderStatus={orderInfo.status}
+              company={companyInfo}
+              updateVersion
+              isSubmitting={isSubmitting}
+            />
+          )}
+        </Grid>
+      </Grid>
       {orderInfo.status !== 'new' && (
         <Stack sx={{ alignItems: 'flex-start', justifyContent: 'flex-start', mt: '50px' }}>
           <Button

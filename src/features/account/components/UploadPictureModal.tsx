@@ -180,7 +180,8 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <RHFUploadAvatar
               name="profile_picture"
-              maxSize={3145728}
+              // maxSize={3145728}
+              maxSize={5100000}
               onDrop={handleDrop}
               helperText={
                 <Typography
@@ -194,7 +195,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
                   }}
                 >
                   Formatos permitidos: *.jpeg, *.jpg, *.png, *.gif
-                  <br /> tamanho máximo: 3MB
+                  <br /> tamanho máximo: 5MB
                 </Typography>
               }
             />

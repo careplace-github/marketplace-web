@@ -19,7 +19,15 @@ const StyledRoot = styled(Stack)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function SupportHero() {
+export default function SupportHero({
+  query,
+  onSearch,
+  onReset,
+}: {
+  query: string;
+  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onReset: VoidFunction;
+}) {
   return (
     <StyledRoot>
       <Typography variant="h2" sx={{ textAlign: 'center', color: 'common.white', mb: 5 }}>
@@ -39,9 +47,22 @@ export default function SupportHero() {
               <Iconify icon="carbon:search" width={24} sx={{ color: 'text.disabled' }} />
             </InputAdornment>
           ),
+          endAdornment: (
+            <InputAdornment
+              position="end"
+              onClick={onReset}
+              sx={{
+                cursor: 'pointer',
+              }}
+            >
+              <Iconify icon="carbon:close" width={20} />
+            </InputAdornment>
+          ),
           sx: { color: 'common.white' },
         }}
         sx={{ maxWidth: 366 }}
+        value={query}
+        onChange={onSearch}
       />
     </StyledRoot>
   );

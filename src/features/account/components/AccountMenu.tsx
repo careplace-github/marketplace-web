@@ -77,7 +77,8 @@ export default function AccountMenu({ open, onClose }: FormValuesProps) {
   const handleLogoutClick = async () => {
     setIsLoading(true);
     await signOut();
-    routes.push(PATHS.home);
+    const prevUrl = localStorage.getItem('prevUrl');
+    routes.push(prevUrl || PATHS.home);
   };
 
   const renderContent = (
