@@ -14,12 +14,12 @@ const _generalFaqs = [
     question: 'Como funciona a Careplace?',
     answer: (
       <p>
-        A Careplace é uma plataforma inovadora que simplifica a procura por cuidados domiciliários
+        A Careplace é uma plataforma inovadora que simplifica a procura por apoio domiciliário
         de alta qualidade e confiança. Ligamos indivíduos que necessitam de cuidados a prestadores
         de serviços altamente qualificados, incluindo empresas especializadas em cuidados
         domiciliários e cuidadores individuais dedicados.
         <br /> <br />A nossa missão é tornar o processo de encontrar e contratar serviços de
-        cuidados domiciliários mais simples e transparente. Facilitamos a comparação de diferentes
+        apoio domiciliário mais simples e transparente. Facilitamos a comparação de diferentes
         prestadores de serviços, assegurando que tenha acesso a uma seleção criteriosamente avaliada
         de profissionais de cuidados que correspondam às suas necessidades específicas.
       </p>
@@ -34,7 +34,7 @@ const _generalFaqs = [
         Escolher a Careplace torna-se uma decisão fácil pelos seguintes motivos: <br /> <br />{' '}
         <br />
         <b>1. Transparência e Confiança</b>: A Careplace é dedicada a fornecer um ambiente
-        transparente e confiável para encontrar serviços de cuidados domiciliares. Todos os
+        transparente e confiável para encontrar serviços de apoio domiciliário. Todos os
         prestadores de serviços são criteriosamente avaliados e verificados, garantindo que você
         receba cuidados de alta qualidade. <br /> <br />
         <b>2. Variedade de Opções</b>: Nossa plataforma oferece uma ampla variedade de opções de
@@ -45,9 +45,9 @@ const _generalFaqs = [
         de cuidados simples e conveniente. Com apenas alguns cliques, você pode explorar diferentes
         opções e tomar decisões informadas. <br />
         <br />
-        <b>4. Expansão de Ofertas</b>: Além dos cuidados domiciliares, estamos expandindo nossa
+        <b>4. Expansão de Ofertas</b>: Além do apoio domiciliário, estamos a expandir a nossa
         plataforma para incluir lares de idosos e equipamentos médicos essenciais, proporcionando um
-        conjunto abrangente de soluções para suas necessidades geriátricas.
+        conjunto abrangente de soluções para as suas necessidades geriátricas.
         <br />
         <br />
         <b>5. Compromisso com a Qualidade</b>: A nossa dedicação à qualidade do atendimento garante
@@ -70,7 +70,7 @@ const _generalFaqs = [
         significa que o preço mensal não depende apenas da quantidade de serviços necessários, mas
         também do número de horas e dos dias em que um cuidador está programado para cuidar do seu
         familiar. <br /> <br />
-        Cada empresa de cuidados domiciliares pode ter a sua própria estrutura de preços e políticas
+        Cada empresa de apoio domiciliário pode ter a sua própria estrutura de preços e políticas
         de faturação. Portanto, ao avaliar as opções, é importante discutir os detalhes dos custos
         com a empresa escolhida para garantir que compreenda completamente como os preços são
         calculados. <br /> <br />
@@ -90,26 +90,26 @@ const _generalFaqs = [
         Contratar um serviço através da Careplace é simples e conveniente. Aqui estão os passos a
         seguir: <br /> <br /> <br />
         <b>Pesquisa e Exploração</b>: Comece por navegar na nossa plataforma para encontrar os
-        serviços de cuidados domiciliários que melhor correspondem às necessidades do seu familiar.
+        serviços de apoio domiciliário que melhor correspondem às necessidades do seu familiar.
         Pode utilizar os filtros de pesquisa para refinar os resultados com base em critérios como
         localização, tipo de serviço e muito mais.
         <br /> <br />
         <b>Obtenção de Orçamentos</b>: Depois de identificar as opções que lhe interessam, pode
-        solicitar orçamentos diretamente a empresas de cuidados domiciliários. Esta é uma forma de
+        solicitar orçamentos diretamente a empresas de apoio domiciliário. Esta é uma forma de
         obter informações detalhadas sobre os serviços oferecidos e os custos associados.
         <br /> <br />
         <b>Escolha e Reserva</b>: Com base nos orçamentos recebidos e nas suas preferências, pode
-        escolher a empresa de cuidados domiciliários que melhor se adapte às suas necessidades. Uma
+        escolher a empresa de apoio domiciliário que melhor se adapte às suas necessidades. Uma
         vez feita a seleção, pode proceder à reserva dos serviços diretamente através da nossa
         plataforma.
         <br /> <br />
-        <b>Acompanhamento e Assistência</b>: Após a reserva, a empresa de cuidados domiciliários
+        <b>Acompanhamento e Assistência</b>: Após a reserva, a empresa de apoio domiciliário
         escolhida entrará em contacto consigo para organizar os detalhes finais, como horários e
         datas de início dos serviços. Estamos aqui para ajudar durante todo o processo e garantir
         que tudo corra sem problemas.
         <br /> <br /> <br />
         Lembramos que, na Careplace, o uso da plataforma para pesquisa e reserva de serviços é
-        gratuito. Os custos associados aos serviços dependerão da empresa de cuidados domiciliários
+        gratuito. Os custos associados aos serviços dependerão da empresa de apoio domiciliário
         escolhida e dos termos acordados durante o processo de reserva. Estamos comprometidos em
         tornar o processo o mais simples e transparente possível, para que possa obter os cuidados
         de que precisa com facilidade.
@@ -147,7 +147,7 @@ const _generalFaqs = [
       <p>
         Sim, claro! Estamos aqui para ajudar a simplificar o processo de escolha para si. <br />{' '}
         <br />
-        Se estiver indeciso sobre qual empresa de cuidados domiciliares escolher ou precisar de
+        Se estiver indeciso sobre qual empresa de apoio domiciliário escolher ou precisar de
         orientação personalizada, não hesite em entrar em contacto direto connosco. Os nossos
         especialistas terão todo o prazer em ouvir as suas necessidades específicas e as
         preferências do seu familiar e, com base nisso, ajudarão a encontrar a empresa de cuidados
@@ -186,12 +186,12 @@ const _generalFaqs = [
       <p>
         Sim, tem a oportunidade de conhecer o seu cuidador antes de tomar uma decisão de
         contratação. <br />
-        Muitos prestadores de serviços de cuidados domiciliares oferecem a opção de realizar uma
+        Muitos prestadores de serviços de apoio domiciliário oferecem a opção de realizar uma
         reunião inicial ou uma visita prévia. Isso permite que se familiarize com o cuidador, faça
         perguntas e avalie se existe uma boa compatibilidade antes de prosseguir com a contratação.
         <br />
         <br /> Além disso, na Careplace, pode solicitar vários orçamentos a diferentes empresas de
-        cuidados domiciliares, sem qualquer custo adicional. Isso permite que compare diferentes
+        apoio domiciliário, sem qualquer custo adicional. Isso permite que compare diferentes
         opções, avalie as tarifas e os serviços oferecidos por várias empresas e tome uma decisão
         informada que corresponda às suas necessidades de cuidados. Estamos aqui para facilitar o
         processo de escolha do cuidador que melhor se adapte a si ou ao seu ente querido.
@@ -204,11 +204,11 @@ const _generalFaqs = [
     question: 'Contratar a empresa significa que não terei um cuidador fixo para meu familiar?',
     answer: (
       <p>
-        Não necessariamente. A contratação de uma empresa de cuidados domiciliares não significa
+        Não necessariamente. A contratação de uma empresa de apoio domiciliário não significa
         automaticamente que não terá um cuidador fixo para o seu familiar. Muitas empresas de
         cuidados oferecem a opção de designar um cuidador específico para atender às necessidades do
         seu ente querido de forma consistente.
-        <br /> <br /> Ao contratar uma empresa de cuidados domiciliares, pode discutir as suas
+        <br /> <br /> Ao contratar uma empresa de apoio domiciliário, pode discutir as suas
         preferências com a empresa. Muitas empresas farão o possível para designar um cuidador fixo,
         o que pode ser benéfico para estabelecer uma relação de confiança e familiaridade.
         <br /> <br /> No entanto, é importante lembrar que a disponibilidade de um cuidador fixo

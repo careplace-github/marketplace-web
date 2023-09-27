@@ -16,7 +16,7 @@ export default function CompaniesPage() {
   return (
     <>
       <Head>
-        <title>Apoio Domiciliário | Careplace</title>
+        <title>Plataforma de Apoio Domiciliário | Careplace</title>
       </Head>
 
       <CompaniesListView />
