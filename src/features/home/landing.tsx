@@ -25,9 +25,7 @@ export default function LandingPage() {
         <title>Careplace</title>
       </Head>
 
-      <GuestGuard>
-        <LandingView />
-      </GuestGuard>
+      <LandingView />
     </>
   );
 }

@@ -158,7 +158,7 @@ export default function CompaniesListView({ searchType }: props) {
     setLoading(true);
 
     router.push({
-      pathname: PATHS.search.homeCare.companies.root,
+      pathname: searchTypes.find((type) => type.value === searchType)?.url,
       query: {
         ...currentQuery,
         sortBy: attribute,
@@ -224,6 +224,7 @@ export default function CompaniesListView({ searchType }: props) {
           }}
         >
           <CompaniesFiltersHead
+            urlToRedirect={searchTypes.find((type) => type.value === searchType)?.url}
             order={sortOrder}
             orderBy={sortBy}
             onSort={handleSort}

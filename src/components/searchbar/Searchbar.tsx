@@ -243,9 +243,13 @@ export default function Searchbar({
       };
     });
     const pathWithoutQueries = router.asPath.split('?')[0];
-    if (pathWithoutQueries !== PATHS.search.homeCare.companies.root) {
+    console.log(pathWithoutQueries);
+    const locationQuery = router.query?.query;
+    if (!pathWithoutQueries.includes('/pesquisar')) {
       setValue('');
       setSelectedOption(null);
+    } else if (locationQuery) {
+      setValue(locationQuery as string);
     }
   }, [router.asPath]);
 
