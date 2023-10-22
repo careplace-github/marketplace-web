@@ -1,5 +1,3 @@
-// next
-import NextLink from 'next/link';
 // @mui
 import { Link, ListItemText } from '@mui/material';
 // components
@@ -48,7 +46,7 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
 
   // Default
   return (
-    <Link component={NextLink} href={path} underline="none">
+    <Link href={path} underline="none">
       {renderContent}
     </Link>
   );

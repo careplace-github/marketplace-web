@@ -82,6 +82,7 @@ export default function CarouselArrows({
       <Stack sx={sx} {...other}>
         {onNext && (
           <StyledIconButton
+            aria-label="slide-left"
             filled={filled}
             shape={shape}
             hasChild={!!children}
@@ -100,6 +101,7 @@ export default function CarouselArrows({
 
         {onPrev && (
           <StyledIconButton
+            aria-label="slide-right"
             filled={filled}
             shape={shape}
             hasChild={!!children}

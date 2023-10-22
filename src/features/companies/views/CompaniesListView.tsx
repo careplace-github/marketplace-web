@@ -12,7 +12,8 @@ import axios from 'src/lib/axios';
 // components
 import Iconify from 'src/components/iconify';
 import EmptyState from 'src/components/empty-state/EmptyState';
-
+// Routes
+import { PATHS } from 'src/routes';
 //
 import { animateScroll } from 'react-scroll';
 //
@@ -25,7 +26,11 @@ import CompaniesFilters from '../components/filters/CompaniesFilters';
 import CompaniesFiltersHead from '../components/filters/components/CompaniesFiltersHead';
 // ----------------------------------------------------------------------
 
-export default function CompaniesListView() {
+type props = {
+  searchType: 'homeCare' | 'nursingHome' | 'seniorResidence' | 'dayCenter';
+};
+
+export default function CompaniesListView({ searchType }: props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [companies, setCompanies] = useState<ICompanyProps[]>([]);
   const [loading, setLoading] = useState(true);
@@ -37,6 +42,17 @@ export default function CompaniesListView() {
   const router = useRouter();
   const isMdUp = useResponsive('up', 'md');
   const theme = useTheme();
+
+  const searchTypes = [
+    { text: 'Apoio Domiciliário', value: 'homeCare', url: PATHS.search.homeCare.companies.root },
+    { text: 'Lares de Idosos', value: 'nursingHome', url: PATHS.search.nursingHome.companies.root },
+    {
+      text: 'Residências Sénior',
+      value: 'seniorResidence',
+      url: PATHS.search.seniorResidence.companies.root,
+    },
+    { text: 'Centros de Dia', value: 'dayCenter', url: PATHS.search.dayCenter.companies.root },
+  ];
 
   const sortHead = [
     { id: 'relevance', label: 'Relevância', width: '100%', textAlign: 'center' },
@@ -124,7 +140,7 @@ export default function CompaniesListView() {
     setLoading(true);
 
     router.push({
-      pathname: '/companies',
+      pathname: PATHS.search.homeCare.companies.root,
       query: {
         ...currentQuery,
         page: newPage,
@@ -142,7 +158,7 @@ export default function CompaniesListView() {
     setLoading(true);
 
     router.push({
-      pathname: '/companies',
+      pathname: PATHS.search.homeCare.companies.root,
       query: {
         ...currentQuery,
         sortBy: attribute,
@@ -164,7 +180,9 @@ export default function CompaniesListView() {
           py: 5,
         }}
       >
-        <Typography variant="h2">Empresas SAD</Typography>
+        <Typography variant="h2">
+          {searchTypes?.find((type) => type?.value === searchType)?.text}
+        </Typography>
 
         <Button
           color="inherit"
@@ -188,6 +206,7 @@ export default function CompaniesListView() {
 
       <Stack direction={{ xs: 'column', md: 'row' }}>
         <CompaniesFilters
+          searchType={searchType}
           whenLoading={(isLoading) => setLoading(isLoading)}
           services={availableServices}
           mobileOpen={mobileOpen}
@@ -210,7 +229,7 @@ export default function CompaniesListView() {
             onSort={handleSort}
             headCells={sortHead}
           />
-          {companies.length > 0 ? (
+          {companies.length > 0 && searchType === 'homeCare' ? (
             <CompaniesList
               onPageChange={handlePageChange}
               totalPages={totalPages}
@@ -222,6 +241,15 @@ export default function CompaniesListView() {
               icon="clarity:building-line"
               title="Sem resultados"
               description="Por favor altere os filtros de pesquisa ou tente mais tarde"
+              actionComponent={
+                <Button
+                  sx={{ height: '48px', mt: '20px' }}
+                  onClick={() => router.push(PATHS.getHelp)}
+                  variant="contained"
+                >
+                  Obtenha Ajuda Gratuita
+                </Button>
+              }
             />
           )}
         </Box>

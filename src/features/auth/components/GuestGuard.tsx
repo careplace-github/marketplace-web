@@ -27,7 +27,7 @@ export default function GuestGuard({ children }: GuestGuardProps) {
     const prevUrl = localStorage.getItem('prevUrl');
 
     useEffect(() => {
-      push(prevUrl || PATHS.companies.root);
+      push(prevUrl || PATHS.search.homeCare.companies.root);
     }, [pathname, push]);
 
     return <LoadingScreen />;

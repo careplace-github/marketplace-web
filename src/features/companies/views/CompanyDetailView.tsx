@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 // router
 import { useRouter } from 'next/router';
+import { PATHS } from 'src/routes';
 // type props
 import { IServiceProps } from 'src/types/utils';
 import { ICompanyProps } from 'src/types/company';
@@ -264,7 +265,7 @@ export default function CompanyDetailView() {
       const currentQuery = router.query;
       delete currentQuery.id;
       router.push({
-        pathname: '/companies',
+        pathname: PATHS.search.homeCare.companies.root,
         query: {
           ...currentQuery,
           weekDay: filterQueries.weekdays,

@@ -24,7 +24,7 @@ export const footerLinksLoggedOut = [
     type: 'Main',
     subheader: 'Encontrar',
     items: [
-      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Empresas SAD', path: PATHS.search.homeCare.companies.root },
       { title: 'Serviços', path: PATHS.services.root },
     ],
   },
@@ -49,7 +49,7 @@ export const footerLinksLoggedIn = [
     type: 'Main',
     subheader: 'Encontrar',
     items: [
-      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Empresas SAD', path: PATHS.search.homeCare.companies.root },
       { title: 'Serviços', path: PATHS.services.root },
     ],
   },
@@ -62,7 +62,7 @@ export const navLinks = [
     subheader: 'Marketplace',
     cover: '/assets/images/menu/careplace_marketplace.png',
     items: [
-      { title: 'Cuidadores Domiciliários', path: PATHS.companies.root },
+      { title: 'Cuidadores Domiciliários', path: PATHS.search.homeCare.companies.root },
       { title: 'Equipamentos Médicos', path: PATHS.comingsoon },
       { title: 'Lares', path: PATHS.comingsoon },
       { title: 'Residências Sénior', path: PATHS.comingsoon },
@@ -99,7 +99,7 @@ export const navLinks = [
 export const navConfig = [
   {
     title: 'Encontrar Cuidador',
-    path: PATHS.companies.root,
+    path: PATHS.search.homeCare.companies.root,
   },
   { title: 'Serviços', path: PATHS.services.root },
   {
@@ -137,7 +137,7 @@ export const navConfigMobile = [
   },
   {
     title: 'Encontrar Cuidador',
-    path: PATHS.companies.root,
+    path: PATHS.search.homeCare.companies.root,
     icon: 'fa6-solid:user-nurse',
   },
   {

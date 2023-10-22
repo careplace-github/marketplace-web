@@ -273,7 +273,7 @@ export default function ReviewPageView({ update }: Props) {
                 </Stack>
                 <Button
                   component={NextLink}
-                  href={PATHS.companies.view(companyInfo?._id as string)}
+                  href={PATHS.search.homeCare.companies.view(companyInfo?._id as string)}
                   size="large"
                   color="inherit"
                   variant="contained"
