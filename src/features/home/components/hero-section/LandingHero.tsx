@@ -22,7 +22,7 @@ const StyledRoot = styled('div')(({ theme }) => ({
     color: alpha(theme.palette.background.default, 0.9),
     imgUrl: '/assets/background/overlay_1.jpg',
   }),
-  overflow: 'hidden',
+  overflow: 'visible',
 }));
 
 // ----------------------------------------------------------------------
