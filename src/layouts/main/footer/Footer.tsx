@@ -219,6 +219,7 @@ export default function Footer() {
                 <Stack direction="row" alignItems="flex-start" sx={{ ml: '-10px' }}>
                   {socials.map((social) => (
                     <IconButton
+                      aria-label="go to social"
                       key={social.value}
                       color="primary"
                       href={social.value}

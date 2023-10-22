@@ -11,11 +11,12 @@ import { IServiceProps } from 'src/types/utils';
 
 type Props = {
   service: IServiceProps;
-  selected: boolean;
-  onItemSelect: Function;
+  selected?: boolean;
+  onItemSelect?: Function;
+  landingVersion?: boolean;
 };
 
-export default function ServiceItem({ service, selected, onItemSelect }: Props) {
+export default function ServiceItem({ service, selected, onItemSelect, landingVersion }: Props) {
   const { name, image, type, short_description } = service;
 
   function mapServiceType(serviceType: string) {
@@ -26,10 +27,12 @@ export default function ServiceItem({ service, selected, onItemSelect }: Props) 
 
   return (
     <Box
-      onClick={() => onItemSelect(!selected)}
+      onClick={() => {
+        if (onItemSelect) onItemSelect(!selected);
+      }}
       sx={{
         position: 'relative',
-        cursor: 'pointer',
+        cursor: landingVersion ? undefined : 'pointer',
         // height: '250px',
         bgcolor: 'white',
         borderRadius: '16px',
@@ -49,27 +52,32 @@ export default function ServiceItem({ service, selected, onItemSelect }: Props) 
           height: '25px',
         }}
       /> */}
-      <Box
-        sx={{
-          position: 'absolute',
-          top: '10px',
-          right: '10px',
-          zIndex: 9,
-          borderRadius: '8px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px solid',
-          borderColor: 'primary.main',
-          cursor: 'pointer',
-          width: '25px',
-          height: '25px',
-          backgroundColor: 'white',
-        }}
-      >
-        {' '}
-        <Iconify icon="iconamoon:check-bold" sx={{ color: selected ? 'primary.main' : 'white' }} />
-      </Box>
+      {!landingVersion && (
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '10px',
+            right: '10px',
+            zIndex: 9,
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            border: '1px solid',
+            borderColor: 'primary.main',
+            cursor: 'pointer',
+            width: '25px',
+            height: '25px',
+            backgroundColor: 'white',
+          }}
+        >
+          {' '}
+          <Iconify
+            icon="iconamoon:check-bold"
+            sx={{ color: selected ? 'primary.main' : 'white' }}
+          />
+        </Box>
+      )}
       <Image src={image} alt={name} ratio="1/1" />
       <Box sx={{ p: 3, width: '100%' }}>
         <Stack
@@ -88,7 +96,9 @@ export default function ServiceItem({ service, selected, onItemSelect }: Props) 
             </Typography>
           </Stack>
         </Stack>
-        <Typography sx={{ fontSize: '14px', mt: 3 }}>{short_description}</Typography>
+        {!landingVersion && (
+          <Typography sx={{ fontSize: '14px', mt: 3 }}>{short_description}</Typography>
+        )}
       </Box>
     </Box>
   );
