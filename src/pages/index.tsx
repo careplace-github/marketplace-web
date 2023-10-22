@@ -1,3 +1,3 @@
-import Home from './home';
+import LandingPage from 'src/features/home/landing';
 
-export default Home;
+export default LandingPage;
