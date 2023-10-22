@@ -20,9 +20,10 @@ const spacingLayout = [...pathsOnDark, '/', '/e-learning/landing', '/marketing/l
 
 type Props = {
   children: React.ReactNode;
+  hideSearchbar?: boolean;
 };
 
-export default function MainLayout({ children }: Props) {
+export default function MainLayout({ children, hideSearchbar }: Props) {
   const { pathname } = useRouter();
   const isMdUp = useResponsive('up', 'md');
 
@@ -30,7 +31,7 @@ export default function MainLayout({ children }: Props) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: 1 }}>
-      <Header headerOnDark={actionPage(pathsOnDark)} />
+      <Header headerOnDark={actionPage(pathsOnDark)} hideSearchbar={hideSearchbar} />
 
       <Box
         component="main"

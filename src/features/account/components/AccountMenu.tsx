@@ -144,7 +144,7 @@ export default function AccountMenu({ open, onClose }: FormValuesProps) {
           </ListItemIcon>
           <ListItemText
             onClick={handleLogoutClick}
-            primary="Sair"
+            primary="Terminar Sessão"
             primaryTypographyProps={{
               typography: 'body2',
             }}

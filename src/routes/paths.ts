@@ -5,58 +5,77 @@ export const PATHS = {
   home: `/`,
 
   // Info
-  caregivers: `/caregivers`,
+  caregivers: `/cuidadores`,
 
   // Services
   services: {
-    root: `/services`,
+    root: `/servicos`,
   },
 
-  // Companies
-  companies: {
-    root: `/companies`,
-    view: (id: string) => `/companies/${id}`,
+  search: {
+    homeCare: {
+      companies: {
+        root: `/pesquisar/apoio-domiciliario`,
+        view: (id: string) => `/pesquisar/apoio-domiciliario/${id}`,
+      },
+    },
+    seniorResidence: {
+      companies: {
+        root: `/pesquisar/residencias-senior`,
+      },
+    },
+    nursingHome: {
+      companies: {
+        root: `/pesquisar/lares-de-idosos`,
+      },
+    },
+    dayCenter: {
+      companies: {
+        root: `/pesquisar/centros-de-dia`,
+      },
+    },
   },
 
   // Account
   account: {
-    root: `/account`,
-    personal: `/account/personal`,
-    relatives: `/account/relatives`,
-    orders: `/account/orders`,
-    payments: `/account/payments`,
-    settings: `/account/settings`,
+    root: `/conta`,
+    personal: `/conta/pessoal`,
+    relatives: `/conta/familiares`,
+    orders: `/conta/pedidos`,
+    payments: `/conta/pagamentos`,
+    settings: `/conta/definicoes`,
   },
 
   // Order
   orders: {
-    view: (id: string) => `/orders/${id}`,
-    edit: (id: string) => `/orders/${id}/edit`,
-    checkout: (id: string) => `/orders/${id}/checkout`,
-    checkoutSucess: (id: string) => `/orders/${id}/checkout/success`,
-    questionnaire: (query: string) => `/orders/questionnaire/${query}`,
-    questionnaireCompleted: (id: string) => `/orders/questionnaire/completed/${id}`,
+    view: (id: string) => `/pedidos/${id}`,
+    edit: (id: string) => `/pedidos/${id}/edit`,
+    checkout: (id: string) => `/pedidos/${id}/checkout`,
+    checkoutSucess: (id: string) => `/pedidos/${id}/checkout/sucesso`,
+    questionnaire: (query: string) => `/pedidos/questionario/${query}`,
+    questionnaireCompleted: (id: string) => `/pedidos/questionario/completo/${id}`,
   },
 
   // Auth
   auth: {
     login: '/auth/login',
-    register: '/auth/register',
-    resetPassword: '/auth/reset-password',
-    forgotPassword: '/auth/forgot-password',
-    verifyCode: '/auth/verify-code',
-    verifyEmail: '/auth/verify-email',
-    verifyPhone: '/auth/verify-phone',
+    register: '/auth/registo',
+    resetPassword: '/auth/redifinir-palavra-passe',
+    forgotPassword: '/auth/recuperar-palavra-passe',
+    verifyCode: '/auth/confirmar-conta',
+    verifyEmail: '/auth/confirmar-email',
+    verifyPhone: '/auth/confirmar-telemovel',
   },
 
   // Common
-  afterLogin: '/companies',
-  maintenance: '/maintenance',
-  comingsoon: '/coming-soon',
-  support: '/support',
+  afterLogin: '/pesquisar/apoio-domiciliario',
+  maintenance: '/manuntencao',
+  comingsoon: '/brevemente',
+  support: '/suporte',
+  getHelp: '/ajuda-gratuita',
   page404: '/404',
   page500: '/500',
-  privacyPolicy: '/privacy-policy',
-  termsAndConditions: '/terms-and-conditions',
-  contactUs: '/caregivers',
+  privacyPolicy: '/politica-de-privacidade',
+  termsAndConditions: '/termos-e-condicoes',
+  contactUs: '/cuidadores',
 };

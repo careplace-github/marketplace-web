@@ -11,6 +11,7 @@ export const footerLinksLoggedOut = [
     items: [
       { title: 'Entrar', path: PATHS.auth.login },
       { title: 'Registar', path: PATHS.auth.register },
+      { title: 'Ajuda Gratuita', path: PATHS.getHelp },
       { title: 'Torne-se Cuidador', path: PATHS.contactUs },
       {
         title: 'Instituições de Saúde',
@@ -24,7 +25,11 @@ export const footerLinksLoggedOut = [
     type: 'Main',
     subheader: 'Encontrar',
     items: [
-      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Apoio Domiciliário', path: PATHS.search.homeCare.companies.root },
+      { title: 'Lares de Idosos', path: PATHS.search.homeCare.companies.root },
+      { title: 'Residências Sénior', path: PATHS.search.homeCare.companies.root },
+      { title: 'Centros de Dia', path: PATHS.search.homeCare.companies.root },
+      { title: 'Equipamentos Médicos', path: PATHS.search.homeCare.companies.root },
       { title: 'Serviços', path: PATHS.services.root },
     ],
   },
@@ -36,6 +41,8 @@ export const footerLinksLoggedIn = [
     type: 'Main',
     subheader: 'Careplace',
     items: [
+      { title: 'Ajuda Gratuita', path: PATHS.getHelp },
+
       { title: 'Torne-se Cuidador', path: PATHS.contactUs },
       {
         title: 'Instituições de Saúde',
@@ -49,7 +56,11 @@ export const footerLinksLoggedIn = [
     type: 'Main',
     subheader: 'Encontrar',
     items: [
-      { title: 'Empresas SAD', path: PATHS.companies.root },
+      { title: 'Apoio Domiciliário', path: PATHS.search.homeCare.companies.root },
+      { title: 'Lares de Idosos', path: PATHS.search.nursingHome.companies.root },
+      { title: 'Residências Sénior', path: PATHS.search.seniorResidence.companies.root },
+      { title: 'Centros de Dia', path: PATHS.search.dayCenter.companies.root },
+      { title: 'Equipamentos Médicos', path: PATHS.getHelp },
       { title: 'Serviços', path: PATHS.services.root },
     ],
   },
@@ -62,7 +73,7 @@ export const navLinks = [
     subheader: 'Marketplace',
     cover: '/assets/images/menu/careplace_marketplace.png',
     items: [
-      { title: 'Cuidadores Domiciliários', path: PATHS.companies.root },
+      { title: 'Cuidadores Domiciliários', path: PATHS.search.homeCare.companies.root },
       { title: 'Equipamentos Médicos', path: PATHS.comingsoon },
       { title: 'Lares', path: PATHS.comingsoon },
       { title: 'Residências Sénior', path: PATHS.comingsoon },
@@ -78,7 +89,7 @@ export const navLinks = [
     items: [
       { title: 'Funcionamento', path: PATHS.comingsoon as string },
       { title: 'Preçário', path: PATHS.comingsoon },
-      { title: 'Empresas SAD', path: PATHS.comingsoon },
+      { title: 'Apoio Domiciliário', path: PATHS.comingsoon },
       { title: 'Lares', path: PATHS.comingsoon },
       { title: 'Residências Sénior', path: PATHS.comingsoon },
     ],
@@ -99,7 +110,7 @@ export const navLinks = [
 export const navConfig = [
   {
     title: 'Encontrar Cuidador',
-    path: PATHS.companies.root,
+    path: PATHS.search.homeCare.companies.root,
   },
   { title: 'Serviços', path: PATHS.services.root },
   {
@@ -136,8 +147,8 @@ export const navConfigMobile = [
     icon: 'material-symbols:settings-outline-rounded',
   },
   {
-    title: 'Encontrar Cuidador',
-    path: PATHS.companies.root,
+    title: 'Encontrar Apoio',
+    path: PATHS.search.homeCare.companies.root,
     icon: 'fa6-solid:user-nurse',
   },
   {

@@ -6,7 +6,8 @@ import { useTheme } from '@mui/material/styles';
 import { Typography, Stack, Box, Button, Divider, Card, SelectChangeEvent } from '@mui/material';
 // utils
 import { fCurrency } from 'src/utils/formatNumber';
-
+// routes
+import { PATHS } from 'src/routes';
 // types
 import { IServiceProps } from 'src/types/utils';
 //
@@ -73,7 +74,7 @@ export default function CompanyDetailReserveForm({
     });
 
     router.push({
-      pathname: '/orders/questionnaire',
+      pathname: PATHS.orders.questionnaire(companyId),
       query: {
         ...router.query,
         weekDay: filterWeekdays.join(','),

@@ -99,7 +99,7 @@ export default function ServicesList({ services }: Props) {
             color="inherit"
             onClick={() => {
               router.push({
-                pathname: PATHS.companies.root,
+                pathname: PATHS.search.homeCare.companies.root,
                 query: { services: servicesSelected.join(',') },
               });
             }}

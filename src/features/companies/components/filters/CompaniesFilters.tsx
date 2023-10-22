@@ -10,8 +10,10 @@ import {
   SelectChangeEvent,
   Slider,
   Box,
+  MenuItem,
 } from '@mui/material';
-
+// Routes
+import { PATHS } from 'src/routes';
 // hooks
 import useResponsive from 'src/hooks/useResponsive';
 // config
@@ -48,11 +50,13 @@ type Props = {
   onMobileClose: VoidFunction;
   services: Array<IServiceProps>;
   whenLoading: Function;
+  searchType: 'homeCare' | 'nursingHome' | 'seniorResidence' | 'dayCenter';
 };
 
 export default function CompaniesFilters({
   whenLoading,
   services,
+  searchType,
   mobileOpen,
   onMobileClose,
 }: Props) {
@@ -68,6 +72,18 @@ export default function CompaniesFilters({
     lng: null,
     query: '',
   });
+
+  const searchTypeOptions = [
+    { text: 'Apoio Domiciliário', value: 'homeCare', url: PATHS.search.homeCare.companies.root },
+    { text: 'Lares de Idosos', value: 'nursingHome', url: PATHS.search.nursingHome.companies.root },
+    {
+      text: 'Residências Sénior',
+      value: 'seniorResidence',
+      url: PATHS.search.seniorResidence.companies.root,
+    },
+    { text: 'Centros de Dia', value: 'dayCenter', url: PATHS.search.dayCenter.companies.root },
+    { text: 'Equipamentos Médicos', value: 'medicalEquipment', url: PATHS.getHelp },
+  ];
 
   const setDefaultFilterValues = (queryValues) => {
     const labels: IServiceProps[] = [];
@@ -137,7 +153,7 @@ export default function CompaniesFilters({
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
-      pathname: '/companies',
+      pathname: PATHS.search.homeCare.companies.root,
       query: {
         ...currentQuery,
         weekDay: newFilter.join(','),
@@ -161,7 +177,7 @@ export default function CompaniesFilters({
     setFiltersDirty(true);
     const currentQuery = router.query;
     router.push({
-      pathname: '/companies',
+      pathname: PATHS.search.homeCare.companies.root,
       query: {
         ...currentQuery,
         recurrency: newFilter,
@@ -181,7 +197,7 @@ export default function CompaniesFilters({
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
-      pathname: '/companies',
+      pathname: PATHS.search.homeCare.companies.root,
       query: {
         ...currentQuery,
         services: auxId.join(','),
@@ -199,7 +215,7 @@ export default function CompaniesFilters({
         const currentQuery = router.query;
         whenLoading(true);
         router.push({
-          pathname: '/companies',
+          pathname: PATHS.search.homeCare.companies.root,
           query: {
             ...currentQuery,
             minPrice: sliderValue[0],
@@ -245,7 +261,7 @@ export default function CompaniesFilters({
         const currentQuery = router.query;
         whenLoading(true);
         router.push({
-          pathname: '/companies',
+          pathname: PATHS.search.homeCare.companies.root,
           query: {
             ...currentQuery,
             page: 1,
@@ -267,7 +283,7 @@ export default function CompaniesFilters({
     const currentQuery = router.query;
     whenLoading(true);
     router.push({
-      pathname: '/companies',
+      pathname: PATHS.search.homeCare.companies.root,
       query: {
         ...currentQuery,
         page: 1,
@@ -290,6 +306,21 @@ export default function CompaniesFilters({
           <Iconify icon="carbon:close" width="30px" height="30px" onClick={onMobileClose} />
         </Stack>
       )}
+      <Block title="Tipo de Serviço">
+        <TextField
+          defaultValue={searchType}
+          onChange={(e) => {
+            const urlToPush = searchTypeOptions?.find((opt) => opt?.value === e.target.value)?.url;
+            router.push({ pathname: urlToPush, query: router.query });
+          }}
+          hiddenLabel
+          select
+        >
+          {searchTypeOptions.map((opt) => {
+            return <MenuItem value={opt.value}>{opt.text}</MenuItem>;
+          })}
+        </TextField>
+      </Block>
       <Block title="Pesquisa">
         <TextField
           hiddenLabel
@@ -321,13 +352,15 @@ export default function CompaniesFilters({
         />
       </Block>
 
-      <Block title="Serviços">
-        <FilterServices
-          services={services}
-          filterServices={filters.filterServices}
-          onChangeServices={handleChangeServices}
-        />
-      </Block>
+      {searchType === 'homeCare' && (
+        <Block title="Serviços">
+          <FilterServices
+            services={services}
+            filterServices={filters.filterServices}
+            onChangeServices={handleChangeServices}
+          />
+        </Block>
+      )}
 
       <Block title="Dias da semana">
         <FilterWeekdays

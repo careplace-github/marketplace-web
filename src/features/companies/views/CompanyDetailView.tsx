@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 // router
 import { useRouter } from 'next/router';
+import { PATHS } from 'src/routes';
 // type props
 import { IServiceProps } from 'src/types/utils';
 import { ICompanyProps } from 'src/types/company';
@@ -209,7 +210,7 @@ export default function CompanyDetailView() {
   useEffect(() => {
     if (router.isReady) {
       setLoading(true);
-      const companyId = router.asPath.split('/')[2].split('?')[0];
+      const companyId = router?.asPath?.split('/')?.at(-1)?.split('?')[0];
       const fetchInfo = async () => {
         const responseCompanyInfo = await axios.get(`/health-units/${companyId}`, {
           headers: {
@@ -264,7 +265,7 @@ export default function CompanyDetailView() {
       const currentQuery = router.query;
       delete currentQuery.id;
       router.push({
-        pathname: '/companies',
+        pathname: PATHS.search.homeCare.companies.root,
         query: {
           ...currentQuery,
           weekDay: filterQueries.weekdays,
@@ -287,7 +288,7 @@ export default function CompanyDetailView() {
             <CustomBreadcrumbs
               sx={{ mb: 0 }}
               links={[
-                { name: 'Empresas SAD', href: '/' },
+                { name: 'Apoio Domiciliário', href: '/' },
                 { name: companyInfo.business_profile.name },
               ]}
             />
@@ -313,7 +314,7 @@ export default function CompanyDetailView() {
           <CompanyProfileCover
             name={companyInfo.business_profile.name}
             image={companyInfo.business_profile.logo}
-            location={companyInfo.business_profile.address.city}
+            location={companyInfo.business_profile?.address?.city}
           />
         </Card>
 

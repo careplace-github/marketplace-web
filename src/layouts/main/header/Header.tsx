@@ -27,6 +27,7 @@ import HeaderShadow from '../../components/HeaderShadow';
 
 type Props = {
   headerOnDark: boolean;
+  hideSearchbar?: boolean;
 };
 
 const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'visualization')[] = [
@@ -35,7 +36,7 @@ const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'vi
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
-export default function Header({ headerOnDark }: Props) {
+export default function Header({ headerOnDark, hideSearchbar }: Props) {
   const { isAuthenticated, isInitialized } = useAuthContext();
   const router = useRouter();
   const theme = useTheme();
@@ -53,7 +54,7 @@ export default function Header({ headerOnDark }: Props) {
       color="transparent"
       sx={{
         boxShadow: '0px 1px 20px rgba(0,0,0,0.07)',
-        backgroundColor: 'white',
+        backgroundColor: hideSearchbar ? 'red' : 'white',
       }}
     >
       <Stack direction="column" sx={{ width: '100%' }}>
@@ -97,26 +98,24 @@ export default function Header({ headerOnDark }: Props) {
                   },
                 }}
                 badgeContent={
-                  <Link href="" target="_blank" rel="noopener" underline="none" sx={{ ml: 1 }}>
-                    <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1 }}>
-                      beta
-                    </Label>
-                  </Link>
+                  <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1 }}>
+                    beta
+                  </Label>
                 }
               >
                 <Logo logoHeight={33} />
               </Badge>{' '}
             </Box>
 
-            {isMdUp && <NavDesktop />}
+            {isMdUp && !hideSearchbar && <NavDesktop />}
 
             <Stack spacing={2} direction="row" alignItems="center" justifyContent="flex-end">
               {!isAuthenticated && isMdUp && (
                 <Link
                   onClick={() => {
                     localStorage.setItem('prevUrl', router.asPath);
-                    router.push(PATHS.auth.register);
                   }}
+                  href={PATHS.auth.register}
                   variant="subtitle1"
                   underline="none"
                   sx={{
@@ -162,8 +161,16 @@ export default function Header({ headerOnDark }: Props) {
             {!isMdUp && <NavMobile data={navConfigMobile} />}
           </Container>
         </Toolbar>
-        {!isMdUp && (
-          <Box sx={{ width: '100%', p: '10px 16px', pb: '20px', backgroundColor: 'white' }}>
+        {!isMdUp && !hideSearchbar && (
+          <Box
+            sx={{
+              width: '100%',
+              minWidth: '400px',
+              p: '10px 16px',
+              pb: '20px',
+              backgroundColor: 'white',
+            }}
+          >
             <Searchbar />
           </Box>
         )}
