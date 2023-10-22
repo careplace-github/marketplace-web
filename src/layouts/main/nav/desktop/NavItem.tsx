@@ -1,6 +1,4 @@
 import { forwardRef } from 'react';
-// next
-import NextLink from 'next/link';
 // @mui
 import { Link } from '@mui/material';
 // components
@@ -46,7 +44,7 @@ export const NavItem = forwardRef<HTMLDivElement, NavItemProps>(
 
     // Default
     return (
-      <Link component={NextLink} href={path} color="inherit" underline="none">
+      <Link href={path} color="inherit" underline="none">
         {renderContent}
       </Link>
     );

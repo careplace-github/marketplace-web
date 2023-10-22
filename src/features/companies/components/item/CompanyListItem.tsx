@@ -24,9 +24,10 @@ import { useEffect } from 'react';
 type Props = {
   company: ICompanyProps;
   vertical?: boolean;
+  lightVersion?: boolean;
 };
 
-export default function CompanyListItem({ company, vertical }: Props) {
+export default function CompanyListItem({ lightVersion, company, vertical }: Props) {
   const router = useRouter();
   const theme = useTheme();
   const isMdUp = useResponsive('up', 'md');
@@ -97,7 +98,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
                   }}
                   onClick={() => {
                     router.push({
-                      pathname: `/companies/${company._id}`,
+                      pathname: PATHS.search.homeCare.companies.view(company._id),
                       query: { ...router.query },
                     });
                   }}
@@ -149,10 +150,13 @@ export default function CompanyListItem({ company, vertical }: Props) {
                         : company.rating.average.toFixed(1)}
                     </Box>
 
-                    <Link variant="body2" sx={{ color: 'text.secondary' }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: 'text.secondary', '&:hover': { textDecoration: 'underline' } }}
+                    >
                       ({company.rating.count ? fShortenNumber(company.rating.count) : 'sem'}{' '}
                       avaliações)
-                    </Link>
+                    </Typography>
                   </Stack>
                   <Stack
                     direction="row"
@@ -175,29 +179,31 @@ export default function CompanyListItem({ company, vertical }: Props) {
                     </Typography>
                   </Stack>
                 </Stack>
-                <Button
-                  variant="contained"
-                  color="inherit"
-                  onClick={() => {
-                    router.push({
-                      pathname: `/companies/${company._id}`,
-                      query: { ...router.query },
-                    });
-                  }}
-                  sx={{
-                    mt: '40px',
-                    px: 4,
-                    bgcolor: 'primary.main',
-                    width: '100%',
-                    color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                    '&:hover': {
-                      bgcolor: 'primary.dark',
+                {!lightVersion && (
+                  <Button
+                    variant="contained"
+                    color="inherit"
+                    onClick={() => {
+                      router.push({
+                        pathname: PATHS.search.homeCare.companies.view(company._id),
+                        query: { ...router.query },
+                      });
+                    }}
+                    sx={{
+                      mt: '40px',
+                      px: 4,
+                      bgcolor: 'primary.main',
+                      width: '100%',
                       color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
-                    },
-                  }}
-                >
-                  Ver mais
-                </Button>
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                        color: theme.palette.mode === 'light' ? 'common.white' : 'grey.800',
+                      },
+                    }}
+                  >
+                    Ver mais
+                  </Button>
+                )}
               </Stack>
             )}
           </Stack>
@@ -265,7 +271,7 @@ export default function CompanyListItem({ company, vertical }: Props) {
               color="inherit"
               onClick={() => {
                 router.push({
-                  pathname: `/companies/${company._id}`,
+                  pathname: PATHS.search.homeCare.companies.view(company._id),
                   query: { ...router.query },
                 });
               }}

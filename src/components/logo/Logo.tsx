@@ -4,46 +4,43 @@ import { forwardRef } from 'react';
 import NextLink from 'next/link';
 // @mui
 import { Box, BoxProps, Link } from '@mui/material';
+import Image from 'next/image';
 
 // ----------------------------------------------------------------------
 
 interface LogoProps extends BoxProps {
   single?: boolean;
   disabledLink?: boolean;
-  logoWidth?: string | number;
-  logoHeight?: string | number;
+  logoWidth?: number;
+  logoHeight?: number;
 }
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(
   ({ disabledLink = false, logoWidth, logoHeight, single = false, sx, ...other }, ref) => {
     const singleLogo = (
-      <Box
-        component="img"
+      <Image
+        alt="careplace-logo"
         src="/logo/icon.svg"
-        sx={{
-          width: logoWidth || 55,
-          height: logoHeight || undefined,
-          cursor: disabledLink ? undefined : 'pointer',
-        }}
+        width={logoWidth || 55}
+        height={logoHeight || 55}
+        style={{ cursor: 'pointer', height: logoHeight || 'auto' }}
       />
     );
 
     const fullLogo = (
-      <Box
-        component="img"
+      <Image
+        alt="careplace-logo"
         src="/logo/careplace-logo.svg"
-        sx={{
-          width: logoWidth || undefined,
-          height: logoHeight || 40,
-          cursor: disabledLink ? undefined : 'pointer',
-        }}
+        width={logoWidth || 55}
+        height={logoHeight || 40}
+        style={{ cursor: 'pointer', width: logoWidth || 'auto ' }}
       />
     );
 
     return disabledLink ? (
       <Box>{single ? singleLogo : fullLogo}</Box>
     ) : (
-      <Link component={NextLink} href="/" sx={{ display: 'contents' }}>
+      <Link aria-label="careplace-logo" component={NextLink} href="/" sx={{ display: 'contents' }}>
         {single ? singleLogo : fullLogo}
       </Link>
     );

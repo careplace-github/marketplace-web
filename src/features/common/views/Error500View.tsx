@@ -37,7 +37,12 @@ export default function Error500View() {
         <a href="mailto:suporte@careplace.pt"> suporte@careplace.pt </a>
       </Typography>
 
-      <Button component={NextLink} href={PATHS.companies.root} size="large" variant="contained">
+      <Button
+        component={NextLink}
+        href={PATHS.search.homeCare.companies.root}
+        size="large"
+        variant="contained"
+      >
         Início
       </Button>
     </MotionContainer>
