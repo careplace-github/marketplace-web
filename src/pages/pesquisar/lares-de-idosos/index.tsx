@@ -1,3 +1,3 @@
-import NursingHomePage from './NursingHomePage';
+import NursingHomePage from 'src/features/search/NursingHomePage';
 
 export default NursingHomePage;
