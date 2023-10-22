@@ -14,10 +14,12 @@ interface Prop {
   headCells: any[];
   numSelected?: number;
   onSort: (id: string) => void;
+  urlToRedirect?: string;
 }
 
 export default function CompaniesFiltersHead({
   order,
+  urlToRedirect,
   onSort,
   orderBy,
   rowCount,
