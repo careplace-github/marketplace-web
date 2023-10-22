@@ -34,6 +34,8 @@ type FiltersProps = {
 type SearchbarProps = {
   onSearch?: () => void;
   onLoad?: (isLoading: boolean) => void;
+  fullWidth?: boolean;
+  urlToRedirect?: string;
 };
 
 type Location = {
@@ -41,7 +43,12 @@ type Location = {
   lng: string | null;
 };
 
-export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
+export default function Searchbar({
+  onSearch,
+  onLoad,
+  fullWidth,
+  urlToRedirect = PATHS.search.homeCare.companies.root,
+}: SearchbarProps) {
   const { push, query } = useRouter();
   const isSmUp = useResponsive('up', 'sm');
   const searchbarRef = useRef<HTMLDivElement | null>();
@@ -236,7 +243,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
       };
     });
     const pathWithoutQueries = router.asPath.split('?')[0];
-    if (pathWithoutQueries !== '/companies') {
+    if (pathWithoutQueries !== PATHS.search.homeCare.companies.root) {
       setValue('');
       setSelectedOption(null);
     }
@@ -246,7 +253,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
 
   const handleSearch = () => {
     push({
-      pathname: PATHS.companies.root,
+      pathname: urlToRedirect,
       query: {
         ...query, // preserve existing query params
         ...filters,
@@ -273,7 +280,10 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
   };
 
   return (
-    <Box ref={searchbarRef} sx={{ width: !isMdUp ? '100%' : '400px', position: 'relative' }}>
+    <Box
+      ref={searchbarRef}
+      sx={{ width: !isMdUp || fullWidth ? '100%' : '400px', position: 'relative' }}
+    >
       <Snackbar
         open={showSnackbar.show}
         autoHideDuration={5000}
@@ -308,6 +318,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
         onChange={(e) => setValue(e.target.value)}
         variant="outlined"
         InputProps={{
+          sx: { backgroundColor: 'white' },
           endAdornment: (
             <Stack direction="row" alignItems="center" justifyContent="flex-end" gap="10px">
               {selectedOption && (
@@ -323,6 +334,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
                 />
               )}
               <Button
+                aria-label="search"
                 size="large"
                 variant="contained"
                 sx={{
@@ -379,7 +391,7 @@ export default function Searchbar({ onSearch, onLoad }: SearchbarProps) {
             backgroundColor: 'white',
             borderRadius: '8px',
             mt: '10px',
-
+            zIndex: '10',
             boxShadow:
               'rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;',
             overflowY: 'auto',

@@ -12,10 +12,28 @@ export const PATHS = {
     root: `/services`,
   },
 
-  // Companies
-  companies: {
-    root: `/companies`,
-    view: (id: string) => `/companies/${id}`,
+  search: {
+    homeCare: {
+      companies: {
+        root: `/pesquisar/apoio-domiciliario`,
+        view: (id: string) => `/pesquisar/apoio-domiciliario/${id}`,
+      },
+    },
+    seniorResidence: {
+      companies: {
+        root: `/pesquisar/residencias-senior`,
+      },
+    },
+    nursingHome: {
+      companies: {
+        root: `/pesquisar/lares-de-idosos`,
+      },
+    },
+    dayCenter: {
+      companies: {
+        root: `/pesquisar/centros-de-dia`,
+      },
+    },
   },
 
   // Account
@@ -54,6 +72,7 @@ export const PATHS = {
   maintenance: '/maintenance',
   comingsoon: '/coming-soon',
   support: '/support',
+  getHelp: '/get-help',
   page404: '/404',
   page500: '/500',
   privacyPolicy: '/privacy-policy',

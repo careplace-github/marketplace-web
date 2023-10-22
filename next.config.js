@@ -14,15 +14,4 @@ module.exports = {
   images: {
     domains: ['images.unsplash.com'], // https://nextjs.org/docs/basic-features/image-optimization#domains
   },
-  async redirects() {
-    // https://nextjs.org/docs/api-reference/next.config.js/redirects
-    return [
-      {
-        source: '/',
-        // FIX: Only use while home page is under construction
-        destination: '/companies',
-        permanent: true,
-      },
-    ];
-  },
 };
