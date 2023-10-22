@@ -288,7 +288,7 @@ export default function CompanyDetailView() {
             <CustomBreadcrumbs
               sx={{ mb: 0 }}
               links={[
-                { name: 'Empresas SAD', href: '/' },
+                { name: 'Apoio Domiciliário', href: '/' },
                 { name: companyInfo.business_profile.name },
               ]}
             />
