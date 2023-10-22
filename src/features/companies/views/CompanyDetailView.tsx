@@ -210,7 +210,7 @@ export default function CompanyDetailView() {
   useEffect(() => {
     if (router.isReady) {
       setLoading(true);
-      const companyId = router.asPath.split('/')[2].split('?')[0];
+      const companyId = router?.asPath?.split('/')?.at(-1)?.split('?')[0];
       const fetchInfo = async () => {
         const responseCompanyInfo = await axios.get(`/health-units/${companyId}`, {
           headers: {
@@ -314,7 +314,7 @@ export default function CompanyDetailView() {
           <CompanyProfileCover
             name={companyInfo.business_profile.name}
             image={companyInfo.business_profile.logo}
-            location={companyInfo.business_profile.address.city}
+            location={companyInfo.business_profile?.address?.city}
           />
         </Card>
 

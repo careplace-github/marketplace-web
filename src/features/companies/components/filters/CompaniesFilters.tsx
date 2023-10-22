@@ -82,6 +82,7 @@ export default function CompaniesFilters({
       url: PATHS.search.seniorResidence.companies.root,
     },
     { text: 'Centros de Dia', value: 'dayCenter', url: PATHS.search.dayCenter.companies.root },
+    { text: 'Equipamentos Médicos', value: 'medicalEquipment', url: PATHS.getHelp },
   ];
 
   const setDefaultFilterValues = (queryValues) => {
@@ -351,13 +352,15 @@ export default function CompaniesFilters({
         />
       </Block>
 
-      <Block title="Serviços">
-        <FilterServices
-          services={services}
-          filterServices={filters.filterServices}
-          onChangeServices={handleChangeServices}
-        />
-      </Block>
+      {searchType === 'homeCare' && (
+        <Block title="Serviços">
+          <FilterServices
+            services={services}
+            filterServices={filters.filterServices}
+            onChangeServices={handleChangeServices}
+          />
+        </Block>
+      )}
 
       <Block title="Dias da semana">
         <FilterWeekdays
