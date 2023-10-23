@@ -89,11 +89,6 @@ export default function OrderQuestionnaireView() {
     }
   }, [router.isReady]);
 
-  const [guests, setGuests] = useState({
-    adults: 2,
-    children: 1,
-  });
-
   const TravelCheckoutSchema = Yup.object().shape({
     billingAddress: Yup.object().shape({
       firstName: Yup.string().required('First name is required'),
