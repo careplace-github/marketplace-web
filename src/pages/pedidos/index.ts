@@ -10,7 +10,7 @@ export default function Index() {
   const { pathname, push } = useRouter();
 
   useEffect(() => {
-    push(PATHS.orders.questionnaire(''));
+    push(PATHS.search.homeCare.companies.root);
   }, [pathname, push]);
 
   return null;
