@@ -74,7 +74,7 @@ export default function CompanyDetailReserveForm({
     });
 
     router.push({
-      pathname: PATHS.orders.questionnaire(companyId),
+      pathname: PATHS.orders.questionnaire(),
       query: {
         ...router.query,
         weekDay: filterWeekdays.join(','),
