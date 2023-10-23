@@ -37,7 +37,7 @@ function LandingGetHelp() {
             textAlign: 'center',
           }}
         >
-          Obtenha ajuda gratuita para fazer uma escolha consciente para o seu Familiar
+          Obtenha Ajuda Gratuita para fazer uma Escolha Consciente para o seu Familiar
         </Typography>
         <Typography
           sx={{

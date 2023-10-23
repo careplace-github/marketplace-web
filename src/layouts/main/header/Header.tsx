@@ -47,6 +47,7 @@ export default function Header({ headerOnDark, hideSearchbar }: Props) {
     id: 'google-map-script',
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries: googleLibraries,
+    language: 'pt-PT',
   });
 
   return isInitialized && isLoaded.isLoaded ? (

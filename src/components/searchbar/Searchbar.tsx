@@ -36,6 +36,7 @@ type SearchbarProps = {
   onLoad?: (isLoading: boolean) => void;
   fullWidth?: boolean;
   urlToRedirect?: string;
+  language?: string;
 };
 
 type Location = {
@@ -48,6 +49,7 @@ export default function Searchbar({
   onLoad,
   fullWidth,
   urlToRedirect = PATHS.search.homeCare.companies.root,
+  language = 'pt-PT',
 }: SearchbarProps) {
   const { push, query } = useRouter();
   const isSmUp = useResponsive('up', 'sm');
@@ -76,6 +78,7 @@ export default function Searchbar({
     requestOptions: {
       // Restrict the results to Portugal
       componentRestrictions: { country: 'pt' },
+      language: language || 'pt-PT',
     },
     // Only request every 300ms.
     debounce: 300,
