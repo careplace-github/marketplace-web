@@ -52,7 +52,7 @@ export const PATHS = {
     edit: (id: string) => `/pedidos/${id}/edit`,
     checkout: (id: string) => `/pedidos/${id}/checkout`,
     checkoutSucess: (id: string) => `/pedidos/${id}/checkout/sucesso`,
-    questionnaire: (query: string) => `/pedidos/questionario/${query}`,
+    questionnaire: (query?: string) => `/pedidos/questionario${query || ''}`,
     questionnaireCompleted: (id: string) => `/pedidos/questionario/completo/${id}`,
   },
 
