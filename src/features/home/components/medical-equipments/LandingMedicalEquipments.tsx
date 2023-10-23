@@ -31,7 +31,7 @@ function LandingMedicalEquipments() {
       name: 'Grua de Transferência',
       price: { daily: '1.49', monthly: '39.99' },
       description:
-        'O aluguer de gruas de transferência responder à necessidade de acamados para uma mobilidade mais simples e ágil no dia a dia.',
+        'O aluguer de gruas de transferência vem responder à necessidade de acamados para uma mobilidade mais simples e ágil no dia a dia.',
       image:
         '/assets/images/landing/medical-equipments/grua de transferencia.bccec8bab45781076d76.png',
     },
