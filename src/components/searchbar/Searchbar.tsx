@@ -396,6 +396,7 @@ export default function Searchbar({
             height: 'auto',
             maxHeight: '300px',
             backgroundColor: 'white',
+            textAlign: 'left',
             borderRadius: '8px',
             mt: '10px',
             zIndex: '10',
