@@ -23,6 +23,8 @@ import Head from 'next/head';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import Script from 'next/script';
+// Google maps api
+import { useJsApiLoader } from '@react-google-maps/api';
 // @mui
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -35,6 +37,7 @@ import ProgressBar from 'src/components/progress-bar';
 import { ThemeSettings, SettingsProvider } from 'src/features/settings';
 import MotionLazyContainer from 'src/components/animate/MotionLazyContainer';
 import { AuthProvider } from 'src/features/auth';
+import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 
 // ----------------------------------------------------------------------
 
@@ -52,9 +55,21 @@ export interface MyAppProps extends AppProps {
 export default function MyApp(props: MyAppProps) {
   const { Component, pageProps, emotionCache = clientSideEmotionCache } = props;
 
+  const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'visualization')[] =
+    ['places'];
+
+  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
+
   const getLayout = Component.getLayout ?? ((page) => page);
 
-  return (
+  const isLoaded = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
+    libraries: googleLibraries,
+    language: 'pt',
+  });
+
+  return isLoaded.isLoaded ? (
     <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -75,5 +90,7 @@ export default function MyApp(props: MyAppProps) {
         </LocalizationProvider>
       </AuthProvider>
     </CacheProvider>
+  ) : (
+    <LoadingScreen />
   );
 }
