@@ -38,6 +38,7 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components
 type OrderRequestProps = {
   health_unit: string;
   patient: string;
+  type: string;
   services: string[];
   schedule_information: {
     start_date: Date;
@@ -160,6 +161,7 @@ export default function OrderQuestionnaireView() {
       const dataToSubmit: OrderRequestProps = {
         health_unit: companyInfo._id,
         patient: data.relativeSelected,
+        type: 'home_care',
         services: data.servicesSelected,
         schedule_information: {
           start_date: data.startDateSelected,
