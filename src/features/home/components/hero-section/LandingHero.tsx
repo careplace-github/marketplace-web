@@ -238,14 +238,14 @@ export default function LandingHero() {
                     <CarouselArrows
                       onNext={handleNext}
                       onPrev={handlePrev}
-                      leftButtonProps={{ sx: { display: 'inline-flex', pt: '20px' } }}
-                      rightButtonProps={{ sx: { display: 'inline-flex', pt: '20px' } }}
+                      leftButtonProps={{ sx: { display: 'inline-flex' } }}
+                      rightButtonProps={{ sx: { display: 'inline-flex' } }}
                       sx={{
                         maxWidth: { xs: 'calc(100vw - 32px)', sm: 'calc(100vw - 48px)' },
                         height: '50px',
                         borderRadius: '8px 8px 0px 0px',
                         px: '30px',
-                        pt: '20px',
+                        py: '20px',
                         color: 'white',
                         justifyContent: 'center',
                         position: 'relative',
