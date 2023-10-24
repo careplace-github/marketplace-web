@@ -14,24 +14,24 @@ function HowItWorksItem({ title, description, icon }: props) {
   return (
     <Box
       sx={{
+        whiteSpace: 'normal',
         position: 'relative',
         width: '100%',
-        height: { xs: '350px', md: '490px', lg: '420px' },
+        height: '100%',
+        pt: '50px',
       }}
     >
       <Card
         sx={{
-          position: 'absolute',
-          top: '50px',
-          minHeight: '250px',
           display: { sm: 'flex' },
           width: '100%',
+          height: '100%',
         }}
       >
         <Box
           sx={{
             p: '70px 15px',
-            height: { xs: '350px', md: '420px', lg: '350px' },
+            // height: { xs: '350px', md: '420px', lg: '350px' },
           }}
         >
           <Typography
@@ -50,7 +50,6 @@ function HowItWorksItem({ title, description, icon }: props) {
               width: '100%',
               textAlign: 'center',
               mt: '10px',
-              height: 'calc(100% - 20px)',
               overflowY: 'auto',
             }}
           >
