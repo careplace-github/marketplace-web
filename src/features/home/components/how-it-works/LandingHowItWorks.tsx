@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Box, Typography, CircularProgress, Button, Stack } from '@mui/material';
+import { Box, Typography, CircularProgress, Button, Stack, Grid } from '@mui/material';
 import { CompanyListItem } from 'src/features/companies/components';
 import { useResponsive } from 'src/hooks';
 import { useRouter } from 'next/router';
