@@ -36,7 +36,7 @@ export default function MainLayout({ children, hideSearchbar }: Props) {
       <Box
         component="main"
         sx={{
-          mt: isMdUp ? 0 : '80px',
+          mt: '63px',
           flexGrow: 1,
         }}
       >

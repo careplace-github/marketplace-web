@@ -78,7 +78,7 @@ export default function Searchbar({
     requestOptions: {
       // Restrict the results to Portugal
       componentRestrictions: { country: 'pt' },
-      language: language || 'pt-PT',
+      types: ['address'],
     },
     // Only request every 300ms.
     debounce: 300,

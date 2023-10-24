@@ -47,7 +47,7 @@ export default function Header({ headerOnDark, hideSearchbar }: Props) {
     id: 'google-map-script',
     googleMapsApiKey: GOOGLE_MAPS_API_KEY,
     libraries: googleLibraries,
-    language: 'pt-PT',
+    language: 'pt',
   });
 
   return isInitialized && isLoaded.isLoaded ? (
@@ -165,7 +165,6 @@ export default function Header({ headerOnDark, hideSearchbar }: Props) {
           <Box
             sx={{
               width: '100%',
-              minWidth: '400px',
               p: '10px 16px',
               pb: '20px',
               backgroundColor: 'white',
