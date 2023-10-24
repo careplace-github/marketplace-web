@@ -70,7 +70,7 @@ export default function AuthLoginForm() {
       await login(data.email, data.password);
       setErrorMessage(undefined);
     } catch (error) {
-      if (error.error.message === 'User is not confirmed.') {
+      if (error?.error?.message === 'User is not confirmed.') {
         setIsSubmitting(false);
         await confirmationCode(data.email);
         router.push({
