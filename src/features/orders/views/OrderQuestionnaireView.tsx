@@ -144,6 +144,7 @@ export default function OrderQuestionnaireView() {
       setIsSubmitting(true);
       try {
         const response = await axios.post(`/customers/orders/home-care`, {
+          type: 'home-care',
           ...formData,
         });
         reset();
