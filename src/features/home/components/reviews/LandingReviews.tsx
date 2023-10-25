@@ -65,7 +65,7 @@ export default function LandingReviews() {
   const carouselContentSettings = {
     dots: true,
     arrows: false,
-    autoplay: false,
+    autoplay: true,
     slidesToShow: 1,
     draggable: false,
     centerMode: true,
