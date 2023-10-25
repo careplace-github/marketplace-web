@@ -1,21 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Box, Typography, CircularProgress, Button, Stack, Grid } from '@mui/material';
-import { CompanyListItem } from 'src/features/companies/components';
-import { useResponsive } from 'src/hooks';
+import { Box, Typography, Button, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 import Iconify from 'src/components/iconify/Iconify';
-import Carousel, { CarouselArrows, CarouselDots } from 'src/components/carousel';
 import HowItWorksItem from './HowItWorksItem';
 import HowItWorksStepper from './HowItWorksStepper';
 
 function LandingHowItWorks() {
   const router = useRouter();
-  const isMdUp = useResponsive('up', 'md');
-
-  const carouselRef1 = useRef<any | null>(null);
-  const [selected, setSelected] = useState(0);
-  const [carouselContent, setCarouselContent] = useState<any>();
 
   const steps = [
     {
@@ -37,38 +28,6 @@ function LandingHowItWorks() {
       icon: 'lucide:heart-handshake',
     },
   ];
-
-  const handlePrev = () => {
-    carouselRef1.current?.slickPrev();
-  };
-
-  const handleNext = () => {
-    carouselRef1?.current?.slickNext();
-  };
-
-  useEffect(() => {
-    setCarouselContent(carouselRef1.current || undefined);
-  }, [selected]);
-
-  const carouselContentSettings = {
-    dots: true,
-    arrows: false,
-    slidesToShow: 1,
-    draggable: false,
-    centerMode: true,
-    swipeToSlide: true,
-    focusOnSelect: true,
-    slidesToScroll: 1,
-    centerPadding: '0px',
-    autoplay: false,
-    autoplaySpeed: 3000,
-    adaptiveHeight: false,
-    rtl: false,
-    beforeChange: (current: number, next: number) => setSelected(next),
-    ...CarouselDots({
-      sx: { mt: '10px', mb: '30px' },
-    }),
-  };
 
   return (
     <Box
