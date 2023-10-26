@@ -101,7 +101,10 @@ export default function NavMobile({ data }: NavProps) {
                   mb: '30px',
                 }}
               >
-                <Avatar src={user?.profile_picture} />
+                <Avatar
+                  onClick={() => router.push(PATHS.account.personal)}
+                  src={user?.profile_picture}
+                />
                 <Typography variant="h6" sx={{ color: 'text.primary' }} noWrap>
                   {user?.name}
                 </Typography>

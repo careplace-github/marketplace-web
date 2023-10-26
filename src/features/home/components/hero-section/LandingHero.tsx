@@ -159,7 +159,7 @@ export default function LandingHero() {
             >
               <Typography
                 sx={{
-                  my: 3,
+                  my: { xs: 0, sm: 3 },
                   fontSize: { xs: '32px', sm: '48px' },
                   fontWeight: '800',
                   color: 'white',
@@ -245,7 +245,7 @@ export default function LandingHero() {
                         height: '50px',
                         borderRadius: '8px 8px 0px 0px',
                         px: '30px',
-                        py: '20px',
+                        pt: '20px',
                         color: 'white',
                         justifyContent: 'center',
                         position: 'relative',
