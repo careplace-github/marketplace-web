@@ -123,37 +123,67 @@ export const navConfigMobile = [
   // { title: 'Serviços', path: PATHS.services.root, icon: "material-symbols:medical-services-outline-rounded" },
   {
     title: 'Conta',
+    id: 'account',
     path: PATHS.account.personal,
+    isOpener: true,
+    subItems: [
+      {
+        title: 'Dados Pessoais',
+        path: PATHS.account.personal,
+      },
+      {
+        title: 'Familiares',
+        path: PATHS.account.relatives,
+      },
+      {
+        title: 'Pedidos',
+        path: PATHS.account.orders,
+      },
+      {
+        title: 'Pagamentos',
+        path: PATHS.account.payments,
+      },
+      {
+        title: 'Definições',
+        path: PATHS.account.settings,
+      },
+    ],
     icon: 'material-symbols:account-circle',
   },
 
   {
     title: 'Apoio Domiciliário',
+    id: 'homeCare',
     path: PATHS.search.homeCare.companies.root,
     icon: 'fa6-solid:user-nurse',
   },
   {
     title: 'Lares de Idosos',
+    id: 'nursingHome',
     path: PATHS.search.nursingHome.companies.root,
     icon: 'solar:home-bold',
   },
   {
     title: 'Residências Sénior',
+    id: 'seniorResidence',
     path: PATHS.search.seniorResidence.companies.root,
     icon: 'mdi:home-city',
   },
   {
     title: 'Centros de Dia',
+    id: 'dayCenter',
     path: PATHS.search.dayCenter.companies.root,
     icon: 'fontisto:day-sunny',
   },
   {
     title: 'Equipamentos Médicos',
+    id: 'medicalEquipments',
     path: PATHS.getHelp,
     icon: 'el:wheelchair',
   },
   {
     title: 'Serviços',
+    id: 'services',
     path: PATHS.services.root,
     icon: 'material-symbols:medical-services-outline-rounded',
   },

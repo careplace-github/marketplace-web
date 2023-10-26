@@ -14,10 +14,9 @@ import NavItem from './NavItem';
 type NavListRootProps = {
   data: NavListProps;
   depth: number;
-  hasChild: boolean;
 };
 
-export default function NavList({ data, depth, hasChild }: NavListRootProps) {
+export default function NavList({ data, depth }: NavListRootProps) {
   const { pathname } = useRouter();
 
   const { active, isExternalLink } = useActiveLink(data.path);
@@ -40,22 +39,14 @@ export default function NavList({ data, depth, hasChild }: NavListRootProps) {
   };
 
   return (
-    <>
-      <NavItem
-        item={data}
-        depth={depth}
-        open={open}
-        active={active}
-        isExternalLink={isExternalLink}
-        onClick={handleToggle}
-      />
-
-      {hasChild && (
-        <Collapse in={open} unmountOnExit>
-          <NavSubList data={data.children} depth={depth} />
-        </Collapse>
-      )}
-    </>
+    <NavItem
+      item={data}
+      depth={depth}
+      open={open}
+      active={active}
+      isExternalLink={isExternalLink}
+      onClick={handleToggle}
+    />
   );
 }
 
@@ -70,12 +61,7 @@ function NavSubList({ data, depth }: NavListSubProps) {
   return (
     <>
       {data.map((list) => (
-        <NavList
-          key={list.title + list.path}
-          data={list}
-          depth={depth + 1}
-          hasChild={!!list.children}
-        />
+        <NavList key={list.title + list.path} data={list} depth={depth + 1} />
       ))}
     </>
   );

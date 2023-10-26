@@ -46,7 +46,7 @@ export default function LandingHero() {
         const nextStringIndex = (prevStringIndex + 1) % menuOptions.length;
         return nextStringIndex;
       });
-    }, 1000);
+    }, 1500);
 
     return () => {
       clearInterval(intervalId);
