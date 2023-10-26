@@ -104,7 +104,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       });
       setValue('profile_picture', prevImage, { shouldDirty: true });
     } else {
-      setValue('profile_picture', null);
+      setValue('profile_picture', null, { shouldDirty: true });
     }
     onClose({}, 'backdropClick');
   };
@@ -113,7 +113,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
     <Modal
       open={open}
       onClose={() => {
-        setValue('profile_picture', null);
+        setValue('profile_picture', null, { shouldDirty: true });
         onClose({}, 'backdropClick');
       }}
     >
