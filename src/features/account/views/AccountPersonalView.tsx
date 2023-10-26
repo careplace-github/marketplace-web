@@ -264,7 +264,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                     return;
                   }
 
-                  setValue('firstName', value);
+                  setValue('firstName', value, { shouldDirty: true });
                   setCustomIsDirty(true);
                 }}
               />
@@ -281,7 +281,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                   if (value.length > 20) {
                     return;
                   }
-                  setValue('lastName', value);
+                  setValue('lastName', value, { shouldDirty: true });
                   setCustomIsDirty(true);
                 }}
               />
@@ -350,7 +350,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                         11,
                         14
                       )}`;
-                      setValue('phoneNumber', newValue);
+                      setValue('phoneNumber', newValue, { shouldDirty: true });
                       return;
                     }
 
@@ -359,7 +359,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                       return;
                     }
 
-                    setValue('phoneNumber', value);
+                    setValue('phoneNumber', value, { shouldDirty: true });
                     setCustomIsDirty(true);
                   }}
                 />
@@ -436,7 +436,8 @@ export default function AccountPersonalView({ updatedUser }: props) {
                     if (value.length === 5 && value[4] !== '-') {
                       setValue(
                         'zipCode',
-                        `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`
+                        `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`,
+                        { shouldDirty: true }
                       );
                       return;
                     }
@@ -452,7 +453,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                   } else {
                     setCustomIsValid(false);
                   }
-                  setValue('zipCode', value);
+                  setValue('zipCode', value, { shouldDirty: true });
                   setCustomIsDirty(true);
                 }}
               />

@@ -478,7 +478,7 @@ function GetHelpView() {
                               8,
                               11
                             )} ${value.slice(11, 14)}`;
-                            setValue('phone', newValue);
+                            setValue('phone', newValue, { shouldDirty: true });
                             return;
                           }
 
@@ -487,7 +487,7 @@ function GetHelpView() {
                             return;
                           }
 
-                          setValue('phone', value);
+                          setValue('phone', value, { shouldDirty: true });
                         }}
                       />
                     </Grid>
@@ -541,7 +541,7 @@ function GetHelpView() {
                             {...field}
                             select
                             onChange={(e) => {
-                              setValue('type', e.target.value);
+                              setValue('type', e.target.value, { shouldDirty: true });
                             }}
                             label="Tipo de Apoio"
                             value={getValues('type')}
