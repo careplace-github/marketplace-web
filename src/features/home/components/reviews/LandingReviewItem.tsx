@@ -15,7 +15,7 @@ export function LandingReviewItem({ reviewContent }: LandingReviewItemProps) {
   const { review } = reviewContent;
 
   return (
-    <Stack alignItems="center" sx={{ minHeight: { xs: '500px', sm: '350px' } }}>
+    <Stack alignItems="center" sx={{ minHeight: { xs: '565px', sm: '400px' } }}>
       <Iconify
         icon="carbon:quotes"
         sx={{ width: 48, height: 48, opacity: 0.48, color: 'primary.main' }}

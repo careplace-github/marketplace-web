@@ -38,6 +38,7 @@ import { OrderQuestionnaireSummary, OrderQuestionnaireForm } from '../components
 type OrderRequestProps = {
   health_unit: string;
   patient: string;
+  type: string;
   services: string[];
   schedule_information: {
     start_date: Date;
@@ -88,11 +89,6 @@ export default function OrderQuestionnaireView() {
       fetchCompany(router.query.id);
     }
   }, [router.isReady]);
-
-  const [guests, setGuests] = useState({
-    adults: 2,
-    children: 1,
-  });
 
   const TravelCheckoutSchema = Yup.object().shape({
     billingAddress: Yup.object().shape({
@@ -149,6 +145,7 @@ export default function OrderQuestionnaireView() {
       setIsSubmitting(true);
       try {
         const response = await axios.post(`/customers/orders/home-care`, {
+          type: 'home-care',
           ...formData,
         });
         reset();
@@ -165,6 +162,7 @@ export default function OrderQuestionnaireView() {
       const dataToSubmit: OrderRequestProps = {
         health_unit: companyInfo._id,
         patient: data.relativeSelected,
+        type: 'home_care',
         services: data.servicesSelected,
         schedule_information: {
           start_date: data.startDateSelected,

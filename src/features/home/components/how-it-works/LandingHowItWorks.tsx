@@ -1,21 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Box, Typography, CircularProgress, Button, Stack } from '@mui/material';
-import { CompanyListItem } from 'src/features/companies/components';
-import { useResponsive } from 'src/hooks';
+import { Box, Typography, Button, Grid } from '@mui/material';
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
 import Iconify from 'src/components/iconify/Iconify';
-import Carousel, { CarouselArrows, CarouselDots } from 'src/components/carousel';
 import HowItWorksItem from './HowItWorksItem';
 import HowItWorksStepper from './HowItWorksStepper';
 
 function LandingHowItWorks() {
   const router = useRouter();
-  const isMdUp = useResponsive('up', 'md');
-
-  const carouselRef1 = useRef<any | null>(null);
-  const [selected, setSelected] = useState(0);
-  const [carouselContent, setCarouselContent] = useState<any>();
 
   const steps = [
     {
@@ -37,38 +28,6 @@ function LandingHowItWorks() {
       icon: 'lucide:heart-handshake',
     },
   ];
-
-  const handlePrev = () => {
-    carouselRef1.current?.slickPrev();
-  };
-
-  const handleNext = () => {
-    carouselRef1?.current?.slickNext();
-  };
-
-  useEffect(() => {
-    setCarouselContent(carouselRef1.current || undefined);
-  }, [selected]);
-
-  const carouselContentSettings = {
-    dots: true,
-    arrows: false,
-    slidesToShow: 1,
-    draggable: false,
-    centerMode: true,
-    swipeToSlide: true,
-    focusOnSelect: true,
-    slidesToScroll: 1,
-    centerPadding: '0px',
-    autoplay: true,
-    autoplaySpeed: 3000,
-    adaptiveHeight: true,
-    rtl: false,
-    beforeChange: (current: number, next: number) => setSelected(next),
-    ...CarouselDots({
-      sx: { mt: '10px', mb: '30px' },
-    }),
-  };
 
   return (
     <Box
@@ -105,48 +64,13 @@ function LandingHowItWorks() {
           Como Funciona
         </Typography>
         <HowItWorksStepper />
-        {isMdUp ? (
-          <Box
-            sx={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr',
-              width: '100%',
-              justifyContent: 'space-between',
-              gap: '10px',
-              py: '30px',
-            }}
-          >
-            {steps.map((step, index) => {
-              return (
-                <HowItWorksItem
-                  title={step.title}
-                  description={step.description}
-                  icon={step.icon}
-                />
-              );
-            })}
-          </Box>
-        ) : (
-          <CarouselArrows
-            onNext={handleNext}
-            onPrev={handlePrev}
-            sx={{ minHeight: '350px', width: '100%', maxWidth: '85vw', mt: '30px' }}
-            leftButtonProps={{ sx: { display: 'none' } }}
-            rightButtonProps={{ sx: { display: 'none' } }}
-          >
-            <Carousel {...carouselContentSettings} ref={carouselRef1}>
-              {steps.map((step, index) => {
-                return (
-                  <HowItWorksItem
-                    title={step.title}
-                    description={step.description}
-                    icon={step.icon}
-                  />
-                );
-              })}
-            </Carousel>
-          </CarouselArrows>
-        )}
+        <Grid container spacing={3} sx={{ height: '100%', pt: '20px', pb: '50px' }}>
+          {steps.map((step, index) => (
+            <Grid xs={12} md={4} item sx={{ display: 'flex', flexDirection: 'column' }}>
+              <HowItWorksItem title={step.title} description={step.description} icon={step.icon} />
+            </Grid>
+          ))}
+        </Grid>
 
         <Button
           variant="contained"

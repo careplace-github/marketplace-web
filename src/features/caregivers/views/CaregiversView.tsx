@@ -196,7 +196,7 @@ const CaregiversView = () => {
                     11,
                     14
                   )}`;
-                  setValue('phoneNumber', newValue);
+                  setValue('phoneNumber', newValue, { shouldDirty: true });
                   return;
                 }
 
@@ -205,7 +205,7 @@ const CaregiversView = () => {
                   return;
                 }
 
-                setValue('phoneNumber', value);
+                setValue('phoneNumber', value, { shouldDirty: true });
               }}
             />
             <LoadingButton

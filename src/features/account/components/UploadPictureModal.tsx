@@ -58,7 +58,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       const uploadedFileURL = response.data.url;
       if (user) {
         user.profile_picture = uploadedFileURL;
-        setValue('profile_picture', uploadedFileURL);
+        setValue('profile_picture', uploadedFileURL, { shouldDirty: true });
 
         updateUser(user);
 
@@ -90,7 +90,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       });
 
       if (file) {
-        setValue('profile_picture', newFile.preview);
+        setValue('profile_picture', newFile.preview, { shouldDirty: true });
       }
     },
     [setValue]
@@ -102,7 +102,7 @@ const UploadPictureModal = ({ open, onClose }: UploadPictureModalProps) => {
       const prevImage = Object.assign(user?.profile_picture, {
         preview: user?.profile_picture,
       });
-      setValue('profile_picture', prevImage);
+      setValue('profile_picture', prevImage, { shouldDirty: true });
     } else {
       setValue('profile_picture', null);
     }

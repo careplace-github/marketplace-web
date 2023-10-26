@@ -10,12 +10,10 @@ import { HEADER } from 'src/layouts/config';
 // routes
 import { useRouter } from 'next/router';
 import { PATHS } from 'src/routes';
-// google maps api
-import { useJsApiLoader } from '@react-google-maps/api';
-import Badge, { badgeClasses } from '@mui/material/Badge';
 // components
 import Logo from 'src/components/logo';
 import Label from 'src/components/label';
+import Badge, { badgeClasses } from '@mui/material/Badge';
 import LoadingScreen from 'src/components/loading-screen/LoadingScreen';
 import { Searchbar } from 'src/components/searchbar';
 import AccountPopover from './AccountPopover';
@@ -30,12 +28,6 @@ type Props = {
   hideSearchbar?: boolean;
 };
 
-const googleLibraries: ('places' | 'drawing' | 'geometry' | 'localContext' | 'visualization')[] = [
-  'places',
-];
-
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
-
 export default function Header({ headerOnDark, hideSearchbar }: Props) {
   const { isAuthenticated, isInitialized } = useAuthContext();
   const router = useRouter();
@@ -43,13 +35,7 @@ export default function Header({ headerOnDark, hideSearchbar }: Props) {
 
   const isMdUp = useResponsive('up', 'md');
 
-  const isLoaded = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: GOOGLE_MAPS_API_KEY,
-    libraries: googleLibraries,
-  });
-
-  return isInitialized && isLoaded.isLoaded ? (
+  return isInitialized ? (
     <AppBar
       color="transparent"
       sx={{
@@ -165,7 +151,6 @@ export default function Header({ headerOnDark, hideSearchbar }: Props) {
           <Box
             sx={{
               width: '100%',
-              minWidth: '400px',
               p: '10px 16px',
               pb: '20px',
               backgroundColor: 'white',

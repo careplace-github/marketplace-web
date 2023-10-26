@@ -67,7 +67,7 @@ export default function AuthResetPasswordForm() {
     if (router.isReady) {
       if (router.query.email) {
         setEmail(router.query.email as string);
-        setValue('email', email as string);
+        setValue('email', email as string, { shouldDirty: true });
       }
     }
   }, [router.isReady, router.query.email, email, setValue]);

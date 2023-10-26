@@ -111,12 +111,12 @@ export default function AuthVerifyCodeForm() {
       await confirmationCode(email);
 
       // Reset the code inputs
-      setValue('code1', '');
-      setValue('code2', '');
-      setValue('code3', '');
-      setValue('code4', '');
-      setValue('code5', '');
-      setValue('code6', '');
+      setValue('code1', '', { shouldDirty: true });
+      setValue('code2', '', { shouldDirty: true });
+      setValue('code3', '', { shouldDirty: true });
+      setValue('code4', '', { shouldDirty: true });
+      setValue('code5', '', { shouldDirty: true });
+      setValue('code6', '', { shouldDirty: true });
 
       // Show success message popup
       enqueueSnackbar('Code sent successfully!');
@@ -130,7 +130,7 @@ export default function AuthVerifyCodeForm() {
     if (router.isReady) {
       if (router.query.email) {
         setEmailRecovery(router.query.email as string);
-        setValue('email', router.query.email as string);
+        setValue('email', router.query.email as string, { shouldDirty: true });
       }
     }
   }, [router.isReady, router.query?.email, emailRecovery]);
