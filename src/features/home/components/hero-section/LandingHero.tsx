@@ -245,7 +245,7 @@ export default function LandingHero() {
                         height: '50px',
                         borderRadius: '8px 8px 0px 0px',
                         px: '30px',
-                        pt: '20px',
+                        py: '20px',
                         color: 'white',
                         justifyContent: 'center',
                         position: 'relative',
