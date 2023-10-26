@@ -172,7 +172,7 @@ export default function AccountSettingsChangePhone() {
                   11,
                   14
                 )}`;
-                setValue('phoneNumber', newValue);
+                setValue('phoneNumber', newValue, { shouldDirty: true });
                 return;
               }
 
@@ -181,7 +181,7 @@ export default function AccountSettingsChangePhone() {
                 return;
               }
 
-              setValue('phoneNumber', value);
+              setValue('phoneNumber', value, { shouldDirty: true });
             }}
           />
         </Box>

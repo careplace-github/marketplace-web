@@ -212,7 +212,7 @@ export default function AuthRegisterForm() {
             if (value.length === 15 && value[8] !== ' ' && value[12] !== ' ') {
               // (eg: +351 9123456780 -> +351 912 345 678)
               const newValue = `${value.slice(0, 8)} ${value.slice(8, 11)} ${value.slice(11, 14)}`;
-              setValue('phoneNumber', newValue);
+              setValue('phoneNumber', newValue, { shouldDirty: true });
               return;
             }
 
@@ -221,7 +221,7 @@ export default function AuthRegisterForm() {
               return;
             }
 
-            setValue('phoneNumber', value);
+            setValue('phoneNumber', value, { shouldDirty: true });
           }}
         />
 

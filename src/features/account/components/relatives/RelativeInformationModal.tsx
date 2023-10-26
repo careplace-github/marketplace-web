@@ -175,7 +175,7 @@ export default function RelativeInformationModal({
       });
 
       if (file) {
-        setValue('profile_picture', newFile.preview);
+        setValue('profile_picture', newFile.preview, { shouldDirty: true });
       }
     },
     [setValue]
@@ -356,7 +356,7 @@ export default function RelativeInformationModal({
                     14
                   )}`;
                   setCustomIsDirty(true);
-                  setValue('phoneNumber', newValue);
+                  setValue('phoneNumber', newValue, { shouldDirty: true });
                   return;
                 }
 
@@ -365,7 +365,7 @@ export default function RelativeInformationModal({
                   return;
                 }
                 setCustomIsDirty(true);
-                setValue('phoneNumber', value);
+                setValue('phoneNumber', value, { shouldDirty: true });
               }}
             />
 
@@ -403,7 +403,7 @@ export default function RelativeInformationModal({
               label="Grau de Parentesco *"
               onChange={(e) => {
                 const { value } = e.target;
-                setValue('kinshipDegree', value);
+                setValue('kinshipDegree', value, { shouldDirty: true });
               }}
             >
               <option value="" />
@@ -435,7 +435,11 @@ export default function RelativeInformationModal({
                 if (getValues('country') === 'PT' || getValues('country') === '') {
                   // Add a dash to the zip code if it doesn't have one. Format example: XXXX-XXX
                   if (value.length === 5 && value[4] !== '-') {
-                    setValue('zipCode', `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`);
+                    setValue(
+                      'zipCode',
+                      `${value[0]}${value[1]}${value[2]}${value[3]}-${value[4]}`,
+                      { shouldDirty: true }
+                    );
                     return;
                   }
 
@@ -445,7 +449,7 @@ export default function RelativeInformationModal({
                   }
                 }
 
-                setValue('zipCode', value);
+                setValue('zipCode', value, { shouldDirty: true });
                 setCustomIsDirty(true);
               }}
             />
@@ -475,7 +479,7 @@ export default function RelativeInformationModal({
                   }}
                   onChange={(event) => {
                     if (event.target.value.length <= 500)
-                      setValue('medicalConditions', event.target.value);
+                      setValue('medicalConditions', event.target.value, { shouldDirty: true });
                   }}
                   multiline
                   minRows={isMdUp ? 3 : 5}
