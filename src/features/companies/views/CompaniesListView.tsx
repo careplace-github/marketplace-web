@@ -178,6 +178,7 @@ export default function CompaniesListView({ searchType }: props) {
         justifyContent="space-between"
         sx={{
           py: 5,
+          gap: '30px',
         }}
       >
         <Typography variant="h2">
