@@ -36,7 +36,14 @@ export default function AccountLayout({ children }: Props) {
           <Typography variant="h3">A Minha Conta</Typography>
         </Container>
       ) : (
-        <Box sx={{ py: 2, mb: 5, borderBottom: (theme) => `solid 1px ${theme.palette.divider}` }}>
+        <Box
+          sx={{
+            pt: { xs: 5, sm: 2 },
+            pb: 2,
+            mb: 5,
+            borderBottom: (theme) => `solid 1px ${theme.palette.divider}`,
+          }}
+        >
           <Container>
             <Typography
               variant="subtitle2"
