@@ -5,10 +5,13 @@ import React, { JSXElementConstructor } from 'react';
 // ----------------------------------------------------------------------
 
 export type NavItemBaseProps = {
+  id?: string;
   title: string;
   path?: string;
   icon?: React.ReactElement<any, string | JSXElementConstructor<any>> | string;
   children?: NavListProps[];
+  subItems?: any;
+  isOpener?: boolean;
 };
 
 export type NavListProps = {

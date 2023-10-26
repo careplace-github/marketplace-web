@@ -16,7 +16,7 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
       {icon !== undefined && <Iconify icon={icon} sx={{ mr: '10px' }} />}
       <ListItemText disableTypography primary={title} />
 
-      {!!children && (
+      {!!item?.subItems && (
         <Iconify
           width={16}
           icon="carbon:chevron-down"
@@ -30,6 +30,11 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
     </StyledNavItem>
   );
 
+  // Opener
+  if (item?.isOpener) {
+    return renderContent;
+  }
+
   // ExternalLink
   if (isExternalLink) {
     return (
@@ -37,11 +42,6 @@ export default function NavItem({ item, open, active, isExternalLink, ...other }
         {renderContent}
       </Link>
     );
-  }
-
-  // Has child
-  if (children) {
-    return renderContent;
   }
 
   // Default

@@ -55,7 +55,7 @@ function Spacing() {
   return (
     <Box
       sx={{
-        height: { xs: HEADER.H_MOBILE, md: HEADER.H_MAIN_DESKTOP },
+        height: { xs: HEADER.H_MOBILE, md: 0 },
       }}
     />
   );
