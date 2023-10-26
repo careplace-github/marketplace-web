@@ -156,7 +156,7 @@ export default function AuthNewPasswordForm() {
     if (router.isReady) {
       if (router.query.email) {
         setEmailRecovery(router.query.email as string);
-        setValue('email', router.query.email as string);
+        setValue('email', router.query.email as string, { shouldDirty: true });
       }
     }
   }, [router.isReady, router.query?.email, emailRecovery]);
