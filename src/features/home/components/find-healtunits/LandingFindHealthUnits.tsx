@@ -122,7 +122,7 @@ function LandingFindHealthUnits() {
             textAlign: 'center',
           }}
         >
-          Conheça as Empresas de Apoio Domiciliário (SAD)
+          Conheça as Empresas de Apoio Domiciliário
         </Typography>
         {companiesLoading ? (
           <Box

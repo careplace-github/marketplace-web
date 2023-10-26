@@ -142,6 +142,7 @@ function GetHelpView() {
 
   return (
     <Box
+      id="hello there"
       sx={{
         width: '100%',
         display: 'flex',

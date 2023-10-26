@@ -115,15 +115,7 @@ export default function NavMobile({ data }: NavProps) {
 
           <List component="nav" disablePadding>
             {data.map((link) => {
-              if (
-                !isAuthenticated &&
-                (link.title === 'Dados Pessoais' ||
-                  link.title === 'Pedidos' ||
-                  link.title === 'Familiares' ||
-                  link.title === 'Informações de Pagamento' ||
-                  link.title === 'Definições')
-              )
-                return null;
+              if (!isAuthenticated && link.id === 'account') return null;
               return <NavList key={link.title} item={link} />;
             })}
           </List>
