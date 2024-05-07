@@ -165,6 +165,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
 
         user = response.data;
+        console.log('userContext', user);
 
         setItem('profile_picture', user.profile_picture);
         setItem('name', user.name);

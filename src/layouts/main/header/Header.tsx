@@ -83,11 +83,11 @@ export default function Header({ headerOnDark, hideSearchbar }: Props) {
                     right: -16,
                   },
                 }}
-                badgeContent={
-                  <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1 }}>
-                    beta
-                  </Label>
-                }
+                // badgeContent={
+                //   <Label color="info" sx={{ textTransform: 'unset', height: 20, px: 0.5, ml: 1 }}>
+                //     beta
+                //   </Label>
+                // }
               >
                 <Logo logoHeight={33} />
               </Badge>{' '}

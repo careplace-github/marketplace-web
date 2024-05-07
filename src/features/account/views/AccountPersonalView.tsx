@@ -64,15 +64,15 @@ export default function AccountPersonalView({ updatedUser }: props) {
         }
         return true;
       }),
-    phoneNumber: Yup.string()
-      .test('phoneNumber', 'O número de telemóvel é obrigatório', (value) => {
+    phone: Yup.string()
+      .test('phone', 'O número de telemóvel é obrigatório', (value) => {
         // If the value is equal to a country phone number, then it is empty
         const code = countries.find((country) => country.phone === value?.replace('+', ''))?.phone;
-        const phoneNumber = value?.replace('+', '');
+        const phone = value?.replace('+', '');
 
-        return code !== phoneNumber;
+        return code !== phone;
       })
-      .test('phoneNumber', 'O número de telemóvel introduzido não é válido.', (value) => {
+      .test('phone', 'O número de telemóvel introduzido não é válido.', (value) => {
         // Portuguese phone number verification
         if (value?.startsWith('+351')) {
           // Remove spaces and the +351 sign
@@ -90,7 +90,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
     firstName: user?.name ? user.name.split(' ')[0] : null,
     lastName: user?.name ? user.name.split(' ').pop() : null,
     emailAddress: user?.email ? user.email : null,
-    phoneNumber: user?.phone ? user.phone : null,
+    phone: user?.phone ? user.phone : null,
     birthdate: user?.birthdate ? user.birthdate : '',
     gender: user?.gender ? user.gender : null,
     streetAddress: user && user.address && user.address.street ? user.address.street : null,
@@ -98,6 +98,8 @@ export default function AccountPersonalView({ updatedUser }: props) {
     city: user && user.address && user.address.city ? user.address.city : null,
     country: user && user.address && user.address.country ? user.address.country : null,
   };
+
+  console.log("defaultValues", defaultValues)
 
   const methods = useForm<typeof defaultValues>({
     mode: 'onChange',
@@ -115,10 +117,12 @@ export default function AccountPersonalView({ updatedUser }: props) {
 
   const onSubmit = async (data: typeof defaultValues) => {
     try {
+      console.log("data", data)
+      console.log("user", user)
       if (user) {
         user.name = `${data.firstName.split(' ')[0]} ${data.lastName.split(' ')[0]}`;
         user.email = data.emailAddress;
-        user.phone = data.phoneNumber;
+        user.phone = data.phone;
         user.birthdate = data.birthdate;
         if (data.gender) {
           user.gender = data.gender;
@@ -324,20 +328,20 @@ export default function AccountPersonalView({ updatedUser }: props) {
               </Box>
               <Box>
                 <RHFPhoneField
-                  name="phoneNumber"
+                  name="phone"
                   label="Telemóvel"
                   defaultCountry="PT"
                   forceCallingCode
-                  disabled
-                  tooltip={{
-                    tooltipWidth: '200px',
-                    icon: user?.phone_verified === true ? 'simple-line-icons:check' : 'ep:warning',
-                    text:
-                      user?.phone_verified === true
-                        ? 'O seu telemóvel foi verificado com sucesso!'
-                        : 'O seu telemóvel não está verificado.',
-                    iconColor: user?.phone_verified === true ? 'green' : 'orange',
-                  }}
+                  //disabled
+                  // tooltip={{
+                  //   tooltipWidth: '200px',
+                  //   icon: user?.phone_verified === true ? 'simple-line-icons:check' : 'ep:warning',
+                  //   text:
+                  //     user?.phone_verified === true
+                  //       ? 'O seu telemóvel foi verificado com sucesso!'
+                  //       : 'O seu telemóvel não está verificado.',
+                  //   iconColor: user?.phone_verified === true ? 'green' : 'orange',
+                  // }}
                   onChange={(value: string) => {
                     /**
                      * Portuguese Number Validation
@@ -350,7 +354,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                         11,
                         14
                       )}`;
-                      setValue('phoneNumber', newValue, { shouldDirty: true });
+                      setValue('phone', newValue, { shouldDirty: true });
                       return;
                     }
 
@@ -359,11 +363,11 @@ export default function AccountPersonalView({ updatedUser }: props) {
                       return;
                     }
 
-                    setValue('phoneNumber', value, { shouldDirty: true });
+                    setValue('phone', value, { shouldDirty: true });
                     setCustomIsDirty(true);
                   }}
                 />
-                {user?.phone_verified !== true && (
+                {/* {user?.phone_verified !== true && (
                   <Typography
                     onClick={() => {
                       handleConfirmPhoneClick();
@@ -382,7 +386,7 @@ export default function AccountPersonalView({ updatedUser }: props) {
                   >
                     Confirmar telemóvel
                   </Typography>
-                )}
+                )} */}
               </Box>
 
               <Controller
