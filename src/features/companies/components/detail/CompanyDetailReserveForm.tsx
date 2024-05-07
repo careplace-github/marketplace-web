@@ -106,34 +106,6 @@ export default function CompanyDetailReserveForm({
   return (
     <Card>
       <Stack spacing={3} sx={{ p: 3 }}>
-        {price > 0 && (
-          <Stack spacing={1} direction="row" alignItems="center" sx={{ typography: 'h4' }}>
-            Desde {fCurrency(price)}€
-            <Typography variant="body2" component="span" sx={{ color: 'text.disabled', ml: 1 }}>
-              / Hora
-            </Typography>
-          </Stack>
-        )}
-        <Stack spacing={3}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            Serviços
-            <FilterServices
-              services={services}
-              filterServices={filterServices}
-              onChangeServices={handleChangeServices}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            Dias da semana
-            <FilterWeekdays
-              filterWeekdays={filterWeekdays}
-              onChangeWeekdays={handleChangeWeekdays}
-            />
-          </Box>
-        </Stack>
-      </Stack>
-      <Divider sx={{ borderStyle: 'dashed' }} />
-      <Stack spacing={3} sx={{ p: 3 }}>
         <Button
           size="large"
           variant="contained"
@@ -149,7 +121,7 @@ export default function CompanyDetailReserveForm({
             },
           }}
         >
-          Continuar
+          Saber preços e vagas
         </Button>
       </Stack>
     </Card>
