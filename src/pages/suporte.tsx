@@ -2,8 +2,6 @@
 import Head from 'next/head';
 // layouts
 import MainLayout from 'src/layouts/main';
-// PATHS
-import { PATHS } from 'src/routes';
 // sections
 import SupportView from 'src/features/common/views/SupportView';
 
