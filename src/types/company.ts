@@ -71,6 +71,7 @@ export type ICompanyProps = {
     coordinates: any[];
   };
   services: string[];
+  type: string;
 };
 
 export type ICompanyFiltersProps = {

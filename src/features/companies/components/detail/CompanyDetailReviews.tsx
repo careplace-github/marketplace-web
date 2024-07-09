@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // @mui
-import { Container, Button, Unstable_Grid2 as Grid, SelectChangeEvent } from '@mui/material';
+import { Container, Button, Unstable_Grid2 as Grid } from '@mui/material';
 // axios
 import axios from 'src/lib/axios';
 // next
@@ -40,7 +40,7 @@ export default function CompanyDetailReviews({
   const companyUpdateReviewUrl = `${router.asPath.split('?')[0]}/review/update`;
   const [userReview, setUserReview] = useState<any>();
 
-  const { isAuthenticated, user } = useAuthContext();
+  const { isAuthenticated } = useAuthContext();
 
   const fetchReviewEligibilty = async () => {
     const response = await axios.get(`/health-units/${companyId}/reviews/eligibility`);

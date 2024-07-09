@@ -1,5 +1,5 @@
 // hooks
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useResponsive } from 'src/hooks';
 // axios
 import axios from 'src/lib/axios';
@@ -14,10 +14,12 @@ import {
   Typography,
   Card,
   Unstable_Grid2 as Grid,
+  Box,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 // router
 import { useRouter } from 'next/router';
-import { PATHS } from 'src/routes';
 // type props
 import { IServiceProps } from 'src/types/utils';
 import { ICompanyProps } from 'src/types/company';
@@ -26,8 +28,9 @@ import { IReviewProps, IReviewsPaginationProps } from 'src/types/review';
 import Iconify from 'src/components/iconify';
 import LoadingScreen from 'src/components/loading-screen';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import GetHelpForm from 'src/features/getHelp/GetHelpForm';
+import { ISnackbarProps } from 'src/types/snackbar';
 import CompanyProfileCover from '../components/companyDetails/CompanyProfileCover';
-
 //
 import {
   CompanyDetailSummary,
@@ -37,12 +40,6 @@ import {
 } from '../components';
 
 // ----------------------------------------------------------------------
-
-type IFilterQueryProps = {
-  weekdays: string | undefined;
-  services: string | undefined;
-  recurrency: number | string | undefined;
-};
 
 const _socials = [
   {
@@ -110,19 +107,21 @@ export default function CompanyDetailView() {
   const [loading, setLoading] = useState<boolean>(true);
   const [companiesLoading, setCompaniesLoading] = useState<boolean>(true);
   const [servicesLoading, setServicesLoading] = useState<boolean>(true);
-  const [filterQueries, setFilterQueries] = useState<IFilterQueryProps>({
-    recurrency: undefined,
-    weekdays: undefined,
-    services: undefined,
-  });
+  const getHelpFormRef = useRef();
   const [availableServices, setAvailableServices] = useState<IServiceProps[]>([]);
+  const [showSnackbar, setShowSnackbar] = useState<ISnackbarProps>({
+    show: false,
+    severity: 'success',
+    message: '',
+  });
+
   const [companyServices, setCompanyServices] = useState<string[]>([]);
   const [companySpecialServices, setCompanySpecialServices] = useState<IServiceProps[]>([]);
-  const [companyAvailableServices, setCompanyAvailableServices] = useState<IServiceProps[]>([]);
   const [companyReviews, setCompanyReviews] = useState<IReviewProps[]>([]);
   const [reviewsPaginationInfo, setReviewsPaginationInfo] = useState<IReviewsPaginationProps>();
   const [companyInfo, setCompanyInfo] = useState<ICompanyProps>();
   const [similarCompanies, setSimilarCompanies] = useState<ICompanyProps[]>([]);
+  const [helpFormSubmitted, setHelpFormSubmitted] = useState<boolean>(false);
   const [reviewSort, setReviewSort] = useState<{ sortBy: string; sortOrder: string }>({
     sortBy: 'relevance',
     sortOrder: 'desc',
@@ -251,7 +250,6 @@ export default function CompanyDetailView() {
           }
         });
       });
-      setCompanyAvailableServices(allCompanyAvailableServices);
     }
     setServicesLoading(false);
   }, [availableServices, companyInfo]);
@@ -262,21 +260,38 @@ export default function CompanyDetailView() {
 
   const handleGoBackClick = () => {
     if (router.isReady) {
-      const currentQuery = router.query;
-      delete currentQuery.id;
-      router.push({
-        pathname: PATHS.search.homeCare.companies.root,
-        query: {
-          ...currentQuery,
-          weekDay: filterQueries.weekdays,
-          services: filterQueries.services,
-        },
-      });
+      router.back();
     }
   };
 
   return companyInfo ? (
     <>
+      <Snackbar
+        open={showSnackbar.show}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        onClose={() =>
+          setShowSnackbar({
+            show: false,
+            severity: 'success',
+            message: '',
+          })
+        }
+      >
+        <Alert
+          onClose={() =>
+            setShowSnackbar({
+              show: false,
+              severity: 'success',
+              message: '',
+            })
+          }
+          severity={showSnackbar.severity}
+          sx={{ width: '100%' }}
+        >
+          {showSnackbar.message}
+        </Alert>
+      </Snackbar>
       <Container sx={{ overflow: 'hidden' }}>
         <Stack
           direction="row"
@@ -320,18 +335,7 @@ export default function CompanyDetailView() {
 
         <Grid container columnSpacing={8} rowSpacing={5} direction="row-reverse">
           <Grid xs={12} md={5} lg={4}>
-            <CompanyDetailReserveForm
-              onReserveFiltersChange={(weekdaysQuery, servicesQuery) =>
-                setFilterQueries({
-                  recurrency: router?.query?.recurrency as string | undefined,
-                  weekdays: weekdaysQuery,
-                  services: servicesQuery,
-                })
-              }
-              services={companyAvailableServices}
-              price={companyInfo?.pricing.minimum_hourly_rate}
-              companyId={companyInfo._id}
-            />
+            <CompanyDetailReserveForm getHelpFormRef={getHelpFormRef} />
           </Grid>
 
           <Grid xs={12} md={7} lg={8}>
@@ -394,6 +398,29 @@ export default function CompanyDetailView() {
           }}
         />
       )}
+      <Divider sx={{ mt: 10 }} />
+      <Box ref={getHelpFormRef} sx={{ pt: 10, maxWidth: '1200px', mx: 'auto', px: '24px' }}>
+        <Typography variant="h4" mb={3} paragraph>
+          Saiba mais sobre Preços e Vagas
+        </Typography>
+        {!helpFormSubmitted && (
+          <Typography mb={2}>
+            Descreva por favor as necessidades e preferências do seu familiar, para que o possamos
+            informar melhor dos preços e das vagas disponíveis neste momento.
+          </Typography>
+        )}
+        <GetHelpForm
+          healthUnit={companyInfo}
+          onSubmitError={() =>
+            setShowSnackbar({
+              message: 'Algo correu mal, tente novamente.',
+              severity: 'error',
+              show: true,
+            })
+          }
+          onSubmitSuccess={() => setHelpFormSubmitted(true)}
+        />
+      </Box>
       <Divider sx={{ mt: 10 }} />
       {similarCompanies?.length >= 3 && <SimilarCompaniesList companies={similarCompanies} />}
     </>
