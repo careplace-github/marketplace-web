@@ -7480,10 +7480,10 @@ yauzl@^2.10.0:
     buffer-crc32 "~0.2.3"
     fd-slicer "~1.1.0"
 
-yet-another-react-lightbox@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.npmjs.org/yet-another-react-lightbox/-/yet-another-react-lightbox-3.2.0.tgz"
-  integrity sha512-8QXPwcC3/xpWp7HWACvlfGUeos1XmWZAQ1a34CGjvZ4x5f+hmItxyGsgugtoxayyyAIlCgULTZJuqoeZK6ewUQ==
+yet-another-react-lightbox@^3.12.1:
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/yet-another-react-lightbox/-/yet-another-react-lightbox-3.12.2.tgz#10b6a023fe6469e51d52e881715f00d5f2e5e82b"
+  integrity sha512-sFypE74Rjjl7WbzKSrGeZ7lbcgduOam/BKj8kqzx/ciC4dJyYdE1SG0dur9oDq/gZiY3VGJh+PYGbq6ZwmPFmA==
 
 yocto-queue@^0.1.0:
   version "0.1.0"
